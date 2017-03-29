@@ -22,18 +22,35 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
+        // Create the Database Manager and connect to the DB
+        theDBManager = new DatabaseManager();
+        try {
+            getDB().connect();
+        }
+        catch (Exception e) {
+            System.out.println("Failed to connect to database.");
+            e.printStackTrace();
+            return;
+        }
+
+        // Using the information from the Database, create the Pathfinding
+        // and Directory Managers
+        thePathManager = new PathfindingManager(getDB().getAllNodes());
+        theDirManager = new DirectoryManager(getDB().getAllDirectories());
+
+        // Launch the JavaFX application after initial setup
         launch(args);
     }
 
-    public static DirectoryManager getTheDirManager() {
+    public static DirectoryManager getDir() {
         return theDirManager;
     }
 
-    public static PathfindingManager getThePathManager() {
+    public static PathfindingManager getPath() {
         return thePathManager;
     }
 
-    public static DatabaseManager getTheDBManager() {
+    public static DatabaseManager getDB() {
         return theDBManager;
     }
 }
