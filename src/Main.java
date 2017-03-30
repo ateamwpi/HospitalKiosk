@@ -7,6 +7,8 @@ import models.db.DatabaseManager;
 import models.dir.DirectoryManager;
 import models.path.PathfindingManager;
 
+import java.sql.SQLException;
+
 public class Main extends Application {
 
     private static DirectoryManager theDirManager;
@@ -27,8 +29,13 @@ public class Main extends Application {
         try {
             getDB().connect();
         }
-        catch (Exception e) {
-            System.out.println("Failed to connect to database.");
+        catch (ClassNotFoundException e) {
+            System.out.println("Java DB Driver not found. Add the classpath to your module.");
+            e.printStackTrace();
+            System.exit(1);
+        }
+        catch (SQLException e) {
+            System.out.println("Failed to connect to database!");
             e.printStackTrace();
             return;
         }

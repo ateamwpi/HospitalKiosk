@@ -3,7 +3,7 @@ package models.db;
 import models.dir.Directory;
 import models.path.Node;
 
-import java.sql.Connection;
+import java.sql.*;
 import java.util.ArrayList;
 
 /**
@@ -17,8 +17,11 @@ public class DatabaseManager {
 
     }
 
-    public void connect() {
-
+    public void connect() throws SQLException, ClassNotFoundException {
+        Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+        System.out.println("Successfully located database drivers.");
+        this.conn = DriverManager.getConnection("jdbc:derby:hospitalDB;create=false");
+        System.out.println("Successfully connected to database.");
     }
 
     public ArrayList<Directory> getAllDirectories() {
