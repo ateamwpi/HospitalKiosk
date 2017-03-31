@@ -10,11 +10,11 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="file:///Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/db/lib" />
+          <root url="file://$MODULE_DIR$/derby-lib" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
-        <jarDirectory url="file:///Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home/db/lib" recursive="false" />
+        <jarDirectory url="file://$MODULE_DIR$/derby-lib" recursive="false" />
       </library>
     </orderEntry>
   </component>
