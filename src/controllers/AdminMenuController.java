@@ -29,12 +29,12 @@ public class AdminMenuController {
 
     @FXML
     private void clickManageDirectory(ActionEvent event) throws IOException {
-
+        KioskMain.setScene("views/ManageDirectoryView.fxml");
     }
 
     @FXML
     private void clickManageMap(ActionEvent event) throws IOException {
-
+        KioskMain.setScene("views/ManageMapView.fxml");
     }
 
 
