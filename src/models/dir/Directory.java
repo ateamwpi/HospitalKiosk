@@ -19,6 +19,10 @@ public class Directory {
         this.entries.put(l.getID(), l);
     }
 
+    public HashMap<Integer, Location> getEntries() {
+        return entries;
+    }
+
     public String toString() {
         String str = this.name + " Directory\n";
         for (Location l : this.entries.values()) {

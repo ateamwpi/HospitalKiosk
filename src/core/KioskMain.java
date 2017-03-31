@@ -50,31 +50,25 @@ public class KioskMain extends Application {
             System.exit(1);
         }
 
-        try {
-            // Using the information from the Database, create the Pathfinding
-            // and Directory Managers
+        // Using the information from the Database, create the Pathfinding
+        // and Directory Managers
 
-            // Test code to print all nodes
-            if (DEBUG) {
-                for (Node n : getDB().getAllNodes().values()) {
-                    System.out.println(n);
-                }
+        // Test code to print all nodes
+        if (DEBUG) {
+            for (Node n : getDB().getAllNodes().values()) {
+                System.out.println(n);
             }
-            thePathManager = new PathfindingManager(getDB().getAllNodes());
+        }
+        thePathManager = new PathfindingManager(getDB().getAllNodes());
 
-            // Test code to print all directories/locations
-            if (DEBUG) {
-                for (Directory d : getDB().getAllDirectories().values()) {
-                    System.out.println(d);
-                }
+        // Test code to print all directories/locations
+        if (DEBUG) {
+            for (Directory d : getDB().getAllDirectories().values()) {
+                System.out.println(d);
             }
-            theDirManager = new DirectoryManager(getDB().getAllDirectories());
         }
-        catch (SQLException e) {
-            System.out.println("Failed to load information from the database!");
-            e.printStackTrace();
-            System.exit(1);
-        }
+        theDirManager = new DirectoryManager(getDB().getAllDirectories());
+
         // Launch the JavaFX application after initial setup
         launch(args);
     }
@@ -89,9 +83,14 @@ public class KioskMain extends Application {
 
     public static DatabaseManager getDB() { return theDBManager; }
 
-    public static void setScene(String path) throws IOException {
-        Parent root = FXMLLoader.load(KioskMain.class.getClassLoader().getResource(path));
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
+    public static void setScene(String path) {
+        try {
+            Parent root = FXMLLoader.load(KioskMain.class.getClassLoader().getResource(path));
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+        } catch (IOException e) {
+            // TODO
+            e.printStackTrace();
+        }
     }
 }
