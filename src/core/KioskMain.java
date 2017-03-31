@@ -1,19 +1,25 @@
+package core;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import models.db.DatabaseManager;
+import models.dir.Directory;
 import models.dir.DirectoryManager;
 import models.path.PathfindingManager;
+import models.path.Node;
 
 import java.sql.SQLException;
 
-public class Main extends Application {
+public class KioskMain extends Application {
 
     private static DirectoryManager theDirManager;
     private static PathfindingManager thePathManager;
     private static DatabaseManager theDBManager;
+
+    public static final boolean DEBUG = true;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -37,14 +43,34 @@ public class Main extends Application {
         catch (SQLException e) {
             System.out.println("Failed to connect to database!");
             e.printStackTrace();
-            return;
+            System.exit(1);
         }
 
-        // Using the information from the Database, create the Pathfinding
-        // and Directory Managers
-        thePathManager = new PathfindingManager(getDB().getAllNodes());
-        theDirManager = new DirectoryManager(getDB().getAllDirectories());
+        try {
+            // Using the information from the Database, create the Pathfinding
+            // and Directory Managers
 
+            // Test code to print all nodes
+            if (DEBUG) {
+                for (Node n : getDB().getAllNodes().values()) {
+                    System.out.println(n);
+                }
+            }
+            thePathManager = new PathfindingManager(getDB().getAllNodes());
+
+            // Test code to print all directories/locations
+            if (DEBUG) {
+                for (Directory d : getDB().getAllDirectories().values()) {
+                    System.out.println(d);
+                }
+            }
+            theDirManager = new DirectoryManager(getDB().getAllDirectories());
+        }
+        catch (SQLException e) {
+            System.out.println("Failed to load information from the database!");
+            e.printStackTrace();
+            System.exit(1);
+        }
         // Launch the JavaFX application after initial setup
         launch(args);
     }
