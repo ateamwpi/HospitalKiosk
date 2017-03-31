@@ -11,6 +11,7 @@ import models.dir.DirectoryManager;
 import models.path.PathfindingManager;
 import models.path.Node;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
 public class KioskMain extends Application {
@@ -19,10 +20,13 @@ public class KioskMain extends Application {
     private static PathfindingManager thePathManager;
     private static DatabaseManager theDBManager;
 
+    private static Stage stage;
+
     public static final boolean DEBUG = true;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+        stage = primaryStage;
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("views/MainMenu.fxml"));
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root, 300, 275));
@@ -83,7 +87,11 @@ public class KioskMain extends Application {
         return thePathManager;
     }
 
-    public static DatabaseManager getDB() {
-        return theDBManager;
+    public static DatabaseManager getDB() { return theDBManager; }
+
+    public static void setScene(String path) throws IOException {
+        Parent root = FXMLLoader.load(KioskMain.class.getClassLoader().getResource(path));
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
     }
 }

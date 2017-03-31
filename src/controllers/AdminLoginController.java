@@ -1,5 +1,6 @@
 package controllers;
 
+import core.KioskMain;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -27,19 +28,11 @@ public class AdminLoginController {
 
     @FXML
     private void clickBack(ActionEvent event) throws IOException {
-        Stage stage = (Stage) loginBtn.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("views/MainMenu.fxml"));
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        KioskMain.setScene("views/MainMenu.fxml");
     }
 
     @FXML
     private void clickLogin(ActionEvent event) throws IOException {
-        Stage stage = (Stage) loginBtn.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("views/AdminMenu.fxml"));
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        KioskMain.setScene("views/AdminMenu.fxml");
     }
 }

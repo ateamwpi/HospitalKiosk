@@ -1,5 +1,6 @@
 package controllers;
 
+import core.KioskMain;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,11 +24,7 @@ public class AdminMenuController {
 
     @FXML
     private void clickLogout(ActionEvent event) throws IOException {
-        Stage stage = (Stage) logoutBtn.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("views/MainMenu.fxml"));
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        KioskMain.setScene("views/MainMenu.fxml");
     }
 
     @FXML

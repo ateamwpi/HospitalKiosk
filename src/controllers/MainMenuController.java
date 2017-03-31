@@ -1,5 +1,6 @@
 package controllers;
 
+import core.KioskMain;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,29 +23,17 @@ public class MainMenuController {
 
     @FXML
     private void clickViewMap(ActionEvent event) throws IOException {
-        Stage stage = (Stage) viewMapBtn.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("views/MapView.fxml"));
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        KioskMain.setScene("views/MapView.fxml");
     }
 
     @FXML
     private void clickViewDirectory(ActionEvent event) throws IOException {
-        Stage stage = (Stage) viewMapBtn.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("views/DirectoryView.fxml"));
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        KioskMain.setScene("views/DirectoryView.fxml");
     }
 
     @FXML
     private void clickAdmin(ActionEvent event) throws IOException {
-        Stage stage = (Stage) viewMapBtn.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("views/AdminLogin.fxml"));
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        KioskMain.setScene("views/AdminLogin.fxml");
     }
 
 }
