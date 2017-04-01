@@ -1,5 +1,7 @@
 package models.path;
 
+import core.KioskMain;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -16,6 +18,13 @@ public class PathfindingManager {
 
     public Node getNode(int id) {
         return this.graph.get(id);
+    }
+
+    public void addNode(Node n) {
+        if (n.isNew()) {
+            KioskMain.getDB().addNode(n);
+        }
+        this.graph.put(n.getID(), n);
     }
 
 }

@@ -16,11 +16,8 @@ import java.util.HashMap;
 public class DatabaseManager {
 
     private Connection conn;
-    private int nextNodeID;
 
-    public DatabaseManager() {
-
-    }
+    public DatabaseManager() {}
 
     public void connect() throws SQLException, ClassNotFoundException {
         Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
@@ -54,7 +51,6 @@ public class DatabaseManager {
             thenode = KioskMain.getPath().getNode(nodeid);
             theloc = new Location(id, name, locType, thenode);
             allDirectories.get(locType).addEntry(theloc);
-            System.out.println(id);
         }
 
         Location.setNextLocID(id+1);
@@ -63,9 +59,28 @@ public class DatabaseManager {
         return allDirectories;
     }
 
-    public void addLocation(Location l) throws SQLException {
-        Statement stmt = conn.createStatement();
-        stmt.execute("INSERT INTO Location VALUES (" + l.getID() + ", '" + l.getName() + "', '" + l.getLocType().name() + "', " + l.getNode().getID() + ")");
+    public void addLocation(Location l) {
+        try {
+            Statement stmt = conn.createStatement();
+            stmt.execute("INSERT INTO Location VALUES (" + l.getID() + ", '" + l.getName() + "', '" + l.getLocType().name() + "', " + l.getNode().getID() + ")");
+        }
+        catch (SQLException e) {
+            System.out.println("Failed to add " + l.toString() + " to the database.");
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
+
+    public void addNode(Node n) {
+        try {
+            Statement stmt = conn.createStatement();
+            stmt.execute("INSERT INTO Node VALUES (" + n.getID() + ", " + n.getX() + ", " + n.getY() + ")");
+        }
+        catch (SQLException e) {
+            System.out.println("Failed to add " + n.toString() + " to the database.");
+            e.printStackTrace();
+            System.exit(1);
+        }
     }
 
     public HashMap<Integer, Node> getAllNodes() throws SQLException {
@@ -84,7 +99,7 @@ public class DatabaseManager {
             allNodes.put(id, new Node(id, x, y));
         }
 
-        this.nextNodeID = id + 1;
+        Node.setNextNodeID(id+1);
 
         // Run SQL query to get all EDGES from the database
         rset = stmt.executeQuery("SELECT * FROM EDGE");
@@ -105,12 +120,6 @@ public class DatabaseManager {
 
         // Return the completed list of all nodes
         return allNodes;
-    }
-
-    public int getNextNodeID() {
-        int val = this.nextNodeID;
-        this.nextNodeID ++;
-        return val;
     }
 
 }

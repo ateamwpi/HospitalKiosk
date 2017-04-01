@@ -12,7 +12,7 @@ public class Location {
     private String name;
     private LocationType locType;
     private Node node;
-    private final boolean newLoc;
+    private final boolean isNew;
 
     /** This constructor should _ONLY_ be used when loading from the database. For any
      *  new locations created, use Location(name, locType, node) and a unique ID will automatically
@@ -23,7 +23,7 @@ public class Location {
         this.name = name;
         this.locType = locType;
         this.node = node;
-        this.newLoc = false;
+        this.isNew = false;
     }
 
 
@@ -33,15 +33,15 @@ public class Location {
         this.name = name;
         this.locType = locType;
         this.node = node;
-        this.newLoc = true;
+        this.isNew = true;
     }
 
     public int getID() {
         return this.id;
     }
 
-    public boolean isNewLoc() {
-        return this.newLoc;
+    public boolean isNew() {
+        return this.isNew;
     }
 
 
@@ -61,6 +61,7 @@ public class Location {
         String str = "Location " + name + ", ID=" + id + ", locType=" + locType + ", nodeID=" + node.getID();
         return str;
     }
+
 
 
 
