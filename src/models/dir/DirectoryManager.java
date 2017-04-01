@@ -14,4 +14,12 @@ public class DirectoryManager {
         this.directories = allLocations;
     }
 
+    public void addLocation(Location l) {
+        this.getDirectory(l.getLocType()).addEntry(l);
+    }
+
+    public Directory getDirectory(LocationType locType) {
+        return this.directories.get(locType);
+    }
+
 }

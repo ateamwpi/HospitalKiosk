@@ -8,8 +8,10 @@ import javafx.stage.Stage;
 import models.db.DatabaseManager;
 import models.dir.Directory;
 import models.dir.DirectoryManager;
-import models.path.PathfindingManager;
+import models.dir.Location;
+import models.dir.LocationType;
 import models.path.Node;
+import models.path.PathfindingManager;
 
 import java.io.IOException;
 import java.sql.SQLException;

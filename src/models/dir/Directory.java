@@ -1,5 +1,9 @@
 package models.dir;
 
+import core.KioskMain;
+import models.db.DatabaseManager;
+
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -16,6 +20,16 @@ public class Directory {
     }
 
     public void addEntry(Location l) {
+        if (l.isNewLoc()) {
+            try {
+                KioskMain.getDB().addLocation(l);
+            }
+            catch (SQLException e) {
+                System.out.println("Failed to add " + l.toString() + " to the database.");
+                e.printStackTrace();
+                System.exit(1);
+            }
+        }
         this.entries.put(l.getID(), l);
     }
 
