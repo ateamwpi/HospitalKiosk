@@ -8,10 +8,8 @@ import javafx.stage.Stage;
 import models.db.DatabaseManager;
 import models.dir.Directory;
 import models.dir.DirectoryManager;
-import models.dir.Location;
-import models.dir.LocationType;
-import models.path.Node;
 import models.path.PathfindingManager;
+import models.path.Node;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -36,63 +34,11 @@ public class KioskMain extends Application {
     }
 
     public static void main(String[] args) {
-        // Create the Database Manager and connect to the DB
-        theDBManager = new DatabaseManager();
-        try {
-            getDB().connect();
-        }
-        catch (ClassNotFoundException e) {
-            System.out.println("Java DB Driver not found. Add the classpath to your module.");
-            e.printStackTrace();
-            System.exit(1);
-        }
-        catch (SQLException e) {
-            System.out.println("Failed to connect to database!");
-            e.printStackTrace();
-            System.exit(1);
-        }
+        // setup the managers
+        initDBMg();
+        initPathMg();
+        initDirMg();
 
-        try {
-            // Using the information from the Database, create the Pathfinding
-            // and Directory Managers
-
-            // Test code to print all nodes
-            if (DEBUG) {
-                for (Node n : getDB().getAllNodes().values()) {
-                    System.out.println(n);
-                }
-            }
-            thePathManager = new PathfindingManager(getDB().getAllNodes());
-
-            // Test code to print all directories/locations
-            if (DEBUG) {
-                for (Directory d : getDB().getAllDirectories().values()) {
-                    System.out.println(d);
-                }
-            }
-            theDirManager = new DirectoryManager(getDB().getAllDirectories());
-        }
-        catch (SQLException e) {
-            System.out.println("Failed to load information from the database!");
-            e.printStackTrace();
-            System.exit(1);
-        }
-
-        try {
-            getPath().getNode(4).addConnection(getPath().getNode(1));
-            for (Node no : getPath().getGraph().values()) {
-                System.out.println(no);
-            }
-
-
-            getPath().removeNode(getPath().getNode(4));
-            for (Node no : getPath().getGraph().values()) {
-                System.out.println(no);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         // Launch the JavaFX application after initial setup
         launch(args);
     }
@@ -111,5 +57,44 @@ public class KioskMain extends Application {
         Parent root = FXMLLoader.load(KioskMain.class.getClassLoader().getResource(path));
         Scene scene = new Scene(root);
         stage.setScene(scene);
+    }
+
+    private static void initDBMg() {
+        // create the database manager
+        theDBManager = new DatabaseManager();
+        try {
+            // connect to the db
+            getDB().connect();
+        } catch (ClassNotFoundException e) {
+            System.out.println("Java DB Driver not found. Add the classpath to your module.");
+            e.printStackTrace();
+            System.exit(1);
+        } catch (SQLException e) {
+            System.out.println("Failed to connect to database!");
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
+
+    private static void initPathMg() {
+        // create the pathfinding manager with nodes from the db
+        thePathManager = new PathfindingManager(getDB().getAllNodes());
+        // Test code to print all nodes
+        if (DEBUG) {
+            for (Node n : getDB().getAllNodes().values()) {
+                System.out.println(n);
+            }
+        }
+    }
+
+    private static void initDirMg() {
+        // create the directory manager with directories from the db
+        theDirManager = new DirectoryManager(getDB().getAllDirectories());
+        // Test code to print all directories/locations
+        if (DEBUG) {
+            for (Directory d : getDB().getAllDirectories().values()) {
+                System.out.println(d);
+            }
+        }
     }
 }
