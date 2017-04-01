@@ -77,6 +77,22 @@ public class KioskMain extends Application {
             e.printStackTrace();
             System.exit(1);
         }
+
+        try {
+            getPath().getNode(4).addConnection(getPath().getNode(1));
+            for (Node no : getPath().getGraph().values()) {
+                System.out.println(no);
+            }
+
+
+            getPath().removeNode(getPath().getNode(4));
+            for (Node no : getPath().getGraph().values()) {
+                System.out.println(no);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         // Launch the JavaFX application after initial setup
         launch(args);
     }

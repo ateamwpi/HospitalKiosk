@@ -23,6 +23,7 @@ public class Location {
         this.name = name;
         this.locType = locType;
         this.node = node;
+        this.node.addLocation(this);
         this.isNew = false;
     }
 
@@ -32,6 +33,7 @@ public class Location {
         this.name = name;
         this.locType = locType;
         this.node = node;
+        this.node.addLocation(this);
         this.isNew = true;
     }
 

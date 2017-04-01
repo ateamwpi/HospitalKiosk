@@ -115,7 +115,6 @@ public class DatabaseManager {
             n2 = allNodes.get(rset.getInt("BNODEID"));
 
             n1.addConnection(n2);
-            n2.addConnection(n1);
         }
 
         rset.close();
@@ -132,6 +131,18 @@ public class DatabaseManager {
         }
         catch (SQLException e) {
             System.out.println("Failed to add " + n.toString() + " to the database.");
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
+
+    public void removeNode(Node n) {
+        try {
+            Statement stmt = conn.createStatement();
+            stmt.execute("DELETE FROM NODE WHERE ID=" + n.getID());
+        }
+        catch (SQLException e) {
+            System.out.println("Failed to remove " + n.toString() + " from the database.");
             e.printStackTrace();
             System.exit(1);
         }

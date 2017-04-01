@@ -21,6 +21,10 @@ public class DirectoryManager {
         this.getDirectory(l.getLocType()).removeLocation(l);
     }
 
+    public HashMap<LocationType, Directory> getDirectories() {
+        return this.directories;
+    }
+
     public Directory getDirectory(LocationType locType) {
         return this.directories.get(locType);
     }

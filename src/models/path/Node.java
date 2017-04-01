@@ -1,5 +1,7 @@
 package models.path;
 
+import models.dir.Location;
+
 import java.util.ArrayList;
 
 /**
@@ -12,6 +14,7 @@ public class Node {
     private int y;
     private final int id;
     private ArrayList<Node> connections;
+    private ArrayList<Location> locations;
     private final boolean isNew;
 
     /** This constructor should _ONLY_ be used when loading from the database. For any
@@ -22,6 +25,7 @@ public class Node {
         this.y = y;
         this.id = id;
         this.connections = new ArrayList<Node>();
+        this.locations = new ArrayList<Location>();
         this.isNew = false;
     }
 
@@ -30,11 +34,19 @@ public class Node {
         this.x = x;
         this.y = y;
         this.connections = new ArrayList<Node>();
+        this.locations = new ArrayList<Location>();
         this.isNew = true;
     }
 
+    public void addLocation(Location l) {
+        this.locations.add(l);
+    }
+
     public void addConnection(Node other) {
-        this.connections.add(other);
+        if(!this.connections.contains(other)) {
+            this.connections.add(other);
+            other.addConnection(this);
+        }
     }
 
     public int getID() {
@@ -44,6 +56,22 @@ public class Node {
     public int getX() { return this.x; }
 
     public int getY() { return this.y; }
+
+    public ArrayList<Location> getLocations() {
+        return this.locations;
+    }
+
+    public ArrayList<Node> getConnections() {
+        return this.connections;
+    }
+
+    public void removeConnection(Node n) {
+        this.connections.remove(n);
+    }
+
+    public void removeLocation(Location l) {
+        this.locations.remove(l);
+    }
 
     public String toString() {
         String str= "Node: ID=" + this.id + ", X=" + this.x + ", Y=" + this.y + "\n";
