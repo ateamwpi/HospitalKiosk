@@ -11,12 +11,23 @@ public class Node {
     private final int id;
     private ArrayList<Node> connections;
 
+    int heuristicCost = 0; //Heuristic cost
+    int finalCost = 0; //G+H
+    Node parent;
+
+
     public Node(int id, int x, int y) {
         this.x = x;
         this.y = y;
         this.id = id;
         this.connections = new ArrayList<Node>();
     }
+
+    @Override
+    public String toString(){
+        return "["+Node.x+", "+Node.y+"]";
+    }
+
 
     public void addConnection(Node other) {
         this.connections.add(other);
