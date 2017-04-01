@@ -1,6 +1,8 @@
 package models.path;
 
-import java.util.ArrayList;
+import core.KioskMain;
+import core.NodeInUseException;
+
 import java.util.HashMap;
 
 /**
@@ -16,6 +18,30 @@ public class PathfindingManager {
 
     public Node getNode(int id) {
         return this.graph.get(id);
+    }
+
+    public void addNode(Node n) {
+        if (n.isNew()) {
+            KioskMain.getDB().addNode(n);
+        }
+        this.graph.put(n.getID(), n);
+    }
+
+    public HashMap<Integer, Node> getGraph() {
+        return this.graph;
+    }
+
+    public void removeNode(Node n) throws NodeInUseException{
+        if(!n.getLocations().isEmpty()) {
+            throw new NodeInUseException(n);
+        }
+        else {
+            for (Node other : n.getConnections()) {
+                other.removeConnection(n);
+            }
+            this.graph.remove(n.getID());
+            KioskMain.getDB().removeNode(n);
+        }
     }
 
 }
