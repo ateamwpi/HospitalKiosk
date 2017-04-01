@@ -1,6 +1,5 @@
 package models.dir;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -15,7 +14,11 @@ public class DirectoryManager {
     }
 
     public void addLocation(Location l) {
-        this.getDirectory(l.getLocType()).addEntry(l);
+        this.getDirectory(l.getLocType()).addLocation(l);
+    }
+
+    public void removeLocation(Location l) {
+        this.getDirectory(l.getLocType()).removeLocation(l);
     }
 
     public Directory getDirectory(LocationType locType) {

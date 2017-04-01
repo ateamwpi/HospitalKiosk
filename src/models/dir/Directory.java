@@ -16,11 +16,16 @@ public class Directory {
         this.entries = new HashMap<Integer, Location>();
     }
 
-    public void addEntry(Location l) {
+    public void addLocation(Location l) {
         if (l.isNew()) {
             KioskMain.getDB().addLocation(l);
         }
         this.entries.put(l.getID(), l);
+    }
+
+    public void removeLocation(Location l) {
+        this.entries.remove(l.getID());
+        KioskMain.getDB().removeLocation(l);
     }
 
     public String toString() {

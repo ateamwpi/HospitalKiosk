@@ -29,7 +29,6 @@ public class Location {
 
     public Location(String name, LocationType locType, Node node) {
         this.id = getNextLocID();
-        System.out.println(this.id);
         this.name = name;
         this.locType = locType;
         this.node = node;

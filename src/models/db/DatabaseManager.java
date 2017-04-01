@@ -7,7 +7,6 @@ import models.dir.LocationType;
 import models.path.Node;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -25,6 +24,8 @@ public class DatabaseManager {
         this.conn = DriverManager.getConnection("jdbc:derby:hospitalDB;create=false");
         System.out.println("Successfully connected to database.");
     }
+
+    /* LOCATIONS AND DIRECTORIES */
 
     public HashMap<LocationType, Directory> getAllDirectories() throws SQLException {
         // Run SQL query to get all LOCATIONS from the database
@@ -50,7 +51,7 @@ public class DatabaseManager {
             locType = LocationType.getType(rset.getString("LOCTYPE"));
             thenode = KioskMain.getPath().getNode(nodeid);
             theloc = new Location(id, name, locType, thenode);
-            allDirectories.get(locType).addEntry(theloc);
+            allDirectories.get(locType).addLocation(theloc);
         }
 
         Location.setNextLocID(id+1);
@@ -71,17 +72,19 @@ public class DatabaseManager {
         }
     }
 
-    public void addNode(Node n) {
+    public void removeLocation(Location l) {
         try {
             Statement stmt = conn.createStatement();
-            stmt.execute("INSERT INTO Node VALUES (" + n.getID() + ", " + n.getX() + ", " + n.getY() + ")");
+            stmt.execute("DELETE FROM LOCATION WHERE ID=" + l.getID());
         }
         catch (SQLException e) {
-            System.out.println("Failed to add " + n.toString() + " to the database.");
+            System.out.println("Failed to remove " + l.toString() + " from the database.");
             e.printStackTrace();
             System.exit(1);
         }
     }
+
+    /* NODES */
 
     public HashMap<Integer, Node> getAllNodes() throws SQLException {
         // Run SQL query to get all NODEs from the database
@@ -120,6 +123,18 @@ public class DatabaseManager {
 
         // Return the completed list of all nodes
         return allNodes;
+    }
+
+    public void addNode(Node n) {
+        try {
+            Statement stmt = conn.createStatement();
+            stmt.execute("INSERT INTO Node VALUES (" + n.getID() + ", " + n.getX() + ", " + n.getY() + ")");
+        }
+        catch (SQLException e) {
+            System.out.println("Failed to add " + n.toString() + " to the database.");
+            e.printStackTrace();
+            System.exit(1);
+        }
     }
 
 }
