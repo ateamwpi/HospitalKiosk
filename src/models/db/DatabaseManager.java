@@ -17,9 +17,7 @@ public class DatabaseManager {
 
     private Connection conn;
 
-    public DatabaseManager() {
-
-    }
+    public DatabaseManager() {}
 
     public void connect() throws SQLException, ClassNotFoundException {
         Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
@@ -28,6 +26,8 @@ public class DatabaseManager {
         System.out.println("Successfully connected to database.");
     }
 
+    /* LOCATIONS AND DIRECTORIES */
+
     public HashMap<LocationType, Directory> getAllDirectories() {
         // Run SQL query to get all LOCATIONS from the database
         HashMap<LocationType, Directory> allDirectories = new HashMap<LocationType, Directory>();
@@ -35,13 +35,12 @@ public class DatabaseManager {
         ResultSet rset = null;
         try {
             stmt = conn.createStatement();
-            rset = stmt.executeQuery("SELECT * FROM LOCATION");
-        } catch (SQLException e) {
+            rset = stmt.executeQuery("SELECT * FROM LOCATION ORDER BY ID ASC");        } catch (SQLException e) {
             System.out.println("Failed to load information from the database!");
             e.printStackTrace();
         }
 
-        int id, nodeid;
+        int id = 0, nodeid;
         String name;
         LocationType locType;
         Location theLoc;
@@ -60,15 +59,43 @@ public class DatabaseManager {
                 locType = LocationType.getType(rset.getString("LOCTYPE"));
                 theNode = KioskMain.getPath().getNode(nodeid);
                 theLoc = new Location(id, name, locType, theNode);
-                allDirectories.get(locType).addEntry(theLoc);
+                allDirectories.get(locType).addLocation(theLoc);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
+        Location.setNextLocID(id+1);
+
         // Return all the Directories
         return allDirectories;
     }
+
+    public void addLocation(Location l) {
+        try {
+            Statement stmt = conn.createStatement();
+            stmt.execute("INSERT INTO Location VALUES (" + l.getID() + ", '" + l.getName() + "', '" + l.getLocType().name() + "', " + l.getNode().getID() + ")");
+        }
+        catch (SQLException e) {
+            System.out.println("Failed to add " + l.toString() + " to the database.");
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
+
+    public void removeLocation(Location l) {
+        try {
+            Statement stmt = conn.createStatement();
+            stmt.execute("DELETE FROM LOCATION WHERE ID=" + l.getID());
+        }
+        catch (SQLException e) {
+            System.out.println("Failed to remove " + l.toString() + " from the database.");
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
+
+    /* NODES */
 
     public HashMap<Integer, Node> getAllNodes() {
         // Run SQL query to get all NODEs from the database
@@ -77,13 +104,13 @@ public class DatabaseManager {
         ResultSet rset = null;
         try {
             stmt = conn.createStatement();
-            rset = stmt.executeQuery("SELECT * FROM NODE");
+            rset = stmt.executeQuery("SELECT * FROM NODE ORDER BY ID ASC");
         } catch (SQLException e) {
             System.out.println("Failed to load information from the database!");
             e.printStackTrace();
         }
 
-        int x, y, id;
+        int x, y, id = 0;
 
         try {
             // Go through each entry one at a time and make a new Node object
@@ -95,7 +122,8 @@ public class DatabaseManager {
             }
 
             // Run SQL query to get all EDGES from the database
-            rset = stmt.executeQuery("SELECT * FROM EDGES");
+            rset = stmt.executeQuery("SELECT * FROM EDGE");
+            Node.setNextNodeID(id+1);
 
             Node n1, n2;
 
@@ -105,7 +133,6 @@ public class DatabaseManager {
                 n2 = allNodes.get(rset.getInt("BNODEID"));
 
                 n1.addConnection(n2);
-                n2.addConnection(n1);
             }
 
             rset.close();
@@ -116,6 +143,30 @@ public class DatabaseManager {
 
         // Return the completed list of all nodes
         return allNodes;
+    }
+
+    public void addNode(Node n) {
+        try {
+            Statement stmt = conn.createStatement();
+            stmt.execute("INSERT INTO Node VALUES (" + n.getID() + ", " + n.getX() + ", " + n.getY() + ")");
+        }
+        catch (SQLException e) {
+            System.out.println("Failed to add " + n.toString() + " to the database.");
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
+
+    public void removeNode(Node n) {
+        try {
+            Statement stmt = conn.createStatement();
+            stmt.execute("DELETE FROM NODE WHERE ID=" + n.getID());
+        }
+        catch (SQLException e) {
+            System.out.println("Failed to remove " + n.toString() + " from the database.");
+            e.printStackTrace();
+            System.exit(1);
+        }
     }
 
 }

@@ -16,7 +16,7 @@
     <schema id="10" parent="1" name="SYSIBM"/>
     <schema id="11" parent="1" name="SYSPROC"/>
     <schema id="12" parent="1" name="SYSSTAT"/>
-    <table id="13" parent="2" name="EDGES"/>
+    <table id="13" parent="2" name="EDGE"/>
     <table id="14" parent="2" name="LOCATION"/>
     <table id="15" parent="2" name="NODE"/>
     <column id="16" parent="13" name="ANODEID">
@@ -29,19 +29,19 @@
       <DataType>INTEGER(10)|4</DataType>
       <NotNull>1</NotNull>
     </column>
-    <key id="18" parent="13" name="PK_CONNECTION">
+    <key id="18" parent="13" name="PK_EDGES">
       <ColNames>ANODEID
 BNODEID</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="19" parent="13" name="FK_CONNECTION1">
+    <foreign-key id="19" parent="13" name="FK_EDGE1">
       <ColNames>ANODEID</ColNames>
       <RefSchemaName>APP</RefSchemaName>
       <RefTableName>NODE</RefTableName>
       <RefKeyName>PK_NODE</RefKeyName>
       <RefColNames>ID</RefColNames>
     </foreign-key>
-    <foreign-key id="20" parent="13" name="FK_CONNECTION2">
+    <foreign-key id="20" parent="13" name="FK_EDGE2">
       <ColNames>BNODEID</ColNames>
       <RefSchemaName>APP</RefSchemaName>
       <RefTableName>NODE</RefTableName>
@@ -52,8 +52,6 @@ BNODEID</ColNames>
       <Position>1</Position>
       <DataType>INTEGER(10)|4</DataType>
       <NotNull>1</NotNull>
-      <SequenceIdentity>1</SequenceIdentity>
-      <DefaultExpression>AUTOINCREMENT: start 1 increment 1</DefaultExpression>
     </column>
     <column id="22" parent="14" name="NAME">
       <Position>2</Position>
@@ -82,8 +80,6 @@ BNODEID</ColNames>
       <Position>1</Position>
       <DataType>INTEGER(10)|4</DataType>
       <NotNull>1</NotNull>
-      <SequenceIdentity>1</SequenceIdentity>
-      <DefaultExpression>AUTOINCREMENT: start 1 increment 1</DefaultExpression>
     </column>
     <column id="28" parent="15" name="X">
       <Position>2</Position>

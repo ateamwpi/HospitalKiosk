@@ -1,6 +1,7 @@
 package models.dir;
 
-import java.util.ArrayList;
+import core.KioskMain;
+
 import java.util.HashMap;
 
 /**
@@ -15,8 +16,21 @@ public class Directory {
         this.entries = new HashMap<Integer, Location>();
     }
 
-    public void addEntry(Location l) {
+    public HashMap<Integer, Location> getLocations() {
+        return this.entries;
+    }
+
+    public void addLocation(Location l) {
+        if (l.isNew()) {
+            KioskMain.getDB().addLocation(l);
+        }
         this.entries.put(l.getID(), l);
+    }
+
+    public void removeLocation(Location l) {
+        l.getNode().removeLocation(l);
+        this.entries.remove(l.getID());
+        KioskMain.getDB().removeLocation(l);
     }
 
     public String toString() {
