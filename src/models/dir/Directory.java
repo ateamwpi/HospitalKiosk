@@ -27,6 +27,10 @@ public class Directory {
         this.entries.put(l.getID(), l);
     }
 
+    public Location getLocation(int id) {
+        return this.entries.get(id);
+    }
+
     public void removeLocation(Location l) {
         l.getNode().removeLocation(l);
         this.entries.remove(l.getID());

@@ -1,5 +1,6 @@
 package models.path;
 
+import core.KioskMain;
 import models.dir.Location;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ public class Node {
     private ArrayList<Node> connections;
     private ArrayList<Location> locations;
     private final boolean isNew;
+    private boolean isDone = false;
 
     /** This constructor should _ONLY_ be used when loading from the database. For any
      *  new nodes created, use Node(x, y) and a unique ID will automatically be generated.
@@ -44,9 +46,23 @@ public class Node {
 
     public void addConnection(Node other) {
         if(!this.connections.contains(other)) {
+            System.out.println("1");
             this.connections.add(other);
+            if(this.isDone && !other.connections.contains(this)) {
+                KioskMain.getDB().addConnection(this, other);
+            }
             other.addConnection(this);
         }
+    }
+
+    public void setX(int x) {
+        this.x = x;
+        KioskMain.getDB().updateNode(this);
+    }
+
+    public void setY(int y) {
+        this.y = y;
+        KioskMain.getDB().updateNode(this);
     }
 
     public int getID() {
@@ -83,6 +99,10 @@ public class Node {
 
     public boolean isNew() {
         return this.isNew;
+    }
+
+    public void setDone() {
+        this.isDone = true;
     }
 
 

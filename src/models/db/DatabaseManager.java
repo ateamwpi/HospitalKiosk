@@ -6,6 +6,7 @@ import models.dir.Location;
 import models.dir.LocationType;
 import models.path.Node;
 
+import javax.swing.plaf.nimbus.State;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -95,6 +96,18 @@ public class DatabaseManager {
         }
     }
 
+    public void updateLocation(Location l) {
+        try {
+            Statement stmt = conn.createStatement();
+            stmt.execute("UPDATE LOCATION SET name='"+l.getName()+"', loctype='"+l.getLocType().name()+"', nodeid="+l.getNode().getID()+" WHERE ID="+l.getID());
+        }
+        catch (SQLException e) {
+            System.out.println("Failed to update location " + l.toString() + ".");
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
+
     /* NODES */
 
     public HashMap<Integer, Node> getAllNodes() {
@@ -135,6 +148,10 @@ public class DatabaseManager {
                 n1.addConnection(n2);
             }
 
+            for (Node n : allNodes.values()) {
+                n.setDone();
+            }
+
             rset.close();
             stmt.close();
         } catch (SQLException e) {
@@ -160,10 +177,36 @@ public class DatabaseManager {
     public void removeNode(Node n) {
         try {
             Statement stmt = conn.createStatement();
+            stmt.execute("DELETE FROM EDGE WHERE ANODEID=" + n.getID());
+            stmt.execute("DELETE FROM EDGE WHERE BNODEID=" + n.getID());
             stmt.execute("DELETE FROM NODE WHERE ID=" + n.getID());
         }
         catch (SQLException e) {
             System.out.println("Failed to remove " + n.toString() + " from the database.");
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
+
+    public void addConnection(Node n1, Node n2) {
+        try {
+            Statement stmt = conn.createStatement();
+            stmt.execute("INSERT INTO EDGE VALUES (" + n1.getID() + ", " + n2.getID() + ")");
+        }
+        catch (SQLException e) {
+            System.out.println("Failed to remove connection between " + n1.getID() + " and " + n2.getID() + ".");
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
+
+    public void updateNode(Node n) {
+        try {
+            Statement stmt = conn.createStatement();
+            stmt.execute("UPDATE NODE SET x="+n.getX()+", y="+n.getY()+" WHERE ID="+n.getID());
+        }
+        catch (SQLException e) {
+            System.out.println("Failed to update node " + n.toString() + ".");
             e.printStackTrace();
             System.exit(1);
         }

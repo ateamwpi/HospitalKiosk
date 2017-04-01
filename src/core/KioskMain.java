@@ -8,6 +8,8 @@ import javafx.stage.Stage;
 import models.db.DatabaseManager;
 import models.dir.Directory;
 import models.dir.DirectoryManager;
+import models.dir.Location;
+import models.dir.LocationType;
 import models.path.PathfindingManager;
 import models.path.Node;
 
