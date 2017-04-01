@@ -2,3 +2,5 @@ out/
 .idea/workspace.xml
 .idea/tasks.xml
 derby.log
+.idea/misc.xml
+HospitalKiosk.iml
