@@ -14,7 +14,7 @@ public enum LocationType {
     Unknown;
 
     public boolean isInternal() {
-        return this.equals(Hallway) || this.equals(Stairs) || this.equals(Elevator);
+        return this.equals(Hallway) || this.equals(Stairs) || this.equals(Elevator) || this.equals(Unknown);
     }
 
     public static LocationType getType(String s) {
