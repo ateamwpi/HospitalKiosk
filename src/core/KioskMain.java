@@ -30,7 +30,7 @@ public class KioskMain extends Application {
     public void start(Stage primaryStage) throws IOException{
         stage = primaryStage;
         stage.show();
-        setScene("views/ManageMapView.fxml");
+        setScene("views/MainMenu.fxml");
     }
 
     public static void main(String[] args) {
