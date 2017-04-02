@@ -24,6 +24,7 @@ public class ManageMapViewController {
 
     private static final String MAP_URL = "resources/4_thefourthfloor.png";
     private static final int MIN_PIXELS = 10;
+    private static final double ZOOM_SPEED = 1.005;
 
     @FXML
     private Button backBtn;
@@ -61,38 +62,55 @@ public class ManageMapViewController {
             double delta = e.getDeltaY();
             Rectangle2D viewport = mapView.getViewport();
 
-            double scale = clamp(Math.pow(1.01, delta),
-
+            double scale = clamp(Math.pow(ZOOM_SPEED, delta),  // altered the value from 1.01to zoom slower
                     // don't scale so we're zoomed in to fewer than MIN_PIXELS in any direction:
                     Math.min(MIN_PIXELS / viewport.getWidth(), MIN_PIXELS / viewport.getHeight()),
-
                     // don't scale so that we're bigger than image dimensions:
                     Math.max(width / viewport.getWidth(), height / viewport.getHeight())
-
             );
+            if (scale != 1.0) {
+                Point2D mouse = imageViewToImage(mapView, new Point2D(e.getX(), e.getY()));
 
-            Point2D mouse = imageViewToImage(mapView, new Point2D(e.getX(), e.getY()));
+                double newWidth = viewport.getWidth();
+                double newHeight = viewport.getHeight();
+                double mapViewRatio = (mapView.getFitWidth() / mapView.getFitHeight());
+                double viewportRatio = (newWidth / newHeight);
+                if (viewportRatio < mapViewRatio) {
+                    // adjust width to be proportional with height
+                    newHeight = newHeight * scale;
+                    newWidth = newHeight * mapViewRatio;
+                    if (newWidth > map.getWidth()) {
+                        newWidth = map.getWidth();
+                    }
+                } else {
+                    // adjust height to be proportional with width
+                    newWidth = newWidth * scale;
+                    newHeight = newWidth / mapViewRatio;
+                    if (newHeight > map.getHeight()) {
+                        newHeight = map.getHeight();
+                    }
+                }
 
-            double newWidth = viewport.getWidth() * scale;
-            double newHeight = viewport.getHeight() * scale;
+                // To keep the visual point under the mouse from moving, we need
+                // (x - newViewportMinX) / (x - currentViewportMinX) = scale
+                // where x is the mouse X coordinate in the image
+                // solving this for newViewportMinX gives
+                // newViewportMinX = x - (x - currentViewportMinX) * scale
+                // we then clamp this value so the image never scrolls out
+                // of the imageview:
+                double newMinX = 0;
+                if (newWidth < map.getWidth()) {
+                    newMinX = clamp(mouse.getX() - (mouse.getX() - viewport.getMinX()) * scale,
+                            0, width - newWidth);
+                }
+                double newMinY = 0;
+                if (newHeight < map.getHeight()) {
+                    newMinY = clamp(mouse.getY() - (mouse.getY() - viewport.getMinY()) * scale,
+                            0, height - newHeight);
+                }
 
-            // To keep the visual point under the mouse from moving, we need
-            // (x - newViewportMinX) / (x - currentViewportMinX) = scale
-            // where x is the mouse X coordinate in the image
-
-            // solving this for newViewportMinX gives
-
-            // newViewportMinX = x - (x - currentViewportMinX) * scale
-
-            // we then clamp this value so the image never scrolls out
-            // of the imageview:
-
-            double newMinX = clamp(mouse.getX() - (mouse.getX() - viewport.getMinX()) * scale,
-                    0, width - newWidth);
-            double newMinY = clamp(mouse.getY() - (mouse.getY() - viewport.getMinY()) * scale,
-                    0, height - newHeight);
-
-            mapView.setViewport(new Rectangle2D(newMinX, newMinY, newWidth, newHeight));
+                mapView.setViewport(new Rectangle2D(newMinX, newMinY, newWidth, newHeight));
+            }
         });
 
         mapView.setOnMouseClicked(e -> {
@@ -114,69 +132,6 @@ public class ManageMapViewController {
     @FXML
     private void clickBack(ActionEvent event) throws IOException {
         KioskMain.setScene("views/AdminMenu.fxml");
-    }
-
-
-
-    public void start2() {
-
-
-//        imageView.setOnScroll(e -> {
-//            double delta = e.getDeltaY();
-//            Rectangle2D viewport = imageView.getViewport();
-//
-//            double scale = clamp(Math.pow(1.005, delta),  // altered the value from 1.01to zoom slower
-//                    // don't scale so we're zoomed in to fewer than MIN_PIXELS in any direction:
-//                    Math.min(MIN_PIXELS / viewport.getWidth(), MIN_PIXELS / viewport.getHeight()),
-//                    // don't scale so that we're bigger than image dimensions:
-//                    Math.max(width / viewport.getWidth(), height / viewport.getHeight())
-//            );
-//            if (scale != 1.0) {
-//                Point2D mouse = imageViewToImage(imageView, new Point2D(e.getX(), e.getY()));
-//
-//                double newWidth = viewport.getWidth();
-//                double newHeight = viewport.getHeight();
-//                double imageViewRatio = (imageView.getFitWidth() / imageView.getFitHeight());
-//                double viewportRatio = (newWidth / newHeight);
-//                if (viewportRatio < imageViewRatio) {
-//                    // adjust width to be proportional with height
-//                    newHeight = newHeight * scale;
-//                    newWidth = newHeight * imageViewRatio;
-//                    if (newWidth > image.getWidth()) {
-//                        newWidth = image.getWidth();
-//                    }
-//                } else {
-//                    // adjust height to be proportional with width
-//                    newWidth = newWidth * scale;
-//                    newHeight = newWidth / imageViewRatio;
-//                    if (newHeight > image.getHeight()) {
-//                        newHeight = image.getHeight();
-//                    }
-//                }
-//
-//                // To keep the visual point under the mouse from moving, we need
-//                // (x - newViewportMinX) / (x - currentViewportMinX) = scale
-//                // where x is the mouse X coordinate in the image
-//                // solving this for newViewportMinX gives
-//                // newViewportMinX = x - (x - currentViewportMinX) * scale
-//                // we then clamp this value so the image never scrolls out
-//                // of the imageview:
-//                double newMinX = 0;
-//                if (newWidth < image.getWidth()) {
-//                    newMinX = clamp(mouse.getX() - (mouse.getX() - viewport.getMinX()) * scale,
-//                            0, width - newWidth);
-//                }
-//                double newMinY = 0;
-//                if (newHeight < image.getHeight()) {
-//                    newMinY = clamp(mouse.getY() - (mouse.getY() - viewport.getMinY()) * scale,
-//                            0, height - newHeight);
-//                }
-//
-//                imageView.setViewport(new Rectangle2D(newMinX, newMinY, newWidth, newHeight));
-//            }
-//        });
-
-
     }
 
     // reset to the top left:
