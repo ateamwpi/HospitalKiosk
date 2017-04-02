@@ -27,12 +27,12 @@ public class AdminLoginController {
 
 
     @FXML
-    private void clickBack(ActionEvent event) throws IOException {
+    private void clickBack(ActionEvent event) {
         KioskMain.setScene("views/MainMenu.fxml");
     }
 
     @FXML
-    private void clickLogin(ActionEvent event) throws IOException {
+    private void clickLogin(ActionEvent event) {
         KioskMain.setScene("views/AdminMenu.fxml");
     }
 }

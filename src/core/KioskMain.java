@@ -27,7 +27,7 @@ public class KioskMain extends Application {
     public static final boolean DEBUG = true;
 
     @Override
-    public void start(Stage primaryStage) throws IOException{
+    public void start(Stage primaryStage) {
         stage = primaryStage;
         stage.show();
         setScene("views/MainMenu.fxml");
@@ -53,10 +53,15 @@ public class KioskMain extends Application {
 
     public static DatabaseManager getDB() { return theDBManager; }
 
-    public static void setScene(String path) throws IOException {
-        Parent root = FXMLLoader.load(KioskMain.class.getClassLoader().getResource(path));
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
+    public static void setScene(String path) {
+        try {
+            Parent root = FXMLLoader.load(KioskMain.class.getClassLoader().getResource(path));
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+        } catch (IOException e) {
+            // TODO
+            e.printStackTrace();
+        }
     }
 
     private static void initDBMg() {

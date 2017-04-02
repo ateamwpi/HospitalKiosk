@@ -23,17 +23,17 @@ public class AdminMenuController {
     private Button manageMapBtn;
 
     @FXML
-    private void clickLogout(ActionEvent event) throws IOException {
+    private void clickLogout(ActionEvent event) {
         KioskMain.setScene("views/MainMenu.fxml");
     }
 
     @FXML
-    private void clickManageDirectory(ActionEvent event) throws IOException {
+    private void clickManageDirectory(ActionEvent event) {
         KioskMain.setScene("views/ManageDirectoryView.fxml");
     }
 
     @FXML
-    private void clickManageMap(ActionEvent event) throws IOException {
+    private void clickManageMap(ActionEvent event) {
         KioskMain.setScene("views/ManageMapView.fxml");
     }
 
