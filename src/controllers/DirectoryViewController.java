@@ -4,6 +4,7 @@ import core.KioskMain;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +17,7 @@ import javafx.util.Callback;
 import models.dir.Directory;
 import models.dir.Location;
 import models.dir.LocationType;
+import javafx.collections.ObservableList;
 
 import java.io.IOException;
 import java.util.*;
@@ -41,6 +43,7 @@ public class DirectoryViewController {
     private TableColumn<Location, String> nameCol;
     @FXML
     private TableColumn<Location, String> nodeCol;
+
 
 
     public DirectoryViewController() {
