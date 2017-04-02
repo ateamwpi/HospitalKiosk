@@ -27,12 +27,10 @@ public class KioskMain extends Application {
     public static final boolean DEBUG = true;
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws IOException{
         stage = primaryStage;
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("views/MainMenu.fxml"));
-        primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 300, 275));
-        primaryStage.show();
+        stage.show();
+        setScene("views/ManageMapView.fxml");
     }
 
     public static void main(String[] args) {
