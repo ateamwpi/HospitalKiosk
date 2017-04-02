@@ -2,8 +2,9 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
@@ -22,22 +23,17 @@
                                     </VBox.margin>
                                 </Button>
                                 <Region prefHeight="40.0" prefWidth="110.0" />
-                                <Button mnemonicParsing="false" text="Full Directory">
+                                <Button fx:id="fullDirectoryBtn" mnemonicParsing="false" onAction="#clickFullDirectory" text="Full Directory">
                                     <VBox.margin>
                                         <Insets left="8.0" />
                                     </VBox.margin>
                                 </Button>
-                                <Button mnemonicParsing="false" text="Physicians">
+                                <Button fx:id="physiciansBtn" mnemonicParsing="false" onAction="#clickPhysicians" text="Physicians">
                                     <VBox.margin>
                                         <Insets left="8.0" />
                                     </VBox.margin>
                                 </Button>
-                                <Button mnemonicParsing="false" text="Points of Interest">
-                                    <VBox.margin>
-                                        <Insets left="8.0" />
-                                    </VBox.margin>
-                                </Button>
-                                <Button mnemonicParsing="false" text="Other Services">
+                                <Button fx:id="pointOfInterestBtn" mnemonicParsing="false" onAction="#clickPOI" text="Points of Interest">
                                     <VBox.margin>
                                         <Insets left="8.0" />
                                     </VBox.margin>
@@ -48,7 +44,12 @@
                 </AnchorPane>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <ListView fx:id="locationsList" layoutX="14.0" layoutY="14.0" prefHeight="186.0" prefWidth="294.0" />
+                  <TableView fx:id="locationsTable" layoutX="8.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0">
+                    <columns>
+                        <TableColumn fx:id="nameCol" prefWidth="75.0" text="Name" />
+                        <TableColumn fx:id="nodeCol" prefWidth="75.0" text="Node" />
+                    </columns>
+                  </TableView>
                </children></AnchorPane>
             </items>
         </SplitPane>
