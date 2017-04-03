@@ -1,7 +1,5 @@
 package core;
 
-import controllers.IControllerWithParams;
-import controllers.IControllerWithParams;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -59,21 +57,6 @@ public class KioskMain extends Application {
         try {
             Parent root = FXMLLoader.load(KioskMain.class.getClassLoader().getResource(path));
             Scene scene = new Scene(root);
-            stage.setScene(scene);
-        } catch (IOException e) {
-            // TODO
-            e.printStackTrace();
-        }
-    }
-
-    public static void setScene(String path, Object data) {
-        try {
-            FXMLLoader loader = new FXMLLoader(KioskMain.class.getClassLoader().getResource(path));
-            IControllerWithParams controller =
-                    loader.<IControllerWithParams>getController();
-            controller.initData(data);
-            loader.getController();
-            Scene scene = new Scene(loader.load());
             stage.setScene(scene);
         } catch (IOException e) {
             // TODO
