@@ -44,4 +44,8 @@ public class PathfindingManager {
         }
     }
 
+    public Node getRoom(String room){
+        return null;
+    }
+
 }

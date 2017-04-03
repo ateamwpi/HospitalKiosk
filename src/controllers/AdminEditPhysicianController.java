@@ -20,3 +20,4 @@ public class AdminEditPhysicianController {
         KioskMain.setScene("views/ManageDirectoryView.fxml");
     }
 }
+//KioskMain.getDir().addLocation or removeLocation()
