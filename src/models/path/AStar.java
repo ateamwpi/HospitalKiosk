@@ -125,8 +125,8 @@ public class AStar {
         grid = new Node[X][Y];
         closed = new boolean[X][Y];
         open = new PriorityQueue<>((Object o1, Object o2) -> {
-            Node n1 = (Node) o1;
-            Node n2 = (Node) o2;
+            Node n1 = (Node)o1;
+            Node n2 = (Node)o2;
 
             return n1.finalCost < n2.finalCost?-1:
                     n1.finalCost > n2.finalCost?1:0;
