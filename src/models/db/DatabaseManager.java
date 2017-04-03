@@ -124,6 +124,7 @@ public class DatabaseManager {
         }
 
         int x, y, id = 0;
+        String roomName;
 
         try {
             // Go through each entry one at a time and make a new Node object
@@ -131,7 +132,8 @@ public class DatabaseManager {
                 id = rset.getInt("ID");
                 x = rset.getInt("X");
                 y = rset.getInt("Y");
-                allNodes.put(id, new Node(id, x, y));
+                roomName = rset.getString("ROOMNAME");
+                allNodes.put(id, new Node(id, x, y, roomName));
             }
 
             // Run SQL query to get all EDGES from the database
@@ -165,7 +167,7 @@ public class DatabaseManager {
     public void addNode(Node n) {
         try {
             Statement stmt = conn.createStatement();
-            stmt.execute("INSERT INTO Node VALUES (" + n.getID() + ", " + n.getX() + ", " + n.getY() + ")");
+            stmt.execute("INSERT INTO Node VALUES (" + n.getID() + ", " + n.getX() + ", " + n.getY() + ", '" + n.getRoomName() + "')");
         }
         catch (SQLException e) {
             System.out.println("Failed to add " + n.toString() + " to the database.");
@@ -203,7 +205,7 @@ public class DatabaseManager {
     public void updateNode(Node n) {
         try {
             Statement stmt = conn.createStatement();
-            stmt.execute("UPDATE NODE SET x="+n.getX()+", y="+n.getY()+" WHERE ID="+n.getID());
+            stmt.execute("UPDATE NODE SET x="+n.getX()+", y="+n.getY()+", ROOMNAME='" + n.getRoomName() + "' WHERE ID="+n.getID());
         }
         catch (SQLException e) {
             System.out.println("Failed to update node " + n.toString() + ".");

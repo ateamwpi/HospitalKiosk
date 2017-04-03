@@ -39,6 +39,15 @@ public class KioskMain extends Application {
         initPathMg();
         initDirMg();
 
+        try {
+            Node n = getPath().getRoom("4A");
+            System.out.println(n);
+            n.setRoomName("4D");
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+
         // Launch the JavaFX application after initial setup
         launch(args);
     }

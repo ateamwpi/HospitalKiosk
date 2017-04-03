@@ -28,7 +28,6 @@ public class Location {
         this.isNew = false;
     }
 
-
     public Location(String name, LocationType locType, Node node) {
         this.id = getNextLocID();
         this.name = name;
