@@ -18,7 +18,7 @@ public class PathfindingManager {
         this.graph = allNodes;
         this.ids = new HashMap<String, Integer>();
         for (Node n : this.graph.values()) {
-            this.ids.put(n.getRoomName(), n.getID());
+            if(!n.getRoomName().equals("NONE")) this.ids.put(n.getRoomName(), n.getID());
         }
     }
 
@@ -43,9 +43,7 @@ public class PathfindingManager {
             throw new NodeInUseException(n);
         }
         else {
-            for (Node other : n.getConnections()) {
-                other.removeConnection(n);
-            }
+            n.removeAllConnections();
             this.graph.remove(n.getID());
             this.ids.remove(n.getRoomName());
             KioskMain.getDB().removeNode(n);

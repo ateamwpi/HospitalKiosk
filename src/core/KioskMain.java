@@ -13,7 +13,7 @@ import models.dir.LocationType;
 import models.path.PathfindingManager;
 import models.path.Node;
 
-import java.io.IOException;
+import java.io.*;
 import java.sql.SQLException;
 
 public class KioskMain extends Application {
@@ -38,15 +38,6 @@ public class KioskMain extends Application {
         initDBMg();
         initPathMg();
         initDirMg();
-
-        try {
-            Node n = getPath().getRoom("4A");
-            System.out.println(n);
-            n.setRoomName("4D");
-        }
-        catch(Exception e) {
-            e.printStackTrace();
-        }
 
         // Launch the JavaFX application after initial setup
         launch(args);

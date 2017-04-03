@@ -18,7 +18,7 @@ public class Node {
     private ArrayList<Node> connections;
     private ArrayList<Location> locations;
     private final boolean isNew;
-    private boolean isDone = false;
+    private boolean isDone;
 
     /** This constructor should _ONLY_ be used when loading from the database. For any
      *  new nodes created, use Node(x, y) and a unique ID will automatically be generated.
@@ -31,6 +31,7 @@ public class Node {
         this.connections = new ArrayList<Node>();
         this.locations = new ArrayList<Location>();
         this.isNew = false;
+        this.isDone = false;
     }
 
     public Node(int x, int y, String roomName) {
@@ -41,6 +42,7 @@ public class Node {
         this.connections = new ArrayList<Node>();
         this.locations = new ArrayList<Location>();
         this.isNew = true;
+        this.isDone = true;
     }
 
     public void addLocation(Location l) {
@@ -49,12 +51,29 @@ public class Node {
 
     public void addConnection(Node other) {
         if(!this.connections.contains(other)) {
-            System.out.println("1");
             this.connections.add(other);
             if(this.isDone && !other.connections.contains(this)) {
                 KioskMain.getDB().addConnection(this, other);
             }
             other.addConnection(this);
+        }
+    }
+
+    public void removeConnection(Node other) {
+        if(this.connections.contains(other)) {
+            this.connections.remove(other);
+            if(other.connections.contains(this)) {
+                KioskMain.getDB().removeConnection(this, other);
+            }
+            other.removeConnection(this);
+        }
+    }
+
+    public void removeAllConnections() {
+        ArrayList<Node> clone = (ArrayList<Node>) this.connections.clone();
+        this.connections.clear();
+        for (Node n : clone) {
+            n.removeConnection(this);
         }
     }
 
@@ -91,10 +110,6 @@ public class Node {
 
     public ArrayList<Node> getConnections() {
         return this.connections;
-    }
-
-    public void removeConnection(Node n) {
-        this.connections.remove(n);
     }
 
     public void removeLocation(Location l) {
