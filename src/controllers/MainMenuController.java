@@ -29,17 +29,17 @@ public class MainMenuController {
     }
 
     @FXML
-    private void clickViewMap(ActionEvent event) throws IOException {
+    private void clickViewMap(ActionEvent event) {
         KioskMain.setScene("views/MapView.fxml");
     }
 
     @FXML
-    private void clickViewDirectory(ActionEvent event) throws IOException {
+    private void clickViewDirectory(ActionEvent event) {
         KioskMain.setScene("views/DirectoryView.fxml");
     }
 
     @FXML
-    private void clickAdmin(ActionEvent event) throws IOException {
+    private void clickAdmin(ActionEvent event) {
         KioskMain.setScene("views/AdminLogin.fxml");
     }
 
