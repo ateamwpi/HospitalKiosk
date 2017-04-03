@@ -38,9 +38,11 @@ public class DirectoryViewController {
     @FXML
     private TableView<Location> locationsTable;
     @FXML
-    private TableColumn<Location, String> nameCol;
+    private TableColumn<Location, String> nameCol; //column that holds names of locations
     @FXML
-    private TableColumn<Location, String> nodeCol;
+    private TableColumn<Location, String> roomCol; //column that holds room names
+    @FXML
+    private Label dirLabel; //label that shows type of directory shown
 
 
     public DirectoryViewController() {
@@ -52,9 +54,14 @@ public class DirectoryViewController {
     private void initialize() {
         // setup column cell factories
         nameCol.setCellValueFactory(new PropertyValueFactory("name"));
+        //roomCol.setCellValueFactory(new PropertyValueFactory("node"));
 
         // select default directory
+
         selectDirectory(LocationType.Physician);
+
+        dirLabel.setText("Physicians");
+
     }
 
     @FXML
@@ -64,40 +71,56 @@ public class DirectoryViewController {
 
     @FXML
     private void clickFullDirectory(ActionEvent event) {
-        Collection<Location> locations = new ArrayList<Location>();
-        locations.addAll(getLocationsOfType(LocationType.Physician));
-        locations.addAll(getLocationsOfType(LocationType.PointOfInterest));
-        locations.addAll(getLocationsOfType(LocationType.Elevator));
-        locations.addAll(getLocationsOfType(LocationType.Room));
-        locations.addAll(getLocationsOfType(LocationType.Stairs));
+        Collection<Location> locations = new ArrayList<Location>(); //make an array list of locations
+        locations.addAll(getLocationsOfType(LocationType.Physician)); //add all locations of type Physician
+        locations.addAll(getLocationsOfType(LocationType.PointOfInterest)); //add Points of Interest
+        locations.addAll(getLocationsOfType(LocationType.Elevator)); //add elevators
+        locations.addAll(getLocationsOfType(LocationType.Room)); //add rooms
+        locations.addAll(getLocationsOfType(LocationType.Stairs)); //add stairs
+
+        //set the list of locations shown on table to be all the locations added above
         setLocations(locations);
+
+        dirLabel.setText("Full Directory");
     }
 
     @FXML
     private void clickPhysicians(ActionEvent event) {
+
         selectDirectory(LocationType.Physician);
+
+        dirLabel.setText("Physicians");
     }
 
     @FXML
     private void clickPOI(ActionEvent event) {
+
         selectDirectory(LocationType.PointOfInterest);
+
+        dirLabel.setText("Points of Interest");
     }
+
+
 
     // add the directory locations to the list view
     private void selectDirectory(LocationType locType) {
+
         setLocations(getLocationsOfType(locType));
     }
 
+    //returns list of directory entries of given location type
     private Collection<Location> getLocationsOfType(LocationType locType) {
         if (directories.containsKey(locType)) {
             Directory dir = directories.get(locType);
             HashMap<Integer, Location> locations = dir.getLocations();
             return locations.values();
         }
-        return new ArrayList<Location>();
+        return new ArrayList<Location>(); //returns empty array list if there are no locations of given type
     }
 
+    //sets what type of locations are shown on the table
     private void setLocations(Collection<Location> locations) {
+
         locationsTable.getItems().setAll(locations);
     }
 }
