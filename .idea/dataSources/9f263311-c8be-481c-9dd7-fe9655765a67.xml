@@ -29,7 +29,7 @@
       <DataType>INTEGER(10)|4</DataType>
       <NotNull>1</NotNull>
     </column>
-    <key id="18" parent="13" name="PK_EDGES">
+    <key id="18" parent="13" name="PK_EDGE">
       <ColNames>ANODEID
 BNODEID</ColNames>
       <Primary>1</Primary>
@@ -89,7 +89,11 @@ BNODEID</ColNames>
       <Position>3</Position>
       <DataType>INTEGER(10)|4</DataType>
     </column>
-    <key id="30" parent="15" name="PK_NODE">
+    <column id="30" parent="15" name="ROOMNAME">
+      <Position>4</Position>
+      <DataType>VARCHAR(10)|12</DataType>
+    </column>
+    <key id="31" parent="15" name="PK_NODE">
       <ColNames>ID</ColNames>
       <Primary>1</Primary>
     </key>
