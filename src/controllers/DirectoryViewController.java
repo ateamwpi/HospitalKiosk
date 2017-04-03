@@ -61,7 +61,7 @@ public class DirectoryViewController {
     }
 
     @FXML
-    private void clickBack(ActionEvent event) throws IOException {
+    private void clickBack(ActionEvent event) {
         KioskMain.setScene("views/MainMenu.fxml");
     }
 

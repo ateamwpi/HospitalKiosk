@@ -1,5 +1,6 @@
 package models.path;
 
+import core.KioskMain;
 import models.dir.Location;
 
 import java.util.ArrayList;
@@ -13,26 +14,30 @@ public class Node {
     private int x;
     private int y;
     private final int id;
+    private String roomName;
     private ArrayList<Node> connections;
     private ArrayList<Location> locations;
     private final boolean isNew;
+    private boolean isDone = false;
 
     /** This constructor should _ONLY_ be used when loading from the database. For any
      *  new nodes created, use Node(x, y) and a unique ID will automatically be generated.
      */
-    public Node(int id, int x, int y) {
+    public Node(int id, int x, int y, String roomName) {
         this.x = x;
         this.y = y;
         this.id = id;
+        this.roomName = roomName;
         this.connections = new ArrayList<Node>();
         this.locations = new ArrayList<Location>();
         this.isNew = false;
     }
 
-    public Node(int x, int y) {
+    public Node(int x, int y, String roomName) {
         this.id = getNextNodeID();
         this.x = x;
         this.y = y;
+        this.roomName = roomName;
         this.connections = new ArrayList<Node>();
         this.locations = new ArrayList<Location>();
         this.isNew = true;
@@ -44,9 +49,28 @@ public class Node {
 
     public void addConnection(Node other) {
         if(!this.connections.contains(other)) {
+            System.out.println("1");
             this.connections.add(other);
+            if(this.isDone && !other.connections.contains(this)) {
+                KioskMain.getDB().addConnection(this, other);
+            }
             other.addConnection(this);
         }
+    }
+
+    public void setX(int x) {
+        this.x = x;
+        KioskMain.getDB().updateNode(this);
+    }
+
+    public void setY(int y) {
+        this.y = y;
+        KioskMain.getDB().updateNode(this);
+    }
+
+    public void setRoomName(String name) {
+        this.roomName = name;
+        KioskMain.getDB().updateNode(this);
     }
 
     public int getID() {
@@ -56,6 +80,10 @@ public class Node {
     public int getX() { return this.x; }
 
     public int getY() { return this.y; }
+
+    public String getRoomName() {
+        return this.roomName;
+    }
 
     public ArrayList<Location> getLocations() {
         return this.locations;
@@ -74,7 +102,7 @@ public class Node {
     }
 
     public String toString() {
-        String str= "Node: ID=" + this.id + ", X=" + this.x + ", Y=" + this.y + "\n";
+        String str= "Node: ID=" + this.id + ", X=" + this.x + ", Y=" + this.y + ", NAME=" + this.roomName + "\n";
         for (Node n : this.connections) {
             str += "Connected to Node ID=" + n.getID() + "\n";
         }
@@ -83,6 +111,10 @@ public class Node {
 
     public boolean isNew() {
         return this.isNew;
+    }
+
+    public void setDone() {
+        this.isDone = true;
     }
 
 

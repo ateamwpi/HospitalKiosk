@@ -2,6 +2,7 @@ package models.path;
 
 import core.KioskMain;
 import core.NodeInUseException;
+import core.RoomNotFoundException;
 
 import java.util.HashMap;
 
@@ -11,9 +12,14 @@ import java.util.HashMap;
 public class PathfindingManager {
 
     private HashMap<Integer, Node> graph;
+    private HashMap<String, Integer> ids;
 
     public PathfindingManager(HashMap<Integer, Node> allNodes) {
         this.graph = allNodes;
+        this.ids = new HashMap<String, Integer>();
+        for (Node n : this.graph.values()) {
+            this.ids.put(n.getRoomName(), n.getID());
+        }
     }
 
     public Node getNode(int id) {
@@ -25,6 +31,7 @@ public class PathfindingManager {
             KioskMain.getDB().addNode(n);
         }
         this.graph.put(n.getID(), n);
+        this.ids.put(n.getRoomName(), n.getID());
     }
 
     public HashMap<Integer, Node> getGraph() {
@@ -40,12 +47,15 @@ public class PathfindingManager {
                 other.removeConnection(n);
             }
             this.graph.remove(n.getID());
+            this.ids.remove(n.getRoomName());
             KioskMain.getDB().removeNode(n);
         }
     }
 
-    public Node getRoom(String room){
-        return null;
+    public Node getRoom(String roomName) throws RoomNotFoundException {
+        if(!this.ids.containsKey(roomName)) {
+            throw new RoomNotFoundException(roomName);
+        }
+        else return this.graph.get(this.ids.get(roomName));
     }
-
 }
