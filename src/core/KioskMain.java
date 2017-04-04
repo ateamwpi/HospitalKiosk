@@ -65,7 +65,7 @@ public class KioskMain extends Application {
         }
     }
 
-    public static void setScene(String path, Object data) {
+    public static void setScene(String path, Object... data) {
         try {
             FXMLLoader loader = new FXMLLoader(KioskMain.class.getClassLoader().getResource(path));
             IControllerWithParams controller =
