@@ -44,7 +44,7 @@
                 </AnchorPane>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <TableView fx:id="locationsTable" layoutX="8.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0">
+                  <TableView fx:id="locationsTable" layoutX="7.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0">
                     <columns>
                         <TableColumn fx:id="nameCol" prefWidth="75.0" text="Name" />
                         <TableColumn fx:id="nodeCol" prefWidth="75.0" text="Node" />

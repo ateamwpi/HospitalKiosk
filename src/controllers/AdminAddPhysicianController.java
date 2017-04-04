@@ -1,6 +1,7 @@
 package controllers;
 
 import core.KioskMain;
+import core.RoomNotFoundException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -49,8 +50,13 @@ public class AdminAddPhysicianController {
         String loc = (String) place.getText();
         //System.out.println("You did it: " +person +loc );
 
-        //person, physician, node
-        Location L = new Location(person, LocationType.Physician, KioskMain.getPath().getRoom(loc));
-        KioskMain.getDir().addLocation(L);
+        //calls on a helper function that adds the given information from the user to the database
+        try{
+            Location L = new Location(person, LocationType.Physician, KioskMain.getPath().getRoom(loc));
+            KioskMain.getDir().addLocation(L);
+        }
+        catch(RoomNotFoundException e){
+            System.out.println("Failed to update database");
+        }
     }
 }
