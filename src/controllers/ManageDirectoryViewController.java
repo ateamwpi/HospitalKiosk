@@ -2,6 +2,8 @@ package controllers;
 
 import core.KioskMain;
 import core.RoomNotFoundException;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -21,8 +23,10 @@ import java.util.HashMap;
 
 public class ManageDirectoryViewController {
     private HashMap<LocationType, Directory> directories;
-    Location physician;
-    Node location;
+    private Location physician;
+    private Node location;
+    private Collection<Location> currentLocations;
+    private Collection<Location> filteredLocations;
 
     @FXML
     private Button backBtn;
@@ -41,22 +45,29 @@ public class ManageDirectoryViewController {
     @FXML
     private TableColumn<Location, String> nameCol;
     @FXML
-    private TableColumn<Location, String> nodeCol;
+    private TableColumn<Location, String> roomCol;
+    @FXML
+    private TextField searchBox;
 
 
     public ManageDirectoryViewController() {
         // get all directories from dbMg
         directories = KioskMain.getDB().getAllDirectories();
+        currentLocations = new ArrayList<Location>();
+        filteredLocations = new ArrayList<Location>();
     }
 
     @FXML
     private void initialize() {
         // setup column cell factories
         nameCol.setCellValueFactory(new PropertyValueFactory("name"));
+        roomCol.setCellValueFactory(new PropertyValueFactory("roomName"));
         // select default directory
         selectDirectory(LocationType.Physician);
 
         removePhysician.setDisable(true);
+
+        locationsTable.getSortOrder().add(nameCol);
 
         locationsTable.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
             if (locationsTable.getSelectionModel().getSelectedItem() != null) {
@@ -67,15 +78,38 @@ public class ManageDirectoryViewController {
             }
         });
 
+        searchBox.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                filterLocations();
+            }
+        });
+
     }
 
     private void selectDirectory(LocationType locType) {
-
         setLocations(getLocationsOfType(locType));
     }
 
     private void setLocations(Collection<Location> locations) {
+        searchBox.clear();
+        currentLocations = locations;
+        updateTable(locations);
+    }
+    private void updateTable(Collection<Location> locations) {
         locationsTable.getItems().setAll(locations);
+        locationsTable.sort();
+    }
+
+    private void filterLocations() {
+        filteredLocations.clear();
+        String filterString = searchBox.getText().toLowerCase();
+        for (Location loc : currentLocations) {
+            if (loc.getName().toLowerCase().contains(filterString)) {
+                filteredLocations.add(loc);
+            }
+        }
+        updateTable(filteredLocations);
     }
 
     private Collection<Location> getLocationsOfType(LocationType locType) {
@@ -114,7 +148,7 @@ public class ManageDirectoryViewController {
 
     @FXML
     private void clickEditPhysician(ActionEvent event) throws IOException {
-
+        KioskMain.setScene("views/AdminEditPhysician.fxml", physician);
     }
 
 }

@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -12,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ManageDirectoryViewController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ManageDirectoryViewController">
    <children>
       <GridPane layoutX="3.0" prefHeight="400.0" prefWidth="594.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
@@ -45,12 +46,6 @@
                <font>
                   <Font name="System Bold" size="12.0" />
                </font></Label>
-            <TableView fx:id="locationsTable" onMouseClicked="#clickPhysician" prefHeight="81.0" prefWidth="359.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-              <columns>
-                <TableColumn fx:id="nameCol" prefWidth="358.0" text="C1" />
-                <TableColumn fx:id="nodeCol" minWidth="0.0" prefWidth="0.0" text="C2" />
-              </columns>
-            </TableView>
             <VBox prefHeight="247.0" prefWidth="72.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
                <children>
                   <Button fx:id="addPhysician" mnemonicParsing="false" onAction="#clickAddPhysician" text="Add phy" />
@@ -58,6 +53,13 @@
                   <Button fx:id="editPhysician" mnemonicParsing="false" onAction="#clickEditPhysician" text="edit phy" />
                </children>
             </VBox>
+            <TableView fx:id="locationsTable" prefHeight="303.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <columns>
+                  <TableColumn fx:id="nameCol" minWidth="0.0" prefWidth="230.66668701171875" text="Name" />
+                  <TableColumn id="roomCol" fx:id="roomCol" prefWidth="73.33331298828125" text="Room" />
+               </columns>
+            </TableView>
+            <TextField fx:id="searchBox" promptText="Search" GridPane.columnIndex="1" />
          </children>
       </GridPane>
    </children>
