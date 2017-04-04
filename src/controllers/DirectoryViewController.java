@@ -1,6 +1,7 @@
 package controllers;
 
 import core.KioskMain;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -61,13 +62,7 @@ public class DirectoryViewController {
     private void initialize() {
         // setup column cell factories
         nameCol.setCellValueFactory(new PropertyValueFactory("name"));
-        //roomCol.setCellValueFactory(new PropertyValueFactory("node"));
-
-//        roomCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Location, String>, ObservableValue<String>>() {
-//            public ObservableValue<String> call(TableColumn.CellDataFeatures<Location, String> p) {
-//                return p.getNode().getRoomName();  //??????
-//            }
-//        });
+        roomCol.setCellValueFactory(new PropertyValueFactory("roomName"));
 
         // select default directory
         selectDirectory(LocationType.Physician);

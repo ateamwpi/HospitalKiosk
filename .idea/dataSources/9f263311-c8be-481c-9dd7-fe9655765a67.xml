@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataSource name="hospitalDB">
-  <database-model serializer="dbm" rdbms="DERBY" format-version="4.0">
+  <database-model serializer="dbm" rdbms="DERBY" format-version="4.1">
     <root id="1"/>
     <schema id="2" parent="1" name="APP">
       <Current>1</Current>
@@ -40,8 +40,6 @@ BNODEID</ColNames>
       <RefTableName>NODE</RefTableName>
       <RefKeyName>PK_NODE</RefKeyName>
       <RefColNames>ID</RefColNames>
-      <OnDelete>no-action</OnDelete>
-      <OnUpdate>no-action</OnUpdate>
     </foreign-key>
     <foreign-key id="20" parent="13" name="FK_EDGE2">
       <ColNames>BNODEID</ColNames>
@@ -49,8 +47,6 @@ BNODEID</ColNames>
       <RefTableName>NODE</RefTableName>
       <RefKeyName>PK_NODE</RefKeyName>
       <RefColNames>ID</RefColNames>
-      <OnDelete>no-action</OnDelete>
-      <OnUpdate>no-action</OnUpdate>
     </foreign-key>
     <column id="21" parent="14" name="ID">
       <Position>1</Position>
@@ -79,8 +75,6 @@ BNODEID</ColNames>
       <RefTableName>NODE</RefTableName>
       <RefKeyName>PK_NODE</RefKeyName>
       <RefColNames>ID</RefColNames>
-      <OnDelete>no-action</OnDelete>
-      <OnUpdate>no-action</OnUpdate>
     </foreign-key>
     <column id="27" parent="15" name="ID">
       <Position>1</Position>
