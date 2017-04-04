@@ -66,6 +66,7 @@ public class ManageDirectoryViewController {
         selectDirectory(LocationType.Physician);
 
         removePhysician.setDisable(true);
+        editPhysician.setDisable(true);
 
         locationsTable.getSortOrder().add(nameCol);
 
@@ -75,6 +76,7 @@ public class ManageDirectoryViewController {
                 location = newValue.getNode();
 
                 removePhysician.setDisable(false);
+                editPhysician.setDisable(false);
             }
         });
 
