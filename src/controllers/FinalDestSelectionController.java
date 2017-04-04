@@ -1,38 +1,32 @@
 package controllers;
 
 import core.KioskMain;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
-import javafx.util.Callback;
 import models.dir.Directory;
 import models.dir.Location;
 import models.dir.LocationType;
 import models.path.Node;
 
-import javax.swing.*;
-import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 
 /**
- * Created by mattm on 3/29/2017.
+ * Created by Madeline on 4/3/2017.
  */
 
-public class DirectoryViewController {
+public class FinalDestSelectionController {
 
     private HashMap<LocationType, Directory> directories;
 
     @FXML
-    private Button backBtn;
+    private Button startOverBtn;
     @FXML
     private Button fullDirectoryBtn;
     @FXML
@@ -48,12 +42,12 @@ public class DirectoryViewController {
     @FXML
     private Label dirLabel; //label that shows type of directory shown
     @FXML
-    private Button goToFinalSel; //button user will press to get path to selected
+    private Button getPath; //button user will press to get path to selected
     @FXML
     private Label directions; //label to give user instructions
 
 
-    public DirectoryViewController() {
+    public FinalDestSelectionController() {
         // get all directories from dbMg
         directories = KioskMain.getDB().getAllDirectories();
     }
@@ -64,29 +58,27 @@ public class DirectoryViewController {
         nameCol.setCellValueFactory(new PropertyValueFactory("name"));
         roomCol.setCellValueFactory(new PropertyValueFactory("roomName"));
 
-        // select default directory
+        // select default directory, display name of directory and display instructions
         selectDirectory(LocationType.Physician);
-
-        //set title of default directory and directions given
         dirLabel.setText("Physicians");
-        directions.setText("Select a starting location from the table below. Once a location is selected, click the '->' button " +
-                "to next choose a final destination.");
+        directions.setText("Select an ending location from the table below. Once a location is selected, click the 'Get Path' button " +
+                "to view a path connecting the  selected starting and ending locations.");
 
-        //disable the -> button so user cannot move on until they have selected an entry
-        goToFinalSel.setDisable(true);
+        //disable get path button so user cannot move on until they have selected a final location
+        getPath.setDisable(true);
 
         locationsTable.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
             if (locationsTable.getSelectionModel().getSelectedItem() != null) {
-                Node destination1 = newValue.getNode(); //store the node that was selected
-                goToFinalSel.setDisable(false); //enable -> button once selection has been made
+                Node destination2 = newValue.getNode();
+                getPath.setDisable(false);
             }
         });
 
     }
 
-    @FXML  //when user clicks "back" button, they will return to main menu
-    private void clickBack(ActionEvent event) {
-        KioskMain.setScene("views/MainMenu.fxml");
+    @FXML
+    private void clickStartOver(ActionEvent event) {
+        KioskMain.setScene("views/DirectoryView.fxml");
     }
 
     @FXML
@@ -101,24 +93,22 @@ public class DirectoryViewController {
         //set the list of locations shown on table to be all the locations added above
         setLocations(locations);
 
-        //display name of directory
         dirLabel.setText("Full Directory");
     }
 
     @FXML
     private void clickPhysicians(ActionEvent event) {
-        //set directory to get all locations of type physician
+
         selectDirectory(LocationType.Physician);
 
-        //display name of directory
         dirLabel.setText("Physicians");
     }
 
     @FXML
     private void clickPOI(ActionEvent event) {
-        //set directory to get all locations of type points of interest
+
         selectDirectory(LocationType.PointOfInterest);
-        //display name of directory
+
         dirLabel.setText("Points of Interest");
     }
 
@@ -144,9 +134,13 @@ public class DirectoryViewController {
         locationsTable.getItems().setAll(locations);
     }
 
-    @FXML  //when user clicks -> button, they will be brought to new page and asked to pick final destination
-    private void clickGoToFinalSel(ActionEvent event) {
-        KioskMain.setScene("views/FinalDestSelectionView.fxml");
+    //record user selection
+    @FXML
+    private void clickEntry(ActionEvent event){
+        Location destination = locationsTable.getSelectionModel().getSelectedItem();
+        getPath.setDisable(false); //set 'get path' button to not disabled so user will know they can click it
+
+
     }
 
 }
