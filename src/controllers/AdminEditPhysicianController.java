@@ -49,6 +49,7 @@ public class AdminEditPhysicianController implements IControllerWithParams {
         if (!room.getText().equals(physician.getNode().getRoomName())) {
             try {
                 physician.setNode(KioskMain.getPath().getRoom(room.getText()));
+                KioskMain.setScene("views/ManageDirectoryView.fxml");
             } catch(RoomNotFoundException e) {
                 Alert invalidRoom = new Alert(Alert.AlertType.ERROR);
                 invalidRoom.setHeaderText("Invalid Room!");
@@ -56,8 +57,6 @@ public class AdminEditPhysicianController implements IControllerWithParams {
                 invalidRoom.setContentText("Please enter a room that is currently in the database!");
                 invalidRoom.showAndWait();
                 room.clear();
-            } finally {
-                KioskMain.setScene("views/ManageDirectoryView.fxml");
             }
         }
     }
