@@ -11,6 +11,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import models.dir.Directory;
 import models.dir.Location;
 import models.dir.LocationType;
+import models.path.Node;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,7 +20,6 @@ import java.util.HashMap;
 /**
  * Created by Madeline on 4/3/2017.
  */
-
 
 public class FinalDestSelectionController {
 
@@ -58,13 +58,22 @@ public class FinalDestSelectionController {
         nameCol.setCellValueFactory(new PropertyValueFactory("name"));
         //roomCol.setCellValueFactory(new PropertyValueFactory("node"));
 
-        // select default directory
+        // select default directory, display name of directory and display instructions
         selectDirectory(LocationType.Physician);
         dirLabel.setText("Physicians");
-
         directions.setText("Select an ending location from the table below. Once a location is selected, click the 'Get Path' button " +
                 "to view a path connecting the  selected starting and ending locations.");
-        //getPath.setDisable(true);
+
+        //disable get path button so user cannot move on until they have selected a final location
+        getPath.setDisable(true);
+
+        locationsTable.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
+            if (locationsTable.getSelectionModel().getSelectedItem() != null) {
+                Node destination2 = newValue.getNode();
+                getPath.setDisable(false);
+            }
+        });
+
     }
 
     @FXML

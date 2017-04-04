@@ -26,12 +26,6 @@ import java.util.*;
  * Created by mattm on 3/29/2017.
  */
 
-/**
- * ARE WE ALLOWING THE USER TO CHOOSE THEIR STARTING LOCATION AKA NOT AUTOMATICALLY MAKING IT THE KIOSK??
- *      -if so, have them first choose the starting location (have button 'use this kiosk as starting location'
- *      -then once they select a starting location and click 'make starting location' button direct user to final
- *      page with another table so they can pick an ending destination
- */
 public class DirectoryViewController {
 
     private HashMap<LocationType, Directory> directories;
@@ -71,30 +65,31 @@ public class DirectoryViewController {
 
 //        roomCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Location, String>, ObservableValue<String>>() {
 //            public ObservableValue<String> call(TableColumn.CellDataFeatures<Location, String> p) {
-//                return p.getValue().getroomName();  //??????
+//                return p.getNode().getRoomName();  //??????
 //            }
 //        });
 
         // select default directory
         selectDirectory(LocationType.Physician);
 
-        //set title of default directory
+        //set title of default directory and directions given
         dirLabel.setText("Physicians");
         directions.setText("Select a starting location from the table below. Once a location is selected, click the '->' button " +
                 "to next choose a final destination.");
 
+        //disable the -> button so user cannot move on until they have selected an entry
         goToFinalSel.setDisable(true);
 
         locationsTable.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
             if (locationsTable.getSelectionModel().getSelectedItem() != null) {
-                Node destination = newValue.getNode();
-                goToFinalSel.setDisable(false);
+                Node destination1 = newValue.getNode(); //store the node that was selected
+                goToFinalSel.setDisable(false); //enable -> button once selection has been made
             }
         });
 
     }
 
-    @FXML
+    @FXML  //when user clicks "back" button, they will return to main menu
     private void clickBack(ActionEvent event) {
         KioskMain.setScene("views/MainMenu.fxml");
     }
@@ -111,22 +106,24 @@ public class DirectoryViewController {
         //set the list of locations shown on table to be all the locations added above
         setLocations(locations);
 
+        //display name of directory
         dirLabel.setText("Full Directory");
     }
 
     @FXML
     private void clickPhysicians(ActionEvent event) {
-
+        //set directory to get all locations of type physician
         selectDirectory(LocationType.Physician);
 
+        //display name of directory
         dirLabel.setText("Physicians");
     }
 
     @FXML
     private void clickPOI(ActionEvent event) {
-
+        //set directory to get all locations of type points of interest
         selectDirectory(LocationType.PointOfInterest);
-
+        //display name of directory
         dirLabel.setText("Points of Interest");
     }
 
@@ -152,19 +149,7 @@ public class DirectoryViewController {
         locationsTable.getItems().setAll(locations);
     }
 
-    //record user selection --what action would that be???
-    @FXML
-    private void clickEntry(ActionEvent event){
-        Location destination = locationsTable.getSelectionModel().getSelectedItem();
-
-
-
-        goToFinalSel.setDisable(false); //set 'get path' button to not disabled so user will know they can click it
-
-
-    }
-
-    @FXML
+    @FXML  //when user clicks -> button, they will be brought to new page and asked to pick final destination
     private void clickGoToFinalSel(ActionEvent event) {
         KioskMain.setScene("views/FinalDestSelectionView.fxml");
     }

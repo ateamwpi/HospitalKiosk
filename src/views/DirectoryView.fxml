@@ -62,7 +62,7 @@
                       <RowConstraints maxHeight="94.0" minHeight="3.0" prefHeight="94.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <TableView fx:id="locationsTable" onMouseClicked="#clickEntry" prefHeight="303.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <TableView fx:id="locationsTable" prefHeight="303.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                           <columns>
                               <TableColumn fx:id="nameCol" prefWidth="190.0" text="Name" />
                           </columns>
