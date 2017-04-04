@@ -2,3 +2,4 @@ out/
 .idea/workspace.xml
 .idea/tasks.xml
 derby.log
+hospitalDB/db.lck
