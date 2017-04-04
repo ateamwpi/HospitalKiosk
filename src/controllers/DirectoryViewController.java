@@ -75,6 +75,8 @@ public class DirectoryViewController {
         //disable the -> button so user cannot move on until they have selected an entry
         goToFinalSel.setDisable(true);
 
+        locationsTable.getSortOrder().add(nameCol);
+
         locationsTable.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
             if (locationsTable.getSelectionModel().getSelectedItem() != null) {
                 Node destination1 = newValue.getNode(); //store the node that was selected
@@ -143,6 +145,7 @@ public class DirectoryViewController {
     private void setLocations(Collection<Location> locations) {
 
         locationsTable.getItems().setAll(locations);
+        locationsTable.sort();
     }
 
     @FXML  //when user clicks -> button, they will be brought to new page and asked to pick final destination

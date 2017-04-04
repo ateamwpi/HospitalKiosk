@@ -67,6 +67,8 @@ public class FinalDestSelectionController {
         //disable get path button so user cannot move on until they have selected a final location
         getPath.setDisable(true);
 
+        locationsTable.getSortOrder().add(nameCol);
+
         locationsTable.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
             if (locationsTable.getSelectionModel().getSelectedItem() != null) {
                 Node destination2 = newValue.getNode();
@@ -133,6 +135,7 @@ public class FinalDestSelectionController {
     private void setLocations(Collection<Location> locations) {
 
         locationsTable.getItems().setAll(locations);
+        locationsTable.sort();
     }
 
     //record user selection
