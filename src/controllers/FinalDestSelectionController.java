@@ -32,7 +32,7 @@ public class FinalDestSelectionController {
     @FXML
     private Button physiciansBtn;
     @FXML
-    private Button pointOfInterestBtn;
+    private Button servicesBtn;
     @FXML
     private TableView<Location> locationsTable; //table to hold all locations
     @FXML
@@ -84,6 +84,7 @@ public class FinalDestSelectionController {
     @FXML
     private void clickFullDirectory(ActionEvent event) {
         Collection<Location> locations = new ArrayList<Location>(); //make an array list of locations
+        locations.addAll(getLocationsOfType(LocationType.Service)); // add all locations of type Service
         locations.addAll(getLocationsOfType(LocationType.Physician)); //add all locations of type Physician
         locations.addAll(getLocationsOfType(LocationType.PointOfInterest)); //add Points of Interest
         locations.addAll(getLocationsOfType(LocationType.Elevator)); //add elevators
@@ -105,11 +106,11 @@ public class FinalDestSelectionController {
     }
 
     @FXML
-    private void clickPOI(ActionEvent event) {
+    private void clickServices(ActionEvent event) {
 
-        selectDirectory(LocationType.PointOfInterest);
+        selectDirectory(LocationType.Service);
 
-        dirLabel.setText("Points of Interest");
+        dirLabel.setText("Services");
     }
 
     // add the directory locations to the list view

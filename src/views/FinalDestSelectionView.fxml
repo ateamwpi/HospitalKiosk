@@ -38,7 +38,7 @@
                                         <Insets left="8.0" />
                                     </VBox.margin>
                                 </Button>
-                                <Button fx:id="pointOfInterestBtn" mnemonicParsing="false" onAction="#clickPOI" text="Points of Interest">
+                                <Button fx:id="servicesBtn" mnemonicParsing="false" onAction="#clickServices" prefHeight="25.0" prefWidth="105.0" text="Services">
                                     <VBox.margin>
                                         <Insets left="8.0" />
                                     </VBox.margin>
