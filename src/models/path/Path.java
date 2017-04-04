@@ -21,4 +21,12 @@ public class Path {
     public void addStep(Node n){
         this.path.addFirst(n);
     }
+
+    public String toString() {
+        String str = "Path: ";
+        for (Node n : this.path) {
+            str += n.toString();
+        }
+        return str;
+    }
 }
