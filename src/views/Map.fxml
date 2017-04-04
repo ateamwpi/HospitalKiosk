@@ -3,4 +3,4 @@
 <?import javafx.scene.canvas.Canvas?>
 
 
-<Canvas fx:id="canvas" height="200.0" width="200.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" />
+<Canvas fx:id="canvas" height="200.0" width="200.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MapController" />

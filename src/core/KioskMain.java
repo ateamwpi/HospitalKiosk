@@ -68,11 +68,8 @@ public class KioskMain extends Application {
     public static void setScene(String path, Object... data) {
         try {
             FXMLLoader loader = new FXMLLoader(KioskMain.class.getClassLoader().getResource(path));
-            IControllerWithParams controller =
-                    loader.<IControllerWithParams>getController();
-            controller.initData(data);
-            loader.getController();
             Scene scene = new Scene(loader.load());
+            loader.<IControllerWithParams>getController().initData(data);
             stage.setScene(scene);
         } catch (IOException e) {
             // TODO

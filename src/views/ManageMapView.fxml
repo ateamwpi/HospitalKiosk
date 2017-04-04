@@ -33,6 +33,6 @@
             </Button>
          </children>
       </GridPane>
-      <Pane fx:id="mapContainer" layoutY="36.0" prefHeight="365.0" prefWidth="600.0" />
+       <fx:include fx:id="map" source="Map.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"></fx:include>
    </children>
 </AnchorPane>

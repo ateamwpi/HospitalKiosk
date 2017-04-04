@@ -6,13 +6,19 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.SplitPane;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
 public class MainMenuController {
+
+    private static final String MAP_URL = "resources/4_thefourthfloor.png";
 
     @FXML
     private Button viewMapBtn;
@@ -22,10 +28,23 @@ public class MainMenuController {
     private Button adminBtn;
     @FXML
     private AnchorPane mapContainer;
+    @FXML
+    private SplitPane splitPane;
+    @FXML
+    private AnchorPane anchorPane;
+    @FXML
+    private Canvas canvas;
+
 
     @FXML
     private void initialize() {
-        mapContainer.getChildren().add(MapController.getMap());
+        System.out.println(anchorPane.getWidth());
+        System.out.println(splitPane.getWidth());
+        System.out.println(mapContainer.getWidth());
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        gc.drawImage(new Image(getClass().getClassLoader().getResourceAsStream(MAP_URL)), 0, 0);
+        System.out.println(canvas.getWidth());
+        //mapContainer.getChildren().add(MapController.getMap(mapContainer));
     }
 
     @FXML
