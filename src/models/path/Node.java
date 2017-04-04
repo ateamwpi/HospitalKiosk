@@ -45,6 +45,17 @@ public class Node {
         this.isDone = true;
     }
 
+    public Node(int x, int y) {
+        this.id = getNextNodeID();
+        this.x = x;
+        this.y = y;
+        this.roomName = "NONE";
+        this.connections = new ArrayList<Node>();
+        this.locations = new ArrayList<Location>();
+        this.isNew = true;
+        this.isDone = true;
+    }
+
     public void addLocation(Location l) {
         this.locations.add(l);
     }
