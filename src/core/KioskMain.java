@@ -1,5 +1,6 @@
 package core;
 
+import controllers.IControllerWithParams;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,7 +14,7 @@ import models.dir.LocationType;
 import models.path.PathfindingManager;
 import models.path.Node;
 
-import java.io.IOException;
+import java.io.*;
 import java.sql.SQLException;
 
 public class KioskMain extends Application {
@@ -39,15 +40,6 @@ public class KioskMain extends Application {
         initPathMg();
         initDirMg();
 
-        try {
-            Node n = getPath().getRoom("4A");
-            System.out.println(n);
-            n.setRoomName("4D");
-        }
-        catch(Exception e) {
-            e.printStackTrace();
-        }
-
         // Launch the JavaFX application after initial setup
         launch(args);
     }
@@ -66,6 +58,21 @@ public class KioskMain extends Application {
         try {
             Parent root = FXMLLoader.load(KioskMain.class.getClassLoader().getResource(path));
             Scene scene = new Scene(root);
+            stage.setScene(scene);
+        } catch (IOException e) {
+            // TODO
+            e.printStackTrace();
+        }
+    }
+
+    public static void setScene(String path, Object data) {
+        try {
+            FXMLLoader loader = new FXMLLoader(KioskMain.class.getClassLoader().getResource(path));
+            IControllerWithParams controller =
+                    loader.<IControllerWithParams>getController();
+            controller.initData(data);
+            loader.getController();
+            Scene scene = new Scene(loader.load());
             stage.setScene(scene);
         } catch (IOException e) {
             // TODO
