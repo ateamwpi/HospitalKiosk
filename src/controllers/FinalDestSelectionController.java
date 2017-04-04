@@ -1,43 +1,32 @@
 package controllers;
 
 import core.KioskMain;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
-import javafx.util.Callback;
 import models.dir.Directory;
 import models.dir.Location;
 import models.dir.LocationType;
-import models.path.Node;
 
-import javax.swing.*;
-import java.io.IOException;
-import java.util.*;
-
-/**
- * Created by mattm on 3/29/2017.
- */
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 
 /**
- * ARE WE ALLOWING THE USER TO CHOOSE THEIR STARTING LOCATION AKA NOT AUTOMATICALLY MAKING IT THE KIOSK??
- *      -if so, have them first choose the starting location (have button 'use this kiosk as starting location'
- *      -then once they select a starting location and click 'make starting location' button direct user to final
- *      page with another table so they can pick an ending destination
+ * Created by Madeline on 4/3/2017.
  */
-public class DirectoryViewController {
+
+
+public class FinalDestSelectionController {
 
     private HashMap<LocationType, Directory> directories;
 
     @FXML
-    private Button backBtn;
+    private Button startOverBtn;
     @FXML
     private Button fullDirectoryBtn;
     @FXML
@@ -53,12 +42,12 @@ public class DirectoryViewController {
     @FXML
     private Label dirLabel; //label that shows type of directory shown
     @FXML
-    private Button goToFinalSel; //button user will press to get path to selected
+    private Button getPath; //button user will press to get path to selected
     @FXML
     private Label directions; //label to give user instructions
 
 
-    public DirectoryViewController() {
+    public FinalDestSelectionController() {
         // get all directories from dbMg
         directories = KioskMain.getDB().getAllDirectories();
     }
@@ -69,34 +58,18 @@ public class DirectoryViewController {
         nameCol.setCellValueFactory(new PropertyValueFactory("name"));
         //roomCol.setCellValueFactory(new PropertyValueFactory("node"));
 
-//        roomCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Location, String>, ObservableValue<String>>() {
-//            public ObservableValue<String> call(TableColumn.CellDataFeatures<Location, String> p) {
-//                return p.getValue().getroomName();  //??????
-//            }
-//        });
-
         // select default directory
         selectDirectory(LocationType.Physician);
-
-        //set title of default directory
         dirLabel.setText("Physicians");
-        directions.setText("Select a starting location from the table below. Once a location is selected, click the '->' button " +
-                "to next choose a final destination.");
 
-        goToFinalSel.setDisable(true);
-
-        locationsTable.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
-            if (locationsTable.getSelectionModel().getSelectedItem() != null) {
-                Node destination = newValue.getNode();
-                goToFinalSel.setDisable(false);
-            }
-        });
-
+        directions.setText("Select an ending location from the table below. Once a location is selected, click the 'Get Path' button " +
+                "to view a path connecting the  selected starting and ending locations.");
+        //getPath.setDisable(true);
     }
 
     @FXML
-    private void clickBack(ActionEvent event) {
-        KioskMain.setScene("views/MainMenu.fxml");
+    private void clickStartOver(ActionEvent event) {
+        KioskMain.setScene("views/DirectoryView.fxml");
     }
 
     @FXML
@@ -152,21 +125,13 @@ public class DirectoryViewController {
         locationsTable.getItems().setAll(locations);
     }
 
-    //record user selection --what action would that be???
+    //record user selection
     @FXML
     private void clickEntry(ActionEvent event){
         Location destination = locationsTable.getSelectionModel().getSelectedItem();
+        getPath.setDisable(false); //set 'get path' button to not disabled so user will know they can click it
 
 
-
-        goToFinalSel.setDisable(false); //set 'get path' button to not disabled so user will know they can click it
-
-
-    }
-
-    @FXML
-    private void clickGoToFinalSel(ActionEvent event) {
-        KioskMain.setScene("views/FinalDestSelectionView.fxml");
     }
 
 }
