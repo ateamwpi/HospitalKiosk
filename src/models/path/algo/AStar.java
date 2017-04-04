@@ -1,13 +1,16 @@
-package models.path;
+package models.path.algo;
+
+import models.path.Node;
+import models.path.Path;
 
 import java.util.*;
 
 /**
  * Created by Jacob on 4/3/2017.
  */
-public class AStarV2 {
+public class AStar implements IPathfindingAlgorithm {
 
-    private static Path FindPath(Node start, Node goal){
+    public Path findPath(Node start, Node goal){
         LinkedList<Node> closedSet;
         LinkedList<Node> openSet;
         HashMap<Node, Node> cameFrom;
@@ -16,9 +19,10 @@ public class AStarV2 {
 
         closedSet = new LinkedList<Node>();
         openSet = new LinkedList<Node>();
+        openSet.add(start);
 
         fScore = new HashMap<Node, Double>();
-        fScore.put(start, HeuristicCost(start, goal));
+        fScore.put(start, this.heuristicCost(start, goal));
 
         gScore = new HashMap<Node, Double>();
         gScore.put(start, 0.0);
@@ -27,35 +31,34 @@ public class AStarV2 {
 
 
         while(!openSet.isEmpty()){
-            Map.Entry<Node, Double> min = Collections.min(fScore.entrySet(), new Comparator<Map.Entry<Node, Double>>() {
-                public int compare(Map.Entry<Node, Double> entry1, Map.Entry<Node, Double> entry2) {
-                    return entry1.getValue().compareTo(entry2.getValue());
+            Node current = openSet.getFirst();
+            for (Node n : openSet) {
+                if (fScore.get(n) < fScore.get(current)) {
+                    current = n;
                 }
-
-            });
-            Node current = min.getKey();
+            }
 
             if(current.equals(goal)){
-                return constructPath(cameFrom, current);
+                return this.constructPath(cameFrom, current);
             }
             openSet.remove(current);
             closedSet.add(current);
 
             for(Node n: current.getConnections()){
                 if(closedSet.contains(n)) continue;
-                double score = gScore.get(current) + HeuristicCost(current, n);
+                double score = gScore.get(current) + this.heuristicCost(current, n);
                 if(!openSet.contains(n)) openSet.add(n);
                 else if(score >= gScore.get(n)) continue;
 
                 cameFrom.put(n, current);
                 gScore.put(n, score);
-                fScore.put(n, score + HeuristicCost(n, goal));
+                fScore.put(n, score + this.heuristicCost(n, goal));
             }
         }
         return null;
     }
 
-    private static Path constructPath(HashMap<Node, Node> cameFrom, Node end) {
+    private Path constructPath(HashMap<Node, Node> cameFrom, Node end) {
         Path p = new Path();
         p.addStep(end);
         Node current = end;
@@ -66,10 +69,7 @@ public class AStarV2 {
         return p;
     }
 
-
-
-
-    private static double HeuristicCost(Node start, Node goal){
+    private double heuristicCost(Node start, Node goal){
        return Math.abs(start.getX() - goal.getX()) + Math.abs(start.getY() - goal.getY());
     }
 

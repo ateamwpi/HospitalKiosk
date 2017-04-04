@@ -25,8 +25,18 @@ public class Path {
     public String toString() {
         String str = "Path: ";
         for (Node n : this.path) {
-            str += n.toString();
+            str += n.getID() + ", ";
         }
         return str;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        Path p = (Path)o;
+        if(this.path.size() != p.path.size()) return false;
+        for (int i = 0; i < this.path.size(); i++) {
+            if(this.path.get(i).getID() != p.path.get(i).getID()) return false;
+        }
+        return true;
     }
 }
