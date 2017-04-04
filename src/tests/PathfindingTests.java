@@ -30,9 +30,9 @@ public class PathfindingTests {
         PathfindingManager test = new PathfindingManager(n);
 
         Path expected = new Path();
-        expected.addStep(n3);
-        expected.addStep(n2);
-        expected.addStep(n1);
+        expected.addInOrder(n1);
+        expected.addInOrder(n2);
+        expected.addInOrder(n3);
 
         assertEquals(test.findPath(n1, n3), expected);
     }
@@ -71,46 +71,29 @@ public class PathfindingTests {
         n.put(13, n13); n.put(14, n14); n.put(15, n15); n.put(16, n16);
         n.put(17, n17); n.put(18, n18); n.put(19, n19); n.put(20, n20);
         n.put(21, n21); n.put(22, n22); n.put(23, n23); n.put(24, n24);
-        n.put(25, n25);
-        n1.addConnection(n2);
-        n2.addConnection(n3);
-        n3.addConnection(n4);
-        n3.addConnection(n10);
-        n4.addConnection(n5);
-        n5.addConnection(n14);
-        n6.addConnection(n7);
-        n7.addConnection(n8);
-        n7.addConnection(n15);
-        n8.addConnection(n9);
-        n9.addConnection(n12);
-        n10.addConnection(n11);
-        n11.addConnection(n13);
-        n11.addConnection(n21);
-        n13.addConnection(n14);
-        n14.addConnection(n6);
-        n15.addConnection(n16);
-        n17.addConnection(n9);
-        n18.addConnection(n17);
-        n19.addConnection(n18);
-        n19.addConnection(n23);
-        n20.addConnection(n24);
-        n21.addConnection(n22);
-        n22.addConnection(n20);
-        n24.addConnection(n25);
-        n25.addConnection(n19);
+        n.put(25, n25); n1.addConnection(n2); n2.addConnection(n3);
+        n3.addConnection(n4); n3.addConnection(n10); n4.addConnection(n5);
+        n5.addConnection(n14); n6.addConnection(n7); n7.addConnection(n8);
+        n7.addConnection(n15); n8.addConnection(n9); n9.addConnection(n12);
+        n10.addConnection(n11); n11.addConnection(n13); n11.addConnection(n21);
+        n13.addConnection(n14); n14.addConnection(n6); n15.addConnection(n16);
+        n17.addConnection(n9); n18.addConnection(n17); n19.addConnection(n18);
+        n19.addConnection(n23); n20.addConnection(n24); n21.addConnection(n22);
+        n22.addConnection(n20); n24.addConnection(n25); n25.addConnection(n19);
         PathfindingManager path = new PathfindingManager(n);
+
         Path expected = new Path();
-        expected.addStep(n12);
-        expected.addStep(n9);
-        expected.addStep(n8);
-        expected.addStep(n7);
-        expected.addStep(n6);
-        expected.addStep(n14);
-        expected.addStep(n5);
-        expected.addStep(n4);
-        expected.addStep(n3);
-        expected.addStep(n2);
-        expected.addStep(n1);
+        expected.addInOrder(n1);
+        expected.addInOrder(n2);
+        expected.addInOrder(n3);
+        expected.addInOrder(n4);
+        expected.addInOrder(n5);
+        expected.addInOrder(n14);
+        expected.addInOrder(n6);
+        expected.addInOrder(n7);
+        expected.addInOrder(n8);
+        expected.addInOrder(n9);
+        expected.addInOrder(n12);
         assertEquals(path.findPath(n1, n12), expected);
     }
 
