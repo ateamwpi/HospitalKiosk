@@ -54,6 +54,7 @@ public class AdminAddPhysicianController {
         try{
             Location L = new Location(person, LocationType.Physician, KioskMain.getPath().getRoom(loc));
             KioskMain.getDir().addLocation(L);
+            KioskMain.setScene("views/AdminAddPhysician.fxml");
         }
         catch(RoomNotFoundException e){
             System.out.println("Failed to update database");

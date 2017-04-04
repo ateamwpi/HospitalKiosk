@@ -10,8 +10,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import models.dir.Directory;
 import models.dir.Location;
 import models.dir.LocationType;
+import models.path.Node;
 
 
+import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,6 +21,8 @@ import java.util.HashMap;
 
 public class ManageDirectoryViewController {
     private HashMap<LocationType, Directory> directories;
+    Location physician;
+    Node location;
 
     @FXML
     private Button backBtn;
@@ -28,10 +32,6 @@ public class ManageDirectoryViewController {
     private Button removePhysician;
     @FXML
     private Button editPhysician;
-    @FXML
-    private TextField removePerson;
-    @FXML
-    private TextField editPerson;
     @FXML
     private Label errorRemove;
     @FXML
@@ -53,15 +53,30 @@ public class ManageDirectoryViewController {
     private void initialize() {
         // setup column cell factories
         nameCol.setCellValueFactory(new PropertyValueFactory("name"));
-
         // select default directory
         selectDirectory(LocationType.Physician);
+
+        removePhysician.setDisable(true);
+
+        locationsTable.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
+            if (locationsTable.getSelectionModel().getSelectedItem() != null) {
+                physician = newValue;
+                location = newValue.getNode();
+
+                removePhysician.setDisable(false);
+            }
+        });
+
     }
 
     private void selectDirectory(LocationType locType) {
+
         setLocations(getLocationsOfType(locType));
     }
 
+    private void setLocations(Collection<Location> locations) {
+        locationsTable.getItems().setAll(locations);
+    }
 
     private Collection<Location> getLocationsOfType(LocationType locType) {
         if (directories.containsKey(locType)) {
@@ -69,33 +84,21 @@ public class ManageDirectoryViewController {
             HashMap<Integer, Location> locations = dir.getLocations();
             return locations.values();
         }
-        return new ArrayList<Location>();
+        return new ArrayList<Location>(); //returns empty array list if there are no locations of given type
     }
-
-    private void setLocations(Collection<Location> locations) {
-        locationsTable.getItems().setAll(locations);
-    }
-
 
 
     @FXML
     private void clickRemovePhysician(ActionEvent event)throws IOException {
-
-        System.out.println("This physician: ");
-        /*try{
-            //Location L = new Location(person, LocationType.Physician, KioskMain.getPath().getRoom(loc));
-            //KioskMain.getDir().removeLocation();
-        }
-        catch(RoomNotFoundException e){
-            System.out.println("Failed to update database");
-        }*/
+        KioskMain.getDir().removeLocation(physician);
+        KioskMain.setScene("views/ManageDirectoryView.fxml");
     }
 
     @FXML
     private void clickPhysician(ActionEvent event)throws IOException {
-        TablePosition pos = (TablePosition) locationsTable.getSelectionModel().getSelectedCells().get(0);
-        
+        Location destination = locationsTable.getSelectionModel().getSelectedItem();
 
+        removePhysician.setDisable(false); //set 'get path' button to not disabled so user will know they can click it
     }
 
 
@@ -108,7 +111,6 @@ public class ManageDirectoryViewController {
     private void clickAddPhysician(ActionEvent event) throws IOException {
         KioskMain.setScene("views/AdminAddPhysician.fxml");
     }
-
 
     @FXML
     private void clickEditPhysician(ActionEvent event) throws IOException {

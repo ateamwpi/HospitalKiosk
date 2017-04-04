@@ -47,8 +47,8 @@
                </font></Label>
             <TableView fx:id="locationsTable" onMouseClicked="#clickPhysician" prefHeight="81.0" prefWidth="359.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
               <columns>
-                <TableColumn fx:id="nameCol" prefWidth="183.0" text="C1" />
-                <TableColumn fx:id="nodeCol" prefWidth="175.0" text="C2" />
+                <TableColumn fx:id="nameCol" prefWidth="358.0" text="C1" />
+                <TableColumn fx:id="nodeCol" minWidth="0.0" prefWidth="0.0" text="C2" />
               </columns>
             </TableView>
             <VBox prefHeight="247.0" prefWidth="72.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
