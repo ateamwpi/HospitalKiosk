@@ -4,10 +4,7 @@ import core.KioskMain;
 import core.RoomNotFoundException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import models.dir.Location;
 import models.dir.LocationType;
 
@@ -57,7 +54,12 @@ public class AdminAddPhysicianController {
             KioskMain.setScene("views/AdminAddPhysician.fxml");
         }
         catch(RoomNotFoundException e){
-            System.out.println("Failed to update database");
+            Alert invalidRoom = new Alert(Alert.AlertType.ERROR);
+            invalidRoom.setHeaderText("Invalid Room!");
+            invalidRoom.setTitle("Try Again!");
+            invalidRoom.setContentText("Please enter a room that is currently in the database!");
+            invalidRoom.showAndWait();
+            place.clear();
         }
     }
 }
