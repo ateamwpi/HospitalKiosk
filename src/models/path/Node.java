@@ -20,6 +20,11 @@ public class Node {
     private final boolean isNew;
     private boolean isDone;
 
+    int heuristicCost = 0; //Heuristic cost
+    int finalCost = 0; //G+H
+    Node parent;
+
+
     /** This constructor should _ONLY_ be used when loading from the database. For any
      *  new nodes created, use Node(x, y) and a unique ID will automatically be generated.
      */
