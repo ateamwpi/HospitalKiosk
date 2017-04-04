@@ -28,8 +28,6 @@ public class ManageMapViewController {
 
     @FXML
     private Button backBtn;
-    @FXML
-    private Canvas map;
 
 
     @FXML

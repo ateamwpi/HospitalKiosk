@@ -32,19 +32,10 @@ public class MainMenuController {
     private SplitPane splitPane;
     @FXML
     private AnchorPane anchorPane;
-    @FXML
-    private Canvas canvas;
 
 
     @FXML
     private void initialize() {
-        System.out.println(anchorPane.getWidth());
-        System.out.println(splitPane.getWidth());
-        System.out.println(mapContainer.getWidth());
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.drawImage(new Image(getClass().getClassLoader().getResourceAsStream(MAP_URL)), 0, 0);
-        System.out.println(canvas.getWidth());
-        //mapContainer.getChildren().add(MapController.getMap(mapContainer));
     }
 
     @FXML
