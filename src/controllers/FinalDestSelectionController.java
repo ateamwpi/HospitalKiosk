@@ -56,7 +56,7 @@ public class FinalDestSelectionController {
     private void initialize() {
         // setup column cell factories
         nameCol.setCellValueFactory(new PropertyValueFactory("name"));
-        //roomCol.setCellValueFactory(new PropertyValueFactory("node"));
+        roomCol.setCellValueFactory(new PropertyValueFactory("roomName"));
 
         // select default directory, display name of directory and display instructions
         selectDirectory(LocationType.Physician);
