@@ -6,6 +6,7 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -38,7 +39,7 @@
                                         <Insets left="8.0" />
                                     </VBox.margin>
                                 </Button>
-                                <Button fx:id="pointOfInterestBtn" mnemonicParsing="false" onAction="#clickPOI" text="Points of Interest">
+                                <Button fx:id="servicesBtn" mnemonicParsing="false" onAction="#clickServices" prefHeight="25.0" prefWidth="105.0" text="Services">
                                     <VBox.margin>
                                         <Insets left="8.0" />
                                     </VBox.margin>
@@ -49,11 +50,11 @@
                 </AnchorPane>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <GridPane prefHeight="398.0" prefWidth="478.0">
+                  <GridPane prefHeight="398.0" prefWidth="478.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="339.0" minWidth="10.0" prefWidth="22.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="397.0" minWidth="10.0" prefWidth="237.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="389.0" minWidth="10.0" prefWidth="220.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="397.0" minWidth="10.0" prefWidth="268.66668701171875" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="389.0" minWidth="10.0" prefWidth="171.33331298828125" />
                     </columnConstraints>
                     <rowConstraints>
                         <RowConstraints maxHeight="128.0" minHeight="10.0" prefHeight="66.0" vgrow="SOMETIMES" />
@@ -65,7 +66,7 @@
                         <TableView fx:id="locationsTable" prefHeight="303.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                           <columns>
                               <TableColumn fx:id="nameCol" prefWidth="179.6666259765625" text="Name" />
-                              <TableColumn id="roomCol" fx:id="roomCol" prefWidth="53.66668701171875" text="Room" />
+                              <TableColumn id="roomCol" fx:id="roomCol" prefWidth="74" text="Room" />
                           </columns>
                         </TableView>
                         <Label fx:id="dirLabel" prefHeight="43.0" prefWidth="308.0" text="Label" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
@@ -82,6 +83,7 @@
                               <Font name="System Bold" size="21.0" />
                            </font>
                         </Label>
+                        <TextField fx:id="searchBox" promptText="Search" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                      </children>
                   </GridPane>
                </children></AnchorPane>
