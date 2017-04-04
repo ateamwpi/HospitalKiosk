@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DirectoryViewController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FinalDestSelectionController">
     <children>
         <SplitPane dividerPositions="0.29797979797979796" layoutX="82.0" layoutY="28.0" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <items>
@@ -22,7 +22,7 @@
                     <children>
                         <VBox maxWidth="129.0" prefHeight="398.0" prefWidth="129.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <children>
-                                <Button fx:id="backBtn" mnemonicParsing="false" onAction="#clickBack" text="Back">
+                                <Button fx:id="startOverBtn" mnemonicParsing="false" onAction="#clickStartOver" text="Start Over">
                                     <VBox.margin>
                                         <Insets left="8.0" top="8.0" />
                                     </VBox.margin>
@@ -64,7 +64,7 @@
                      <children>
                         <TableView fx:id="locationsTable" prefHeight="303.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                           <columns>
-                              <TableColumn fx:id="nameCol" minWidth="0.0" prefWidth="179.6666259765625" text="Name" />
+                              <TableColumn fx:id="nameCol" prefWidth="179.6666259765625" text="Name" />
                               <TableColumn id="roomCol" fx:id="roomCol" prefWidth="53.66668701171875" text="Room" />
                           </columns>
                         </TableView>
@@ -72,12 +72,12 @@
                            <font>
                               <Font name="System Italic" size="14.0" />
                            </font></Label>
-                        <Button fx:id="goToFinalSel" alignment="CENTER" mnemonicParsing="false" onAction="#clickGoToFinalSel" text="-&gt;" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                        <Button fx:id="getPath" alignment="CENTER" mnemonicParsing="false" text="Get Path" GridPane.columnIndex="2" GridPane.rowIndex="3" />
                         <Label fx:id="directions" prefHeight="106.0" prefWidth="180.0" text="Label" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="2">
                            <padding>
                               <Insets left="5.0" />
                            </padding></Label>
-                        <Label text="Select Starting Location" GridPane.columnIndex="1">
+                        <Label text="Select Ending Location" GridPane.columnIndex="1">
                            <font>
                               <Font name="System Bold" size="21.0" />
                            </font>
