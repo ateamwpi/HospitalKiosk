@@ -6,6 +6,7 @@ import java.util.*;
  * Created by Jacob on 4/1/2017.
  */
 public class AStar {
+
     private static final int DIAGONAL_COST = 14; //Set equal to some int value
     private static final int V_H_COST = 10; //Vertical and horizontal cost
 //set equal to some int value
