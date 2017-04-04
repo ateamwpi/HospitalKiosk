@@ -6,6 +6,7 @@ import models.dir.Location;
 import models.dir.LocationType;
 import models.path.Node;
 
+import javax.swing.plaf.nimbus.State;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -73,8 +74,13 @@ public class DatabaseManager {
 
     public void addLocation(Location l) {
         try {
-            Statement stmt = conn.createStatement();
-            stmt.execute("INSERT INTO Location VALUES (" + l.getID() + ", '" + l.getName() + "', '" + l.getLocType().name() + "', " + l.getNode().getID() + ")");
+            String str = "INSERT INTO LOCATION VALUES (?, ?, ?, ?)";
+            PreparedStatement stmt = conn.prepareStatement(str);
+            stmt.setInt(1, l.getID());
+            stmt.setString(2, l.getName());
+            stmt.setString(3, l.getLocType().name());
+            stmt.setInt(4, l.getNode().getID());
+            stmt.execute();
         }
         catch (SQLException e) {
             System.out.println("Failed to add " + l.toString() + " to the database.");
@@ -85,11 +91,30 @@ public class DatabaseManager {
 
     public void removeLocation(Location l) {
         try {
-            Statement stmt = conn.createStatement();
-            stmt.execute("DELETE FROM LOCATION WHERE ID=" + l.getID());
+            String str = "DELETE FROM LOCATION WHERE ID=?";
+            PreparedStatement stmt = conn.prepareStatement(str);
+            stmt.setInt(1, l.getID());
+            stmt.execute();
         }
         catch (SQLException e) {
             System.out.println("Failed to remove " + l.toString() + " from the database.");
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
+
+    public void updateLocation(Location l) {
+        try {
+            String str = "UPDATE LOCATION SET NAME=?, LOCTYPE=?, NODEID=? WHERE ID=?";
+            PreparedStatement stmt = conn.prepareStatement(str);
+            stmt.setString(1, l.getName());
+            stmt.setString(2, l.getLocType().name());
+            stmt.setInt(3, l.getNode().getID());
+            stmt.setInt(4, l.getID());
+            stmt.execute();
+        }
+        catch (SQLException e) {
+            System.out.println("Failed to update location " + l.toString() + ".");
             e.printStackTrace();
             System.exit(1);
         }
@@ -111,6 +136,7 @@ public class DatabaseManager {
         }
 
         int x, y, id = 0;
+        String roomName;
 
         try {
             // Go through each entry one at a time and make a new Node object
@@ -118,7 +144,8 @@ public class DatabaseManager {
                 id = rset.getInt("ID");
                 x = rset.getInt("X");
                 y = rset.getInt("Y");
-                allNodes.put(id, new Node(id, x, y));
+                roomName = rset.getString("ROOMNAME");
+                allNodes.put(id, new Node(id, x, y, roomName));
             }
 
             // Run SQL query to get all EDGES from the database
@@ -135,6 +162,10 @@ public class DatabaseManager {
                 n1.addConnection(n2);
             }
 
+            for (Node n : allNodes.values()) {
+                n.setDone();
+            }
+
             rset.close();
             stmt.close();
         } catch (SQLException e) {
@@ -147,8 +178,13 @@ public class DatabaseManager {
 
     public void addNode(Node n) {
         try {
-            Statement stmt = conn.createStatement();
-            stmt.execute("INSERT INTO Node VALUES (" + n.getID() + ", " + n.getX() + ", " + n.getY() + ")");
+            String str = "INSERT INTO NODE VALUES (?, ?, ?, ?)";
+            PreparedStatement stmt = conn.prepareStatement(str);
+            stmt.setInt(1, n.getID());
+            stmt.setInt(2, n.getX());
+            stmt.setInt(3, n.getY());
+            stmt.setString(4, n.getRoomName());
+            stmt.execute();
         }
         catch (SQLException e) {
             System.out.println("Failed to add " + n.toString() + " to the database.");
@@ -159,11 +195,70 @@ public class DatabaseManager {
 
     public void removeNode(Node n) {
         try {
-            Statement stmt = conn.createStatement();
-            stmt.execute("DELETE FROM NODE WHERE ID=" + n.getID());
+            String str1 = "DELETE FROM EDGE WHERE ANODEID=?";
+            String str2 = "DELETE FROM EDGE WHERE BNODEID=?";
+            String str3 = "DELETE FROM NODE WHERE ID=?";
+            PreparedStatement stmt1 = conn.prepareStatement(str1);
+            PreparedStatement stmt2 = conn.prepareStatement(str2);
+            PreparedStatement stmt3 = conn.prepareStatement(str3);
+            stmt1.setInt(1, n.getID());
+            stmt2.setInt(1, n.getID());
+            stmt3.setInt(1, n.getID());
+            stmt1.execute();
+            stmt2.execute();
+            stmt3.execute();
         }
         catch (SQLException e) {
             System.out.println("Failed to remove " + n.toString() + " from the database.");
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
+
+    public void updateNode(Node n) {
+        try {
+            String str = "UPDATE NODE SET X=?, Y=?, ROOMNAME=? WHERE ID=?";
+            PreparedStatement stmt = conn.prepareStatement(str);
+            stmt.setInt(1, n.getX());
+            stmt.setInt(2, n.getY());
+            stmt.setString(3, n.getRoomName());
+            stmt.setInt(4, n.getID());
+            stmt.execute();
+        }
+        catch (SQLException e) {
+            System.out.println("Failed to update node " + n.toString() + ".");
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
+
+    /* CONNECTIONS */
+
+    public void addConnection(Node n1, Node n2) {
+        try {
+            String str = "INSERT INTO EDGE VALUES (?, ?)";
+            PreparedStatement stmt = conn.prepareStatement(str);
+            stmt.setInt(1, n1.getID());
+            stmt.setInt(2, n2.getID());
+            stmt.execute();
+        }
+        catch (SQLException e) {
+            System.out.println("Failed to add connection between " + n1.getID() + " and " + n2.getID() + ".");
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
+
+    public void removeConnection(Node n1, Node n2) {
+        try {
+            String str = "DELETE FROM EDGE WHERE ANODEID=? AND BNODEID=?";
+            PreparedStatement stmt = conn.prepareStatement(str);
+            stmt.setInt(1, n1.getID());
+            stmt.setInt(2, n2.getID());
+            stmt.execute();
+        }
+        catch (SQLException e) {
+            System.out.println("Failed to remove connection between " + n1.getID() + " and " + n2.getID() + ".");
             e.printStackTrace();
             System.exit(1);
         }

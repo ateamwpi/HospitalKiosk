@@ -1,5 +1,6 @@
 package core;
 
+import controllers.IControllerWithParams;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,10 +9,12 @@ import javafx.stage.Stage;
 import models.db.DatabaseManager;
 import models.dir.Directory;
 import models.dir.DirectoryManager;
+import models.dir.Location;
+import models.dir.LocationType;
 import models.path.PathfindingManager;
 import models.path.Node;
 
-import java.io.IOException;
+import java.io.*;
 import java.sql.SQLException;
 
 public class KioskMain extends Application {
@@ -25,12 +28,10 @@ public class KioskMain extends Application {
     public static final boolean DEBUG = true;
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) {
         stage = primaryStage;
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("views/MainMenu.fxml"));
-        primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 300, 275));
-        primaryStage.show();
+        stage.show();
+        setScene("views/MainMenu.fxml");
     }
 
     public static void main(String[] args) {
@@ -53,10 +54,30 @@ public class KioskMain extends Application {
 
     public static DatabaseManager getDB() { return theDBManager; }
 
-    public static void setScene(String path) throws IOException {
-        Parent root = FXMLLoader.load(KioskMain.class.getClassLoader().getResource(path));
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
+    public static void setScene(String path) {
+        try {
+            Parent root = FXMLLoader.load(KioskMain.class.getClassLoader().getResource(path));
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+        } catch (IOException e) {
+            // TODO
+            e.printStackTrace();
+        }
+    }
+
+    public static void setScene(String path, Object... data) {
+        try {
+            FXMLLoader loader = new FXMLLoader(KioskMain.class.getClassLoader().getResource(path));
+            IControllerWithParams controller =
+                    loader.<IControllerWithParams>getController();
+            controller.initData(data);
+            loader.getController();
+            Scene scene = new Scene(loader.load());
+            stage.setScene(scene);
+        } catch (IOException e) {
+            // TODO
+            e.printStackTrace();
+        }
     }
 
     private static void initDBMg() {

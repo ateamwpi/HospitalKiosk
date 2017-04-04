@@ -1,5 +1,6 @@
 package models.dir;
 
+import core.KioskMain;
 import models.path.Node;
 
 /**
@@ -27,7 +28,6 @@ public class Location {
         this.isNew = false;
     }
 
-
     public Location(String name, LocationType locType, Node node) {
         this.id = getNextLocID();
         this.name = name;
@@ -45,6 +45,20 @@ public class Location {
         return this.isNew;
     }
 
+    public void setName(String name) {
+        this.name = name;
+        KioskMain.getDB().updateLocation(this);
+    }
+
+    public void setLocType(LocationType locType) {
+        this.locType = locType;
+        KioskMain.getDB().updateLocation(this);
+    }
+
+    public void setNode(Node n) {
+        this.node = n;
+        KioskMain.getDB().updateLocation(this);
+    }
 
     public String getName() {
         return this.name;
