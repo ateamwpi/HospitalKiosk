@@ -23,8 +23,8 @@ import java.util.HashMap;
 
 public class ManageDirectoryViewController {
     private HashMap<LocationType, Directory> directories;
-    Location physician;
-    Node location;
+    private Location physician;
+    private Node location;
     private Collection<Location> currentLocations;
     private Collection<Location> filteredLocations;
 
@@ -148,7 +148,7 @@ public class ManageDirectoryViewController {
 
     @FXML
     private void clickEditPhysician(ActionEvent event) throws IOException {
-
+        KioskMain.setScene("views/AdminEditPhysician.fxml", physician);
     }
 
 }
