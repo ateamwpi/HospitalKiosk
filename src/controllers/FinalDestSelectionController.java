@@ -1,12 +1,11 @@
 package controllers;
 
 import core.KioskMain;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import models.dir.Directory;
 import models.dir.Location;
@@ -24,6 +23,10 @@ import java.util.HashMap;
 public class FinalDestSelectionController {
 
     private HashMap<LocationType, Directory> directories;
+
+    private Collection<Location> currentLocations;
+
+    private Collection<Location> filteredLocations;
 
     @FXML
     private Button startOverBtn;
@@ -45,11 +48,14 @@ public class FinalDestSelectionController {
     private Button getPath; //button user will press to get path to selected
     @FXML
     private Label directions; //label to give user instructions
-
+    @FXML
+    private TextField searchBox;
 
     public FinalDestSelectionController() {
         // get all directories from dbMg
         directories = KioskMain.getDB().getAllDirectories();
+        currentLocations = new ArrayList<Location>();
+        filteredLocations = new ArrayList<Location>();
     }
 
     @FXML
@@ -73,6 +79,13 @@ public class FinalDestSelectionController {
             if (locationsTable.getSelectionModel().getSelectedItem() != null) {
                 Node destination2 = newValue.getNode();
                 getPath.setDisable(false);
+            }
+        });
+
+        searchBox.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                filterLocations();
             }
         });
 
@@ -133,9 +146,25 @@ public class FinalDestSelectionController {
 
     //sets what type of locations are shown on the table
     private void setLocations(Collection<Location> locations) {
+        searchBox.clear();
+        currentLocations = locations;
+        updateTable(locations);
+    }
 
+    private void updateTable(Collection<Location> locations) {
         locationsTable.getItems().setAll(locations);
         locationsTable.sort();
+    }
+
+    private void filterLocations() {
+        filteredLocations.clear();
+        String filterString = searchBox.getText().toLowerCase();
+        for (Location loc : currentLocations) {
+            if (loc.getName().toLowerCase().contains(filterString)) {
+                filteredLocations.add(loc);
+            }
+        }
+        updateTable(filteredLocations);
     }
 
     //record user selection

@@ -2,6 +2,7 @@ package controllers;
 
 import core.KioskMain;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -31,6 +32,10 @@ public class DirectoryViewController {
 
     private HashMap<LocationType, Directory> directories;
 
+    private Collection<Location> currentLocations;
+
+    private Collection<Location> filteredLocations;
+
     @FXML
     private Button backBtn;
     @FXML
@@ -51,11 +56,16 @@ public class DirectoryViewController {
     private Button goToFinalSel; //button user will press to get path to selected
     @FXML
     private Label directions; //label to give user instructions
+    @FXML
+    private TextField searchBox;
 
 
     public DirectoryViewController() {
         // get all directories from dbMg
         directories = KioskMain.getDB().getAllDirectories();
+        currentLocations = new ArrayList<Location>();
+        filteredLocations = new ArrayList<Location>();
+
     }
 
     @FXML
@@ -81,6 +91,13 @@ public class DirectoryViewController {
             if (locationsTable.getSelectionModel().getSelectedItem() != null) {
                 Node destination1 = newValue.getNode(); //store the node that was selected
                 goToFinalSel.setDisable(false); //enable -> button once selection has been made
+            }
+        });
+
+        searchBox.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                filterLocations();
             }
         });
 
@@ -143,9 +160,25 @@ public class DirectoryViewController {
 
     //sets what type of locations are shown on the table
     private void setLocations(Collection<Location> locations) {
+        searchBox.clear();
+        currentLocations = locations;
+        updateTable(locations);
+    }
 
+    private void updateTable(Collection<Location> locations) {
         locationsTable.getItems().setAll(locations);
         locationsTable.sort();
+    }
+
+    private void filterLocations() {
+        filteredLocations.clear();
+        String filterString = searchBox.getText().toLowerCase();
+        for (Location loc : currentLocations) {
+            if (loc.getName().toLowerCase().contains(filterString)) {
+                filteredLocations.add(loc);
+            }
+        }
+        updateTable(filteredLocations);
     }
 
     @FXML  //when user clicks -> button, they will be brought to new page and asked to pick final destination

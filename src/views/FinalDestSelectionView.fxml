@@ -83,7 +83,7 @@
                               <Font name="System Bold" size="21.0" />
                            </font>
                         </Label>
-                        <TextField promptText="Search" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <TextField fx:id="searchBox" promptText="Search" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                      </children>
                   </GridPane>
                </children></AnchorPane>
