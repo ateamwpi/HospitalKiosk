@@ -390,6 +390,7 @@ class DraggableNode extends Circle {
         node.setRoomName(previewRoomName);
         node.setConnections(previewConnections);
         // draw the node
+        // TODO fix relocate bug
         relocate(node.getX(), node.getY());
 //        translateXProperty().setValue(node.getX());
 //        translateYProperty().setValue(node.getY());
