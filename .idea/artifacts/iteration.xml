@@ -1,0 +1,31 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="iteration">
+    <output-path>$PROJECT_DIR$/out/artifacts/iteration</output-path>
+    <root id="archive" name="iteration.jar">
+      <element id="module-output" name="HospitalKiosk" />
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="extracted-dir" path="$PROJECT_DIR$/derby-lib/derby.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/derby-lib/derby.war" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/derby-lib/derbynet.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/derby-lib/derbyrun.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/derby-lib/derbytools.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/derby-lib/derbyclient.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/derby-lib/derbyLocale_cs.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/derby-lib/derbyLocale_es.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/derby-lib/derbyLocale_fr.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/derby-lib/derbyLocale_hu.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/derby-lib/derbyLocale_it.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/derby-lib/derbyLocale_pl.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/derby-lib/derbyLocale_ru.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/derby-lib/derbyLocale_de_DE.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/derby-lib/derbyLocale_ja_JP.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/derby-lib/derbyLocale_ko_KR.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/derby-lib/derbyLocale_pt_BR.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/derby-lib/derbyLocale_zh_CN.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/derby-lib/derbyLocale_zh_TW.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/derby-lib/derbyoptionaltools.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
