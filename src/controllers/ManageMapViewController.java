@@ -150,36 +150,6 @@ public class ManageMapViewController {
     }
 
     @FXML
-    private void clickSave(ActionEvent event) {
-        System.out.println("save node");
-        selectedNode.previewX(getX());
-        selectedNode.previewY(getY());
-        selectedNode.previewRoomName(room.getText());
-        selectedNode.previewConnections(selectedNode.getNode().getConnections());
-        selectedNode.save();
-        KioskMain.setScene("views/ManageMapView.fxml");
-    }
-
-    @FXML
-    private void clickNodeAction(ActionEvent event) {
-        if (mapController.nodeIsSelected()) {
-            clickDelete();
-        } else {
-            clickAdd();
-        }
-    }
-
-    private void clickDelete() {
-        // delete the node
-        mapController.deleteSelectedNode();
-    }
-
-    private void clickAdd() {
-        // add the node
-        mapController.addNode(Integer.parseInt(x.getText()), Integer.parseInt(y.getText()), room.getText());
-    }
-
-    @FXML
     private void clickAddNeighbor(ActionEvent event) {
         // get the node id
         int neighborID = Integer.parseInt(newNeighbor.getText());
@@ -203,21 +173,56 @@ public class ManageMapViewController {
     }
 
     @FXML
+    private void clickSave(ActionEvent event) {
+        System.out.println("save node");
+        selectedNode.previewX(getX());
+        selectedNode.previewY(getY());
+        selectedNode.previewRoomName(room.getText());
+        selectedNode.previewConnections(selectedNode.getNode().getConnections());
+        selectedNode.save();
+        refreshScene();
+    }
+
+    @FXML
+    private void clickNodeAction(ActionEvent event) {
+        if (mapController.nodeIsSelected()) {
+            clickDelete();
+        } else {
+            clickAdd();
+        }
+    }
+
+    private void clickDelete() {
+        // delete the node
+        mapController.deleteSelectedNode();
+    }
+
+    private void clickAdd() {
+        // add the node
+        mapController.addNode(Integer.parseInt(x.getText()), Integer.parseInt(y.getText()), room.getText());
+    }
+
+    @FXML
     private void xAction(ActionEvent event) {
         System.out.println(event);
-        selectedNode.previewX(getX());
+        //selectedNode.previewX(getX());
     }
 
     @FXML
     private void yAction(ActionEvent event) {
         System.out.println(event);
-        selectedNode.previewY(getY());
+        //selectedNode.previewY(getY());
     }
 
     @FXML
     private void roomAction(ActionEvent event) {
         System.out.println(event);
-        selectedNode.previewRoomName(room.getText());
+        //selectedNode.previewRoomName(room.getText());
+        //selectedNode.previewRoomName(room.getText());
+    }
+
+    private void refreshScene() {
+        KioskMain.setScene("views/ManageMapView.fxml");
     }
 
 }

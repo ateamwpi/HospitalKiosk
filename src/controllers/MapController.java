@@ -174,7 +174,7 @@ public class MapController implements IControllerWithParams {
         // create canvas
         PannableCanvas canvas = new PannableCanvas(this);
         // add the canvas to overlay
-        overlay.getChildren().add(canvas);
+        overlay.getChildren().add(0, canvas);
         // create the node gesture for dragging
         nodeGestures = new NodeGestures(canvas, this);
         // create the scene gestures for zooming and panning
@@ -185,7 +185,7 @@ public class MapController implements IControllerWithParams {
         mapView.setImage(map);
         mapView.setPreserveRatio(true);
         // add the map to the canvas
-        canvas.getChildren().addAll(mapView);
+        canvas.getChildren().add(mapView);
 
         // TODO uncomment for zoom/pan
         // register handlers zooming and panning
@@ -197,16 +197,22 @@ public class MapController implements IControllerWithParams {
     private void drawNodeConnections(Node node) {
         for (Node other : node.getConnections()) {
             // don't draw connection twice
-            if(node.getID() < other.getID()) {
+            if (node.getID() < other.getID()) {
                 // draw connection
                 drawConnection(node, other);
             }
         }
     }
 
+    public void drawPath(Path p) {
+        for (int i = 1; i < p.getPath().size(); i++) {
+            this.drawConnection(p.getStep(i-1), p.getStep(i));
+        }
+    }
+
     private void drawConnection(Node nodeA, Node nodeB) {
         Line line = new Line(nodeA.getX(), nodeA.getY(), nodeB.getX(), nodeB.getY());
-        this.overlay.getChildren().add(line);
+        this.overlay.getChildren().add(1, line);
     }
 
     private void showNodeInUseAlert() {
@@ -452,59 +458,47 @@ class PannableCanvas extends Pane {
     public PannableCanvas(MapController mapController) {
         this.mapController = mapController;
 
-//        setPrefSize(600, 400);
-//        setStyle("-fx-background-color: lightgrey; -fx-border-color: blue;");
-
         // add scale transform
         scaleXProperty().bind(myScale);
         scaleYProperty().bind(myScale);
 
         // logging
-        addEventFilter(MouseEvent.MOUSE_PRESSED, event -> handleMousePress(event));
+        addEventFilter(MouseEvent.MOUSE_PRESSED, event -> mapController.handleMousePress(event));
 
-    }
-
-    private void handleMousePress(MouseEvent event) {
-//        System.out.println(
-//                "canvas event: " + ( ((event.getSceneX() - getBoundsInParent().getMinX()) / getScale()) + ", scale: " + getScale())
-//        );
-//        System.out.println( "canvas bounds: " + getBoundsInParent());
-        // unselect the current node
-        mapController.handleMousePress(event);
     }
 
     /**
      * Add a grid to the canvas, send it to back
      */
-    public void addGrid() {
-
-        double w = getBoundsInLocal().getWidth();
-        double h = getBoundsInLocal().getHeight();
-
-        // add grid
-        Canvas grid = new Canvas(w, h);
-
-        // don't catch mouse events
-        grid.setMouseTransparent(true);
-
-        GraphicsContext gc = grid.getGraphicsContext2D();
-
-        gc.setStroke(Color.GRAY);
-        gc.setLineWidth(1);
-
-        // draw grid lines
-        double offset = 50;
-        for( double i=offset; i < w; i+=offset) {
-            // vertical
-            gc.strokeLine( i, 0, i, h);
-            // horizontal
-            gc.strokeLine( 0, i, w, i);
-        }
-
-        getChildren().add( grid);
-
-        grid.toBack();
-    }
+//    public void addGrid() {
+//
+//        double w = getBoundsInLocal().getWidth();
+//        double h = getBoundsInLocal().getHeight();
+//
+//        // add grid
+//        Canvas grid = new Canvas(w, h);
+//
+//        // don't catch mouse events
+//        grid.setMouseTransparent(true);
+//
+//        GraphicsContext gc = grid.getGraphicsContext2D();
+//
+//        gc.setStroke(Color.GRAY);
+//        gc.setLineWidth(1);
+//
+//        // draw grid lines
+//        double offset = 50;
+//        for( double i=offset; i < w; i+=offset) {
+//            // vertical
+//            gc.strokeLine( i, 0, i, h);
+//            // horizontal
+//            gc.strokeLine( 0, i, w, i);
+//        }
+//
+//        getChildren().add( grid);
+//
+//        grid.toBack();
+//    }
 
     public double getScale() {
         return myScale.get();

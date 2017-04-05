@@ -34,7 +34,7 @@ public class AdminMenuController {
 
     @FXML
     private void clickManageMap(ActionEvent event) {
-        //KioskMain.setScene("views/ManageMapView.fxml");
+        KioskMain.setScene("views/ManageMapView.fxml");
     }
 
 
