@@ -145,7 +145,7 @@ public class ManageMapViewController {
 
     @FXML
     private void clickBack(ActionEvent event) {
-        selectedNode.cancelPreview();
+        if(selectedNode != null) selectedNode.cancelPreview();
         KioskMain.setScene("views/AdminMenu.fxml");
     }
 
