@@ -26,6 +26,7 @@ import javafx.util.converter.IntegerStringConverter;
 import models.path.Node;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
 
@@ -86,18 +87,16 @@ public class ManageMapViewController {
                 new IntegerStringConverter(),
                 0,
                 c -> Pattern.matches("\\d*", c.getText()) ? c : null );
-        x.setTextFormatter(numericX);
-        y.setTextFormatter(numericY);
-
-        deleteNeighbor.setDisable(true);
-
         TextFormatter<Integer> numericNeighbor = new TextFormatter<>(
                 new IntegerStringConverter(),
                 0,
                 c -> Pattern.matches("\\d*", c.getText()) ? c : null );
-
+        x.setTextFormatter(numericX);
+        y.setTextFormatter(numericY);
         newNeighbor.setTextFormatter(numericNeighbor);
+        deleteNeighbor.setDisable(true);
 
+        // add listener to table item selection
         tableNeighbors.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
             if (tableNeighbors.getSelectionModel().getSelectedItem() != null) {
                 deleteNeighbor.setDisable(false);
@@ -118,7 +117,7 @@ public class ManageMapViewController {
         saveAction.setVisible(true);
         // show delete node button
         nodeAction.setText("Delete node");
-        tableNeighbors.getItems().setAll(selectedNode.getNode().getConnections());
+        setTableNeighbors(selectedNode.getNode().getConnections());
     }
 
     public void unselectNode() {
@@ -146,7 +145,37 @@ public class ManageMapViewController {
 
     @FXML
     private void clickBack(ActionEvent event) {
+        if(selectedNode != null) selectedNode.cancelPreview();
         KioskMain.setScene("views/AdminMenu.fxml");
+    }
+
+    @FXML
+    private void clickAddNeighbor(ActionEvent event) {
+        // get the node id
+        int neighborID = Integer.parseInt(newNeighbor.getText());
+        // get the node
+        Node node = KioskMain.getPath().getNode(neighborID);
+        // TODO alert if node DNE or is selectedNode
+        // add the preview connection
+        selectedNode.previewConnection(node);
+        //selectedNode.getNode().addConnection(node);
+        // update the table of connections with preview connections
+        setTableNeighbors(selectedNode.getPreviewConnections());
+    }
+
+    private void setTableNeighbors(Collection<Node> nodes) {
+        tableNeighbors.getItems().setAll(nodes);
+    }
+
+    @FXML
+    private void clickDeleteNeighbor(ActionEvent event) {
+        // get the node
+        Node nodeToDelete = tableNeighbors.getSelectionModel().getSelectedItem();
+        // remove the preview connection
+        selectedNode.removePreviewConnection(nodeToDelete);
+        //selectedNode.getNode().removeConnection(nodeToDelete);
+        // update the table
+        tableNeighbors.getItems().setAll(selectedNode.getNode().getConnections());
     }
 
     @FXML
@@ -157,7 +186,7 @@ public class ManageMapViewController {
         selectedNode.previewRoomName(room.getText());
         selectedNode.previewConnections(selectedNode.getNode().getConnections());
         selectedNode.save();
-        KioskMain.setScene("views/ManageMapView.fxml");
+        refreshScene();
     }
 
     @FXML
@@ -172,6 +201,7 @@ public class ManageMapViewController {
     private void clickDelete() {
         // delete the node
         mapController.deleteSelectedNode();
+        refreshScene();
     }
 
     private void clickAdd() {
@@ -180,44 +210,26 @@ public class ManageMapViewController {
     }
 
     @FXML
-    private void clickAddNeighbor(ActionEvent event) {
-        // get the node id
-        int neighborID = Integer.parseInt(newNeighbor.getText());
-        // get the node
-        Node node = KioskMain.getPath().getNode(neighborID);
-        // TODO alert if node DNE or is selectedNode
-        // add the connection
-        selectedNode.previewConnection(node);
-        selectedNode.getNode().addConnection(node);
-        tableNeighbors.getItems().setAll(selectedNode.getNode().getConnections());
-    }
-
-    @FXML
-    private void clickDeleteNeighbor(ActionEvent event) {
-        // get the node
-        Node nodeToDelete = tableNeighbors.getSelectionModel().getSelectedItem();
-        // remove the connection to the node
-        selectedNode.getNode().removeConnection(nodeToDelete);
-        // update the table
-        tableNeighbors.getItems().setAll(selectedNode.getNode().getConnections());
-    }
-
-    @FXML
     private void xAction(ActionEvent event) {
         System.out.println(event);
-        selectedNode.previewX(getX());
+        //selectedNode.previewX(getX());
     }
 
     @FXML
     private void yAction(ActionEvent event) {
         System.out.println(event);
-        selectedNode.previewY(getY());
+        //selectedNode.previewY(getY());
     }
 
     @FXML
     private void roomAction(ActionEvent event) {
         System.out.println(event);
-        selectedNode.previewRoomName(room.getText());
+        //selectedNode.previewRoomName(room.getText());
+        //selectedNode.previewRoomName(room.getText());
+    }
+
+    private void refreshScene() {
+        KioskMain.setScene("views/ManageMapView.fxml");
     }
 
 }
