@@ -204,6 +204,12 @@ public class MapController implements IControllerWithParams {
         }
     }
 
+    public void drawPath(Path p) {
+        for (int i = 1; i < p.getPath().size(); i++) {
+            this.drawConnection(p.getStep(i-1), p.getStep(i));
+        }
+    }
+
     private void drawConnection(Node nodeA, Node nodeB) {
         Line line = new Line(nodeA.getX(), nodeA.getY(), nodeB.getX(), nodeB.getY());
         this.overlay.getChildren().add(line);
