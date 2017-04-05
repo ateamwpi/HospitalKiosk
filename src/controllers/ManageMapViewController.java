@@ -44,6 +44,16 @@ public class ManageMapViewController {
     private Button nodeAction;
     @FXML
     private Button saveAction;
+    @FXML
+    private TableView<Node> tableNeighbors;
+    @FXML
+    private TableColumn<Node, Integer> idColumn;
+    @FXML
+    private Button deleteNeighbor;
+    @FXML
+    private Button addNeighbor;
+    @FXML
+    private TextField newNeighbor;
 
 
     @FXML
@@ -70,6 +80,16 @@ public class ManageMapViewController {
                 c -> Pattern.matches("\\d*", c.getText()) ? c : null );
         x.setTextFormatter(numericX);
         y.setTextFormatter(numericY);
+
+        deleteNeighbor.setDisable(true);
+        addNeighbor.setDisable(true);
+
+        TextFormatter<Integer> numericNeighbor = new TextFormatter<>(
+                new IntegerStringConverter(),
+                0,
+                c -> Pattern.matches("\\d*", c.getText()) ? c : null );
+
+        newNeighbor.setTextFormatter(numericNeighbor);
     }
 
     public void selectNode(DraggableNode draggableNode) {
@@ -147,6 +167,7 @@ public class ManageMapViewController {
 //        selectedNode
         //Integer.parseInt(x.getText());
     }
+
 
     @FXML
     private void yAction(ActionEvent event) {
