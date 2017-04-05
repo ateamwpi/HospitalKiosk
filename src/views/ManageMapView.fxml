@@ -1,28 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.text.Text?>
 
 <AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ManageMapViewController">
    <children>
-      <FlowPane fx:id="flowPane" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <Button fx:id="backBtn" mnemonicParsing="false" onAction="#clickBack" text="Back" />
-            <AnchorPane prefHeight="51.0" prefWidth="551.0">
+      <SplitPane dividerPositions="0.29797979797979796" prefHeight="400.0" prefWidth="600.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <TextField layoutX="32.0" layoutY="14.0" onAction="#xAction" prefHeight="27.0" prefWidth="59.0" fx:id="x" />
-                  <Text layoutX="14.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="x" />
-                  <TextField fx:id="y" layoutX="124.0" layoutY="14.0" onAction="#yAction" prefHeight="27.0" prefWidth="59.0" />
-                  <Text layoutX="103.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="y" />
-                  <TextField fx:id="room" layoutX="240.0" layoutY="14.0" onAction="#roomAction" prefHeight="27.0" prefWidth="59.0" />
-                  <Text layoutX="195.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Room" />
-                  <Button layoutX="478.0" layoutY="12.0" mnemonicParsing="false" onAction="#clickNodeAction" text="Add" />
+                  <TextField layoutX="58.0" layoutY="145.0" onAction="#xAction" prefHeight="27.0" prefWidth="59.0" fx:id="x" />
+                  <Text layoutX="28.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" text="x" />
+                  <TextField fx:id="y" layoutX="58.0" layoutY="53.0" onAction="#yAction" prefHeight="27.0" prefWidth="59.0" />
+                  <Text layoutX="28.0" layoutY="116.0" strokeType="OUTSIDE" strokeWidth="0.0" text="y" />
+                  <TextField fx:id="room" layoutX="58.0" layoutY="98.0" onAction="#roomAction" prefHeight="27.0" prefWidth="59.0" />
+                  <Text layoutX="14.0" layoutY="163.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Room" />
+                  <Button fx:id="nodeAction" layoutX="14.0" layoutY="357.0" mnemonicParsing="false" onAction="#clickNodeAction" prefHeight="27.0" prefWidth="146.0" text="Add" />
+                  <Button fx:id="backBtn" layoutX="11.0" layoutY="14.0" mnemonicParsing="false" onAction="#clickBack" text="Back" />
+                  <Text layoutX="11.0" layoutY="204.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Connections" />
                </children>
             </AnchorPane>
-         </children>
-      </FlowPane>
+          <AnchorPane fx:id="mapContainer" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
+        </items>
+      </SplitPane>
    </children>
 </AnchorPane>

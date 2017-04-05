@@ -1,6 +1,7 @@
 package controllers;
 
 import core.KioskMain;
+
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
@@ -10,7 +11,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -19,6 +19,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.util.converter.IntegerStringConverter;
+import models.path.Node;
 
 import java.io.IOException;
 import java.util.function.UnaryOperator;
@@ -29,6 +30,7 @@ public class ManageMapViewController {
     private static final String MAP_URL = "views/Map.fxml";
 
     private MapController mapController;
+    private Node selectedNode;
 
     @FXML
     private TextField x;
@@ -37,16 +39,19 @@ public class ManageMapViewController {
     @FXML
     private TextField room;
     @FXML
-    private FlowPane flowPane;
+    private AnchorPane mapContainer;
+    @FXML
+    private Button nodeAction;
 
 
     @FXML
     private void initialize() {
         try {
             FXMLLoader loader = new FXMLLoader(KioskMain.class.getClassLoader().getResource(MAP_URL));
-            flowPane.getChildren().add(loader.load());
+            mapContainer.getChildren().add(loader.load());
             mapController = loader.<MapController>getController();
             mapController.adminMode();
+            mapController.initData(this);
         } catch (IOException e) {
             // TODO
             e.printStackTrace();
@@ -63,6 +68,17 @@ public class ManageMapViewController {
                 c -> Pattern.matches("\\d*", c.getText()) ? c : null );
         x.setTextFormatter(numericX);
         y.setTextFormatter(numericY);
+    }
+
+    public void setSelectedNode(Node node) {
+        selectedNode = node;
+        if (selectedNode != null) {
+            // show delete node button
+            nodeAction.setText("Delete node");
+        } else {
+            // show add node button
+            nodeAction.setText("Add node");
+        }
     }
 
     @FXML

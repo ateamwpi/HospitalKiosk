@@ -31,6 +31,7 @@ import javafx.scene.shape.Circle;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Observable;
 
 /**
  * Created by dylan on 4/2/17.
@@ -51,6 +52,7 @@ public class MapController implements IControllerWithParams {
     private Group overlay;
     private Collection<Node> nodes;
     private Boolean admin = false;
+    private ManageMapViewController manageMapViewController;
 
     @FXML
     private AnchorPane anchorPane;
@@ -81,7 +83,7 @@ public class MapController implements IControllerWithParams {
 
     @Override
     public void initData(Object... data) {
-        Region container = (Region) data[0];
+        manageMapViewController = (ManageMapViewController) data[0];
     }
 
     public void addNode(double x, double y, String room) {
@@ -110,6 +112,7 @@ public class MapController implements IControllerWithParams {
         unselectNode();
         selectedNode = node;
         selectedNode.select();
+        manageMapViewController.setSelectedNode(selectedNode.getNode());
     }
 
     public void handleMousePress(MouseEvent e) {
@@ -136,6 +139,7 @@ public class MapController implements IControllerWithParams {
             System.out.println("unselect");
             selectedNode.unselect();
             selectedNode = null;
+            manageMapViewController.setSelectedNode(null);
         }
     }
 
@@ -146,8 +150,6 @@ public class MapController implements IControllerWithParams {
             drawNode(node);
         }
     }
-
-
 
     //// Private API ////
 
@@ -356,6 +358,7 @@ class DraggableNode extends Circle {
     public void select() {
         setFill(SELECTED_COLOR);
         setRadius(SELECTED_RADIUS);
+        System.out.println(node);
     }
 
 }
@@ -390,10 +393,10 @@ class PannableCanvas extends Pane {
     }
 
     private void handleMousePress(MouseEvent event) {
-        System.out.println(
-                "canvas event: " + ( ((event.getSceneX() - getBoundsInParent().getMinX()) / getScale()) + ", scale: " + getScale())
-        );
-        System.out.println( "canvas bounds: " + getBoundsInParent());
+//        System.out.println(
+//                "canvas event: " + ( ((event.getSceneX() - getBoundsInParent().getMinX()) / getScale()) + ", scale: " + getScale())
+//        );
+//        System.out.println( "canvas bounds: " + getBoundsInParent());
         // unselect the current node
         mapController.handleMousePress(event);
     }
