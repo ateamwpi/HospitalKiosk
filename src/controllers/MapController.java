@@ -124,9 +124,9 @@ public class MapController implements IControllerWithParams {
         else if (nodeIsSelected()) {
             unselectNode();
         } else {
+            // convert the mouse coordinates to map coordinates
             Point2D p = new Point2D(e.getX(), e.getY());//imageViewToImage(mapView, new Point2D(e.getX(), e.getY()));
             addNode(p.getX(), p.getY(), "NONE");
-
         }
     }
 
@@ -150,13 +150,24 @@ public class MapController implements IControllerWithParams {
         // draw the nodes
         for (Node node : nodes) {
             drawNode(node);
-            for (Node other : node.getConnections()) {
-                if(node.getID() < other.getID()) {
-                    Line l = new Line(node.getX(), node.getY(), other.getX(), other.getY());
-                    this.overlay.getChildren().add(l);
-                }
+            // draw the node connections
+            drawNodeConnections(node);
+        }
+    }
+
+    private void drawNodeConnections(Node node) {
+        for (Node other : node.getConnections()) {
+            // don't draw connection twice
+            if(node.getID() < other.getID()) {
+                // draw connection
+                drawConnection(node, other);
             }
         }
+    }
+
+    private void drawConnection(Node nodeA, Node nodeB) {
+        Line line = new Line(nodeA.getX(), nodeA.getY(), nodeB.getX(), nodeB.getY());
+        this.overlay.getChildren().add(line);
     }
 
     //// Private API ////
