@@ -1,6 +1,7 @@
 package controllers;
 
 import core.KioskMain;
+import javafx.scene.shape.Line;
 import models.path.Node;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
@@ -148,6 +149,12 @@ public class MapController implements IControllerWithParams {
         // draw the nodes
         for (Node node : nodes) {
             drawNode(node);
+            for (Node other : node.getConnections()) {
+                if(node.getID() < other.getID()) {
+                    Line l = new Line(node.getX(), node.getY(), other.getX(), other.getY());
+                    this.overlay.getChildren().add(l);
+                }
+            }
         }
     }
 
@@ -330,8 +337,8 @@ public class MapController implements IControllerWithParams {
 
 class DraggableNode extends Circle {
 
-    private static final double UNSELECTED_RADIUS = 5;
-    private static final double SELECTED_RADIUS = 10;
+    private static final double UNSELECTED_RADIUS = 3;
+    private static final double SELECTED_RADIUS = 5;
     private static final Color UNSELECTED_COLOR = Color.BLACK;
     private static final Color SELECTED_COLOR = Color.RED;
 
