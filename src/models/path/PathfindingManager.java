@@ -3,6 +3,8 @@ package models.path;
 import core.KioskMain;
 import core.NodeInUseException;
 import core.RoomNotFoundException;
+import models.path.algo.AStar;
+import models.path.algo.IPathfindingAlgorithm;
 
 import java.util.HashMap;
 
@@ -13,6 +15,7 @@ public class PathfindingManager {
 
     private HashMap<Integer, Node> graph;
     private HashMap<String, Integer> ids;
+    private IPathfindingAlgorithm astar;
 
     public PathfindingManager(HashMap<Integer, Node> allNodes) {
         this.graph = allNodes;
@@ -20,6 +23,7 @@ public class PathfindingManager {
         for (Node n : this.graph.values()) {
             if(!n.getRoomName().equals("NONE")) this.ids.put(n.getRoomName(), n.getID());
         }
+        this.astar = new AStar();
     }
 
     public Node getNode(int id) {
@@ -55,5 +59,9 @@ public class PathfindingManager {
             throw new RoomNotFoundException(roomName);
         }
         else return this.graph.get(this.ids.get(roomName));
+    }
+
+    public Path findPath(Node start, Node end) {
+        return this.astar.findPath(start, end);
     }
 }
