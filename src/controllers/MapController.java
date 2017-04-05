@@ -29,6 +29,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import models.path.Path;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -162,6 +163,12 @@ public class MapController implements IControllerWithParams {
                 // draw connection
                 drawConnection(node, other);
             }
+        }
+    }
+
+    public void drawPath(Path p) {
+        for (int i = 1; i < p.getPath().size(); i++) {
+            this.drawConnection(p.getStep(i-1), p.getStep(i));
         }
     }
 
