@@ -88,6 +88,7 @@ public class MapController implements IControllerWithParams {
     }
 
     public void addNode(double x, double y, String room) {
+        System.out.println("add node");
         // create new node
         Node node = new Node((int) x, (int) y, room);
         // draw node with gestures
@@ -100,10 +101,11 @@ public class MapController implements IControllerWithParams {
 
     public void deleteSelectedNode() {
         if (selectedNode != null) {
+            System.out.println("delete node");
             // remove the visual node from the overlay
             overlay.getChildren().remove(selectedNode);
-            // update selectedNode
-            selectedNode = null;
+            // unselect node
+            unselectNode();
             // delete the node from the db
             //KioskMain.getDB().removeNode(selectedNode.getNode());
         }
@@ -122,7 +124,6 @@ public class MapController implements IControllerWithParams {
         else if (nodeIsSelected()) {
             unselectNode();
         } else {
-            System.out.println("add");
             Point2D p = new Point2D(e.getX(), e.getY());//imageViewToImage(mapView, new Point2D(e.getX(), e.getY()));
             addNode(p.getX(), p.getY(), "NONE");
 

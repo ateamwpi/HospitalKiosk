@@ -79,8 +79,9 @@ public class ManageMapViewController {
         x.setText(new Integer(node.getX()).toString());
         y.setText(new Integer(node.getY()).toString());
         room.setText(node.getRoomName());
+        // show save button
+        saveAction.setVisible(true);
         // show delete node button
-        //saveAction.
         nodeAction.setText("Delete node");
     }
 
@@ -91,6 +92,8 @@ public class ManageMapViewController {
         x.setText("0");
         y.setText("0");
         room.setText(null);
+        // remove save button
+        saveAction.setVisible(false);
         // show add node button
         nodeAction.setText("Add node");
     }
@@ -112,12 +115,21 @@ public class ManageMapViewController {
     @FXML
     private void clickNodeAction(ActionEvent event) {
         if (mapController.nodeIsSelected()) {
-            // delete the node
-            mapController.deleteSelectedNode();
+            clickDelete();
         } else {
-            // add the node
-            mapController.addNode(Integer.parseInt(x.getText()), Integer.parseInt(y.getText()), room.getText());
+            clickAdd();
         }
+    }
+
+    private void clickDelete() {
+        // delete the node
+        mapController.deleteSelectedNode();
+        // unselect the node
+    }
+
+    private void clickAdd() {
+        // add the node
+        mapController.addNode(Integer.parseInt(x.getText()), Integer.parseInt(y.getText()), room.getText());
     }
 
     @FXML

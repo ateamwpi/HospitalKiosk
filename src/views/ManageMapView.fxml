@@ -23,6 +23,7 @@
                   <Text layoutX="13.0" layoutY="248.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Connections" />
                   <Button fx:id="saveAction" layoutX="15.0" layoutY="320.0" mnemonicParsing="false" onAction="#clickSave" prefHeight="27.0" prefWidth="146.0" text="Save" />
                   <Text layoutX="30.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" text="id" />
+                  <Button fx:id="nodeAction" layoutX="14.0" layoutY="357.0" mnemonicParsing="false" onAction="#clickNodeAction" prefHeight="27.0" prefWidth="146.0" text="Delete" />
                </children>
             </AnchorPane>
           <AnchorPane fx:id="mapContainer" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
