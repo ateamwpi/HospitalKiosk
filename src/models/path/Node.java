@@ -7,6 +7,7 @@ import models.dir.Location;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 
 /**
  * Created by mattm on 3/29/2017.
@@ -19,7 +20,7 @@ public class Node {
     private final int id;
     private String roomName;
     private ArrayList<Node> connections;
-    private ArrayList<Location> locations;
+    private HashMap<Integer, Location> locations;
     private final boolean isNew;
     private boolean isDone;
 
@@ -37,7 +38,7 @@ public class Node {
         this.id = id;
         this.roomName = roomName;
         this.connections = new ArrayList<Node>();
-        this.locations = new ArrayList<Location>();
+        this.locations = new HashMap<Integer, Location>();
         this.isNew = false;
         this.isDone = false;
     }
@@ -48,7 +49,7 @@ public class Node {
         this.y = y;
         this.roomName = roomName;
         this.connections = new ArrayList<Node>();
-        this.locations = new ArrayList<Location>();
+        this.locations = new HashMap<Integer, Location>();
         this.isNew = true;
         this.isDone = true;
     }
@@ -59,13 +60,13 @@ public class Node {
         this.y = y;
         this.roomName = "NONE";
         this.connections = new ArrayList<Node>();
-        this.locations = new ArrayList<Location>();
+        this.locations = new HashMap<Integer, Location>();
         this.isNew = true;
         this.isDone = true;
     }
 
     public void addLocation(Location l) {
-        this.locations.add(l);
+        this.locations.put(l.getID(), l);
     }
 
     public void addConnection(Node other) {
@@ -143,8 +144,8 @@ public class Node {
         return this.roomName;
     }
 
-    public ArrayList<Location> getLocations() {
-        return this.locations;
+    public Collection<Location> getLocations() {
+        return this.locations.values();
     }
 
     public ArrayList<Node> getConnections() {
@@ -152,7 +153,9 @@ public class Node {
     }
 
     public void removeLocation(Location l) {
-        this.locations.remove(l);
+        System.out.println("hi");
+        this.locations.remove(l.getID());
+        System.out.println(this.locations.values());
     }
 
     public String toString() {
