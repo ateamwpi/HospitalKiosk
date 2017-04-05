@@ -20,7 +20,7 @@ import java.util.HashMap;
  * Created by Madeline on 4/3/2017.
  */
 
-public class FinalDestSelectionController {
+public class FinalDestSelectionController implements IControllerWithParams {
 
     private HashMap<LocationType, Directory> directories;
 
@@ -51,6 +51,9 @@ public class FinalDestSelectionController {
     @FXML
     private TextField searchBox;
 
+    private Node startNode;
+    private Node endNode;
+
     public FinalDestSelectionController() {
         // get all directories from dbMg
         directories = KioskMain.getDB().getAllDirectories();
@@ -77,7 +80,7 @@ public class FinalDestSelectionController {
 
         locationsTable.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
             if (locationsTable.getSelectionModel().getSelectedItem() != null) {
-                Node destination2 = newValue.getNode();
+                this.endNode = newValue.getNode();
                 getPath.setDisable(false);
             }
         });
@@ -176,5 +179,15 @@ public class FinalDestSelectionController {
 
     }
 
+    @FXML  //when user clicks -> button, they will be brought to new page and asked to pick final destination
+    private void clickGetPath(ActionEvent event) {
+        //System.out.println(this.startNode + ", " + this.endNode);
+        KioskMain.setScene("views/DirectionsView.fxml", this.startNode, this.endNode);
+    }
+
+    @Override
+    public void initData(Object... data) {
+        this.startNode = (Node)data[0];
+    }
 }
 

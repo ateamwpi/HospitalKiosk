@@ -32,6 +32,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import models.path.Path;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -146,6 +147,7 @@ public class MapController implements IControllerWithParams {
     // returns false if no node is selected
     public void unselectNode() {
         if (selectedNode != null) {
+            System.out.println("unselect");
             selectedNode.unselect();
             selectedNode = null;
             manageMapViewController.unselectNode();
@@ -354,8 +356,8 @@ public class MapController implements IControllerWithParams {
 
 class DraggableNode extends Circle {
 
-    private static final double UNSELECTED_RADIUS = 10;
-    private static final double SELECTED_RADIUS = 11;
+    private static final double UNSELECTED_RADIUS = 3;
+    private static final double SELECTED_RADIUS = 5;
     private static final Color UNSELECTED_COLOR = Color.BLACK;
     private static final Color SELECTED_COLOR = Color.RED;
 
