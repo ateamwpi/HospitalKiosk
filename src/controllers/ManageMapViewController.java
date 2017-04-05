@@ -4,6 +4,7 @@ import core.KioskMain;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,6 +16,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -58,6 +60,8 @@ public class ManageMapViewController {
 
     @FXML
     private void initialize() {
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("nodeID"));
+
         try {
             FXMLLoader loader = new FXMLLoader(KioskMain.class.getClassLoader().getResource(MAP_URL));
             mapContainer.getChildren().add(loader.load());
@@ -104,6 +108,7 @@ public class ManageMapViewController {
         saveAction.setVisible(true);
         // show delete node button
         nodeAction.setText("Delete node");
+        tableNeighbors.getItems().setAll(selectedNode.getNode().getConnections());
     }
 
     public void unselectNode() {
@@ -117,6 +122,7 @@ public class ManageMapViewController {
         saveAction.setVisible(false);
         // show add node button
         nodeAction.setText("Add node");
+        tableNeighbors.getItems().removeAll();
     }
 
     private int getX() {
@@ -166,6 +172,11 @@ public class ManageMapViewController {
         System.out.println(event);
 //        selectedNode
         //Integer.parseInt(x.getText());
+    }
+
+    @FXML private void clickAdd(ActionEvent event) {
+        int neighborID = Integer.parseInt(newNeighbor.getText());
+        selectedNode.getNode().addConnection(KioskMain.getPath().getNode(neighborID));
     }
 
 
