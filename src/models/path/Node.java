@@ -82,6 +82,7 @@ public class Node {
         if(this.connections.contains(other)) {
             this.connections.remove(other);
             if(other.connections.contains(this)) {
+                System.out.println("deleting from db");
                 KioskMain.getDB().removeConnection(this, other);
             }
             other.removeConnection(this);

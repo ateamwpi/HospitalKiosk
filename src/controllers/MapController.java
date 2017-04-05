@@ -168,6 +168,8 @@ public class MapController implements IControllerWithParams {
 
     @FXML
     private void initialize() {
+
+        nodes = KioskMain.getPath().getGraph().values();
         // create overlay
         overlay = new Group();
         anchorPane.getChildren().add(overlay);
@@ -370,12 +372,13 @@ class DraggableNode extends Circle {
     private Node node;
     private int previewX;
     private int previewY;
-    private Collection<Node> previewConnections;
     private String previewRoomName;
+    private Collection<Node> previewConnections;
 
     public DraggableNode(Node node, NodeGestures nodeGestures) {
         super(node.getX(), node.getY(), UNSELECTED_RADIUS, UNSELECTED_COLOR);
         this.node = node;
+        setDefaultPreview();
         // handlers for mouse click and drag
         addEventFilter(MouseEvent.ANY, new ClickDragHandler(nodeGestures.getOnMousePressedEventHandler(), nodeGestures.getOnMouseDraggedEventHandler()));
     }
@@ -400,7 +403,20 @@ class DraggableNode extends Circle {
     }
 
     public void previewConnection(Node node) {
+        previewConnections.add(node);
+    }
 
+    public void removePreviewConnection(Node node) {
+        previewConnections.remove(node);
+    }
+
+    public Collection<Node> getPreviewConnections() {
+        return previewConnections;
+    }
+
+    public void cancelPreview() {
+        System.out.println("cancel");
+        setDefaultPreview();
     }
 
     public void save() {
@@ -411,6 +427,13 @@ class DraggableNode extends Circle {
         node.setConnections(previewConnections);
         // draw the updated node
         redraw();
+    }
+
+    private void setDefaultPreview() {
+        previewX = node.getX();
+        previewY = node.getY();
+        previewRoomName = node.getRoomName();
+        previewConnections = node.getConnections();
     }
 
     private void redraw() {
