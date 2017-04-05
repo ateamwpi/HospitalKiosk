@@ -113,7 +113,7 @@ public class MapController implements IControllerWithParams {
         unselectNode();
         selectedNode = node;
         selectedNode.select();
-        manageMapViewController.setSelectedNode(selectedNode.getNode());
+        manageMapViewController.selectNode(selectedNode.getNode());
     }
 
     public void handleMousePress(MouseEvent e) {
@@ -135,12 +135,12 @@ public class MapController implements IControllerWithParams {
 
     // returns true if some node is selected
     // returns false if no node is selected
-    private void unselectNode() {
+    public void unselectNode() {
         if (selectedNode != null) {
             System.out.println("unselect");
             selectedNode.unselect();
             selectedNode = null;
-            manageMapViewController.setSelectedNode(null);
+            manageMapViewController.unselectNode();
         }
     }
 
@@ -514,7 +514,10 @@ class NodeGestures {
             DraggableNode node = (DraggableNode) event.getSource();
 
             // show node selector
-            mapController.selectNode(node);
+            if (mapController.nodeIsSelected())
+                mapController.unselectNode();
+            else
+                mapController.selectNode(node);
 
             // update node drag context
             nodeDragContext.mouseAnchorX = event.getSceneX();

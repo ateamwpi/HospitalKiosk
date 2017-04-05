@@ -42,6 +42,8 @@ public class ManageMapViewController {
     private AnchorPane mapContainer;
     @FXML
     private Button nodeAction;
+    @FXML
+    private Button saveAction;
 
 
     @FXML
@@ -70,15 +72,27 @@ public class ManageMapViewController {
         y.setTextFormatter(numericY);
     }
 
-    public void setSelectedNode(Node node) {
+    public void selectNode(Node node) {
+        // set selected node
         selectedNode = node;
-        if (selectedNode != null) {
-            // show delete node button
-            nodeAction.setText("Delete node");
-        } else {
-            // show add node button
-            nodeAction.setText("Add node");
-        }
+        // update edit view
+        x.setText(new Integer(node.getX()).toString());
+        y.setText(new Integer(node.getY()).toString());
+        room.setText(node.getRoomName());
+        // show delete node button
+        //saveAction.
+        nodeAction.setText("Delete node");
+    }
+
+    public void unselectNode() {
+        // unset selected node
+        selectedNode = null;
+        // update edit view
+        x.setText("0");
+        y.setText("0");
+        room.setText(null);
+        // show add node button
+        nodeAction.setText("Add node");
     }
 
     @FXML
@@ -86,6 +100,14 @@ public class ManageMapViewController {
         KioskMain.setScene("views/AdminMenu.fxml");
     }
 
+    @FXML
+    private void clickSave(ActionEvent event) {
+        System.out.println("save node");
+        selectedNode.setX(Integer.parseInt(x.getText()));
+        selectedNode.setY(Integer.parseInt(y.getText()));
+        selectedNode.setRoomName(room.getText());
+        //selectedNode.setConnections(connections);
+    }
 
     @FXML
     private void clickNodeAction(ActionEvent event) {
