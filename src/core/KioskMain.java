@@ -16,7 +16,6 @@ import models.path.Node;
 
 import java.io.*;
 import java.sql.SQLException;
-import java.util.HashMap;
 
 public class KioskMain extends Application {
 
@@ -40,8 +39,6 @@ public class KioskMain extends Application {
         initDBMg();
         initPathMg();
         initDirMg();
-
-        System.out.println(getPath().findPath(getPath().getNode(1), getPath().getNode(12)));
 
         // Launch the JavaFX application after initial setup
         launch(args);

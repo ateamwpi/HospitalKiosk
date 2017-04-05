@@ -4,6 +4,8 @@ import core.KioskMain;
 import models.dir.Location;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Created by mattm on 3/29/2017.
@@ -106,6 +108,22 @@ public class Node {
     public void setRoomName(String name) {
         this.roomName = name;
         KioskMain.getDB().updateNode(this);
+    }
+
+    public void setConnections(Collection<Node> conns) {
+        // Add anything new
+        for (Node n : conns) {
+            if(!this.connections.contains(n)) {
+                this.addConnection(n);
+            }
+        }
+
+        // Remove anything old
+        for (Node n : this.connections) {
+            if(!conns.contains(n)) {
+                this.removeConnection(n);
+            }
+        }
     }
 
     public int getID() {
