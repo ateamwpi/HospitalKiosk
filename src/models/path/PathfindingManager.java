@@ -30,6 +30,11 @@ public class PathfindingManager {
         return this.graph.get(id);
     }
 
+    public void updateRoomName(Node n, String newName) {
+        this.ids.remove(n.getRoomName());
+        this.ids.put(newName, n.getID());
+    }
+
     public void addNode(Node n) {
         if (n.isNew()) {
             KioskMain.getDB().addNode(n);
