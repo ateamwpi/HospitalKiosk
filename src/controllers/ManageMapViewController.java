@@ -164,19 +164,20 @@ public class ManageMapViewController {
     @FXML
     private void xAction(ActionEvent event) {
         System.out.println(event);
-//        selectedNode
-        //Integer.parseInt(x.getText());
+        selectedNode.previewX(getX());
     }
 
 
     @FXML
     private void yAction(ActionEvent event) {
         System.out.println(event);
+        selectedNode.previewY(getY());
     }
 
     @FXML
     private void roomAction(ActionEvent event) {
         System.out.println(event);
+        selectedNode.previewRoomName(room.getText());
     }
 
 }

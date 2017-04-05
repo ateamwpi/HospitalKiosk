@@ -1,6 +1,9 @@
 package controllers;
 
 import core.KioskMain;
+import core.NodeInUseException;
+import javafx.scene.control.Alert;
+import javafx.scene.input.MouseButton;
 import javafx.scene.shape.Line;
 import models.path.Node;
 import javafx.beans.property.DoubleProperty;
@@ -96,18 +99,23 @@ public class MapController implements IControllerWithParams {
         // select the node
         selectNode(draggableNode);
         // create node in db
-        //KioskMain.getDB().addNode(node);
+        KioskMain.getPath().addNode(node);
     }
 
     public void deleteSelectedNode() {
         if (selectedNode != null) {
             System.out.println("delete node");
-            // remove the visual node from the overlay
-            overlay.getChildren().remove(selectedNode);
-            // unselect node
-            unselectNode();
-            // delete the node from the db
-            //KioskMain.getDB().removeNode(selectedNode.getNode());
+            // try to delete the node
+            try {
+                // delete the node from the db
+                KioskMain.getPath().removeNode(selectedNode.getNode());
+                // remove the visual node from the overlay
+                overlay.getChildren().remove(selectedNode);
+                // unselect node
+                unselectNode();
+            } catch(NodeInUseException e) {
+                showNodeInUseAlert();
+            }
         }
     }
 
@@ -154,21 +162,6 @@ public class MapController implements IControllerWithParams {
         }
     }
 
-    private void drawNodeConnections(Node node) {
-        for (Node other : node.getConnections()) {
-            // don't draw connection twice
-            if(node.getID() < other.getID()) {
-                // draw connection
-                drawConnection(node, other);
-            }
-        }
-    }
-
-    private void drawConnection(Node nodeA, Node nodeB) {
-        Line line = new Line(nodeA.getX(), nodeA.getY(), nodeB.getX(), nodeB.getY());
-        this.overlay.getChildren().add(line);
-    }
-
     //// Private API ////
 
     @FXML
@@ -200,6 +193,29 @@ public class MapController implements IControllerWithParams {
 
         // test nodes
 //        addNode(100, 300, "NONE");
+    }
+
+    private void drawNodeConnections(Node node) {
+        for (Node other : node.getConnections()) {
+            // don't draw connection twice
+            if(node.getID() < other.getID()) {
+                // draw connection
+                drawConnection(node, other);
+            }
+        }
+    }
+
+    private void drawConnection(Node nodeA, Node nodeB) {
+        Line line = new Line(nodeA.getX(), nodeA.getY(), nodeB.getX(), nodeB.getY());
+        this.overlay.getChildren().add(line);
+    }
+
+    private void showNodeInUseAlert() {
+        Alert nodeUsed = new Alert(Alert.AlertType.ERROR);
+        nodeUsed.setHeaderText("This Node is in Use");
+        nodeUsed.setContentText("A location in the directory currently refers to this node.");
+        nodeUsed.setTitle("Node In Use");
+        nodeUsed.showAndWait();
     }
 
     private DraggableNode drawNode(Node node) {
@@ -348,8 +364,8 @@ public class MapController implements IControllerWithParams {
 
 class DraggableNode extends Circle {
 
-    private static final double UNSELECTED_RADIUS = 3;
-    private static final double SELECTED_RADIUS = 5;
+    private static final double UNSELECTED_RADIUS = 10;
+    private static final double SELECTED_RADIUS = 11;
     private static final Color UNSELECTED_COLOR = Color.BLACK;
     private static final Color SELECTED_COLOR = Color.RED;
 
@@ -363,15 +379,17 @@ class DraggableNode extends Circle {
         super(node.getX(), node.getY(), UNSELECTED_RADIUS, UNSELECTED_COLOR);
         this.node = node;
         // handlers for mouse click and drag
-        addEventFilter(MouseEvent.ANY, new ClickDragHandler(nodeGestures.getOnMouseDraggedEventHandler(), nodeGestures.getOnMousePressedEventHandler()));
+        addEventFilter(MouseEvent.ANY, new ClickDragHandler(nodeGestures.getOnMousePressedEventHandler(), nodeGestures.getOnMouseDraggedEventHandler()));
     }
 
     public void previewX(int x) {
         previewX = x;
+        redraw();
     }
 
     public void previewY(int y) {
         previewY = y;
+        redraw();
     }
 
     public void previewRoomName(String roomName) {
@@ -383,15 +401,17 @@ class DraggableNode extends Circle {
     }
 
     public void save() {
-        Node node = getNode();
         // update the node
         node.setX(previewX);
         node.setY(previewY);
         node.setRoomName(previewRoomName);
         node.setConnections(previewConnections);
-        // draw the node
-        // TODO fix relocate bug
-        relocate(node.getX(), node.getY());
+        // draw the updated node
+        redraw();
+    }
+
+    private void redraw() {
+        relocate(previewX, previewY);
 //        translateXProperty().setValue(node.getX());
 //        translateYProperty().setValue(node.getY());
     }
@@ -550,7 +570,7 @@ class NodeGestures {
     private EventHandler<MouseEvent> onMousePressedEventHandler = new EventHandler<MouseEvent>() {
         public void handle(MouseEvent event) {
             // right mouse button => panning
-            if( !event.isPrimaryButtonDown())
+            if(event.getButton().name() != "PRIMARY")// !event.isPrimaryButtonDown())
                 return;
 
             System.out.println("node clicked");
@@ -577,12 +597,11 @@ class NodeGestures {
             if( !event.isPrimaryButtonDown())
                 return;
 
-            System.out.println("node dragged");
             double scale = canvas.getScale();
 
             DraggableNode node = (DraggableNode) event.getSource();
 
-            System.out.println("node dragged");
+            //System.out.println("node dragged");
             // TODO drag bug
 //            node.setTranslateX(nodeDragContext.translateAnchorX + (( event.getSceneX() - nodeDragContext.mouseAnchorX) / scale));
 //            node.setTranslateY(nodeDragContext.translateAnchorY + (( event.getSceneY() - nodeDragContext.mouseAnchorY) / scale));
@@ -600,7 +619,7 @@ class ClickDragHandler implements EventHandler<MouseEvent> {
 
     private boolean dragging = false;
 
-    public ClickDragHandler(EventHandler<MouseEvent> onDraggedEventHandler, EventHandler<MouseEvent> onClickedEventHandler) {
+    public ClickDragHandler(EventHandler<MouseEvent> onClickedEventHandler, EventHandler<MouseEvent> onDraggedEventHandler) {
         this.onDraggedEventHandler = onDraggedEventHandler;
         this.onClickedEventHandler = onClickedEventHandler;
     }
