@@ -24,6 +24,14 @@ public class Path {
         this.path.addFirst(n);
     }
 
+    public LinkedList<Node> getPath() {
+        return this.path;
+    }
+
+    public Node getStep(int i) {
+        return this.path.get(i);
+    }
+
     public String toString() {
         String str = "Path: ";
         for (Node n : this.path) {

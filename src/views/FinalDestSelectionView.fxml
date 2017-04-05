@@ -73,7 +73,7 @@
                            <font>
                               <Font name="System Italic" size="14.0" />
                            </font></Label>
-                        <Button fx:id="getPath" alignment="CENTER" mnemonicParsing="false" text="Get Path" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                        <Button fx:id="getPath" alignment="CENTER" mnemonicParsing="false" onAction="#clickGetPath" text="Get Path" GridPane.columnIndex="2" GridPane.rowIndex="3" />
                         <Label fx:id="directions" prefHeight="106.0" prefWidth="180.0" text="Label" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="2">
                            <padding>
                               <Insets left="5.0" />
