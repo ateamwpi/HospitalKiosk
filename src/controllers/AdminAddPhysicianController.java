@@ -51,7 +51,7 @@ public class AdminAddPhysicianController {
         try{
             Location L = new Location(person, LocationType.Physician, KioskMain.getPath().getRoom(loc));
             KioskMain.getDir().addLocation(L);
-            KioskMain.setScene("views/AdminAddPhysician.fxml");
+            KioskMain.setScene("views/ManageDirectoryView.fxml");
         }
         catch(RoomNotFoundException e){
             Alert invalidRoom = new Alert(Alert.AlertType.ERROR);
