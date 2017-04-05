@@ -115,7 +115,7 @@ public class MapController implements IControllerWithParams {
         unselectNode();
         selectedNode = node;
         selectedNode.select();
-        manageMapViewController.selectNode(selectedNode.getNode());
+        manageMapViewController.selectNode(selectedNode);
     }
 
     public void handleMousePress(MouseEvent e) {
@@ -138,7 +138,6 @@ public class MapController implements IControllerWithParams {
     // returns false if no node is selected
     public void unselectNode() {
         if (selectedNode != null) {
-            System.out.println("unselect");
             selectedNode.unselect();
             selectedNode = null;
             manageMapViewController.unselectNode();
@@ -355,14 +354,45 @@ class DraggableNode extends Circle {
     private static final Color SELECTED_COLOR = Color.RED;
 
     private Node node;
+    private int previewX;
+    private int previewY;
+    private Collection<Node> previewConnections;
+    private String previewRoomName;
 
     public DraggableNode(Node node, NodeGestures nodeGestures) {
         super(node.getX(), node.getY(), UNSELECTED_RADIUS, UNSELECTED_COLOR);
         this.node = node;
-        // handlers for mouse press
-        addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMousePressedEventHandler());
-        // handler for mouse drag
-        addEventFilter(MouseEvent.MOUSE_DRAGGED, nodeGestures.getOnMouseDraggedEventHandler());
+        // handlers for mouse click and drag
+        addEventFilter(MouseEvent.ANY, new ClickDragHandler(nodeGestures.getOnMouseDraggedEventHandler(), nodeGestures.getOnMousePressedEventHandler()));
+    }
+
+    public void previewX(int x) {
+        previewX = x;
+    }
+
+    public void previewY(int y) {
+        previewY = y;
+    }
+
+    public void previewRoomName(String roomName) {
+        previewRoomName = roomName;
+    }
+
+    public void previewConnections(Collection<Node> nodes) {
+        previewConnections = nodes;
+    }
+
+    public void save() {
+        Node node = getNode();
+        // update the node
+        node.setX(previewX);
+        node.setY(previewY);
+        node.setRoomName(previewRoomName);
+        node.setConnections(previewConnections);
+        // draw the node
+        relocate(node.getX(), node.getY());
+//        translateXProperty().setValue(node.getX());
+//        translateYProperty().setValue(node.getY());
     }
 
     public Node getNode() {
@@ -370,11 +400,13 @@ class DraggableNode extends Circle {
     }
 
     public void unselect() {
+        System.out.println("node unselected");
         setFill(UNSELECTED_COLOR);
         setRadius(UNSELECTED_RADIUS);
     }
 
     public void select() {
+        System.out.println("node selected");
         setFill(SELECTED_COLOR);
         setRadius(SELECTED_RADIUS);
         System.out.println(node);
@@ -504,7 +536,6 @@ class NodeGestures {
     public NodeGestures(PannableCanvas canvas, MapController mapController) {
         this.canvas = canvas;
         this.mapController = mapController;
-
     }
 
     public EventHandler<MouseEvent> getOnMousePressedEventHandler() {
@@ -516,12 +547,12 @@ class NodeGestures {
     }
 
     private EventHandler<MouseEvent> onMousePressedEventHandler = new EventHandler<MouseEvent>() {
-
         public void handle(MouseEvent event) {
             // right mouse button => panning
             if( !event.isPrimaryButtonDown())
                 return;
 
+            System.out.println("node clicked");
             // get the node clicked on
             DraggableNode node = (DraggableNode) event.getSource();
 
@@ -536,29 +567,62 @@ class NodeGestures {
             nodeDragContext.mouseAnchorY = event.getSceneY();
             nodeDragContext.translateAnchorX = node.getTranslateX();
             nodeDragContext.translateAnchorY = node.getTranslateY();
-
         }
-
     };
 
     private EventHandler<MouseEvent> onMouseDraggedEventHandler = new EventHandler<MouseEvent>() {
         public void handle(MouseEvent event) {
-
             // right mouse button => panning
             if( !event.isPrimaryButtonDown())
                 return;
 
+            System.out.println("node dragged");
             double scale = canvas.getScale();
 
-            javafx.scene.Node node = (javafx.scene.Node) event.getSource();
+            DraggableNode node = (DraggableNode) event.getSource();
 
-            node.setTranslateX(nodeDragContext.translateAnchorX + (( event.getSceneX() - nodeDragContext.mouseAnchorX) / scale));
-            node.setTranslateY(nodeDragContext.translateAnchorY + (( event.getSceneY() - nodeDragContext.mouseAnchorY) / scale));
+            System.out.println("node dragged");
+            // TODO drag bug
+//            node.setTranslateX(nodeDragContext.translateAnchorX + (( event.getSceneX() - nodeDragContext.mouseAnchorX) / scale));
+//            node.setTranslateY(nodeDragContext.translateAnchorY + (( event.getSceneY() - nodeDragContext.mouseAnchorY) / scale));
 
             event.consume();
-
         }
     };
+}
+
+class ClickDragHandler implements EventHandler<MouseEvent> {
+
+    private final EventHandler<MouseEvent> onDraggedEventHandler;
+
+    private final EventHandler<MouseEvent> onClickedEventHandler;
+
+    private boolean dragging = false;
+
+    public ClickDragHandler(EventHandler<MouseEvent> onDraggedEventHandler, EventHandler<MouseEvent> onClickedEventHandler) {
+        this.onDraggedEventHandler = onDraggedEventHandler;
+        this.onClickedEventHandler = onClickedEventHandler;
+    }
+
+    @Override
+    public void handle(MouseEvent event) {
+        if (event.getEventType() == MouseEvent.MOUSE_PRESSED) {
+            dragging = false;
+        }
+        else if (event.getEventType() == MouseEvent.DRAG_DETECTED) {
+            dragging = true;
+        }
+        else if (event.getEventType() == MouseEvent.MOUSE_DRAGGED) {
+            //maybe filter on dragging (== true)
+            onDraggedEventHandler.handle(event);
+        }
+        else if (event.getEventType() == MouseEvent.MOUSE_CLICKED) {
+            if (!dragging) {
+                onClickedEventHandler.handle(event);
+            }
+        }
+
+    }
 }
 
 /**

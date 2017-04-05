@@ -30,7 +30,7 @@ public class ManageMapViewController {
     private static final String MAP_URL = "views/Map.fxml";
 
     private MapController mapController;
-    private Node selectedNode;
+    private DraggableNode selectedNode;
 
     @FXML
     private TextField x;
@@ -72,9 +72,10 @@ public class ManageMapViewController {
         y.setTextFormatter(numericY);
     }
 
-    public void selectNode(Node node) {
+    public void selectNode(DraggableNode draggableNode) {
         // set selected node
-        selectedNode = node;
+        selectedNode = draggableNode;
+        Node node = draggableNode.getNode();
         // update edit view
         x.setText(new Integer(node.getX()).toString());
         y.setText(new Integer(node.getY()).toString());
@@ -98,6 +99,14 @@ public class ManageMapViewController {
         nodeAction.setText("Add node");
     }
 
+    private int getX() {
+        return Integer.parseInt(x.getText());
+    }
+
+    private int getY() {
+        return Integer.parseInt(y.getText());
+    }
+
     @FXML
     private void clickBack(ActionEvent event) {
         KioskMain.setScene("views/AdminMenu.fxml");
@@ -106,10 +115,11 @@ public class ManageMapViewController {
     @FXML
     private void clickSave(ActionEvent event) {
         System.out.println("save node");
-        selectedNode.setX(Integer.parseInt(x.getText()));
-        selectedNode.setY(Integer.parseInt(y.getText()));
-        selectedNode.setRoomName(room.getText());
-        //selectedNode.setConnections(connections);
+        selectedNode.previewX(getX());
+        selectedNode.previewY(getY());
+        selectedNode.previewRoomName(room.getText());
+        selectedNode.previewConnections(selectedNode.getNode().getConnections());
+        selectedNode.save();
     }
 
     @FXML
@@ -124,7 +134,6 @@ public class ManageMapViewController {
     private void clickDelete() {
         // delete the node
         mapController.deleteSelectedNode();
-        // unselect the node
     }
 
     private void clickAdd() {
@@ -135,6 +144,8 @@ public class ManageMapViewController {
     @FXML
     private void xAction(ActionEvent event) {
         System.out.println(event);
+//        selectedNode
+        //Integer.parseInt(x.getText());
     }
 
     @FXML
