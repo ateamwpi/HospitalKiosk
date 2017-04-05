@@ -4,6 +4,9 @@ import core.KioskMain;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,6 +18,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -30,7 +34,7 @@ public class ManageMapViewController {
     private static final String MAP_URL = "views/Map.fxml";
 
     private MapController mapController;
-    private Node selectedNode;
+    private DraggableNode selectedNode;
 
     @FXML
     private TextField x;
@@ -44,10 +48,24 @@ public class ManageMapViewController {
     private Button nodeAction;
     @FXML
     private Button saveAction;
+    @FXML
+    private TableView<Node> tableNeighbors;
+    @FXML
+    private TableColumn<Node, Integer> idColumn;
+    @FXML
+    private Button deleteNeighbor;
+    @FXML
+    private Button addNeighbor;
+    @FXML
+    private TextField newNeighbor;
+    @FXML
+    private Label nodeID;
 
 
     @FXML
     private void initialize() {
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("nodeID"));
+
         try {
             FXMLLoader loader = new FXMLLoader(KioskMain.class.getClassLoader().getResource(MAP_URL));
             mapContainer.getChildren().add(loader.load());
@@ -70,19 +88,37 @@ public class ManageMapViewController {
                 c -> Pattern.matches("\\d*", c.getText()) ? c : null );
         x.setTextFormatter(numericX);
         y.setTextFormatter(numericY);
+
+        deleteNeighbor.setDisable(true);
+
+        TextFormatter<Integer> numericNeighbor = new TextFormatter<>(
+                new IntegerStringConverter(),
+                0,
+                c -> Pattern.matches("\\d*", c.getText()) ? c : null );
+
+        newNeighbor.setTextFormatter(numericNeighbor);
+
+        tableNeighbors.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
+            if (tableNeighbors.getSelectionModel().getSelectedItem() != null) {
+                deleteNeighbor.setDisable(false);
+            }
+        });
     }
 
-    public void selectNode(Node node) {
+    public void selectNode(DraggableNode draggableNode) {
         // set selected node
-        selectedNode = node;
+        selectedNode = draggableNode;
+        Node node = draggableNode.getNode();
         // update edit view
         x.setText(new Integer(node.getX()).toString());
         y.setText(new Integer(node.getY()).toString());
+        nodeID.setText(new Integer(node.getID()).toString());
         room.setText(node.getRoomName());
         // show save button
         saveAction.setVisible(true);
         // show delete node button
         nodeAction.setText("Delete node");
+        tableNeighbors.getItems().setAll(selectedNode.getNode().getConnections());
     }
 
     public void unselectNode() {
@@ -96,6 +132,16 @@ public class ManageMapViewController {
         saveAction.setVisible(false);
         // show add node button
         nodeAction.setText("Add node");
+        tableNeighbors.getItems().clear();
+        nodeID.setText(null);
+    }
+
+    private int getX() {
+        return Integer.parseInt(x.getText());
+    }
+
+    private int getY() {
+        return Integer.parseInt(y.getText());
     }
 
     @FXML
@@ -106,10 +152,12 @@ public class ManageMapViewController {
     @FXML
     private void clickSave(ActionEvent event) {
         System.out.println("save node");
-        selectedNode.setX(Integer.parseInt(x.getText()));
-        selectedNode.setY(Integer.parseInt(y.getText()));
-        selectedNode.setRoomName(room.getText());
-        //selectedNode.setConnections(connections);
+        selectedNode.previewX(getX());
+        selectedNode.previewY(getY());
+        selectedNode.previewRoomName(room.getText());
+        selectedNode.previewConnections(selectedNode.getNode().getConnections());
+        selectedNode.save();
+        KioskMain.setScene("views/ManageMapView.fxml");
     }
 
     @FXML
@@ -124,7 +172,6 @@ public class ManageMapViewController {
     private void clickDelete() {
         // delete the node
         mapController.deleteSelectedNode();
-        // unselect the node
     }
 
     private void clickAdd() {
@@ -133,18 +180,44 @@ public class ManageMapViewController {
     }
 
     @FXML
+    private void clickAddNeighbor(ActionEvent event) {
+        // get the node id
+        int neighborID = Integer.parseInt(newNeighbor.getText());
+        // get the node
+        Node node = KioskMain.getPath().getNode(neighborID);
+        // TODO alert if node DNE or is selectedNode
+        // add the connection
+        selectedNode.previewConnection(node);
+        selectedNode.getNode().addConnection(node);
+        tableNeighbors.getItems().setAll(selectedNode.getNode().getConnections());
+    }
+
+    @FXML
+    private void clickDeleteNeighbor(ActionEvent event) {
+        // get the node
+        Node nodeToDelete = tableNeighbors.getSelectionModel().getSelectedItem();
+        // remove the connection to the node
+        selectedNode.getNode().removeConnection(nodeToDelete);
+        // update the table
+        tableNeighbors.getItems().setAll(selectedNode.getNode().getConnections());
+    }
+
+    @FXML
     private void xAction(ActionEvent event) {
         System.out.println(event);
+        selectedNode.previewX(getX());
     }
 
     @FXML
     private void yAction(ActionEvent event) {
         System.out.println(event);
+        selectedNode.previewY(getY());
     }
 
     @FXML
     private void roomAction(ActionEvent event) {
         System.out.println(event);
+        selectedNode.previewRoomName(room.getText());
     }
 
 }

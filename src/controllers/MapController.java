@@ -1,6 +1,9 @@
 package controllers;
 
 import core.KioskMain;
+import core.NodeInUseException;
+import javafx.scene.control.Alert;
+import javafx.scene.input.MouseButton;
 import javafx.scene.shape.Line;
 import models.path.Node;
 import javafx.beans.property.DoubleProperty;
@@ -97,18 +100,23 @@ public class MapController implements IControllerWithParams {
         // select the node
         selectNode(draggableNode);
         // create node in db
-        //KioskMain.getDB().addNode(node);
+        KioskMain.getPath().addNode(node);
     }
 
     public void deleteSelectedNode() {
         if (selectedNode != null) {
             System.out.println("delete node");
-            // remove the visual node from the overlay
-            overlay.getChildren().remove(selectedNode);
-            // unselect node
-            unselectNode();
-            // delete the node from the db
-            //KioskMain.getDB().removeNode(selectedNode.getNode());
+            // try to delete the node
+            try {
+                // delete the node from the db
+                KioskMain.getPath().removeNode(selectedNode.getNode());
+                // remove the visual node from the overlay
+                overlay.getChildren().remove(selectedNode);
+                // unselect node
+                unselectNode();
+            } catch(NodeInUseException e) {
+                showNodeInUseAlert();
+            }
         }
     }
 
@@ -116,7 +124,7 @@ public class MapController implements IControllerWithParams {
         unselectNode();
         selectedNode = node;
         selectedNode.select();
-        manageMapViewController.selectNode(selectedNode.getNode());
+        manageMapViewController.selectNode(selectedNode);
     }
 
     public void handleMousePress(MouseEvent e) {
@@ -156,27 +164,6 @@ public class MapController implements IControllerWithParams {
         }
     }
 
-    private void drawNodeConnections(Node node) {
-        for (Node other : node.getConnections()) {
-            // don't draw connection twice
-            if(node.getID() < other.getID()) {
-                // draw connection
-                drawConnection(node, other);
-            }
-        }
-    }
-
-    public void drawPath(Path p) {
-        for (int i = 1; i < p.getPath().size(); i++) {
-            this.drawConnection(p.getStep(i-1), p.getStep(i));
-        }
-    }
-
-    private void drawConnection(Node nodeA, Node nodeB) {
-        Line line = new Line(nodeA.getX(), nodeA.getY(), nodeB.getX(), nodeB.getY());
-        this.overlay.getChildren().add(line);
-    }
-
     //// Private API ////
 
     @FXML
@@ -205,9 +192,29 @@ public class MapController implements IControllerWithParams {
 //        anchorPane.addEventFilter(MouseEvent.MOUSE_PRESSED, sceneGestures.getOnMousePressedEventHandler());
 //        anchorPane.addEventFilter(MouseEvent.MOUSE_DRAGGED, sceneGestures.getOnMouseDraggedEventHandler());
 //        anchorPane.addEventFilter(ScrollEvent.ANY, sceneGestures.getOnScrollEventHandler());
+    }
 
-        // test nodes
-//        addNode(100, 300, "NONE");
+    private void drawNodeConnections(Node node) {
+        for (Node other : node.getConnections()) {
+            // don't draw connection twice
+            if(node.getID() < other.getID()) {
+                // draw connection
+                drawConnection(node, other);
+            }
+        }
+    }
+
+    private void drawConnection(Node nodeA, Node nodeB) {
+        Line line = new Line(nodeA.getX(), nodeA.getY(), nodeB.getX(), nodeB.getY());
+        this.overlay.getChildren().add(line);
+    }
+
+    private void showNodeInUseAlert() {
+        Alert nodeUsed = new Alert(Alert.AlertType.ERROR);
+        nodeUsed.setHeaderText("This Node is in Use");
+        nodeUsed.setContentText("A location in the directory currently refers to this node.");
+        nodeUsed.setTitle("Node In Use");
+        nodeUsed.showAndWait();
     }
 
     private DraggableNode drawNode(Node node) {
@@ -219,97 +226,90 @@ public class MapController implements IControllerWithParams {
         return draggableNode;
     }
 
-    // reset the map
-    private void click(MouseEvent e) {
-        double width = map.getWidth();
-        double height = map.getHeight();
-        if (e.getClickCount() == 2) {
-            reset(mapView, width, height);
-        }
-    }
-
-    // handle mouse press
-    private void press(MouseEvent e) {
-        Point2D mousePress = imageViewToImage(mapView, new Point2D(e.getX(), e.getY()));
-        mouseDown.set(mousePress);
-        System.out.println(mousePress);
-    }
-
-    // pan the map and overlay
-    private void pan(MouseEvent e) {
-        // TODO pan overlay
-
-        //// OVERLAY ////
-
-
-
-        //// MAP ////
-
-        Point2D dragPoint = imageViewToImage(mapView, new Point2D(e.getX(), e.getY()));
-        shift(mapView, dragPoint.subtract(mouseDown.get()));
-        mouseDown.set(imageViewToImage(mapView, new Point2D(e.getX(), e.getY())));
-    }
-
-    // zoom the map and the overlay
-    private void zoom(ScrollEvent e) {
-        // TODO zoom overlay
-
-        double width = map.getWidth();
-        double height = map.getHeight();
-        double delta = e.getDeltaY();
-        Rectangle2D viewport = mapView.getViewport();
-
-        double scale = clamp(Math.pow(ZOOM_SPEED, delta),  // altered the value from 1.01to zoom slower
-                // don't scale so we're zoomed in to fewer than MIN_PIXELS in any direction:
-                Math.min(MIN_PIXELS / viewport.getWidth(), MIN_PIXELS / viewport.getHeight()),
-                // don't scale so that we're bigger than image dimensions:
-                Math.max(width / viewport.getWidth(), height / viewport.getHeight())
-        );
-        if (scale != 1.0) {
-            Point2D mouse = imageViewToImage(mapView, new Point2D(e.getX(), e.getY()));
-
-            double newWidth = viewport.getWidth();
-            double newHeight = viewport.getHeight();
-            double mapViewRatio = (mapView.getFitWidth() / mapView.getFitHeight());
-            double viewportRatio = (newWidth / newHeight);
-            if (viewportRatio < mapViewRatio) {
-                // adjust width to be proportional with height
-                newHeight = newHeight * scale;
-                newWidth = newHeight * mapViewRatio;
-                if (newWidth > map.getWidth()) {
-                    newWidth = map.getWidth();
-                }
-            } else {
-                // adjust height to be proportional with width
-                newWidth = newWidth * scale;
-                newHeight = newWidth / mapViewRatio;
-                if (newHeight > map.getHeight()) {
-                    newHeight = map.getHeight();
-                }
-            }
-
-            // To keep the visual point under the mouse from moving, we need
-            // (x - newViewportMinX) / (x - currentViewportMinX) = scale
-            // where x is the mouse X coordinate in the image
-            // solving this for newViewportMinX gives
-            // newViewportMinX = x - (x - currentViewportMinX) * scale
-            // we then clamp this value so the image never scrolls out
-            // of the imageview:
-            double newMinX = 0;
-            if (newWidth < map.getWidth()) {
-                newMinX = clamp(mouse.getX() - (mouse.getX() - viewport.getMinX()) * scale,
-                        0, width - newWidth);
-            }
-            double newMinY = 0;
-            if (newHeight < map.getHeight()) {
-                newMinY = clamp(mouse.getY() - (mouse.getY() - viewport.getMinY()) * scale,
-                        0, height - newHeight);
-            }
-
-            mapView.setViewport(new Rectangle2D(newMinX, newMinY, newWidth, newHeight));
-
-        }
-    }
+//    // reset the map
+//    private void click(MouseEvent e) {
+//        double width = map.getWidth();
+//        double height = map.getHeight();
+//        if (e.getClickCount() == 2) {
+//            reset(mapView, width, height);
+//        }
+//    }
+//
+//    // handle mouse press
+//    private void press(MouseEvent e) {
+//        Point2D mousePress = imageViewToImage(mapView, new Point2D(e.getX(), e.getY()));
+//        mouseDown.set(mousePress);
+//        System.out.println(mousePress);
+//    }
+//
+//    // pan the map and overlay
+//    private void pan(MouseEvent e) {
+//        // TODO pan overlay
+//        Point2D dragPoint = imageViewToImage(mapView, new Point2D(e.getX(), e.getY()));
+//        shift(mapView, dragPoint.subtract(mouseDown.get()));
+//        mouseDown.set(imageViewToImage(mapView, new Point2D(e.getX(), e.getY())));
+//    }
+//
+//    // zoom the map and the overlay
+//    private void zoom(ScrollEvent e) {
+//        // TODO zoom overlay
+//
+//        double width = map.getWidth();
+//        double height = map.getHeight();
+//        double delta = e.getDeltaY();
+//        Rectangle2D viewport = mapView.getViewport();
+//
+//        double scale = clamp(Math.pow(ZOOM_SPEED, delta),  // altered the value from 1.01to zoom slower
+//                // don't scale so we're zoomed in to fewer than MIN_PIXELS in any direction:
+//                Math.min(MIN_PIXELS / viewport.getWidth(), MIN_PIXELS / viewport.getHeight()),
+//                // don't scale so that we're bigger than image dimensions:
+//                Math.max(width / viewport.getWidth(), height / viewport.getHeight())
+//        );
+//        if (scale != 1.0) {
+//            Point2D mouse = imageViewToImage(mapView, new Point2D(e.getX(), e.getY()));
+//
+//            double newWidth = viewport.getWidth();
+//            double newHeight = viewport.getHeight();
+//            double mapViewRatio = (mapView.getFitWidth() / mapView.getFitHeight());
+//            double viewportRatio = (newWidth / newHeight);
+//            if (viewportRatio < mapViewRatio) {
+//                // adjust width to be proportional with height
+//                newHeight = newHeight * scale;
+//                newWidth = newHeight * mapViewRatio;
+//                if (newWidth > map.getWidth()) {
+//                    newWidth = map.getWidth();
+//                }
+//            } else {
+//                // adjust height to be proportional with width
+//                newWidth = newWidth * scale;
+//                newHeight = newWidth / mapViewRatio;
+//                if (newHeight > map.getHeight()) {
+//                    newHeight = map.getHeight();
+//                }
+//            }
+//
+//            // To keep the visual point under the mouse from moving, we need
+//            // (x - newViewportMinX) / (x - currentViewportMinX) = scale
+//            // where x is the mouse X coordinate in the image
+//            // solving this for newViewportMinX gives
+//            // newViewportMinX = x - (x - currentViewportMinX) * scale
+//            // we then clamp this value so the image never scrolls out
+//            // of the imageview:
+//            double newMinX = 0;
+//            if (newWidth < map.getWidth()) {
+//                newMinX = clamp(mouse.getX() - (mouse.getX() - viewport.getMinX()) * scale,
+//                        0, width - newWidth);
+//            }
+//            double newMinY = 0;
+//            if (newHeight < map.getHeight()) {
+//                newMinY = clamp(mouse.getY() - (mouse.getY() - viewport.getMinY()) * scale,
+//                        0, height - newHeight);
+//            }
+//
+//            mapView.setViewport(new Rectangle2D(newMinX, newMinY, newWidth, newHeight));
+//
+//        }
+//    }
 
     // reset the map
     private void reset(ImageView imageView, double width, double height) {
@@ -362,14 +362,58 @@ class DraggableNode extends Circle {
     private static final Color SELECTED_COLOR = Color.RED;
 
     private Node node;
+    private int previewX;
+    private int previewY;
+    private Collection<Node> previewConnections;
+    private String previewRoomName;
 
     public DraggableNode(Node node, NodeGestures nodeGestures) {
         super(node.getX(), node.getY(), UNSELECTED_RADIUS, UNSELECTED_COLOR);
         this.node = node;
-        // handlers for mouse press
-        addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMousePressedEventHandler());
-        // handler for mouse drag
-        addEventFilter(MouseEvent.MOUSE_DRAGGED, nodeGestures.getOnMouseDraggedEventHandler());
+        // handlers for mouse click and drag
+        addEventFilter(MouseEvent.ANY, new ClickDragHandler(nodeGestures.getOnMousePressedEventHandler(), nodeGestures.getOnMouseDraggedEventHandler()));
+    }
+
+    public void previewX(int x) {
+        previewX = x;
+        redraw();
+    }
+
+    public void previewY(int y) {
+        previewY = y;
+        redraw();
+    }
+
+    public void previewRoomName(String roomName) {
+        previewRoomName = roomName;
+    }
+
+    public void previewConnections(Collection<Node> nodes) {
+        previewConnections = nodes;
+        redraw();
+    }
+
+    public void previewConnection(Node node) {
+
+    }
+
+    public void save() {
+        // update the node
+        node.setX(previewX);
+        node.setY(previewY);
+        node.setRoomName(previewRoomName);
+        node.setConnections(previewConnections);
+        // draw the updated node
+        redraw();
+    }
+
+    private void redraw() {
+        // draw the node at the preview coordinate
+        relocate(previewX, previewY);
+        // draw the node preview connections
+        System.out.println("draw conns");
+//        translateXProperty().setValue(node.getX());
+//        translateYProperty().setValue(node.getY());
     }
 
     public Node getNode() {
@@ -377,11 +421,13 @@ class DraggableNode extends Circle {
     }
 
     public void unselect() {
+        System.out.println("node unselected");
         setFill(UNSELECTED_COLOR);
         setRadius(UNSELECTED_RADIUS);
     }
 
     public void select() {
+        System.out.println("node selected");
         setFill(SELECTED_COLOR);
         setRadius(SELECTED_RADIUS);
         System.out.println(node);
@@ -511,7 +557,6 @@ class NodeGestures {
     public NodeGestures(PannableCanvas canvas, MapController mapController) {
         this.canvas = canvas;
         this.mapController = mapController;
-
     }
 
     public EventHandler<MouseEvent> getOnMousePressedEventHandler() {
@@ -523,12 +568,12 @@ class NodeGestures {
     }
 
     private EventHandler<MouseEvent> onMousePressedEventHandler = new EventHandler<MouseEvent>() {
-
         public void handle(MouseEvent event) {
             // right mouse button => panning
-            if( !event.isPrimaryButtonDown())
+            if(event.getButton().name() != "PRIMARY")// !event.isPrimaryButtonDown())
                 return;
 
+            System.out.println("node clicked");
             // get the node clicked on
             DraggableNode node = (DraggableNode) event.getSource();
 
@@ -543,29 +588,61 @@ class NodeGestures {
             nodeDragContext.mouseAnchorY = event.getSceneY();
             nodeDragContext.translateAnchorX = node.getTranslateX();
             nodeDragContext.translateAnchorY = node.getTranslateY();
-
         }
-
     };
 
     private EventHandler<MouseEvent> onMouseDraggedEventHandler = new EventHandler<MouseEvent>() {
         public void handle(MouseEvent event) {
-
             // right mouse button => panning
             if( !event.isPrimaryButtonDown())
                 return;
 
             double scale = canvas.getScale();
 
-            javafx.scene.Node node = (javafx.scene.Node) event.getSource();
+            DraggableNode node = (DraggableNode) event.getSource();
 
-            node.setTranslateX(nodeDragContext.translateAnchorX + (( event.getSceneX() - nodeDragContext.mouseAnchorX) / scale));
-            node.setTranslateY(nodeDragContext.translateAnchorY + (( event.getSceneY() - nodeDragContext.mouseAnchorY) / scale));
+            //System.out.println("node dragged");
+            // TODO drag bug
+//            node.setTranslateX(nodeDragContext.translateAnchorX + (( event.getSceneX() - nodeDragContext.mouseAnchorX) / scale));
+//            node.setTranslateY(nodeDragContext.translateAnchorY + (( event.getSceneY() - nodeDragContext.mouseAnchorY) / scale));
 
             event.consume();
-
         }
     };
+}
+
+class ClickDragHandler implements EventHandler<MouseEvent> {
+
+    private final EventHandler<MouseEvent> onDraggedEventHandler;
+
+    private final EventHandler<MouseEvent> onClickedEventHandler;
+
+    private boolean dragging = false;
+
+    public ClickDragHandler(EventHandler<MouseEvent> onClickedEventHandler, EventHandler<MouseEvent> onDraggedEventHandler) {
+        this.onDraggedEventHandler = onDraggedEventHandler;
+        this.onClickedEventHandler = onClickedEventHandler;
+    }
+
+    @Override
+    public void handle(MouseEvent event) {
+        if (event.getEventType() == MouseEvent.MOUSE_PRESSED) {
+            dragging = false;
+        }
+        else if (event.getEventType() == MouseEvent.DRAG_DETECTED) {
+            dragging = true;
+        }
+        else if (event.getEventType() == MouseEvent.MOUSE_DRAGGED) {
+            //maybe filter on dragging (== true)
+            onDraggedEventHandler.handle(event);
+        }
+        else if (event.getEventType() == MouseEvent.MOUSE_CLICKED) {
+            if (!dragging) {
+                onClickedEventHandler.handle(event);
+            }
+        }
+
+    }
 }
 
 /**

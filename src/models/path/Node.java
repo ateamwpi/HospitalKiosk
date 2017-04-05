@@ -1,6 +1,7 @@
 package models.path;
 
 import core.KioskMain;
+import javafx.beans.property.SimpleStringProperty;
 import models.dir.Location;
 
 import java.util.ArrayList;
@@ -175,5 +176,10 @@ public class Node {
         int val = nextNodeID;
         nextNodeID ++;
         return val;
+    }
+
+    public SimpleStringProperty nodeIDProperty() {
+        String nodeIDString = Integer.toString(this.id);
+        return new SimpleStringProperty(nodeIDString);
     }
 }
