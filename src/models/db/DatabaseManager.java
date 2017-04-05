@@ -253,13 +253,13 @@ public class DatabaseManager {
         try {
             String str = "DELETE FROM EDGE WHERE ANODEID=? AND BNODEID=?";
             PreparedStatement stmt1 = conn.prepareStatement(str);
-            PreparedStatement stmt2 = conn.prepareStatement(str);
+            //PreparedStatement stmt2 = conn.prepareStatement(str);
             stmt1.setInt(1, n1.getID());
             stmt1.setInt(2, n2.getID());
-            stmt2.setInt(1, n2.getID());
-            stmt2.setInt(2, n1.getID());
+            //stmt2.setInt(1, n2.getID());
+            //stmt2.setInt(2, n1.getID());
             stmt1.execute();
-            stmt2.execute();
+            //stmt2.execute();
         }
         catch (SQLException e) {
             System.out.println("Failed to remove connection between " + n1.getID() + " and " + n2.getID() + ".");

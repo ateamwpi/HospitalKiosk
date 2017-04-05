@@ -35,6 +35,7 @@ import javafx.scene.shape.Circle;
 import models.path.Path;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Observable;
 
@@ -433,7 +434,7 @@ class DraggableNode extends Circle {
         previewX = node.getX();
         previewY = node.getY();
         previewRoomName = node.getRoomName();
-        previewConnections = node.getConnections();
+        previewConnections = (ArrayList<Node>)node.getConnections().clone();
     }
 
     private void redraw() {

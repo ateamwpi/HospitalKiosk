@@ -158,7 +158,8 @@ public class ManageMapViewController {
         // TODO alert if node DNE or is selectedNode
         // add the preview connection
         selectedNode.previewConnection(node);
-        //selectedNode.getNode().addConnection(node);
+        //KioskMain.getPath().getNode(selectedNode.getNode().getID()).addConnection(node);
+        //refreshScene();
         // update the table of connections with preview connections
         setTableNeighbors(selectedNode.getPreviewConnections());
     }
@@ -172,10 +173,12 @@ public class ManageMapViewController {
         // get the node
         Node nodeToDelete = tableNeighbors.getSelectionModel().getSelectedItem();
         // remove the preview connection
+        System.out.println("deleting " + selectedNode.getNode().getID() + " and " + nodeToDelete.getID());
         selectedNode.removePreviewConnection(nodeToDelete);
-        //selectedNode.getNode().removeConnection(nodeToDelete);
+        //KioskMain.getPath().getNode(selectedNode.getNode().getID()).removeConnection(nodeToDelete);
+        //refreshScene();
         // update the table
-        tableNeighbors.getItems().setAll(selectedNode.getNode().getConnections());
+        setTableNeighbors(selectedNode.getPreviewConnections());
     }
 
     @FXML
@@ -184,7 +187,7 @@ public class ManageMapViewController {
         selectedNode.previewX(getX());
         selectedNode.previewY(getY());
         selectedNode.previewRoomName(room.getText());
-        selectedNode.previewConnections(selectedNode.getNode().getConnections());
+        //selectedNode.previewConnections(selectedNode.getNode().getConnections());
         selectedNode.save();
         refreshScene();
     }

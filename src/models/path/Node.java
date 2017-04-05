@@ -81,10 +81,7 @@ public class Node {
     public void removeConnection(Node other) {
         if(this.connections.contains(other)) {
             this.connections.remove(other);
-            if(other.connections.contains(this)) {
-                System.out.println("deleting from db");
-                KioskMain.getDB().removeConnection(this, other);
-            }
+            KioskMain.getDB().removeConnection(this, other);
             other.removeConnection(this);
         }
     }
@@ -121,10 +118,15 @@ public class Node {
         }
 
         // Remove anything old
+        ArrayList<Node> toRemove = new ArrayList<Node>();
         for (Node n : this.connections) {
             if(!conns.contains(n)) {
-                this.removeConnection(n);
+                toRemove.add(n);
             }
+        }
+
+        for (Node n : toRemove) {
+            this.removeConnection(n);
         }
     }
 
@@ -159,6 +161,11 @@ public class Node {
         }
         return str;
     }
+
+//    public boolean equals(Object o) {
+//        Node n = (Node) o;
+//        return n.getID() == this.getID();
+//    }
 
     public boolean isNew() {
         return this.isNew;

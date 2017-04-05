@@ -21,7 +21,7 @@ public class PathfindingManager {
         this.graph = allNodes;
         this.ids = new HashMap<String, Integer>();
         for (Node n : this.graph.values()) {
-            if(!n.getRoomName().equals("NONE")) this.ids.put(n.getRoomName(), n.getID());
+            if(n.getRoomName() != null && !n.getRoomName().equals("NONE")) this.ids.put(n.getRoomName(), n.getID());
         }
         this.astar = new AStar();
     }
