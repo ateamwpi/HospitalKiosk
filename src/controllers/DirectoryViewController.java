@@ -185,7 +185,7 @@ public class DirectoryViewController {
 
     @FXML  //when user clicks -> button, they will be brought to new page and asked to pick final destination
     private void clickGoToFinalSel(ActionEvent event) {
-        System.out.println(this.startNode);
+        //System.out.println(this.startNode);
         KioskMain.setScene("views/FinalDestSelectionView.fxml", this.startNode);
     }
 

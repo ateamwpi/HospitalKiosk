@@ -28,6 +28,9 @@ public class DirectionsViewController implements IControllerWithParams {
     private Button backBtn;
 
     @FXML
+    private Button doneButton;
+
+    @FXML
     private AnchorPane mapContainer;
 
     private MapController mapController;
@@ -49,6 +52,11 @@ public class DirectionsViewController implements IControllerWithParams {
         KioskMain.setScene("views/FinalDestSelectionView.fxml", this.startNode);
     }
 
+    @FXML
+    private void clickDone(ActionEvent event) {
+        KioskMain.setScene("views/MainMenu.fxml");
+    }
+
     @Override
     public void initData(Object... data) {
         this.startNode = (Node)data[0];
@@ -56,7 +64,7 @@ public class DirectionsViewController implements IControllerWithParams {
 
         this.thePath = KioskMain.getPath().findPath(this.startNode, this.endNode);
 
-        System.out.println(this.thePath);
+        //System.out.println(this.thePath);
 
         mapController.drawPath(this.thePath);
     }

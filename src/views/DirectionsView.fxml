@@ -21,6 +21,11 @@
                                     </VBox.margin>
                                 </Button>
                                 <Region prefHeight="40.0" prefWidth="110.0" />
+                        <Button fx:id="doneButton" mnemonicParsing="false" onAction="#clickDone" text="Done">
+                           <VBox.margin>
+                              <Insets left="8.0" />
+                           </VBox.margin>
+                        </Button>
                             </children>
                         </VBox>
                     </children>

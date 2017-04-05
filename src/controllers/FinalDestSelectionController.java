@@ -181,7 +181,7 @@ public class FinalDestSelectionController implements IControllerWithParams {
 
     @FXML  //when user clicks -> button, they will be brought to new page and asked to pick final destination
     private void clickGetPath(ActionEvent event) {
-        System.out.println(this.startNode + ", " + this.endNode);
+        //System.out.println(this.startNode + ", " + this.endNode);
         KioskMain.setScene("views/DirectionsView.fxml", this.startNode, this.endNode);
     }
 
