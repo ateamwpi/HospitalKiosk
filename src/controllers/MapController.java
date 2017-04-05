@@ -190,9 +190,6 @@ public class MapController implements IControllerWithParams {
 //        anchorPane.addEventFilter(MouseEvent.MOUSE_PRESSED, sceneGestures.getOnMousePressedEventHandler());
 //        anchorPane.addEventFilter(MouseEvent.MOUSE_DRAGGED, sceneGestures.getOnMouseDraggedEventHandler());
 //        anchorPane.addEventFilter(ScrollEvent.ANY, sceneGestures.getOnScrollEventHandler());
-
-        // test nodes
-//        addNode(100, 300, "NONE");
     }
 
     private void drawNodeConnections(Node node) {
@@ -227,97 +224,90 @@ public class MapController implements IControllerWithParams {
         return draggableNode;
     }
 
-    // reset the map
-    private void click(MouseEvent e) {
-        double width = map.getWidth();
-        double height = map.getHeight();
-        if (e.getClickCount() == 2) {
-            reset(mapView, width, height);
-        }
-    }
-
-    // handle mouse press
-    private void press(MouseEvent e) {
-        Point2D mousePress = imageViewToImage(mapView, new Point2D(e.getX(), e.getY()));
-        mouseDown.set(mousePress);
-        System.out.println(mousePress);
-    }
-
-    // pan the map and overlay
-    private void pan(MouseEvent e) {
-        // TODO pan overlay
-
-        //// OVERLAY ////
-
-
-
-        //// MAP ////
-
-        Point2D dragPoint = imageViewToImage(mapView, new Point2D(e.getX(), e.getY()));
-        shift(mapView, dragPoint.subtract(mouseDown.get()));
-        mouseDown.set(imageViewToImage(mapView, new Point2D(e.getX(), e.getY())));
-    }
-
-    // zoom the map and the overlay
-    private void zoom(ScrollEvent e) {
-        // TODO zoom overlay
-
-        double width = map.getWidth();
-        double height = map.getHeight();
-        double delta = e.getDeltaY();
-        Rectangle2D viewport = mapView.getViewport();
-
-        double scale = clamp(Math.pow(ZOOM_SPEED, delta),  // altered the value from 1.01to zoom slower
-                // don't scale so we're zoomed in to fewer than MIN_PIXELS in any direction:
-                Math.min(MIN_PIXELS / viewport.getWidth(), MIN_PIXELS / viewport.getHeight()),
-                // don't scale so that we're bigger than image dimensions:
-                Math.max(width / viewport.getWidth(), height / viewport.getHeight())
-        );
-        if (scale != 1.0) {
-            Point2D mouse = imageViewToImage(mapView, new Point2D(e.getX(), e.getY()));
-
-            double newWidth = viewport.getWidth();
-            double newHeight = viewport.getHeight();
-            double mapViewRatio = (mapView.getFitWidth() / mapView.getFitHeight());
-            double viewportRatio = (newWidth / newHeight);
-            if (viewportRatio < mapViewRatio) {
-                // adjust width to be proportional with height
-                newHeight = newHeight * scale;
-                newWidth = newHeight * mapViewRatio;
-                if (newWidth > map.getWidth()) {
-                    newWidth = map.getWidth();
-                }
-            } else {
-                // adjust height to be proportional with width
-                newWidth = newWidth * scale;
-                newHeight = newWidth / mapViewRatio;
-                if (newHeight > map.getHeight()) {
-                    newHeight = map.getHeight();
-                }
-            }
-
-            // To keep the visual point under the mouse from moving, we need
-            // (x - newViewportMinX) / (x - currentViewportMinX) = scale
-            // where x is the mouse X coordinate in the image
-            // solving this for newViewportMinX gives
-            // newViewportMinX = x - (x - currentViewportMinX) * scale
-            // we then clamp this value so the image never scrolls out
-            // of the imageview:
-            double newMinX = 0;
-            if (newWidth < map.getWidth()) {
-                newMinX = clamp(mouse.getX() - (mouse.getX() - viewport.getMinX()) * scale,
-                        0, width - newWidth);
-            }
-            double newMinY = 0;
-            if (newHeight < map.getHeight()) {
-                newMinY = clamp(mouse.getY() - (mouse.getY() - viewport.getMinY()) * scale,
-                        0, height - newHeight);
-            }
-
-            mapView.setViewport(new Rectangle2D(newMinX, newMinY, newWidth, newHeight));
-
-        }
-    }
+//    // reset the map
+//    private void click(MouseEvent e) {
+//        double width = map.getWidth();
+//        double height = map.getHeight();
+//        if (e.getClickCount() == 2) {
+//            reset(mapView, width, height);
+//        }
+//    }
+//
+//    // handle mouse press
+//    private void press(MouseEvent e) {
+//        Point2D mousePress = imageViewToImage(mapView, new Point2D(e.getX(), e.getY()));
+//        mouseDown.set(mousePress);
+//        System.out.println(mousePress);
+//    }
+//
+//    // pan the map and overlay
+//    private void pan(MouseEvent e) {
+//        // TODO pan overlay
+//        Point2D dragPoint = imageViewToImage(mapView, new Point2D(e.getX(), e.getY()));
+//        shift(mapView, dragPoint.subtract(mouseDown.get()));
+//        mouseDown.set(imageViewToImage(mapView, new Point2D(e.getX(), e.getY())));
+//    }
+//
+//    // zoom the map and the overlay
+//    private void zoom(ScrollEvent e) {
+//        // TODO zoom overlay
+//
+//        double width = map.getWidth();
+//        double height = map.getHeight();
+//        double delta = e.getDeltaY();
+//        Rectangle2D viewport = mapView.getViewport();
+//
+//        double scale = clamp(Math.pow(ZOOM_SPEED, delta),  // altered the value from 1.01to zoom slower
+//                // don't scale so we're zoomed in to fewer than MIN_PIXELS in any direction:
+//                Math.min(MIN_PIXELS / viewport.getWidth(), MIN_PIXELS / viewport.getHeight()),
+//                // don't scale so that we're bigger than image dimensions:
+//                Math.max(width / viewport.getWidth(), height / viewport.getHeight())
+//        );
+//        if (scale != 1.0) {
+//            Point2D mouse = imageViewToImage(mapView, new Point2D(e.getX(), e.getY()));
+//
+//            double newWidth = viewport.getWidth();
+//            double newHeight = viewport.getHeight();
+//            double mapViewRatio = (mapView.getFitWidth() / mapView.getFitHeight());
+//            double viewportRatio = (newWidth / newHeight);
+//            if (viewportRatio < mapViewRatio) {
+//                // adjust width to be proportional with height
+//                newHeight = newHeight * scale;
+//                newWidth = newHeight * mapViewRatio;
+//                if (newWidth > map.getWidth()) {
+//                    newWidth = map.getWidth();
+//                }
+//            } else {
+//                // adjust height to be proportional with width
+//                newWidth = newWidth * scale;
+//                newHeight = newWidth / mapViewRatio;
+//                if (newHeight > map.getHeight()) {
+//                    newHeight = map.getHeight();
+//                }
+//            }
+//
+//            // To keep the visual point under the mouse from moving, we need
+//            // (x - newViewportMinX) / (x - currentViewportMinX) = scale
+//            // where x is the mouse X coordinate in the image
+//            // solving this for newViewportMinX gives
+//            // newViewportMinX = x - (x - currentViewportMinX) * scale
+//            // we then clamp this value so the image never scrolls out
+//            // of the imageview:
+//            double newMinX = 0;
+//            if (newWidth < map.getWidth()) {
+//                newMinX = clamp(mouse.getX() - (mouse.getX() - viewport.getMinX()) * scale,
+//                        0, width - newWidth);
+//            }
+//            double newMinY = 0;
+//            if (newHeight < map.getHeight()) {
+//                newMinY = clamp(mouse.getY() - (mouse.getY() - viewport.getMinY()) * scale,
+//                        0, height - newHeight);
+//            }
+//
+//            mapView.setViewport(new Rectangle2D(newMinX, newMinY, newWidth, newHeight));
+//
+//        }
+//    }
 
     // reset the map
     private void reset(ImageView imageView, double width, double height) {
@@ -398,6 +388,11 @@ class DraggableNode extends Circle {
 
     public void previewConnections(Collection<Node> nodes) {
         previewConnections = nodes;
+        redraw();
+    }
+
+    public void previewConnection(Node node) {
+
     }
 
     public void save() {
@@ -411,7 +406,10 @@ class DraggableNode extends Circle {
     }
 
     private void redraw() {
+        // draw the node at the preview coordinate
         relocate(previewX, previewY);
+        // draw the node preview connections
+        System.out.println("draw conns");
 //        translateXProperty().setValue(node.getX());
 //        translateYProperty().setValue(node.getY());
     }

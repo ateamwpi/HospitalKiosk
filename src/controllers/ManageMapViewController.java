@@ -157,6 +157,7 @@ public class ManageMapViewController {
         selectedNode.previewRoomName(room.getText());
         selectedNode.previewConnections(selectedNode.getNode().getConnections());
         selectedNode.save();
+        KioskMain.setScene("views/ManageMapView.fxml");
     }
 
     @FXML
@@ -179,9 +180,25 @@ public class ManageMapViewController {
     }
 
     @FXML
+    private void clickAddNeighbor(ActionEvent event) {
+        // get the node id
+        int neighborID = Integer.parseInt(newNeighbor.getText());
+        // get the node
+        Node node = KioskMain.getPath().getNode(neighborID);
+        // TODO alert if node DNE or is selectedNode
+        // add the connection
+        selectedNode.previewConnection(node);
+        selectedNode.getNode().addConnection(node);
+        tableNeighbors.getItems().setAll(selectedNode.getNode().getConnections());
+    }
+
+    @FXML
     private void clickDeleteNeighbor(ActionEvent event) {
+        // get the node
         Node nodeToDelete = tableNeighbors.getSelectionModel().getSelectedItem();
+        // remove the connection to the node
         selectedNode.getNode().removeConnection(nodeToDelete);
+        // update the table
         tableNeighbors.getItems().setAll(selectedNode.getNode().getConnections());
     }
 
@@ -190,13 +207,6 @@ public class ManageMapViewController {
         System.out.println(event);
         selectedNode.previewX(getX());
     }
-
-    @FXML
-    private void clickAddNeighbor(ActionEvent event) {
-        int neighborID = Integer.parseInt(newNeighbor.getText());
-        selectedNode.getNode().addConnection(KioskMain.getPath().getNode(neighborID));
-    }
-
 
     @FXML
     private void yAction(ActionEvent event) {
