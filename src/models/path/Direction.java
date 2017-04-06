@@ -27,8 +27,8 @@ public enum Direction {
         switch(this) {
             case North:
                 switch(dir) {
-                    case East: return "left";
-                    case West: return "right";
+                    case East: return "right";
+                    case West: return "left";
                     case South: return "back";
                     default: return "straight";
                 }

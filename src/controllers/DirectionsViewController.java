@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import models.path.Node;
 import models.path.Path;
@@ -34,6 +35,9 @@ public class DirectionsViewController implements IControllerWithParams {
     private AnchorPane mapContainer;
 
     private MapController mapController;
+
+    @FXML
+    private Text directionsText;
 
     @FXML
     private void initialize() {
@@ -64,8 +68,9 @@ public class DirectionsViewController implements IControllerWithParams {
 
         this.thePath = KioskMain.getPath().findPath(this.startNode, this.endNode);
 
-        System.out.println(this.thePath);
+        //System.out.println(this.thePath);
 
-        mapController.drawPath(this.thePath);
+        this.mapController.drawPath(this.thePath);
+        this.directionsText.setText("Directions:\n" + this.thePath.textPath());
     }
 }

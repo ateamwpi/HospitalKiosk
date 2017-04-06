@@ -208,9 +208,11 @@ public class MapController implements IControllerWithParams {
     }
 
     public void drawPath(Path p) {
+        this.drawNode(p.getStart());
         for (int i = 1; i < p.getPath().size(); i++) {
             this.drawConnection(p.getStep(i-1), p.getStep(i));
         }
+        this.drawNode(p.getEnd());
     }
 
     private void drawConnection(Node nodeA, Node nodeB) {
