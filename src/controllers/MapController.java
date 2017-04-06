@@ -367,7 +367,7 @@ class DraggableNode extends Circle {
 
     private static final double UNSELECTED_RADIUS = 3;
     private static final double SELECTED_RADIUS = 5;
-    private static final Color UNSELECTED_COLOR = Color.BLACK;
+    //private static final Color UNSELECTED_COLOR = Color.BLACK;
     private static final Color SELECTED_COLOR = Color.RED;
 
     private Node node;
@@ -377,7 +377,7 @@ class DraggableNode extends Circle {
     private Collection<Node> previewConnections;
 
     public DraggableNode(Node node, NodeGestures nodeGestures) {
-        super(node.getX(), node.getY(), UNSELECTED_RADIUS, UNSELECTED_COLOR);
+        super(node.getX(), node.getY(), UNSELECTED_RADIUS, node.getColor());
         this.node = node;
         setDefaultPreview();
         // handlers for mouse click and drag
@@ -452,7 +452,7 @@ class DraggableNode extends Circle {
 
     public void unselect() {
         System.out.println("node unselected");
-        setFill(UNSELECTED_COLOR);
+        setFill(node.getColor());
         setRadius(UNSELECTED_RADIUS);
     }
 

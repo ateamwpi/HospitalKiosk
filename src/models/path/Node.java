@@ -2,12 +2,11 @@ package models.path;
 
 import core.KioskMain;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.scene.paint.Color;
 import models.dir.Location;
+import models.dir.LocationType;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.*;
 
 /**
  * Created by mattm on 3/29/2017.
@@ -21,13 +20,9 @@ public class Node {
     private String roomName;
     private ArrayList<Node> connections;
     private HashMap<Integer, Location> locations;
+    private HashMap<LocationType, Integer> counts;
     private final boolean isNew;
     private boolean isDone;
-
-    int heuristicCost = 0; //Heuristic cost
-    int finalCost = 0; //G+H
-    Node parent;
-
 
     /** This constructor should _ONLY_ be used when loading from the database. For any
      *  new nodes created, use Node(x, y) and a unique ID will automatically be generated.
@@ -39,6 +34,7 @@ public class Node {
         this.roomName = roomName;
         this.connections = new ArrayList<Node>();
         this.locations = new HashMap<Integer, Location>();
+        this.counts = new HashMap<LocationType, Integer>();
         this.isNew = false;
         this.isDone = false;
     }
@@ -50,6 +46,7 @@ public class Node {
         this.roomName = roomName;
         this.connections = new ArrayList<Node>();
         this.locations = new HashMap<Integer, Location>();
+        this.counts = new HashMap<LocationType, Integer>();
         this.isNew = true;
         this.isDone = true;
     }
@@ -61,12 +58,15 @@ public class Node {
         this.roomName = "NONE";
         this.connections = new ArrayList<Node>();
         this.locations = new HashMap<Integer, Location>();
+        this.counts = new HashMap<LocationType, Integer>();
         this.isNew = true;
         this.isDone = true;
     }
 
     public void addLocation(Location l) {
         this.locations.put(l.getID(), l);
+        if(!this.counts.containsKey(l.getLocType())) this.counts.put(l.getLocType(), 1);
+        else this.counts.put(l.getLocType(), this.counts.get(l.getLocType()) + 1);
     }
 
     public void addConnection(Node other) {
@@ -77,6 +77,12 @@ public class Node {
             }
             other.addConnection(this);
         }
+    }
+
+    public Color getColor() {
+        if(this.counts.isEmpty()) return LocationType.Unknown.getNodeColor();
+        LocationType lt = Collections.max(this.counts.entrySet(), Map.Entry.comparingByValue()).getKey();
+        return lt.getNodeColor();
     }
 
     public void removeConnection(Node other) {
@@ -155,7 +161,7 @@ public class Node {
     public void removeLocation(Location l) {
         System.out.println("hi");
         this.locations.remove(l.getID());
-        System.out.println(this.locations.values());
+        this.counts.put(l.getLocType(), this.counts.get(l.getLocType())-1);
     }
 
     public String toString() {
