@@ -64,7 +64,7 @@ public class DirectionsViewController implements IControllerWithParams {
 
         this.thePath = KioskMain.getPath().findPath(this.startNode, this.endNode);
 
-        //System.out.println(this.thePath);
+        System.out.println(this.thePath);
 
         mapController.drawPath(this.thePath);
     }

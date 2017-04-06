@@ -17,7 +17,7 @@ public enum LocationType {
 
     private Color nodeColor;
 
-    private LocationType(Color nodeColor) {
+    LocationType(Color nodeColor) {
         this.nodeColor = nodeColor;
     }
 
