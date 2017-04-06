@@ -155,7 +155,7 @@ public class Node {
     }
 
     public ArrayList<Node> getConnections() {
-        return this.connections;
+        return (ArrayList<Node>)this.connections.clone();
     }
 
     public void removeLocation(Location l) {

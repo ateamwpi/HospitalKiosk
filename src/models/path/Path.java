@@ -1,7 +1,10 @@
 package models.path;
 
 
+import models.dir.Directory;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 /**
@@ -32,12 +35,73 @@ public class Path {
         return this.path.get(i);
     }
 
+    public String textPath() {
+        // Calculate the cardinal starting direction
+        String str = "1. Start by leaving " + this.path.getFirst().getRoomName() + ".\n";
+        Direction cur = Direction.dirFor(this.getStep(0), this.getStep(1));
+
+        // Initialize the array that keeps track of attempts for each turn
+        HashMap<String, Integer> attempts = new HashMap<String, Integer>();
+        attempts.put("left", 0); attempts.put("right", 0); attempts.put("straight", 0); attempts.put("back", 0);
+        int stepNum = 2;
+        for (int i = 2; i < this.path.size(); i++) {
+            // Calculate the next cardinal turning direction
+            Direction next = Direction.dirFor(this.getStep(i-1), this.getStep(i));
+
+            // Turn the new direction into a relative direction (left, right, or straight)
+            String result = cur.turnFor(next);
+            if(result.equals("straight")) {
+                // If just continuing straight, record any possible turns that weren't taken.
+                // This is used to keep track for the "4th left" or "3rd right" message.
+                for (Node conn : this.getStep(i-1).getConnections()) {
+                    Direction connect = Direction.dirFor(this.getStep(i-1), conn);
+                    String turn = cur.turnFor(connect);
+                    attempts.put(turn, attempts.get(turn)+1);
+                }
+            }
+            else {
+                // If actually making a turn, add a message about it to the directions
+                str += stepNum + ". Make the" + strForNum(attempts.get(result)+1) + result;
+                if(i+1 == this.path.size()) str += ", into " + this.getEnd().getRoomName() + ".\n";
+                else str += ".\n";
+                stepNum ++;
+
+                // Reset attempt counters every time a turn is made
+                attempts.put("left", 0); attempts.put("right", 0); attempts.put("straight", 0); attempts.put("back", 0);
+            }
+
+            // Update current cardinal direction to the new one
+            cur = next;
+        }
+
+        return str;
+    }
+
+    private String strForNum(int i) {
+        // Assumes there will never be more than 20 turns options.
+        switch(i) {
+            case 1: return " 1st ";
+            case 2: return " 2nd ";
+            case 3: return " 3rd ";
+            default: return " " + i + "th ";
+        }
+    }
+
     public String toString() {
+        //System.out.println(this.textPath());
         String str = "Path: ";
         for (Node n : this.path) {
             str += n.getID() + ", ";
         }
         return str;
+    }
+
+    public Node getStart() {
+        return this.path.getFirst();
+    }
+
+    public Node getEnd() {
+        return this.path.getLast();
     }
 
     @Override
