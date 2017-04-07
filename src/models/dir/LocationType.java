@@ -7,11 +7,11 @@ import javafx.scene.paint.Color;
  */
 public enum LocationType {
     Room(Color.BLACK),
-    Service(Color.ORANGE),
-    Physician(Color.GREEN),
-    PointOfInterest(Color.CYAN),
-    Stairs(Color.DARKGRAY),
-    Elevator(Color.DARKGRAY),
+    Service(Color.DARKMAGENTA),
+    Physician(Color.CADETBLUE),
+    PointOfInterest(Color.ORANGE),
+    Stairs(Color.DARKBLUE),
+    Elevator(Color.DARKBLUE),
     Hallway(Color.GRAY),
     Unknown(Color.GRAY);
 
