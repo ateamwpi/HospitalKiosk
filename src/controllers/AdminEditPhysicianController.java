@@ -29,14 +29,12 @@ public class AdminEditPhysicianController implements IControllerWithParams {
 
     @FXML
     private void clickBack(ActionEvent event) throws IOException {
-        KioskMain.setScene("views/ManageDirectoryView.fxml");
+        KioskMain.setScene("views/DirectoryView.fxml", true);
     }
 
     @Override
     public void initData(Object... data) {
-        for(Object o : data) {
-            this.physician = (Location) o;
-        }
+        this.physician = (Location) data[0];
         name.setText(physician.getName());
         room.setText(physician.getNode().getRoomName());
     }
@@ -49,7 +47,7 @@ public class AdminEditPhysicianController implements IControllerWithParams {
         if (!room.getText().equals(physician.getNode().getRoomName())) {
             try {
                 physician.setNode(KioskMain.getPath().getRoom(room.getText()));
-                KioskMain.setScene("views/ManageDirectoryView.fxml");
+                KioskMain.setScene("views/DirectoryView.fxml", true);
             } catch(RoomNotFoundException e) {
                 Alert invalidRoom = new Alert(Alert.AlertType.ERROR);
                 invalidRoom.setHeaderText("Invalid Room!");

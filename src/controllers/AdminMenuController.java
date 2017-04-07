@@ -29,7 +29,7 @@ public class AdminMenuController {
 
     @FXML
     private void clickManageDirectory(ActionEvent event) {
-        KioskMain.setScene("views/ManageDirectoryView.fxml");
+        KioskMain.setScene("views/DirectoryView.fxml", true);
     }
 
     @FXML

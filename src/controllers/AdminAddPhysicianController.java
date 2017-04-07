@@ -36,7 +36,7 @@ public class AdminAddPhysicianController {
     @FXML
     private void clickBack(ActionEvent event) throws IOException {
         //back button goes to Admin menu
-        KioskMain.setScene("views/ManageDirectoryView.fxml");
+        KioskMain.setScene("views/DirectoryView.fxml", true);
     }
 
 
@@ -51,7 +51,7 @@ public class AdminAddPhysicianController {
         try{
             Location L = new Location(person, LocationType.Physician, KioskMain.getPath().getRoom(loc));
             KioskMain.getDir().addLocation(L);
-            KioskMain.setScene("views/ManageDirectoryView.fxml");
+            KioskMain.setScene("views/DirectoryView.fxml", true);
         }
         catch(RoomNotFoundException e){
             Alert invalidRoom = new Alert(Alert.AlertType.ERROR);

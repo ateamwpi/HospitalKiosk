@@ -45,7 +45,7 @@ public class MainMenuController {
 
     @FXML
     private void clickViewDirectory(ActionEvent event) {
-        KioskMain.setScene("views/DirectoryView.fxml");
+        KioskMain.setScene("views/DirectoryView.fxml", false);
     }
 
     @FXML

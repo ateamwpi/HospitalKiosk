@@ -18,6 +18,6 @@ public class AdminRemovePhysicianController {
 
     @FXML
     private void clickBack(ActionEvent event) throws IOException {
-        KioskMain.setScene("views/ManageDirectoryView.fxml");
+        KioskMain.setScene("views/DirectoryView.fxml", true);
     }
 }
