@@ -91,7 +91,7 @@ BNODEID</ColNames>
     </column>
     <column id="30" parent="15" name="ROOMNAME">
       <Position>4</Position>
-      <DataType>VARCHAR(10)|12</DataType>
+      <DataType>VARCHAR(50)|12</DataType>
     </column>
     <key id="31" parent="15" name="PK_NODE">
       <ColNames>ID</ColNames>

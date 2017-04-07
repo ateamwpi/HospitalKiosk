@@ -30,8 +30,8 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Button fx:id="viewMapBtn" disable="true" mnemonicParsing="false" onAction="#clickViewMap" opacity="0.0" text="View Map" GridPane.halignment="RIGHT" GridPane.valignment="CENTER" />
-                        <Button fx:id="viewDirectoryBtn" mnemonicParsing="false" onAction="#clickViewDirectory" text="Get Directions" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                        <Button fx:id="viewMapBtn" alignment="CENTER" mnemonicParsing="false" onAction="#clickViewMap" text="View Map" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                        <Button fx:id="viewDirectoryBtn" mnemonicParsing="false" onAction="#clickViewDirectory" text="Get Directions" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                         <Button fx:id="adminBtn" mnemonicParsing="false" onAction="#clickAdmin" text="Admin" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                      </children>
                   </GridPane>
