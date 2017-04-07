@@ -12,7 +12,7 @@ public enum Direction {
     public static Direction dirFor(Node n1, Node n2) {
         int dx = n2.getX() - n1.getX();
         int dy = n2.getY() - n1.getY();
-        if(Math.abs(dx) > Math.abs(dy)) {
+        if(Math.abs(dx) >= Math.abs(dy)) {
             if(dx > 0) return East;
             else return West;
         }
@@ -20,7 +20,10 @@ public enum Direction {
             if(dy > 0) return South;
             else return North;
         }
-        else return null;
+        else {
+            System.out.println("This shouldn't even be reachable");
+            return null;
+        }
     }
 
     public String turnFor(Direction dir) {
