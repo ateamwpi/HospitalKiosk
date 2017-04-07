@@ -1,27 +1,17 @@
 package controllers;
 
 import core.KioskMain;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
-import javafx.util.Callback;
 import models.dir.Directory;
 import models.dir.Location;
 import models.dir.LocationType;
 import models.path.Node;
 
-import javax.swing.*;
-import java.io.IOException;
 import java.util.*;
 
 /**
@@ -32,18 +22,21 @@ public class DirectoryViewController {
 
     private HashMap<LocationType, Directory> directories;
 
-    private Collection<Location> currentLocations;
+    private Collection<Location> selectedLocations; // all Locations of the current LocationType
 
-    private Collection<Location> filteredLocations;
+    private Collection<Location> filteredLocations; // all Locations that match the searchBox
 
+    private Node startNode; // The selected starting node for pathfinding
+
+    private Node endNode;
+
+    private Node selectedNode;
+
+
+    @FXML
+    private Label title;
     @FXML
     private Button backBtn;
-    @FXML
-    private Button fullDirectoryBtn;
-    @FXML
-    private Button physiciansBtn;
-    @FXML
-    private Button servicesBtn;
     @FXML
     private TableView<Location> locationsTable; //table to hold all locations
     @FXML
@@ -51,58 +44,69 @@ public class DirectoryViewController {
     @FXML
     private TableColumn<Location, String> roomCol; //column that holds room names
     @FXML
-    private Label dirLabel; //label that shows type of directory shown
-    @FXML
     private Button goToFinalSel; //button user will press to get path to selected
     @FXML
     private Label directions; //label to give user instructions
     @FXML
     private TextField searchBox;
-
-    private Node startNode;
+    @FXML
+    private ComboBox<String> locationDropdown;
 
 
     public DirectoryViewController() {
-        // get all directories from dbMg
-        directories = KioskMain.getDB().getAllDirectories();
-        currentLocations = new ArrayList<Location>();
-        filteredLocations = new ArrayList<Location>();
-
+        directories = KioskMain.getDir().getDirectories();
+        selectedLocations = new ArrayList<>();
+        filteredLocations = new ArrayList<>();
     }
 
     @FXML
     private void initialize() {
-        // setup column cell factories
-        nameCol.setCellValueFactory(new PropertyValueFactory("name"));
-        roomCol.setCellValueFactory(new PropertyValueFactory("roomName"));
-
-        // select default directory
-        selectDirectory(LocationType.Physician);
-
-        //set title of default directory and directions given
-        dirLabel.setText("Physicians");
         directions.setText("Select a starting location from the table below. Once a location is selected, click the '->' button " +
                 "to next choose a final destination.");
-
         //disable the -> button so user cannot move on until they have selected an entry
         goToFinalSel.setDisable(true);
 
-        locationsTable.getSortOrder().add(nameCol);
-
+        initializeTable();
+        initializeDropdown();
+        initializeFilter();
+    }
+    /**
+     * Populate the Table of Locations. Sorts the table by name. When entry is selected, allow for use as starting
+     * location.
+     */
+    private void initializeTable() {
+        nameCol.setCellValueFactory(new PropertyValueFactory("name"));
+        roomCol.setCellValueFactory(new PropertyValueFactory("roomName"));
+        locationsTable.getSortOrder().add(nameCol); // Default to sort by name
         locationsTable.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
             if (locationsTable.getSelectionModel().getSelectedItem() != null) {
-                this.startNode = newValue.getNode(); //store the node that was selected
+                this.selectedNode = newValue.getNode(); //store the node that was selected
                 goToFinalSel.setDisable(false); //enable -> button once selection has been made
             }
         });
+    }
 
+    /**
+     * Populate LocationType Dropdown menu with all LocationTypes. Additionally, allow for Full Directory to be selected.
+     */
+    private void initializeDropdown() {
+        locationDropdown.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
+            selectDirectory(locationDropdown.getSelectionModel().getSelectedItem());
+        }));
+        locationDropdown.getItems().add("Full Directory");
+        for (LocationType locType : LocationType.values()) {
+            locationDropdown.getItems().add(locType.name());
+        }
+        locationDropdown.getSelectionModel().selectFirst();
+    }
+
+    private void initializeFilter() {
         searchBox.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 filterLocations();
             }
         });
-
     }
 
     @FXML  //when user clicks "back" button, they will return to main menu
@@ -110,47 +114,90 @@ public class DirectoryViewController {
         KioskMain.setScene("views/MainMenu.fxml");
     }
 
-    @FXML
-    private void clickFullDirectory(ActionEvent event) {
-        Collection<Location> locations = new ArrayList<Location>(); //make an array list of locations
-        locations.addAll(getLocationsOfType(LocationType.Service)); // add all locations of type Service
-        locations.addAll(getLocationsOfType(LocationType.Physician)); //add all locations of type Physician
-        locations.addAll(getLocationsOfType(LocationType.PointOfInterest)); //add Points of Interest
-        locations.addAll(getLocationsOfType(LocationType.Elevator)); //add elevators
-        locations.addAll(getLocationsOfType(LocationType.Room)); //add rooms
-        locations.addAll(getLocationsOfType(LocationType.Stairs)); //add stairs
-
-        //set the list of locations shown on table to be all the locations added above
-        setLocations(locations);
-
-        //display name of directory
-        dirLabel.setText("Full Directory");
+    @FXML  //when user clicks -> button, they will be brought to new page and asked to pick final destination
+    private void clickGoToFinalSel(ActionEvent event) {
+        if (startNode == null) {
+            title.setText("Select Ending Location");
+            directions.setText("Select an ending location from the table below. Once a location is selected, click the 'Get Path' button " +
+                    "to view a path connecting the  selected starting and ending locations.");
+            goToFinalSel.setText("Get Path");
+            startNode = selectedNode;
+        } else {
+            endNode = selectedNode;
+            KioskMain.setScene("views/DirectionsView.fxml", this.startNode, this.endNode);
+        }
     }
 
-    @FXML
-    private void clickPhysicians(ActionEvent event) {
-        //set directory to get all locations of type physician
-        selectDirectory(LocationType.Physician);
-
-        //display name of directory
-        dirLabel.setText("Physicians");
+    private void filterLocations() {
+        filteredLocations.clear(); // Clear the list keeping track of filtered locations
+        String filterString = searchBox.getText().toLowerCase(); // get the keyword
+        // check which locations contain the keyword
+        for (Location loc : selectedLocations) {
+            if (loc.getName().toLowerCase().contains(filterString)) {
+                filteredLocations.add(loc);
+            }
+        }
+        showLocations(filteredLocations); // update the table to reflect the filteredLocations
     }
 
-    @FXML
-    private void clickServices(ActionEvent event) {
-        //set directory to get all locations of type points of interest
-        selectDirectory(LocationType.Service);
-        //display name of directory
-        dirLabel.setText("Services");
+    /**
+     * Establishes all locations to search through, displays them on table
+     * @param locations
+     */
+    private void selectLocations(Collection<Location> locations) {
+        searchBox.clear();
+        filteredLocations.clear();
+        selectedLocations = locations;
+        showLocations(locations);
     }
 
-    // add the directory locations to the list view
+    /**
+     * Shows the given locations on the table and sorts them.
+     * @param locations
+     */
+    private void showLocations(Collection<Location> locations) {
+        locationsTable.getItems().setAll(locations);
+        locationsTable.sort();
+    }
+
+    /**
+     * Select the LocationType to use for the directory.
+     * @param locType
+     */
     private void selectDirectory(LocationType locType) {
-
-        setLocations(getLocationsOfType(locType));
+        selectLocations(getLocationsOfType(locType));
     }
 
-    //returns list of directory entries of given location type
+    /**
+     * Selects the directory based upon a given string.
+     * @param s
+     */
+    private void selectDirectory(String s) {
+        if (s.equalsIgnoreCase("Full Directory")) {
+            setFullDirectory();
+        } else {
+            selectDirectory(LocationType.getType(s));
+        }
+    }
+
+    /**
+     * Selects the locations based upon every location type.
+     */
+    private void setFullDirectory() {
+        Collection<Location> locations = new ArrayList<Location>(); //make an array list of location// s
+        KioskMain.getDir().getDirectories().values();
+        for(LocationType locType : LocationType.values()) {
+            locations.addAll(getLocationsOfType(locType));
+        }
+        //set the list of locations shown on table to be all the locations added above
+        selectLocations(locations);
+    }
+
+    /**
+     * Find locations of a given type.
+     * @param locType
+     * @return Collection of Locations of a given LocationType.
+     */
     private Collection<Location> getLocationsOfType(LocationType locType) {
         if (directories.containsKey(locType)) {
             Directory dir = directories.get(locType);
@@ -158,35 +205,6 @@ public class DirectoryViewController {
             return locations.values();
         }
         return new ArrayList<Location>(); //returns empty array list if there are no locations of given type
-    }
-
-    //sets what type of locations are shown on the table
-    private void setLocations(Collection<Location> locations) {
-        searchBox.clear();
-        currentLocations = locations;
-        updateTable(locations);
-    }
-
-    private void updateTable(Collection<Location> locations) {
-        locationsTable.getItems().setAll(locations);
-        locationsTable.sort();
-    }
-
-    private void filterLocations() {
-        filteredLocations.clear();
-        String filterString = searchBox.getText().toLowerCase();
-        for (Location loc : currentLocations) {
-            if (loc.getName().toLowerCase().contains(filterString)) {
-                filteredLocations.add(loc);
-            }
-        }
-        updateTable(filteredLocations);
-    }
-
-    @FXML  //when user clicks -> button, they will be brought to new page and asked to pick final destination
-    private void clickGoToFinalSel(ActionEvent event) {
-        //System.out.println(this.startNode);
-        KioskMain.setScene("views/FinalDestSelectionView.fxml", this.startNode);
     }
 
 }
