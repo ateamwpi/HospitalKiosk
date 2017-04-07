@@ -58,6 +58,8 @@ public class DirectoryViewController {
     private Label directions; //label to give user instructions
     @FXML
     private TextField searchBox;
+    @FXML
+    private Button kioskButton;
 
     private Node startNode;
 
@@ -187,6 +189,13 @@ public class DirectoryViewController {
     private void clickGoToFinalSel(ActionEvent event) {
         //System.out.println(this.startNode);
         KioskMain.setScene("views/FinalDestSelectionView.fxml", this.startNode);
+    }
+
+    @FXML
+    private void pressedKiosk(ActionEvent event) {
+        // TODO make this not hard-coded
+        Node kiosk = KioskMain.getDir().getDirectory(LocationType.Kiosk).getLocation(110).getNode();
+        KioskMain.setScene("views/FinalDestSelectionView.fxml", kiosk);
     }
 
 }

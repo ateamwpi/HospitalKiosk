@@ -50,6 +50,9 @@ public class FinalDestSelectionController implements IControllerWithParams {
     private Label directions; //label to give user instructions
     @FXML
     private TextField searchBox;
+    @FXML
+    private Button kioskButton;
+
 
     private Node startNode;
     private Node endNode;
@@ -183,6 +186,13 @@ public class FinalDestSelectionController implements IControllerWithParams {
     private void clickGetPath(ActionEvent event) {
         //System.out.println(this.startNode + ", " + this.endNode);
         KioskMain.setScene("views/DirectionsView.fxml", this.startNode, this.endNode);
+    }
+
+    @FXML
+    private void pressedKiosk(ActionEvent event) {
+        // TODO make this not hard-coded
+        Node kiosk = KioskMain.getDir().getDirectory(LocationType.Kiosk).getLocation(110).getNode();
+        KioskMain.setScene("views/DirectionsView.fxml", this.startNode, kiosk);
     }
 
     @Override

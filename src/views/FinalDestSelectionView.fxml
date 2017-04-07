@@ -84,6 +84,11 @@
                            </font>
                         </Label>
                         <TextField fx:id="searchBox" promptText="Search" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <Button fx:id="kioskButton" mnemonicParsing="false" onAction="#pressedKiosk" text="Use This Kiosk" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+                           <GridPane.margin>
+                              <Insets right="25.0" />
+                           </GridPane.margin>
+                        </Button>
                      </children>
                   </GridPane>
                </children></AnchorPane>
