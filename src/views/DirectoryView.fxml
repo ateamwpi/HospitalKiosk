@@ -61,6 +61,7 @@
                               <Button fx:id="removeEntry" mnemonicParsing="false" onAction="#clickRemove" text="Remove" />
                            </children>
                         </VBox>
+                        <Button fx:id="kiosk" mnemonicParsing="false" onAction="#clickKiosk" text="Use Kiosk Location" GridPane.columnIndex="2" />
                      </children>
                   </GridPane>
                </children></AnchorPane>

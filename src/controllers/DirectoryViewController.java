@@ -4,6 +4,7 @@ import core.KioskMain;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import models.dir.LocationType;
 import models.path.Node;
 
 import java.io.IOException;
@@ -32,6 +33,8 @@ public class DirectoryViewController extends AbstractDirectoryController impleme
     private Button addEntry;
     @FXML
     private Button removeEntry;
+    @FXML
+    private Button kiosk;
 
 
 
@@ -74,6 +77,7 @@ public class DirectoryViewController extends AbstractDirectoryController impleme
     }
 
     private void adminMode() {
+        kiosk.setVisible(false);
         goToFinalSel.setVisible(false);
         title.setText("Manage Directory");
         directions.setText("Add a new Location with the 'New' Button. To edit or remove a location, select a Location" +
@@ -98,6 +102,9 @@ public class DirectoryViewController extends AbstractDirectoryController impleme
 
     @FXML  //when user clicks -> button, they will be brought to new page and asked to pick final destination
     private void clickGoToFinalSel(ActionEvent event) {
+        getDirections();
+    }
+    private void getDirections() {
         if (startNode == null) {
             title.setText("Select Ending Location");
             directions.setText("Select an ending location from the table above. Once a location is selected, click the 'Get Path' button " +
@@ -124,6 +131,14 @@ public class DirectoryViewController extends AbstractDirectoryController impleme
     private void clickRemove(ActionEvent event)throws IOException {
         KioskMain.getDir().removeLocation(selectedLocation);
         KioskMain.setScene("views/DirectoryView.fxml", true);
+    }
+
+    @FXML
+    private void clickKiosk(ActionEvent event) {
+        // TODO make this not hard-coded
+        selectedLocation = KioskMain.getDir().getDirectory(LocationType.Kiosk).getLocation(110);
+        getDirections();
+        //KioskMain.setScene("views/FinalDestSelectionView.fxml", kiosk);
     }
 
 
