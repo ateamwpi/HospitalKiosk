@@ -7,7 +7,6 @@
       </database-info>
       <case-sensitivity plain-identifiers="upper" quoted-identifiers="exact" />
       <secret-storage>master_key</secret-storage>
-      <introspection-schemas>*:APP</introspection-schemas>
     </data-source>
   </component>
 </project>
