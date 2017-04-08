@@ -36,6 +36,7 @@ public class Path {
     }
 
     public String textPath() {
+        if(this.path.size() < 2) return "You are already at your destination!";
         // Calculate the cardinal starting direction
         String str = "1. Start by leaving " + this.path.getFirst().getRoomName() + ".\n";
         Direction cur = Direction.dirFor(this.getStep(0), this.getStep(1));
