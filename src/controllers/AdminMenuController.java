@@ -41,7 +41,7 @@ public class AdminMenuController {
 
     @FXML
     private void pressedKiosk(ActionEvent event) {
-
+        KioskMain.setScene("views/ChangeKiosk.fxml");
     }
 
 

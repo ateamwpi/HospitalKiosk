@@ -53,7 +53,7 @@ public class DirectionsViewController implements IControllerWithParams {
 
     @FXML
     private void clickBack(ActionEvent event) {
-        KioskMain.setScene("views/DirectoryView.fxml");
+        KioskMain.setScene("views/DirectoryView.fxml", false);
     }
 
     @FXML
