@@ -2,6 +2,7 @@ package models.path;
 
 
 import models.dir.Directory;
+import sun.awt.image.ImageWatched;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,8 +28,15 @@ public class Path {
         this.path.addFirst(n);
     }
 
+    public Path addSteps(Path p){
+        for(Node n : p.getPath()){
+            this.addInOrder(n);
+        }
+        return this;
+    }
+
     public LinkedList<Node> getPath() {
-        return this.path;
+        return (LinkedList<Node>) this.path.clone();
     }
 
     public Node getStep(int i) {

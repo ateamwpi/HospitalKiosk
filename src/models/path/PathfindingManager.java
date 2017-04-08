@@ -3,10 +3,14 @@ package models.path;
 import core.KioskMain;
 import core.NodeInUseException;
 import core.RoomNotFoundException;
+import models.dir.Location;
+import models.dir.LocationType;
 import models.path.algo.AStar;
 import models.path.algo.IPathfindingAlgorithm;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.ArrayList;
 
 /**
  * Created by mattm on 3/29/2017.
@@ -59,6 +63,47 @@ public class PathfindingManager {
         }
     }
 
+    private Node findMatching(Node cur, int floor, LocationType locType) {
+        Collection<Location> locations = KioskMain.getDir().getDirectory(locType).getLocations().values();
+        Node other;
+        for (Location l : locations) {
+            other = l.getNode();
+            if(other.getFloor() == floor && cur.getX() == other.getX() && cur.getY() == other.getY()) return other;
+        }
+        return null;
+    }
+
+    public Node getNearest(LocationType loc, Node start){
+        Collection<Location> locations = KioskMain.getDir().getDirectory(loc).getLocations().values();
+        Node currentShortest = locations.iterator().next().getNode();
+
+
+        for(Location l : locations){
+            if(l.getNode().getFloor() == start.getFloor()){
+                if(distanceFormula(l.getNode(), start) < distanceFormula(currentShortest, start)) {
+                    currentShortest = l.getNode();
+                }
+            }
+        }
+        return currentShortest;
+    }
+
+    private double distanceFormula(Node end, Node start){
+
+        double endX = (double)end.getX();
+        double endY = (double)end.getY();
+
+        double startX = (double)start.getX();
+        double startY = (double)start.getY();
+
+        double distX = endX - startX;
+        double distY = endY - startY;
+
+        double distance = Math.sqrt(Math.pow(distX, 2) + Math.pow(distY, 2));
+
+        return distance;
+    }
+
     public Node getRoom(String roomName) throws RoomNotFoundException {
         if(!this.ids.containsKey(roomName)) {
             throw new RoomNotFoundException(roomName);
@@ -66,7 +111,17 @@ public class PathfindingManager {
         else return this.graph.get(this.ids.get(roomName));
     }
 
+
     public Path findPath(Node start, Node end) {
-        return this.astar.findPath(start, end);
+
+        if(start.getFloor() != end.getFloor()){
+            Node elevator = getNearest(LocationType.Elevator, start);
+            Path startFloor = this.astar.findPath(start, elevator);
+            Path endFloor = this.astar.findPath(findMatching(elevator, end.getFloor(), LocationType.Elevator), end);
+            return startFloor.addSteps(endFloor);
+        }
+        else{
+            return this.astar.findPath(start, end);
+        }
     }
 }
