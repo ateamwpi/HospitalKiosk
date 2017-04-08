@@ -17,6 +17,7 @@ public class Node {
     private int x;
     private int y;
     private final int id;
+    private int floor;
     private String roomName;
     private ArrayList<Node> connections;
     private HashMap<Integer, Location> locations;
@@ -27,10 +28,11 @@ public class Node {
     /** This constructor should _ONLY_ be used when loading from the database. For any
      *  new nodes created, use Node(x, y) and a unique ID will automatically be generated.
      */
-    public Node(int id, int x, int y, String roomName) {
+    public Node(int id, int x, int y, int floor, String roomName) {
         this.x = x;
         this.y = y;
         this.id = id;
+        this.floor = floor;
         this.roomName = roomName;
         this.connections = new ArrayList<Node>();
         this.locations = new HashMap<Integer, Location>();
@@ -39,10 +41,11 @@ public class Node {
         this.isDone = false;
     }
 
-    public Node(int x, int y, String roomName) {
+    public Node(int x, int y, int floor, String roomName) {
         this.id = getNextNodeID();
         this.x = x;
         this.y = y;
+        this.floor = floor;
         this.roomName = roomName;
         this.connections = new ArrayList<Node>();
         this.locations = new HashMap<Integer, Location>();
@@ -51,10 +54,11 @@ public class Node {
         this.isDone = true;
     }
 
-    public Node(int x, int y) {
+    public Node(int x, int y, int floor) {
         this.id = getNextNodeID();
         this.x = x;
         this.y = y;
+        this.floor = floor;
         this.roomName = "NONE";
         this.connections = new ArrayList<Node>();
         this.locations = new HashMap<Integer, Location>();
@@ -111,6 +115,11 @@ public class Node {
         KioskMain.getDB().updateNode(this);
     }
 
+    public void setFloor(int floor) {
+        this.floor = floor;
+        KioskMain.getDB().updateNode(this);
+    }
+
     public void setRoomName(String name) {
         KioskMain.getPath().updateRoomName(this, name);
         this.roomName = name;
@@ -142,9 +151,17 @@ public class Node {
         return this.id;
     }
 
-    public int getX() { return this.x; }
+    public int getX() {
+        return this.x;
+    }
 
-    public int getY() { return this.y; }
+    public int getY() {
+        return this.y;
+    }
+
+    public int getFloor() {
+        return this.floor;
+    }
 
     public String getRoomName() {
         return this.roomName;
@@ -165,7 +182,7 @@ public class Node {
     }
 
     public String toString() {
-        String str= "Node: ID=" + this.id + ", X=" + this.x + ", Y=" + this.y + ", NAME=" + this.roomName + "\n";
+        String str= "Node: ID=" + this.id + ", X=" + this.x + ", Y=" + this.y + ", FLOOR=" + this.floor + ", NAME=" + this.roomName + "\n";
         for (Node n : this.connections) {
             str += "Connected to Node ID=" + n.getID() + "\n";
         }

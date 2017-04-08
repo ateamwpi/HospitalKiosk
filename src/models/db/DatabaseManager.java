@@ -135,7 +135,7 @@ public class DatabaseManager {
             e.printStackTrace();
         }
 
-        int x, y, id = 0;
+        int x, y, floor, id = 0;
         String roomName;
 
         try {
@@ -144,8 +144,9 @@ public class DatabaseManager {
                 id = rset.getInt("ID");
                 x = rset.getInt("X");
                 y = rset.getInt("Y");
+                floor = rset.getInt("FLOOR");
                 roomName = rset.getString("ROOMNAME");
-                allNodes.put(id, new Node(id, x, y, roomName));
+                allNodes.put(id, new Node(id, x, y, floor, roomName));
             }
 
             // Run SQL query to get all EDGES from the database
@@ -178,12 +179,13 @@ public class DatabaseManager {
 
     public void addNode(Node n) {
         try {
-            String str = "INSERT INTO NODE VALUES (?, ?, ?, ?)";
+            String str = "INSERT INTO NODE VALUES (?, ?, ?, ?, ?)";
             PreparedStatement stmt = conn.prepareStatement(str);
             stmt.setInt(1, n.getID());
             stmt.setInt(2, n.getX());
             stmt.setInt(3, n.getY());
-            stmt.setString(4, n.getRoomName());
+            stmt.setInt(4, n.getFloor());
+            stmt.setString(5, n.getRoomName());
             stmt.execute();
         }
         catch (SQLException e) {
@@ -217,12 +219,13 @@ public class DatabaseManager {
 
     public void updateNode(Node n) {
         try {
-            String str = "UPDATE NODE SET X=?, Y=?, ROOMNAME=? WHERE ID=?";
+            String str = "UPDATE NODE SET X=?, Y=?, FLOOR=?, ROOMNAME=? WHERE ID=?";
             PreparedStatement stmt = conn.prepareStatement(str);
             stmt.setInt(1, n.getX());
             stmt.setInt(2, n.getY());
-            stmt.setString(3, n.getRoomName());
-            stmt.setInt(4, n.getID());
+            stmt.setInt(3, n.getFloor());
+            stmt.setString(4, n.getRoomName());
+            stmt.setInt(5, n.getID());
             stmt.execute();
         }
         catch (SQLException e) {

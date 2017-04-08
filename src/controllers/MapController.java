@@ -95,7 +95,7 @@ public class MapController implements IControllerWithParams {
     public void addNode(double x, double y, String room) {
         System.out.println("add node");
         // create new node
-        Node node = new Node((int) x, (int) y, room);
+        Node node = new Node((int) x, (int) y, 4, room);
         // draw node with gestures
         DraggableNode draggableNode = drawNode(node);
         // select the node
