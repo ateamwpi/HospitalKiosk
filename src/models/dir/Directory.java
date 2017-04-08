@@ -32,6 +32,7 @@ public class Directory {
     }
 
     public void removeLocation(Location l) {
+        System.out.println("removing location " + l);
         l.getNode().removeLocation(l);
         this.entries.remove(l.getID());
         KioskMain.getDB().removeLocation(l);

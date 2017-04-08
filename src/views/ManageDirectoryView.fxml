@@ -48,9 +48,9 @@
                </font></Label>
             <VBox prefHeight="247.0" prefWidth="72.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
                <children>
-                  <Button fx:id="addPhysician" mnemonicParsing="false" onAction="#clickAddPhysician" text="Add phy" />
-                  <Button fx:id="removePhysician" mnemonicParsing="false" onAction="#clickRemovePhysician" text="remove phy" />
-                  <Button fx:id="editPhysician" mnemonicParsing="false" onAction="#clickEditPhysician" text="edit phy" />
+                  <Button fx:id="addPhysician" mnemonicParsing="false" onAction="#clickAddPhysician" text="Add Physician" />
+                  <Button fx:id="removePhysician" mnemonicParsing="false" onAction="#clickRemovePhysician" text="Remove Physician" />
+                  <Button fx:id="editPhysician" mnemonicParsing="false" onAction="#clickEditPhysician" text="Edit Physician" />
                </children>
             </VBox>
             <TableView fx:id="locationsTable" prefHeight="303.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">

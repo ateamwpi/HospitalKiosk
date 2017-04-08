@@ -1,9 +1,12 @@
 package models.path;
 
 import core.KioskMain;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.scene.paint.Color;
 import models.dir.Location;
+import models.dir.LocationType;
 
-import java.util.ArrayList;
+import java.util.*;
 
 /**
  * Created by mattm on 3/29/2017.
@@ -16,14 +19,10 @@ public class Node {
     private final int id;
     private String roomName;
     private ArrayList<Node> connections;
-    private ArrayList<Location> locations;
+    private HashMap<Integer, Location> locations;
+    private HashMap<LocationType, Integer> counts;
     private final boolean isNew;
     private boolean isDone;
-
-    int heuristicCost = 0; //Heuristic cost
-    int finalCost = 0; //G+H
-    Node parent;
-
 
     /** This constructor should _ONLY_ be used when loading from the database. For any
      *  new nodes created, use Node(x, y) and a unique ID will automatically be generated.
@@ -34,7 +33,8 @@ public class Node {
         this.id = id;
         this.roomName = roomName;
         this.connections = new ArrayList<Node>();
-        this.locations = new ArrayList<Location>();
+        this.locations = new HashMap<Integer, Location>();
+        this.counts = new HashMap<LocationType, Integer>();
         this.isNew = false;
         this.isDone = false;
     }
@@ -45,7 +45,8 @@ public class Node {
         this.y = y;
         this.roomName = roomName;
         this.connections = new ArrayList<Node>();
-        this.locations = new ArrayList<Location>();
+        this.locations = new HashMap<Integer, Location>();
+        this.counts = new HashMap<LocationType, Integer>();
         this.isNew = true;
         this.isDone = true;
     }
@@ -56,13 +57,16 @@ public class Node {
         this.y = y;
         this.roomName = "NONE";
         this.connections = new ArrayList<Node>();
-        this.locations = new ArrayList<Location>();
+        this.locations = new HashMap<Integer, Location>();
+        this.counts = new HashMap<LocationType, Integer>();
         this.isNew = true;
         this.isDone = true;
     }
 
     public void addLocation(Location l) {
-        this.locations.add(l);
+        this.locations.put(l.getID(), l);
+        if(!this.counts.containsKey(l.getLocType())) this.counts.put(l.getLocType(), 1);
+        else this.counts.put(l.getLocType(), this.counts.get(l.getLocType()) + 1);
     }
 
     public void addConnection(Node other) {
@@ -75,12 +79,16 @@ public class Node {
         }
     }
 
+    public Color getColor() {
+        if(this.counts.isEmpty()) return LocationType.Unknown.getNodeColor();
+        LocationType lt = Collections.max(this.counts.entrySet(), Map.Entry.comparingByValue()).getKey();
+        return lt.getNodeColor();
+    }
+
     public void removeConnection(Node other) {
         if(this.connections.contains(other)) {
             this.connections.remove(other);
-            if(other.connections.contains(this)) {
-                KioskMain.getDB().removeConnection(this, other);
-            }
+            KioskMain.getDB().removeConnection(this, other);
             other.removeConnection(this);
         }
     }
@@ -104,8 +112,30 @@ public class Node {
     }
 
     public void setRoomName(String name) {
+        KioskMain.getPath().updateRoomName(this, name);
         this.roomName = name;
         KioskMain.getDB().updateNode(this);
+    }
+
+    public void setConnections(Collection<Node> conns) {
+        // Add anything new
+        for (Node n : conns) {
+            if(!this.connections.contains(n)) {
+                this.addConnection(n);
+            }
+        }
+
+        // Remove anything old
+        ArrayList<Node> toRemove = new ArrayList<Node>();
+        for (Node n : this.connections) {
+            if(!conns.contains(n)) {
+                toRemove.add(n);
+            }
+        }
+
+        for (Node n : toRemove) {
+            this.removeConnection(n);
+        }
     }
 
     public int getID() {
@@ -120,16 +150,18 @@ public class Node {
         return this.roomName;
     }
 
-    public ArrayList<Location> getLocations() {
-        return this.locations;
+    public Collection<Location> getLocations() {
+        return this.locations.values();
     }
 
     public ArrayList<Node> getConnections() {
-        return this.connections;
+        return (ArrayList<Node>)this.connections.clone();
     }
 
     public void removeLocation(Location l) {
-        this.locations.remove(l);
+        System.out.println("hi");
+        this.locations.remove(l.getID());
+        this.counts.put(l.getLocType(), this.counts.get(l.getLocType())-1);
     }
 
     public String toString() {
@@ -139,6 +171,11 @@ public class Node {
         }
         return str;
     }
+
+//    public boolean equals(Object o) {
+//        Node n = (Node) o;
+//        return n.getID() == this.getID();
+//    }
 
     public boolean isNew() {
         return this.isNew;
@@ -157,5 +194,10 @@ public class Node {
         int val = nextNodeID;
         nextNodeID ++;
         return val;
+    }
+
+    public SimpleStringProperty nodeIDProperty() {
+        String nodeIDString = Integer.toString(this.id);
+        return new SimpleStringProperty(nodeIDString);
     }
 }

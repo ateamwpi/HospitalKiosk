@@ -1,20 +1,32 @@
 package models.dir;
 
+import javafx.scene.paint.Color;
+
 /**
  * Created by mattm on 3/29/2017.
  */
 public enum LocationType {
-    Room,
-    Stairs,
-    Elevator,
-    PointOfInterest,
-    Service,
-    Hallway,
-    Physician,
-    Unknown;
+    Room(Color.BLACK),
+    Service(Color.DARKMAGENTA),
+    Physician(Color.CADETBLUE),
+    PointOfInterest(Color.ORANGE),
+    Stairs(Color.DARKBLUE),
+    Elevator(Color.DARKBLUE),
+    Hallway(Color.GRAY),
+    Unknown(Color.GRAY);
+
+    private Color nodeColor;
+
+    LocationType(Color nodeColor) {
+        this.nodeColor = nodeColor;
+    }
+
+    public Color getNodeColor() {
+        return this.nodeColor;
+    }
 
     public boolean isInternal() {
-        return this.equals(Hallway) || this.equals(Stairs) || this.equals(Elevator) || this.equals(Unknown);
+        return this.equals(Hallway) || this.equals(Unknown);
     }
 
     public static LocationType getType(String s) {

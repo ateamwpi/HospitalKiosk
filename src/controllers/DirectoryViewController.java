@@ -59,6 +59,8 @@ public class DirectoryViewController {
     @FXML
     private TextField searchBox;
 
+    private Node startNode;
+
 
     public DirectoryViewController() {
         // get all directories from dbMg
@@ -89,7 +91,7 @@ public class DirectoryViewController {
 
         locationsTable.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
             if (locationsTable.getSelectionModel().getSelectedItem() != null) {
-                Node destination1 = newValue.getNode(); //store the node that was selected
+                this.startNode = newValue.getNode(); //store the node that was selected
                 goToFinalSel.setDisable(false); //enable -> button once selection has been made
             }
         });
@@ -183,7 +185,8 @@ public class DirectoryViewController {
 
     @FXML  //when user clicks -> button, they will be brought to new page and asked to pick final destination
     private void clickGoToFinalSel(ActionEvent event) {
-        KioskMain.setScene("views/FinalDestSelectionView.fxml");
+        //System.out.println(this.startNode);
+        KioskMain.setScene("views/FinalDestSelectionView.fxml", this.startNode);
     }
 
 }
