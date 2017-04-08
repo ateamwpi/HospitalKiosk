@@ -16,6 +16,7 @@ import models.path.Node;
 
 import java.io.*;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 public class KioskMain extends Application {
 
@@ -107,12 +108,21 @@ public class KioskMain extends Application {
 
     private static void initDirMg() {
         // create the directory manager with directories from the db
-        theDirManager = new DirectoryManager(getDB().getAllDirectories());
+        HashMap<LocationType, Directory> allDirectories = getDB().getAllDirectories();
+        HashMap<Integer, Location> kiosks = allDirectories.get(LocationType.Kiosk).getLocations();
+        if(kiosks.size() != 1) {
+            System.out.println("Error initializing DirectoryManager: More than one Kiosk was found in the database!");
+            System.exit(1);
+        }
+        Location theKiosk = kiosks.values().iterator().next();
+        allDirectories.remove(LocationType.Kiosk);
+        theDirManager = new DirectoryManager(allDirectories, theKiosk);
         // Test code to print all directories/locations
         if (DEBUG) {
-            for (Directory d : getDB().getAllDirectories().values()) {
+            for (Directory d : getDir().getDirectories().values()) {
                 System.out.println(d);
             }
+            System.out.println("The Kiosk: " + getDir().getTheKiosk());
         }
     }
 }

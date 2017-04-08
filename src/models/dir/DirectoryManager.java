@@ -1,5 +1,6 @@
 package models.dir;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -8,13 +9,19 @@ import java.util.HashMap;
 public class DirectoryManager {
 
     private HashMap<LocationType, Directory> directories;
+    private Location theKiosk;
 
-    public DirectoryManager(HashMap<LocationType, Directory> allLocations) {
+    public DirectoryManager(HashMap<LocationType, Directory> allLocations, Location theKiosk) {
         this.directories = allLocations;
+        this.theKiosk = theKiosk;
     }
 
     public void addLocation(Location l) {
         this.getDirectory(l.getLocType()).addLocation(l);
+    }
+
+    public Location getTheKiosk() {
+        return this.theKiosk;
     }
 
     public void removeLocation(Location l) {

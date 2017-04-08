@@ -7,9 +7,10 @@ import javafx.scene.paint.Color;
  */
 public enum LocationType {
     Room(Color.BLACK),
-    Service(Color.DARKMAGENTA),
+    Service(Color.MAGENTA),
     Physician(Color.CADETBLUE),
     PointOfInterest(Color.ORANGE),
+    Kiosk(Color.GREEN),
     Stairs(Color.DARKBLUE),
     Elevator(Color.DARKBLUE),
     Hallway(Color.GRAY),
@@ -26,7 +27,7 @@ public enum LocationType {
     }
 
     public boolean isInternal() {
-        return this.equals(Hallway) || this.equals(Unknown);
+        return this.equals(Hallway) || this.equals(Unknown) || this.equals(Kiosk);
     }
 
     public static LocationType getType(String s) {
@@ -38,6 +39,7 @@ public enum LocationType {
             case "SERVICE": return Service;
             case "HALLWAY": return Hallway;
             case "PHYSICIAN": return Physician;
+            case "KIOSK": return Kiosk;
             default: return Unknown;
         }
     }
