@@ -136,7 +136,8 @@ public class DirectoryViewController extends AbstractDirectoryController impleme
     @FXML
     private void clickKiosk(ActionEvent event) {
         // TODO make this not hard-coded
-        selectedLocation = KioskMain.getDir().getDirectory(LocationType.Kiosk).getLocation(110);
+        selectedLocation = KioskMain.getDir().getTheKiosk();
+        System.out.println(selectedLocation);
         getDirections();
         //KioskMain.setScene("views/FinalDestSelectionView.fxml", kiosk);
     }
