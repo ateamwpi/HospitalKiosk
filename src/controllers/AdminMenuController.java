@@ -21,6 +21,8 @@ public class AdminMenuController {
     private Button manageDirectoryBtn;
     @FXML
     private Button manageMapBtn;
+    @FXML
+    private Button kioskButton;
 
     @FXML
     private void clickLogout(ActionEvent event) {
@@ -35,6 +37,11 @@ public class AdminMenuController {
     @FXML
     private void clickManageMap(ActionEvent event) {
         KioskMain.setScene("views/ManageMapView.fxml");
+    }
+
+    @FXML
+    private void pressedKiosk(ActionEvent event) {
+
     }
 
 
