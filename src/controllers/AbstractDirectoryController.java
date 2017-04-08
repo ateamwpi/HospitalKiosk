@@ -19,9 +19,10 @@ import java.util.Collection;
 import java.util.HashMap;
 
 /**
+ * The abstract class that handles the Directory views.
  * Created by Kevin O'Brien on 4/7/2017.
  */
-public abstract class DirectoryController {
+public abstract class AbstractDirectoryController {
     protected HashMap<LocationType, Directory> directories;
     protected Collection<Location> selectedLocations; // all Locations of the current LocationType
     protected Collection<Location> filteredLocations; // all Locations that match the searchBox
@@ -33,11 +34,13 @@ public abstract class DirectoryController {
     @FXML
     private TableColumn<Location, String> roomCol; //column that holds room names
     @FXML
+    private TableColumn<Location, String> typeCol;
+    @FXML
     private TextField searchBox;
     @FXML
     private ComboBox<String> locationDropdown;
 
-    public DirectoryController() {
+    public AbstractDirectoryController() {
         directories = KioskMain.getDir().getDirectories();
         selectedLocations = new ArrayList<>();
         filteredLocations = new ArrayList<>();
@@ -50,6 +53,7 @@ public abstract class DirectoryController {
     protected void initializeTable() {
         nameCol.setCellValueFactory(new PropertyValueFactory("name"));
         roomCol.setCellValueFactory(new PropertyValueFactory("roomName"));
+        typeCol.setCellValueFactory(new PropertyValueFactory("locType"));
         locationsTable.getSortOrder().add(nameCol); // Default to sort by name
     }
 

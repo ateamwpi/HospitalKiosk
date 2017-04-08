@@ -36,8 +36,9 @@
                      <children>
                         <TableView fx:id="locationsTable" prefHeight="303.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                           <columns>
-                              <TableColumn fx:id="nameCol" minWidth="0.0" prefWidth="179.6666259765625" text="Name" />
-                              <TableColumn id="roomCol" fx:id="roomCol" prefWidth="74.0" text="Room" />
+                              <TableColumn fx:id="nameCol" minWidth="0.0" prefWidth="160.0" text="Name" />
+                              <TableColumn id="roomCol" fx:id="roomCol" prefWidth="70.6666259765625" text="Room" />
+                              <TableColumn fx:id="typeCol" prefWidth="75.3333740234375" text="Type" />
                           </columns>
                         </TableView>
                         <Button fx:id="goToFinalSel" alignment="CENTER" mnemonicParsing="false" onAction="#clickGoToFinalSel" text="-&gt;" GridPane.columnIndex="2" GridPane.rowIndex="3" />
@@ -55,9 +56,9 @@
                         <ComboBox fx:id="locationDropdown" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
                            <children>
-                              <Button fx:id="addEntry" mnemonicParsing="false" onAction="#clickAddPhysician" text="New" />
-                              <Button fx:id="editEntry" mnemonicParsing="false" onAction="#clickEditPhysician" text="Edit" />
-                              <Button fx:id="removeEntry" mnemonicParsing="false" onAction="#clickRemovePhysician" text="Delete" />
+                              <Button fx:id="addEntry" mnemonicParsing="false" onAction="#clickAdd" text="Add" />
+                              <Button fx:id="modifyEntry" mnemonicParsing="false" onAction="#clickModify" text="Modify" />
+                              <Button fx:id="removeEntry" mnemonicParsing="false" onAction="#clickRemove" text="Remove" />
                            </children>
                         </VBox>
                      </children>

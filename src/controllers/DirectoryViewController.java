@@ -1,26 +1,18 @@
 package controllers;
 
 import core.KioskMain;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
-import models.dir.Directory;
-import models.dir.Location;
-import models.dir.LocationType;
 import models.path.Node;
 
 import java.io.IOException;
-import java.util.*;
 
 /**
  * Created by mattm on 3/29/2017.
  */
 
-public class DirectoryViewController extends DirectoryController implements IControllerWithParams {
+public class DirectoryViewController extends AbstractDirectoryController implements IControllerWithParams {
 
     private Node startNode; // The selected starting node for pathfinding
 
@@ -35,7 +27,7 @@ public class DirectoryViewController extends DirectoryController implements ICon
     @FXML
     private Label directions; //label to give user instructions
     @FXML
-    private Button editEntry;
+    private Button modifyEntry;
     @FXML
     private Button addEntry;
     @FXML
@@ -47,6 +39,10 @@ public class DirectoryViewController extends DirectoryController implements ICon
         super();
     }
 
+    /**
+     * Used to specify whether to enable admin mode or not.
+     * @param data Boolean ... True:Admin, False: User
+     */
     @Override
     public void initData(Object... data) {
         if (data.length > 0) {
@@ -80,12 +76,13 @@ public class DirectoryViewController extends DirectoryController implements ICon
     private void adminMode() {
         goToFinalSel.setVisible(false);
         title.setText("Manage Directory");
-        directions.setText("Select a Location from the table above. Once a location is selected, you may edit or delete it");
+        directions.setText("Add a new Location with the 'New' Button. To edit or remove a location, select a Location" +
+               " from the table and press the corresponding button");
     }
 
     private void directionMode() {
         addEntry.setVisible(false);
-        editEntry.setVisible(false);
+        modifyEntry.setVisible(false);
         removeEntry.setVisible(false);
         title.setText("Select Starting Location");
         directions.setText("Select a starting location from the table above. Once a location is selected, click the '->' button " +
@@ -114,17 +111,17 @@ public class DirectoryViewController extends DirectoryController implements ICon
     }
 
     @FXML
-    private void clickEditPhysician(ActionEvent event) throws IOException {
-        KioskMain.setScene("views/AdminEditPhysician.fxml", selectedLocation);
+    private void clickModify(ActionEvent event) throws IOException {
+        KioskMain.setScene("views/AdminModifyLocation.fxml", selectedLocation);
     }
 
     @FXML
-    private void clickAddPhysician(ActionEvent event) throws IOException {
-        KioskMain.setScene("views/AdminAddPhysician.fxml");
+    private void clickAdd(ActionEvent event) throws IOException {
+        KioskMain.setScene("views/AdminModifyLocation.fxml");
     }
 
     @FXML
-    private void clickRemovePhysician(ActionEvent event)throws IOException {
+    private void clickRemove(ActionEvent event)throws IOException {
         KioskMain.getDir().removeLocation(selectedLocation);
         KioskMain.setScene("views/DirectoryView.fxml", true);
     }
