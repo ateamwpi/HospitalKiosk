@@ -66,7 +66,10 @@ public abstract class AbstractDirectoryController {
         }));
         locationDropdown.getItems().add("Full Directory");
         for (LocationType locType : LocationType.values()) {
-            locationDropdown.getItems().add(locType.name());
+            if (!locType.isInternal()) {
+                locationDropdown.getItems().add(locType.name());
+            }
+
         }
         locationDropdown.getSelectionModel().selectFirst();
     }
@@ -139,7 +142,9 @@ public abstract class AbstractDirectoryController {
         Collection<Location> locations = new ArrayList<Location>(); //make an array list of location// s
         KioskMain.getDir().getDirectories().values();
         for(LocationType locType : LocationType.values()) {
-            locations.addAll(getLocationsOfType(locType));
+            if(!locType.isInternal()) {
+                locations.addAll(getLocationsOfType(locType));
+            }
         }
         //set the list of locations shown on table to be all the locations added above
         selectLocations(locations);
