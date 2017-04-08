@@ -54,17 +54,29 @@ public class Path {
             if(result.equals("straight")) {
                 // If just continuing straight, record any possible turns that weren't taken.
                 // This is used to keep track for the "4th left" or "3rd right" message.
+                int hallways = 0;
                 for (Node conn : this.getStep(i-1).getConnections()) {
                     Direction connect = Direction.dirFor(this.getStep(i-1), conn);
                     String turn = cur.turnFor(connect);
-                    attempts.put(turn, attempts.get(turn)+1);
+                    if(conn.getRoomName().equals("NONE")) { // if it's a hallway
+                        attempts.put(turn, attempts.get(turn) + 1);
+                        hallways ++;
+                    }
+                }
+                if(hallways > 2) {
+                    str += stepNum + ". Go " + result + " through the intersection.\n";
+                    stepNum ++;
                 }
             }
             else {
                 // If actually making a turn, add a message about it to the directions
-                str += stepNum + ". Make the" + strForNum(attempts.get(result)+1) + result;
-                if(i+1 == this.path.size()) str += ", into " + this.getEnd().getRoomName() + ".\n";
-                else str += ".\n";
+                if(i+1 == this.path.size()) {
+                    str += stepNum + ". Your destination (" + this.getEnd().getRoomName() + ") will be on your " + result + ".\n";
+                }
+                else {
+                    str += stepNum + ". Make a " + result + ".\n";
+                    //str += stepNum + ". Make the" + strForNum(attempts.get(result)+1) + result + ".\n";
+                }
                 stepNum ++;
 
                 // Reset attempt counters every time a turn is made
