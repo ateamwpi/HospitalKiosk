@@ -1,41 +1,37 @@
-package controllers;
+package controllers.admin;
 
+import controllers.map.DraggableNode;
+import controllers.map.MapController;
 import core.KioskMain;
-
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.geometry.Point2D;
-import javafx.geometry.Pos;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.util.StringConverter;
 import javafx.util.converter.IntegerStringConverter;
+import javafx.util.converter.NumberStringConverter;
 import models.path.Node;
 
 import java.io.IOException;
 import java.util.Collection;
-import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
 
 public class ManageMapViewController {
 
     private static final String MAP_URL = "views/Map.fxml";
 
-    private MapController mapController;
+    private AdminMapController adminMapController;
     private DraggableNode selectedNode;
+    private StringProperty xTextProperty = new SimpleStringProperty();
+    private StringProperty yTextProperty = new SimpleStringProperty();
+    private StringProperty roomNameProperty = new SimpleStringProperty();
+    private StringConverter<Number> converter = new NumberStringConverter();
 
     @FXML
     private TextField x;
@@ -48,7 +44,7 @@ public class ManageMapViewController {
     @FXML
     private Button nodeAction;
     @FXML
-    private Button saveAction;
+    private Button saveNode;
     @FXML
     private TableView<Node> tableNeighbors;
     @FXML
@@ -60,24 +56,20 @@ public class ManageMapViewController {
     @FXML
     private TextField newNeighbor;
     @FXML
-    private Label nodeID;
+    private Label id;
 
 
     @FXML
     private void initialize() {
-        idColumn.setCellValueFactory(new PropertyValueFactory<>("nodeID"));
-
-        try {
-            FXMLLoader loader = new FXMLLoader(KioskMain.class.getClassLoader().getResource(MAP_URL));
-            mapContainer.getChildren().add(loader.load());
-            mapController = loader.<MapController>getController();
-            mapController.adminMode();
-            mapController.initData(this);
-        } catch (IOException e) {
-            // TODO
-            e.printStackTrace();
-        }
-
+        // load the admin map controller
+        adminMapController = new AdminMapController(this);
+        Region map = adminMapController.getRoot();
+        // add the map to the container
+        mapContainer.getChildren().add(map);
+        // init input text properties
+        xTextProperty = x.textProperty();
+        yTextProperty = y.textProperty();
+        roomNameProperty = room.textProperty();
         // format numeric text fields
         TextFormatter<Integer> numericX = new TextFormatter<>(
                 new IntegerStringConverter(),
@@ -94,8 +86,10 @@ public class ManageMapViewController {
         x.setTextFormatter(numericX);
         y.setTextFormatter(numericY);
         newNeighbor.setTextFormatter(numericNeighbor);
-        deleteNeighbor.setDisable(true);
-
+        // reset edit view
+        unselectNode();
+        // set the connections table factories
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         // add listener to table item selection
         tableNeighbors.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
             if (tableNeighbors.getSelectionModel().getSelectedItem() != null) {
@@ -108,31 +102,45 @@ public class ManageMapViewController {
         // set selected node
         selectedNode = draggableNode;
         Node node = draggableNode.getNode();
-        // update edit view
-        x.setText(new Integer(node.getX()).toString());
-        y.setText(new Integer(node.getY()).toString());
-        nodeID.setText(new Integer(node.getID()).toString());
-        room.setText(node.getRoomName());
+        // bind text fields to node properties
+        Bindings.bindBidirectional(xTextProperty, selectedNode.previewXProperty(), converter);
+        Bindings.bindBidirectional(yTextProperty, selectedNode.previewYProperty(), converter);
+        Bindings.bindBidirectional(roomNameProperty, selectedNode.previewRoomNameProperty());
+        // update node id
+        id.setText(new Integer(node.getID()).toString());
         // show save button
-        saveAction.setVisible(true);
-        // show delete node button
-        nodeAction.setText("Delete node");
+        saveNode.setVisible(true);
+        // enable add connection button
+        addNeighbor.setDisable(false);
+        // show delete button
+        nodeAction.setText("Delete");
+        // update connections table
         setTableNeighbors(selectedNode.getNode().getConnections());
     }
 
     public void unselectNode() {
+        // unbind text fields with node properties
+        if (selectedNode != null) {
+            Bindings.unbindBidirectional(xTextProperty, selectedNode.previewXProperty());
+            Bindings.unbindBidirectional(yTextProperty, selectedNode.previewYProperty());
+            Bindings.unbindBidirectional(roomNameProperty, selectedNode.previewRoomNameProperty());
+        }
         // unset selected node
         selectedNode = null;
         // update edit view
-        x.setText("0");
-        y.setText("0");
-        room.setText(null);
+        id.setText(null);
+        x.setText("");
+        y.setText("");
+        room.setText("");
         // remove save button
-        saveAction.setVisible(false);
-        // show add node button
-        nodeAction.setText("Add node");
+        saveNode.setVisible(false);
+        // disable add and delete connection buttons
+        addNeighbor.setDisable(true);
+        deleteNeighbor.setDisable(true);
+        // show add button
+        nodeAction.setText("Add");
+        // clear connections table
         tableNeighbors.getItems().clear();
-        nodeID.setText(null);
     }
 
     private int getX() {
@@ -143,9 +151,15 @@ public class ManageMapViewController {
         return Integer.parseInt(y.getText());
     }
 
+    private String getRoomName() {
+        String roomName = room.getText();
+        return roomName.equals("") ? "NONE" : roomName;
+    }
+
     @FXML
     private void clickBack(ActionEvent event) {
-        if(selectedNode != null) selectedNode.cancelPreview();
+        if(selectedNode != null)
+            selectedNode.cancelPreview();
         KioskMain.setScene("views/AdminMenu.fxml");
     }
 
@@ -155,13 +169,25 @@ public class ManageMapViewController {
         int neighborID = Integer.parseInt(newNeighbor.getText());
         // get the node
         Node node = KioskMain.getPath().getNode(neighborID);
-        // TODO alert if node DNE or is selectedNode
+        // check if node exists and is not itself
+        if (node == null || node.equals(selectedNode)) {
+            alertAddConnectionError();
+            return;
+        }
         // add the preview connection
         selectedNode.previewConnection(node);
-        //KioskMain.getPath().getNode(selectedNode.getNode().getID()).addConnection(node);
         //refreshScene();
         // update the table of connections with preview connections
         setTableNeighbors(selectedNode.getPreviewConnections());
+    }
+
+    private void alertAddConnectionError() {
+        System.out.print("Error: Trying to add node connection to itself.");
+        Alert nodeUsed = new Alert(Alert.AlertType.ERROR);
+        nodeUsed.setHeaderText("Node Connection Failure");
+        nodeUsed.setContentText("This node cannot be connected to itself.");
+        nodeUsed.setTitle("Node Connection Error");
+        nodeUsed.showAndWait();
     }
 
     private void setTableNeighbors(Collection<Node> nodes) {
@@ -173,62 +199,55 @@ public class ManageMapViewController {
         // get the node
         Node nodeToDelete = tableNeighbors.getSelectionModel().getSelectedItem();
         // remove the preview connection
-        System.out.println("deleting " + selectedNode.getNode().getID() + " and " + nodeToDelete.getID());
         selectedNode.removePreviewConnection(nodeToDelete);
-        //KioskMain.getPath().getNode(selectedNode.getNode().getID()).removeConnection(nodeToDelete);
-        //refreshScene();
         // update the table
         setTableNeighbors(selectedNode.getPreviewConnections());
     }
 
     @FXML
     private void clickSave(ActionEvent event) {
-        System.out.println("save node");
-        selectedNode.previewX(getX());
-        selectedNode.previewY(getY());
-        selectedNode.previewRoomName(room.getText());
-        //selectedNode.previewConnections(selectedNode.getNode().getConnections());
         selectedNode.save();
         refreshScene();
     }
 
     @FXML
     private void clickNodeAction(ActionEvent event) {
-        if (mapController.nodeIsSelected()) {
-            clickDelete();
-        } else {
+        if (selectedNode == null) {
             clickAdd();
+        } else {
+            clickDelete();
         }
     }
 
     private void clickDelete() {
         // delete the node
-        mapController.deleteSelectedNode();
+        selectedNode.delete();
         refreshScene();
     }
 
     private void clickAdd() {
-        // add the node
-        mapController.addNode(Integer.parseInt(x.getText()), Integer.parseInt(y.getText()), room.getText());
+        // verify the node properties
+        if (verifyNode()) {
+            // add the node
+            adminMapController.addNode(getX(), getY(), getRoomName());
+        }
     }
 
-    @FXML
-    private void xAction(ActionEvent event) {
-        System.out.println(event);
-        //selectedNode.previewX(getX());
-    }
+    private Boolean verifyNode() {
+        // TODO fix hard coded values
+        // check x and y exist
+        if (x.getText().equals("") || y.getText().equals("")) {
+            return false;
+        }
+        // check x and y within bounds
+        int x = getX();
+        int y = getY();
+        if (0 > x || x > 560 || 0 > y || y > 500) {
+            return false;
+        }
+        // check connections
 
-    @FXML
-    private void yAction(ActionEvent event) {
-        System.out.println(event);
-        //selectedNode.previewY(getY());
-    }
-
-    @FXML
-    private void roomAction(ActionEvent event) {
-        System.out.println(event);
-        //selectedNode.previewRoomName(room.getText());
-        //selectedNode.previewRoomName(room.getText());
+        return true;
     }
 
     private void refreshScene() {

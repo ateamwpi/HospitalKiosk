@@ -1,5 +1,6 @@
-package controllers;
+package controllers.admin;
 
+import controllers.IControllerWithParams;
 import core.KioskMain;
 import core.RoomNotFoundException;
 import javafx.event.ActionEvent;

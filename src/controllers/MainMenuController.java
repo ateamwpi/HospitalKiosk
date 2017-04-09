@@ -1,5 +1,7 @@
 package controllers;
 
+import controllers.admin.AdminMapController;
+import controllers.map.MapController;
 import core.KioskMain;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.SplitPane;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -36,6 +39,12 @@ public class MainMenuController {
 
     @FXML
     private void initialize() {
+        // load the map controller
+        MapController mapController = new MapController();
+        // get the map
+        Region map = mapController.getRoot();
+        // add the map to the container
+        mapContainer.getChildren().add(map);
     }
 
     @FXML
