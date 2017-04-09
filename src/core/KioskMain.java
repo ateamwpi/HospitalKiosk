@@ -40,6 +40,8 @@ public class KioskMain extends Application {
         initPathMg();
         initDirMg();
 
+        System.out.println(getPath().findPath(getPath().getNode(1), getPath().getNode(76)).textPath());
+
         // Launch the JavaFX application after initial setup
         launch(args);
     }

@@ -87,10 +87,13 @@ public class Node {
         }
     }
 
+    public LocationType getPrimaryLocType() {
+        if(this.counts.isEmpty()) return LocationType.Unknown;
+        return Collections.max(this.counts.entrySet(), Map.Entry.comparingByValue()).getKey();
+    }
+
     public Color getColor() {
-        if(this.counts.isEmpty()) return LocationType.Unknown.getNodeColor();
-        LocationType lt = Collections.max(this.counts.entrySet(), Map.Entry.comparingByValue()).getKey();
-        return lt.getNodeColor();
+        return this.getPrimaryLocType().getNodeColor();
     }
 
     public void removeConnection(Node other) {

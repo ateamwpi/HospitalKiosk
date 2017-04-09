@@ -188,8 +188,8 @@ public class DatabaseManager {
             stmt.setInt(1, n.getID());
             stmt.setInt(2, n.getX());
             stmt.setInt(3, n.getY());
-            stmt.setInt(4, n.getFloor());
-            stmt.setString(5, n.getRoomName());
+            stmt.setString(4, n.getRoomName());
+            stmt.setInt(5, n.getFloor());
             stmt.execute();
         }
         catch (SQLException e) {

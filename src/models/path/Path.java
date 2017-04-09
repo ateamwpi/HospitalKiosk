@@ -2,6 +2,7 @@ package models.path;
 
 
 import models.dir.Directory;
+import models.dir.LocationType;
 import sun.awt.image.ImageWatched;
 
 import java.util.ArrayList;
@@ -54,6 +55,9 @@ public class Path {
         attempts.put("left", 0); attempts.put("right", 0); attempts.put("straight", 0); attempts.put("back", 0);
         int stepNum = 2;
         for (int i = 2; i < this.path.size(); i++) {
+            if(this.getStep(i).getPrimaryLocType().equals(LocationType.Elevator) && this.getStep(i-1).getPrimaryLocType().equals(LocationType.Elevator)) {
+                str += "Ride the elevator to the" + strForNum(this.getStep(i).getFloor()) + "floor.\n";
+            }
             // Calculate the next cardinal turning direction
             Direction next = Direction.dirFor(this.getStep(i-1), this.getStep(i));
 

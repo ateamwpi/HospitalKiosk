@@ -117,7 +117,10 @@ public class PathfindingManager {
         if(start.getFloor() != end.getFloor()){
             Node elevator = getNearest(LocationType.Elevator, start);
             Path startFloor = this.astar.findPath(start, elevator);
+            System.out.println(findMatching(elevator, end.getFloor(), LocationType.Elevator));
             Path endFloor = this.astar.findPath(findMatching(elevator, end.getFloor(), LocationType.Elevator), end);
+            System.out.println("startFloor: " + startFloor);
+            System.out.println("endFloor: " + endFloor);
             return startFloor.addSteps(endFloor);
         }
         else{
