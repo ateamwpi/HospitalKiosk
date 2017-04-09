@@ -109,9 +109,9 @@ public class MapController implements IClickableController {
         // create the scene gestures for zooming and panning
         SceneGestures sceneGestures = new SceneGestures(canvas, this);
         // register handlers zooming and panning
-        anchorPane.addEventHandler(MouseEvent.ANY, new ClickDragHandler(sceneGestures.getOnMouseClickedEventHandler(), sceneGestures.getOnMouseDraggedEventHandler()));
-        anchorPane.addEventHandler(MouseEvent.MOUSE_PRESSED, sceneGestures.getOnMousePressedEventHandler());
-        anchorPane.addEventHandler(ScrollEvent.ANY, sceneGestures.getOnScrollEventHandler());
+//        anchorPane.addEventHandler(MouseEvent.ANY, new ClickDragHandler(sceneGestures.getOnMouseClickedEventHandler(), sceneGestures.getOnMouseDraggedEventHandler()));
+//        anchorPane.addEventHandler(MouseEvent.MOUSE_PRESSED, sceneGestures.getOnMousePressedEventHandler());
+//        anchorPane.addEventHandler(ScrollEvent.ANY, sceneGestures.getOnScrollEventHandler());
     }
 
     private void drawConnection(Node nodeA, Node nodeB) {
