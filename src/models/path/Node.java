@@ -23,6 +23,7 @@ public class Node {
     private IntegerProperty idProperty = new SimpleIntegerProperty();
     private IntegerProperty floorProperty = new SimpleIntegerProperty();
     private StringProperty roomNameProperty = new SimpleStringProperty();
+    private String previousRoomName = "";
     private ArrayList<Node> connections;
     private HashMap<Integer, Location> locations;
     private HashMap<LocationType, Integer> counts;
@@ -116,9 +117,7 @@ public class Node {
     }
 
     public void setRoomName(String name) {
-        // TODO fix this
-        KioskMain.getPath().updateRoomName(this, name);
-//        this.roomName = name;
+        this.previousRoomName = this.getRoomName();
         roomNameProperty.setValue(name);
     }
 
@@ -193,6 +192,7 @@ public class Node {
 
     public final void save() {
         // TODO check if node in db first
+        KioskMain.getPath().updateRoomName(this, this.previousRoomName);
         KioskMain.getDB().updateNode(this);
     }
 

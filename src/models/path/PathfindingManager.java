@@ -34,9 +34,9 @@ public class PathfindingManager {
         return this.graph.get(id);
     }
 
-    public void updateRoomName(Node n, String newName) {
-        this.ids.remove(n.getRoomName());
-        this.ids.put(newName, n.getID());
+    public void updateRoomName(Node n, String oldName) {
+        this.ids.remove(oldName);
+        this.ids.put(n.getRoomName(), n.getID());
     }
 
     public void addNode(Node n) {

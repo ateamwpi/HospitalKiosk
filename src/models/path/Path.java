@@ -56,7 +56,8 @@ public class Path {
         int stepNum = 2;
         for (int i = 2; i < this.path.size(); i++) {
             if(this.getStep(i).getPrimaryLocType().equals(LocationType.Elevator) && this.getStep(i-1).getPrimaryLocType().equals(LocationType.Elevator)) {
-                str += "Ride the elevator to the" + strForNum(this.getStep(i).getFloor()) + "floor.\n";
+                str += stepNum + ". Ride the elevator to the" + strForNum(this.getStep(i).getFloor()) + "floor and exit.\n";
+                stepNum ++;
             }
             // Calculate the next cardinal turning direction
             Direction next = Direction.dirFor(this.getStep(i-1), this.getStep(i));
@@ -86,8 +87,12 @@ public class Path {
                     str += stepNum + ". Your destination (" + this.getEnd().getRoomName() + ") will be on your " + result + ".\n";
                 }
                 else {
-                    str += stepNum + ". Make a " + result + ".\n";
-                    //str += stepNum + ". Make the" + strForNum(attempts.get(result)+1) + result + ".\n";
+                    if(!this.getStep(i-1).getPrimaryLocType().equals(LocationType.Elevator)) {
+                        str += stepNum + ". Make a " + result;
+                        if (this.getStep(i).getPrimaryLocType().equals(LocationType.Elevator))
+                            str += " into the " + this.getStep(i).getRoomName() + ".\n";
+                        else str += ".\n";
+                    }
                 }
                 stepNum ++;
 
