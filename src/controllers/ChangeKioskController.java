@@ -14,11 +14,13 @@ import models.path.Node;
 public class ChangeKioskController {
     @FXML
     private TextField room;
+    
 
     @FXML
     private void initialize() {
         String curKiosk = KioskMain.getDir().getTheKiosk().getNode().getRoomName();
         room.setText(curKiosk);
+
     }
 
     @FXML
