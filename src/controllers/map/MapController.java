@@ -59,8 +59,12 @@ public class MapController extends AbstractController implements IClickableContr
         return canvas;
     }
 
+    public void addOverlay(int index, javafx.scene.Node node) {
+        overlay.getChildren().add(overlayIndex + index, node);
+    }
+
     public void addOverlay(javafx.scene.Node node) {
-        overlay.getChildren().add(overlayIndex, node);
+        overlay.getChildren().add(node);
     }
 
     public void removeOverlay(javafx.scene.Node node) {
@@ -104,11 +108,11 @@ public class MapController extends AbstractController implements IClickableContr
 
     private void drawConnection(Node nodeA, Node nodeB) {
         Line line = new Line(nodeA.getX(), nodeA.getY(), nodeB.getX(), nodeB.getY());
-        overlay.getChildren().add(line);
+        addOverlay(0, line);
     }
 
     private void drawNode(Node node) {
         Circle circle = new Circle(node.getX(), node.getY(), 5);
-        overlay.getChildren().add(circle);
+        addOverlay(circle);
     }
 }

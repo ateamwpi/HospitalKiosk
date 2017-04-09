@@ -9,6 +9,8 @@ import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Line;
@@ -18,6 +20,7 @@ import models.path.Node;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Created by dylan on 4/8/17.
@@ -65,7 +68,7 @@ public class AdminMapController extends AbstractController implements IClickable
     public void handleMouseClick(MouseEvent e) {
         // unselect if already selecting node
         if (nodeIsSelected()) {
-            unselectNode();
+            attemptUnselectNode();
             // add new node if not selecting node
         } else {
             // convert the mouse coordinates to map coordinates
@@ -94,40 +97,92 @@ public class AdminMapController extends AbstractController implements IClickable
         KioskMain.getPath().addNode(node);
     }
 
+    public Boolean attemptDeleteSelectedNode() {
+        if (selectedNode == null) {
+            return false;
+        }
+        if (warnDeleteNode()) {
+            deleteSelectedNode();
+        }
+        return false;
+    }
+
+    private Boolean warnDeleteNode() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete node");
+        alert.setHeaderText("This node will be deleted.");
+        alert.setContentText("Are you sure you want to continue?");
+        ButtonType delete = new ButtonType("Delete");
+        ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+        alert.getButtonTypes().setAll(delete, cancel);
+        Optional<ButtonType> result = alert.showAndWait();
+        return result.get() == delete;
+    }
+
     public void deleteSelectedNode() {
-        if (selectedNode != null) {
+        // try to delete the node
+        try {
             System.out.println("delete node");
-            // try to delete the node
-            try {
-                // delete the node from the db
-                KioskMain.getPath().removeNode(selectedNode.getNode());
-                // remove the visual node from the overlay
-                mapController.removeOverlay(selectedNode);
-                // unselect node
-                unselectNode();
-            } catch (NodeInUseException e) {
-                showNodeInUseAlert();
-            }
+            // keep reference to selected node
+            DraggableNode nodeToDelete = selectedNode;
+            // delete the node from the db
+            KioskMain.getPath().removeNode(nodeToDelete.getNode());
+            // remove the visual node from the overlay
+            mapController.removeOverlay(nodeToDelete);
+            // unselect the node
+            unselectNode();
+        } catch (NodeInUseException e) {
+            showNodeInUseAlert();
         }
     }
 
     public void selectNode(DraggableNode node) {
-        unselectNode();
-        selectedNode = node;
-        selectedNode.select();
-        manageMapViewController.selectNode(selectedNode);
+        if (attemptUnselectNode()) {
+            selectedNode = node;
+            selectedNode.select();
+            manageMapViewController.selectNode(selectedNode);
+        }
     }
 
     private Boolean nodeIsSelected() {
         return selectedNode != null;
     }
 
-    private void unselectNode() {
-        if (selectedNode != null) {
-            selectedNode.unselect();
-            selectedNode = null;
-            manageMapViewController.unselectNode();
+    // return true if unselected
+    public Boolean attemptUnselectNode() {
+        if (selectedNode == null) {
+            return true;
         }
+        if (selectedNode.hasUnsavedChanges()) {
+            if (warnDiscardChanges()) {
+                unselectNode();
+                return true;
+            }
+        } else {
+            unselectNode();
+            return true;
+        }
+        return false;
+    }
+
+    // returns true if admin chooses to discard changes
+    private Boolean warnDiscardChanges() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Unsaved changes");
+        alert.setHeaderText("All unsaved changes will be lost.");
+        alert.setContentText("Are you sure you want to continue?");
+        ButtonType discard = new ButtonType("Discard changes");
+        ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+        alert.getButtonTypes().setAll(discard, cancel);
+        Optional<ButtonType> result = alert.showAndWait();
+        return result.get() == discard;
+    }
+
+    private void unselectNode() {
+        selectedNode.unselect();
+        selectedNode = null;
+        manageMapViewController.unselectNode();
+
     }
 
     public DraggableNode getSelectedNode() {
@@ -155,7 +210,7 @@ public class AdminMapController extends AbstractController implements IClickable
         // add the line to the map of connections
         draggableNodeConnections.put(getNodePair(nodeA, nodeB), line);
         // add the line to the overlay
-        mapController.addOverlay(line);
+        mapController.addOverlay(0, line);
     }
 
     public void removeDraggableConnection(DraggableNode nodeA, DraggableNode nodeB) {
