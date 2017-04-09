@@ -84,7 +84,7 @@ public class AdminMapController implements IClickableController {
     public void addNode(double x, double y, String room) {
         System.out.println("add node");
         // create new node
-        Node node = new Node((int) x, (int) y, room);
+        Node node = new Node((int) x, (int) y, 4, room);
         // create new visual node with gestures
         DraggableNode draggableNode = getDraggableNode(node);
         // draw node with gestures

@@ -1,6 +1,7 @@
 package controllers.map;
 
 import controllers.admin.AdminMapController;
+import core.WrongFloorException;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -128,7 +129,12 @@ public class DraggableNode extends Circle {
         node.setX(getPreviewX());
         node.setY(getPreviewY());
         node.setRoomName(getPreviewRoomName());
-        node.setConnections(previewConnections);
+        try {
+            node.setConnections(previewConnections);
+        }
+        catch(WrongFloorException e) {
+            //TODO handle this
+        }
         node.save();
     }
 
