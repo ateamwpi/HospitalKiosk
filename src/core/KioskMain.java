@@ -66,15 +66,19 @@ public class KioskMain extends Application {
         }
     }
 
-    public static void setScene(String path, Object... data) {
+    // set the scene and return the controller
+    public static IControllerWithParams setScene(String path, Object... data) {
         try {
             FXMLLoader loader = new FXMLLoader(KioskMain.class.getClassLoader().getResource(path));
             Scene scene = new Scene(loader.load());
-            loader.<IControllerWithParams>getController().initData(data);
+            IControllerWithParams controller = loader.<IControllerWithParams>getController();
+            controller.initData(data);
             stage.setScene(scene);
+            return controller;
         } catch (IOException e) {
-            // TODO
+            // TODO fix this
             e.printStackTrace();
+            return null;
         }
     }
 

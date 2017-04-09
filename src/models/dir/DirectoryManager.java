@@ -17,7 +17,7 @@ public class DirectoryManager {
     }
 
     public void addLocation(Location l) {
-        this.getDirectory(l.getLocType()).addLocation(l);
+        getDirectory(l.getLocType()).addLocation(l);
     }
 
     public Location getTheKiosk() {
@@ -25,15 +25,15 @@ public class DirectoryManager {
     }
 
     public void removeLocation(Location l) {
-        this.getDirectory(l.getLocType()).removeLocation(l);
+        getDirectory(l.getLocType()).removeLocation(l);
     }
 
     public HashMap<LocationType, Directory> getDirectories() {
-        return this.directories;
+        return directories;
     }
 
     public Directory getDirectory(LocationType locType) {
-        return this.directories.get(locType);
+        return directories.get(locType);
     }
 
 }

@@ -1,4 +1,4 @@
-package controllers;
+package controllers.admin;
 
 import core.KioskMain;
 import javafx.event.ActionEvent;
