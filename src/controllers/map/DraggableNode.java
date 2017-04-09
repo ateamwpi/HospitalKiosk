@@ -116,9 +116,6 @@ public class DraggableNode extends Circle {
 
     public void cancelPreview() {
         System.out.println("cancel");
-        if (unsavedChanges()) {
-
-        }
         previewConnections(node.getConnections());
         setDefaultPreview();
     }
@@ -132,8 +129,8 @@ public class DraggableNode extends Circle {
         node.save();
     }
 
-    public void delete() {
-        adminMapController.deleteSelectedNode();
+    public Boolean delete() {
+        return adminMapController.attemptDeleteSelectedNode();
     }
 
     public Node getNode() {
@@ -161,8 +158,10 @@ public class DraggableNode extends Circle {
         previewConnections = node.getConnections();
     }
 
-    private Boolean unsavedChanges() {
-
-        return true;
+    public Boolean hasUnsavedChanges() {
+        return getPreviewX() != node.getX()
+                || getPreviewY() != node.getY()
+                || !getPreviewRoomName().equals(node.getRoomName())
+                || !getPreviewConnections().equals(node.getConnections());
     }
 }

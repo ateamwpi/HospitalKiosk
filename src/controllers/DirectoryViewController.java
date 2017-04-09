@@ -100,6 +100,7 @@ public class DirectoryViewController extends AbstractDirectoryController {
 
     @FXML  //when user clicks "back" button, they will return to main menu
     private void clickBack(ActionEvent event) {
+        // TODO fix bug Issue #30
         KioskMain.setScene(adminMode ? new AdminMenuController() : new MainMenuController());
     }
 

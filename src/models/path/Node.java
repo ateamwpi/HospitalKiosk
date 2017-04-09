@@ -106,7 +106,6 @@ public class Node {
 
     public void setRoomName(String name) {
         KioskMain.getPath().updateRoomName(this, name);
-//        this.roomName = name;
         roomNameProperty.setValue(name);
     }
 

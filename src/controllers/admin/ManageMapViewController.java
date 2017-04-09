@@ -171,10 +171,9 @@ public class ManageMapViewController extends AbstractController {
 
     @FXML
     private void clickBack(ActionEvent event) {
-        if(selectedNode != null)
-            selectedNode.cancelPreview();
-
-        KioskMain.setScene(new AdminMenuController());
+        if (adminMapController.attemptUnselectNode()) {
+            KioskMain.setScene(new AdminMenuController());
+        }
     }
 
     @FXML
@@ -235,8 +234,9 @@ public class ManageMapViewController extends AbstractController {
 
     private void clickDelete() {
         // delete the node
-        selectedNode.delete();
-        refreshScene();
+        if (selectedNode.delete()) {
+            refreshScene();
+        }
     }
 
     private void clickAdd() {
