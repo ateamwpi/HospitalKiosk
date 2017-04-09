@@ -5,6 +5,7 @@ import core.KioskMain;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
@@ -17,57 +18,56 @@ import java.io.IOException;
 /**
  * Created by mattm on 3/29/2017.
  */
-public class DirectionsViewController implements IControllerWithParams {
-    private static final String MAP_URL = "views/Map.fxml";
+public class DirectionsViewController extends AbstractController {
 
     private Node startNode;
     private Node endNode;
-    private Path path;
 
     @FXML
     private Button backBtn;
-
     @FXML
     private Button doneButton;
-
     @FXML
     private AnchorPane mapContainer;
-
-    private MapController mapController;
-
     @FXML
     private Text directionsText;
+
+    DirectionsViewController(Node startNode, Node endNode) {
+        super(startNode, endNode);
+    }
 
     @FXML
     private void initialize() {
         // load the map controller
-        mapController = new MapController();
-        // get the map
-        Region map = mapController.getRoot();
+        MapController mapController = new MapController();
         // add the map to the container
-        mapContainer.getChildren().add(map);
-    }
-
-    @FXML
-    private void clickBack(ActionEvent event) {
-        KioskMain.setScene("views/DirectoryView.fxml", false);
-    }
-
-    @FXML
-    private void clickDone(ActionEvent event) {
-        KioskMain.setScene("views/MainMenu.fxml");
-    }
-
-    @Override
-    public void initData(Object... data) {
-        // set the start and end nodes
-        startNode = (Node) data[0];
-        endNode = (Node) data[1];
+        mapContainer.getChildren().add(mapController.getRoot());
         // find the shortest path
-        path = KioskMain.getPath().findPath(startNode, endNode);
+        Path path = KioskMain.getPath().findPath(startNode, endNode);
         // draw the path on the map
         mapController.drawPath(path);
         // show the text directions
         directionsText.setText("Directions:\n" + path.textPath());
+    }
+
+    @FXML
+    private void clickBack(ActionEvent event) {
+        KioskMain.setScene(new DirectoryViewController(false));
+    }
+
+    @FXML
+    private void clickDone(ActionEvent event) {
+        KioskMain.setScene(new MainMenuController());
+    }
+
+    @Override
+    public void initData(Object... data) {
+        this.startNode = (Node) data[0];
+        this.endNode = (Node) data[1];
+    }
+
+    @Override
+    public String getURL() {
+        return "views/DirectionsView.fxml";
     }
 }
