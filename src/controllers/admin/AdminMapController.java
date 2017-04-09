@@ -1,25 +1,20 @@
 package controllers.admin;
 
+import controllers.AbstractController;
 import controllers.IClickableController;
 import controllers.map.*;
 import core.KioskMain;
 import core.NodeInUseException;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
-import javafx.scene.Group;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Region;
 import javafx.scene.shape.Line;
 import javafx.util.Pair;
 import models.path.Node;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,13 +22,13 @@ import java.util.Map;
 /**
  * Created by dylan on 4/8/17.
  */
-public class AdminMapController implements IClickableController {
+public class AdminMapController extends AbstractController implements IClickableController {
 
-    private Collection<Node> nodes = new ArrayList<>();
+    private Collection<Node> nodes;
     private ManageMapViewController manageMapViewController;
     private DraggableNode selectedNode;
-    private Map<Node, DraggableNode> draggableNodes = new HashMap<>();
-    private Map<Pair<DraggableNode, DraggableNode>, Line> draggableNodeConnections = new HashMap<>();
+    private Map<Node, DraggableNode> draggableNodes;
+    private Map<Pair<DraggableNode, DraggableNode>, Line> draggableNodeConnections;
     private NodeGestures nodeGestures;
     private MapController mapController;
 
@@ -42,24 +37,28 @@ public class AdminMapController implements IClickableController {
 
     //// Public API ////
 
-    public AdminMapController(ManageMapViewController manageMapViewController) {
-        // load all the nodes
-        nodes = KioskMain.getPath().getGraph().values();
-        // set map manager
-        this.manageMapViewController = manageMapViewController;
-        // get the loader
-        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("views/AdminMap.fxml"));
-        // set the controller
-        loader.setController(this);
-        // load the view
-        try {
-            loader.load();
-        } catch (IOException exception) {
-            throw new RuntimeException(exception);
-        }
+    AdminMapController(ManageMapViewController manageMapViewController) {
+        super(manageMapViewController);
     }
 
-    public Region getRoot() {
+    @Override
+    public void initData(Object... data) {
+        // set map manager
+        this.manageMapViewController = (ManageMapViewController) data[0];
+        // load all the nodes
+        nodes = KioskMain.getPath().getGraph().values();
+        // init props
+        draggableNodes = new HashMap<>();
+        draggableNodeConnections = new HashMap<>();
+    }
+
+    @Override
+    public String getURL() {
+        return "views/AdminMap.fxml";
+    }
+
+    @Override
+    public Parent getRoot() {
         return mapContainer;
     }
 
@@ -81,7 +80,7 @@ public class AdminMapController implements IClickableController {
         return nodeGestures;
     }
 
-    public void addNode(double x, double y, String room) {
+    void addNode(double x, double y, String room) {
         System.out.println("add node");
         // create new node
         Node node = new Node((int) x, (int) y, room);
@@ -119,11 +118,11 @@ public class AdminMapController implements IClickableController {
         manageMapViewController.selectNode(selectedNode);
     }
 
-    public Boolean nodeIsSelected() {
+    private Boolean nodeIsSelected() {
         return selectedNode != null;
     }
 
-    public void unselectNode() {
+    private void unselectNode() {
         if (selectedNode != null) {
             selectedNode.unselect();
             selectedNode = null;
@@ -172,10 +171,8 @@ public class AdminMapController implements IClickableController {
     private void initialize() {
         // load the map controller
         mapController = new MapController();
-        // get the map
-        Region map = mapController.getRoot();
         // add the map to the container
-        mapContainer.getChildren().add(map);
+        mapContainer.getChildren().add(mapController.getRoot());
         // get the map canvas
         PannableCanvas canvas = mapController.getCanvas();
         // create the node gesture for dragging
@@ -212,7 +209,7 @@ public class AdminMapController implements IClickableController {
     }
 
     private Pair<DraggableNode, DraggableNode> getNodePair(DraggableNode nodeA, DraggableNode nodeB) {
-        return (nodeA.getNode().getID() > nodeB.getNode().getID()) ? new Pair(nodeA, nodeB) : new Pair(nodeB, nodeA);
+        return (nodeA.getNode().getID() > nodeB.getNode().getID()) ? new Pair<>(nodeA, nodeB) : new Pair<>(nodeB, nodeA);
     }
 
     private void showNodeInUseAlert() {

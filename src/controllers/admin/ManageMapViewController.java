@@ -1,5 +1,7 @@
 package controllers.admin;
 
+import controllers.AbstractController;
+import controllers.IController;
 import controllers.map.DraggableNode;
 import controllers.map.MapController;
 import core.KioskMain;
@@ -10,6 +12,7 @@ import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
@@ -20,18 +23,17 @@ import models.path.Node;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.regex.Pattern;
 
-public class ManageMapViewController {
-
-    private static final String MAP_URL = "views/Map.fxml";
+public class ManageMapViewController extends AbstractController {
 
     private AdminMapController adminMapController;
     private DraggableNode selectedNode;
-    private StringProperty xTextProperty = new SimpleStringProperty();
-    private StringProperty yTextProperty = new SimpleStringProperty();
-    private StringProperty roomNameProperty = new SimpleStringProperty();
-    private StringConverter<Number> converter = new NumberStringConverter();
+    private StringProperty xTextProperty;
+    private StringProperty yTextProperty;
+    private StringProperty roomNameProperty;
+    private StringConverter<Number> converter;
 
     @FXML
     private TextField x;
@@ -58,14 +60,25 @@ public class ManageMapViewController {
     @FXML
     private Label id;
 
+    @Override
+    public String getURL() {
+        return "views/ManageMapView.fxml";
+    }
+
+    @Override
+    public void initData(Object... data) {
+        xTextProperty = new SimpleStringProperty();
+        yTextProperty = new SimpleStringProperty();
+        roomNameProperty = new SimpleStringProperty();
+        converter = new NumberStringConverter();
+    }
 
     @FXML
     private void initialize() {
         // load the admin map controller
         adminMapController = new AdminMapController(this);
-        Region map = adminMapController.getRoot();
         // add the map to the container
-        mapContainer.getChildren().add(map);
+        mapContainer.getChildren().add(adminMapController.getRoot());
         // init input text properties
         xTextProperty = x.textProperty();
         yTextProperty = y.textProperty();
@@ -98,7 +111,7 @@ public class ManageMapViewController {
         });
     }
 
-    public void selectNode(DraggableNode draggableNode) {
+    void selectNode(DraggableNode draggableNode) {
         // set selected node
         selectedNode = draggableNode;
         Node node = draggableNode.getNode();
@@ -107,7 +120,7 @@ public class ManageMapViewController {
         Bindings.bindBidirectional(yTextProperty, selectedNode.previewYProperty(), converter);
         Bindings.bindBidirectional(roomNameProperty, selectedNode.previewRoomNameProperty());
         // update node id
-        id.setText(new Integer(node.getID()).toString());
+        id.setText(Integer.toString(node.getID()));
         // show save button
         saveNode.setVisible(true);
         // enable add connection button
@@ -118,7 +131,7 @@ public class ManageMapViewController {
         setTableNeighbors(selectedNode.getNode().getConnections());
     }
 
-    public void unselectNode() {
+    void unselectNode() {
         // unbind text fields with node properties
         if (selectedNode != null) {
             Bindings.unbindBidirectional(xTextProperty, selectedNode.previewXProperty());
@@ -160,7 +173,8 @@ public class ManageMapViewController {
     private void clickBack(ActionEvent event) {
         if(selectedNode != null)
             selectedNode.cancelPreview();
-        KioskMain.setScene("views/AdminMenu.fxml");
+
+        KioskMain.setScene(new AdminMenuController());
     }
 
     @FXML
@@ -170,7 +184,7 @@ public class ManageMapViewController {
         // get the node
         Node node = KioskMain.getPath().getNode(neighborID);
         // check if node exists and is not itself
-        if (node == null || node.equals(selectedNode)) {
+        if (node == null || node.equals(selectedNode.getNode())) {
             alertAddConnectionError();
             return;
         }
@@ -251,7 +265,7 @@ public class ManageMapViewController {
     }
 
     private void refreshScene() {
-        KioskMain.setScene("views/ManageMapView.fxml");
+        KioskMain.setScene(new ManageMapViewController());
     }
 
 }

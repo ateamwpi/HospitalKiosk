@@ -1,7 +1,7 @@
 package controllers.map;
 
+import controllers.AbstractController;
 import controllers.IClickableController;
-import controllers.IControllerWithParams;
 import controllers.admin.ManageMapViewController;
 import core.KioskMain;
 import core.NodeInUseException;
@@ -32,7 +32,7 @@ import java.util.Map;
 /**
  * Created by dylan on 4/2/17.
  */
-public class MapController implements IClickableController {
+public class MapController extends AbstractController implements IClickableController {
 
     private static final String MAP_URL = "resources/4_thefourthfloor.png";
 
@@ -42,29 +42,17 @@ public class MapController implements IClickableController {
     private PannableCanvas canvas;
 
     @FXML
-    private AnchorPane anchorPane;
+    private AnchorPane root;
     @FXML
     private ImageView mapView;
 
     //// Public API ////
 
-    public MapController() {
-        // get loader
-        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("views/Map.fxml"));
-        // set the controller
-        loader.setController(this);
-        // load the view
-        try {
-            loader.load();
-        } catch (IOException exception) {
-            throw new RuntimeException(exception);
-        }
-    }
-
     public void handleMouseClick(MouseEvent event) {}
 
-    public Region getRoot() {
-        return anchorPane;
+    @Override
+    public String getURL() {
+        return "views/Map.fxml";
     }
 
     public PannableCanvas getCanvas() {
@@ -93,7 +81,7 @@ public class MapController implements IClickableController {
     private void initialize() {
         // create overlay
         overlay = new Group();
-        anchorPane.getChildren().add(overlay);
+        root.getChildren().add(overlay);
         // create canvas
         canvas = new PannableCanvas(this);
         // add the canvas to overlay
@@ -109,9 +97,9 @@ public class MapController implements IClickableController {
         // create the scene gestures for zooming and panning
         SceneGestures sceneGestures = new SceneGestures(canvas, this);
         // register handlers zooming and panning
-        anchorPane.addEventHandler(MouseEvent.ANY, new ClickDragHandler(sceneGestures.getOnMouseClickedEventHandler(), sceneGestures.getOnMouseDraggedEventHandler()));
-        anchorPane.addEventHandler(MouseEvent.MOUSE_PRESSED, sceneGestures.getOnMousePressedEventHandler());
-        anchorPane.addEventHandler(ScrollEvent.ANY, sceneGestures.getOnScrollEventHandler());
+//        anchorPane.addEventHandler(MouseEvent.ANY, new ClickDragHandler(sceneGestures.getOnMouseClickedEventHandler(), sceneGestures.getOnMouseDraggedEventHandler()));
+//        anchorPane.addEventHandler(MouseEvent.MOUSE_PRESSED, sceneGestures.getOnMousePressedEventHandler());
+//        anchorPane.addEventHandler(ScrollEvent.ANY, sceneGestures.getOnScrollEventHandler());
     }
 
     private void drawConnection(Node nodeA, Node nodeB) {

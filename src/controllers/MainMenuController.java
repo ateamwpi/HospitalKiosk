@@ -1,5 +1,6 @@
 package controllers;
 
+import controllers.admin.AdminLoginController;
 import controllers.admin.AdminMapController;
 import controllers.map.MapController;
 import core.KioskMain;
@@ -19,9 +20,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class MainMenuController {
-
-    private static final String MAP_URL = "resources/4_thefourthfloor.png";
+public class MainMenuController extends AbstractController {
 
     @FXML
     private Button viewMapBtn;
@@ -36,30 +35,32 @@ public class MainMenuController {
     @FXML
     private AnchorPane anchorPane;
 
+    @Override
+    public String getURL() {
+        return "views/MainMenu.fxml";
+    }
 
     @FXML
     private void initialize() {
         // load the map controller
         MapController mapController = new MapController();
-        // get the map
-        Region map = mapController.getRoot();
         // add the map to the container
-        mapContainer.getChildren().add(map);
+        mapContainer.getChildren().add(mapController.getRoot());
     }
 
     @FXML
     private void clickViewMap(ActionEvent event) {
-        KioskMain.setScene("views/MapView.fxml");
+        KioskMain.setScene(new MapViewController());
     }
 
     @FXML
     private void clickViewDirectory(ActionEvent event) {
-        KioskMain.setScene("views/DirectoryView.fxml", false);
+        KioskMain.setScene(new DirectoryViewController(false));
     }
 
     @FXML
     private void clickAdmin(ActionEvent event) {
-        KioskMain.setScene("views/AdminLogin.fxml");
+        KioskMain.setScene(new AdminLoginController());
     }
 
 }
