@@ -21,13 +21,14 @@ import java.util.HashMap;
  * The abstract class that handles the Directory views.
  * Created by Kevin O'Brien on 4/7/2017.
  */
-public abstract class AbstractDirectoryController extends AbstractController {
+public abstract class AbstractDirectoryViewController extends AbstractController {
     private HashMap<LocationType, Directory> directories;
     private Collection<Location> selectedLocations; // all Locations of the current LocationType
     private Collection<Location> filteredLocations; // all Locations that match the searchBox
     @FXML
+    protected
     TableView<Location> locationsTable; //table to hold all locations
-    Location selectedLocation;
+    protected Location selectedLocation;
     @FXML
     private TableColumn<Location, String> nameCol; //column that holds names of locations
     @FXML
@@ -39,7 +40,7 @@ public abstract class AbstractDirectoryController extends AbstractController {
     @FXML
     private ComboBox<String> locationDropdown;
 
-    AbstractDirectoryController(Object... data) {
+    protected AbstractDirectoryViewController(Object... data) {
         super(data);
     }
 
@@ -54,7 +55,7 @@ public abstract class AbstractDirectoryController extends AbstractController {
      * Populate the Table of Locations. Sorts the table by name. When entry is selected, allow for use as starting
      * location.
      */
-    void initializeTable() {
+    protected void initializeTable() {
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         roomCol.setCellValueFactory(new PropertyValueFactory<>("roomName"));
         typeCol.setCellValueFactory(new PropertyValueFactory<>("locType"));
@@ -64,7 +65,7 @@ public abstract class AbstractDirectoryController extends AbstractController {
     /**
      * Populate LocationType Dropdown menu with all LocationTypes. Additionally, allow for Full Directory to be selected.
      */
-    void initializeDropdown() {
+    protected void initializeDropdown() {
         locationDropdown.getSelectionModel().selectedItemProperty().addListener((
                 (observable, oldValue, newValue) -> selectDirectory(locationDropdown.getSelectionModel().getSelectedItem())));
         locationDropdown.getItems().add("Full Directory");
@@ -77,7 +78,7 @@ public abstract class AbstractDirectoryController extends AbstractController {
         locationDropdown.getSelectionModel().selectFirst();
     }
 
-    void initializeFilter() {
+    protected void initializeFilter() {
         searchBox.textProperty().addListener((observable, oldValue, newValue) -> filterLocations());
     }
 

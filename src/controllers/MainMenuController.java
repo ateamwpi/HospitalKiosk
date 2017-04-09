@@ -55,7 +55,7 @@ public class MainMenuController extends AbstractController {
 
     @FXML
     private void clickViewDirectory(ActionEvent event) {
-        KioskMain.setScene(new DirectoryViewController(false));
+        KioskMain.setScene(new DirectoryViewController());
     }
 
     @FXML

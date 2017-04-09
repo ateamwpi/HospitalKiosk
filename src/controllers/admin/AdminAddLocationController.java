@@ -1,26 +1,23 @@
 package controllers.admin;
 
 import controllers.AbstractController;
-import controllers.DirectoryViewController;
+import controllers.IController;
 import core.KioskMain;
 import core.RoomNotFoundException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
 import models.dir.Location;
 import models.dir.LocationType;
-
-import java.sql.*;
 
 import java.io.IOException;
 
 /**
- * Created by Jonathan on 3/31/2017.
+ * Created by dylan on 4/9/17.
  */
-public class AdminModifyLocationController extends AbstractController {
-
-    private Location existingLoc;
+public class AdminAddLocationController extends AbstractController {
 
     @FXML
     private TextField name;
@@ -29,15 +26,16 @@ public class AdminModifyLocationController extends AbstractController {
     @FXML
     private ComboBox<LocationType> locationDropdown;
 
-    AdminModifyLocationController(Location selectedLocation) {
-        super(selectedLocation);
+    AdminAddLocationController() {
+    }
+
+    @Override
+    public String getURL() {
+        return "views/AdminAddLocation.fxml";
     }
 
     @FXML
     private void initialize() {
-        name.setText(existingLoc.getName());
-        place.setText(existingLoc.getNode().getRoomName());
-        locationDropdown.getSelectionModel().select(existingLoc.getLocType());
         locationDropdown.getItems().addAll(LocationType.values());
         locationDropdown.getSelectionModel().selectFirst();
     }
@@ -51,25 +49,18 @@ public class AdminModifyLocationController extends AbstractController {
     @FXML
     private void clickSubmit(ActionEvent event) throws IOException {
         try {
-            editLocation();
+            newLocation();
         } catch(RoomNotFoundException e) {
             invalidRoomAlert();
         }
     }
 
-    private void editLocation() throws RoomNotFoundException {
+    private void newLocation() throws RoomNotFoundException {
         String locName = name.getText();
         String roomName = place.getText();
         LocationType locType = locationDropdown.getValue();
-        if (!locName.equals(existingLoc.getName())) {
-            existingLoc.setName(locName);
-        }
-        if (!roomName.equals(existingLoc.getNode().getRoomName())) {
-            existingLoc.setNode(KioskMain.getPath().getRoom(roomName));
-        }
-        if (!locType.equals(existingLoc.getLocType())) {
-            existingLoc.setLocType(locType);
-        }
+        Location L = new Location(locName, locType, KioskMain.getPath().getRoom(roomName));
+        KioskMain.getDir().addLocation(L);
         KioskMain.setScene(new ManageDirectoryViewController());
     }
 
@@ -86,17 +77,4 @@ public class AdminModifyLocationController extends AbstractController {
         place.clear();
     }
 
-    /**
-     * Used when editing a Location.
-     * @param data The Location object to edit.
-     */
-    @Override
-    public void initData(Object... data) {
-        existingLoc = (Location) data[0];
-    }
-
-    @Override
-    public String getURL() {
-        return "views/AdminModifyLocation.fxml";
-    }
 }

@@ -45,7 +45,7 @@
                     </columns>
                 </TableView>
                 <Button fx:id="goToFinalSel" alignment="CENTER" mnemonicParsing="false"
-                        onAction="#clickGoToFinalSel" text="-&gt;" GridPane.columnIndex="2"
+                        text="-&gt;" GridPane.columnIndex="2"
                         GridPane.rowIndex="3"/>
                 <Label fx:id="directions" prefHeight="91.0" prefWidth="275.0" text="Label" wrapText="true"
                        GridPane.columnIndex="1" GridPane.rowIndex="3">
@@ -64,13 +64,13 @@
                 <ComboBox fx:id="locationDropdown" prefWidth="150.0" GridPane.columnIndex="1"
                           GridPane.rowIndex="1"/>
                 <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
-                    <Button fx:id="addEntry" mnemonicParsing="false" text="Add"/>
-                    <Button fx:id="modifyEntry" mnemonicParsing="false"
+                    <Button fx:id="addEntry" mnemonicParsing="false" onAction="#clickAdd" text="Add"/>
+                    <Button fx:id="modifyEntry" mnemonicParsing="false" onAction="#clickModify"
                             text="Modify"/>
-                    <Button fx:id="removeEntry" mnemonicParsing="false"
+                    <Button fx:id="removeEntry" mnemonicParsing="false" onAction="#clickRemove"
                             text="Remove"/>
                 </VBox>
-                <Button fx:id="kiosk" mnemonicParsing="false" onAction="#clickKiosk"
+                <Button fx:id="kiosk" mnemonicParsing="false"
                         text="Use Kiosk Location" GridPane.columnIndex="2"/>
             </GridPane>
         </AnchorPane>

@@ -1,5 +1,6 @@
-package controllers;
+package controllers.admin;
 
+import controllers.AbstractController;
 import controllers.admin.AdminMenuController;
 import core.KioskMain;
 import core.RoomNotFoundException;
