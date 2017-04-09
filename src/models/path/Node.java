@@ -1,6 +1,7 @@
 package models.path;
 
 import core.KioskMain;
+import core.WrongFloorException;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -20,7 +21,9 @@ public class Node {
     private IntegerProperty xProperty = new SimpleIntegerProperty();
     private IntegerProperty yProperty = new SimpleIntegerProperty();
     private IntegerProperty idProperty = new SimpleIntegerProperty();
+    private IntegerProperty floorProperty = new SimpleIntegerProperty();
     private StringProperty roomNameProperty = new SimpleStringProperty();
+    private String previousRoomName = "";
     private ArrayList<Node> connections;
     private HashMap<Integer, Location> locations;
     private HashMap<LocationType, Integer> counts;
@@ -30,10 +33,11 @@ public class Node {
     /** This constructor should _ONLY_ be used when loading from the database. For any
      *  new nodes created, use Node(x, y) and a unique ID will automatically be generated.
      */
-    public Node(int id, int x, int y, String roomName) {
+    public Node(int id, int x, int y, int floor, String roomName) {
         idProperty.set(id);
         xProperty.set(x);
         yProperty.set(y);
+        floorProperty.set(floor);
         roomNameProperty.set(roomName);
         this.connections = new ArrayList<Node>();
         this.locations = new HashMap<Integer, Location>();
@@ -42,10 +46,11 @@ public class Node {
         this.isDone = false;
     }
 
-    public Node(int x, int y, String roomName) {
+    public Node(int x, int y, int floor, String roomName) {
         idProperty.set(getNextNodeID());
         xProperty.set(x);
         yProperty.set(y);
+        floorProperty.set(floor);
         roomNameProperty.set(roomName);
         this.connections = new ArrayList<Node>();
         this.locations = new HashMap<Integer, Location>();
@@ -54,10 +59,11 @@ public class Node {
         this.isDone = true;
     }
 
-    public Node(int x, int y) {
+    public Node(int x, int y, int floor) {
         idProperty.set(getNextNodeID());
         xProperty.set(x);
         yProperty.set(y);
+        floorProperty.set(floor);
         roomNameProperty.set("NONE");
         this.connections = new ArrayList<Node>();
         this.locations = new HashMap<Integer, Location>();
@@ -72,7 +78,10 @@ public class Node {
         else this.counts.put(l.getLocType(), this.counts.get(l.getLocType()) + 1);
     }
 
-    public void addConnection(Node other) {
+    public void addConnection(Node other) throws WrongFloorException {
+        if(this.getFloor() != other.getFloor()) {
+            throw new WrongFloorException(this, other);
+        }
         if(!this.connections.contains(other)) {
             this.connections.add(other);
             if(this.isDone && !other.connections.contains(this)) {
@@ -82,10 +91,13 @@ public class Node {
         }
     }
 
+    public LocationType getPrimaryLocType() {
+        if(this.counts.isEmpty()) return LocationType.Unknown;
+        return Collections.max(this.counts.entrySet(), Map.Entry.comparingByValue()).getKey();
+    }
+
     public Color getColor() {
-        if(this.counts.isEmpty()) return LocationType.Unknown.getNodeColor();
-        LocationType lt = Collections.max(this.counts.entrySet(), Map.Entry.comparingByValue()).getKey();
-        return lt.getNodeColor();
+        return this.getPrimaryLocType().getNodeColor();
     }
 
     public void removeConnection(Node other) {
@@ -105,11 +117,11 @@ public class Node {
     }
 
     public void setRoomName(String name) {
-        KioskMain.getPath().updateRoomName(this, name);
+        this.previousRoomName = this.getRoomName();
         roomNameProperty.setValue(name);
     }
 
-    public void setConnections(Collection<Node> conns) {
+    public void setConnections(Collection<Node> conns) throws WrongFloorException {
         // Add anything new
         for (Node n : conns) {
             if(!this.connections.contains(n)) {
@@ -150,6 +162,14 @@ public class Node {
         return (Collection<Node>)this.connections.clone();
     }
 
+    public final int getFloor(){
+        return floorProperty.get();
+    }
+
+    public final void setFloor(int value){
+        floorProperty.set(value);
+    }
+
     public final int getX(){
         return xProperty.get();
     }
@@ -172,6 +192,7 @@ public class Node {
 
     public final void save() {
         // TODO check if node in db first
+        KioskMain.getPath().updateRoomName(this, this.previousRoomName);
         KioskMain.getDB().updateNode(this);
     }
 
@@ -186,7 +207,7 @@ public class Node {
     }
 
     public String toString() {
-        String str= "Node: ID=" + getID() + ", X=" + getX() + ", Y=" + getY() + ", NAME=" + getRoomName() + "\n";
+        String str= "Node: ID=" + getID() + ", X=" + getX() + ", Y=" + getY() + ", FLOOR=" + getFloor() + ", NAME=" + getRoomName() + "\n";
         for (Node n : this.connections) {
             str += "Connected to Node ID=" + n.getID() + "\n";
         }

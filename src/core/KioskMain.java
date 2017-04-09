@@ -123,8 +123,12 @@ public class KioskMain extends Application {
         // create the directory manager with directories from the db
         HashMap<LocationType, Directory> allDirectories = getDB().getAllDirectories();
         HashMap<Integer, Location> kiosks = allDirectories.get(LocationType.Kiosk).getLocations();
-        if(kiosks.size() != 1) {
+        if(kiosks.size() > 1) {
             System.out.println("Error initializing DirectoryManager: More than one Kiosk was found in the database!");
+            System.exit(1);
+        }
+        else if(kiosks.size() < 1) {
+            System.out.println("Error initializing DirectoryManager: No Kiosk was found in the database!");
             System.exit(1);
         }
         Location theKiosk = kiosks.values().iterator().next();
