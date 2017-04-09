@@ -1,6 +1,7 @@
 package models.path;
 
 import core.KioskMain;
+import core.WrongFloorException;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.paint.Color;
 import models.dir.Location;
@@ -73,7 +74,10 @@ public class Node {
         else this.counts.put(l.getLocType(), this.counts.get(l.getLocType()) + 1);
     }
 
-    public void addConnection(Node other) {
+    public void addConnection(Node other) throws WrongFloorException {
+        if(this.floor != other.floor) {
+            throw new WrongFloorException(this, other);
+        }
         if(!this.connections.contains(other)) {
             this.connections.add(other);
             if(this.isDone && !other.connections.contains(this)) {
@@ -126,7 +130,7 @@ public class Node {
         KioskMain.getDB().updateNode(this);
     }
 
-    public void setConnections(Collection<Node> conns) {
+    public void setConnections(Collection<Node> conns) throws WrongFloorException {
         // Add anything new
         for (Node n : conns) {
             if(!this.connections.contains(n)) {

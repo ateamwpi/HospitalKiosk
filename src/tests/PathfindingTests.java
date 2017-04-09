@@ -22,8 +22,10 @@ public class PathfindingTests {
         Node n1 = new Node(1, 1, 1, 4, "NONE");
         Node n2 = new Node(2, 2, 2, 4, "NONE");
         Node n3 = new Node(3, 3, 3, 4, "NONE");
-        n1.addConnection(n2);
-        n2.addConnection(n3);
+        try {
+            n1.addConnection(n2);
+            n2.addConnection(n3);
+        } catch (Exception e) {}
         n.put(1, n1);
         n.put(2, n2);
         n.put(3, n3);
@@ -71,15 +73,35 @@ public class PathfindingTests {
         n.put(13, n13); n.put(14, n14); n.put(15, n15); n.put(16, n16);
         n.put(17, n17); n.put(18, n18); n.put(19, n19); n.put(20, n20);
         n.put(21, n21); n.put(22, n22); n.put(23, n23); n.put(24, n24);
-        n.put(25, n25); n1.addConnection(n2); n2.addConnection(n3);
-        n3.addConnection(n4); n3.addConnection(n10); n4.addConnection(n5);
-        n5.addConnection(n14); n6.addConnection(n7); n7.addConnection(n8);
-        n7.addConnection(n15); n8.addConnection(n9); n9.addConnection(n12);
-        n10.addConnection(n11); n11.addConnection(n13); n11.addConnection(n21);
-        n13.addConnection(n14); n14.addConnection(n6); n15.addConnection(n16);
-        n17.addConnection(n9); n18.addConnection(n17); n19.addConnection(n18);
-        n19.addConnection(n23); n20.addConnection(n24); n21.addConnection(n22);
-        n22.addConnection(n20); n24.addConnection(n25); n25.addConnection(n19);
+        n.put(25, n25);
+        try {
+            n1.addConnection(n2);
+            n2.addConnection(n3);
+            n3.addConnection(n4);
+            n3.addConnection(n10);
+            n4.addConnection(n5);
+            n5.addConnection(n14);
+            n6.addConnection(n7);
+            n7.addConnection(n8);
+            n7.addConnection(n15);
+            n8.addConnection(n9);
+            n9.addConnection(n12);
+            n10.addConnection(n11);
+            n11.addConnection(n13);
+            n11.addConnection(n21);
+            n13.addConnection(n14);
+            n14.addConnection(n6);
+            n15.addConnection(n16);
+            n17.addConnection(n9);
+            n18.addConnection(n17);
+            n19.addConnection(n18);
+            n19.addConnection(n23);
+            n20.addConnection(n24);
+            n21.addConnection(n22);
+            n22.addConnection(n20);
+            n24.addConnection(n25);
+            n25.addConnection(n19);
+        } catch (Exception e) {}
         PathfindingManager path = new PathfindingManager(n);
 
         Path expected = new Path();

@@ -1,6 +1,7 @@
 package models.db;
 
 import core.KioskMain;
+import core.WrongFloorException;
 import models.dir.Directory;
 import models.dir.Location;
 import models.dir.LocationType;
@@ -171,6 +172,9 @@ public class DatabaseManager {
             stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (WrongFloorException e) {
+            e.printStackTrace();
+            // this shouldn't be reachable unless there is bad data in the database
         }
 
         // Return the completed list of all nodes

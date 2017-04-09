@@ -2,6 +2,7 @@ package controllers;
 
 import core.KioskMain;
 import core.NodeInUseException;
+import core.WrongFloorException;
 import javafx.scene.control.Alert;
 import javafx.scene.input.MouseButton;
 import javafx.scene.shape.Line;
@@ -427,7 +428,13 @@ class DraggableNode extends Circle {
         node.setX(previewX);
         node.setY(previewY);
         node.setRoomName(previewRoomName);
-        node.setConnections(previewConnections);
+        try {
+            node.setConnections(previewConnections);
+        }
+        catch(WrongFloorException e) {
+            e.printStackTrace();
+            //TODO HANDLE THIS
+        }
         // draw the updated node
         redraw();
     }
