@@ -1,4 +1,4 @@
-package controllers;
+package controllers.admin;
 
 import core.KioskMain;
 import javafx.event.ActionEvent;
@@ -21,6 +21,8 @@ public class AdminMenuController {
     private Button manageDirectoryBtn;
     @FXML
     private Button manageMapBtn;
+    @FXML
+    private Button kioskButton;
 
     @FXML
     private void clickLogout(ActionEvent event) {
@@ -29,12 +31,17 @@ public class AdminMenuController {
 
     @FXML
     private void clickManageDirectory(ActionEvent event) {
-        KioskMain.setScene("views/ManageDirectoryView.fxml");
+        KioskMain.setScene("views/DirectoryView.fxml", true);
     }
 
     @FXML
     private void clickManageMap(ActionEvent event) {
         KioskMain.setScene("views/ManageMapView.fxml");
+    }
+
+    @FXML
+    private void pressedKiosk(ActionEvent event) {
+        KioskMain.setScene("views/ChangeKiosk.fxml");
     }
 
 
