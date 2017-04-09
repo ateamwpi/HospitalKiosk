@@ -35,7 +35,7 @@ public class AdminMenuController extends AbstractController {
 
     @FXML
     private void clickManageDirectory(ActionEvent event) {
-        KioskMain.setScene(new DirectoryViewController(true));
+        KioskMain.setScene(new ManageDirectoryViewController());
     }
 
     @FXML

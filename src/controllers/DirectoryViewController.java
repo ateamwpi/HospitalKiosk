@@ -2,12 +2,11 @@ package controllers;
 
 import controllers.admin.AdminMenuController;
 import controllers.admin.AdminModifyLocationController;
+import controllers.admin.ManageDirectoryViewController;
 import core.KioskMain;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
 import javafx.scene.control.*;
-import models.dir.LocationType;
 import models.path.Node;
 
 import java.io.IOException;
@@ -16,11 +15,10 @@ import java.io.IOException;
  * Created by mattm on 3/29/2017.
  */
 
-public class DirectoryViewController extends AbstractDirectoryController {
+public class DirectoryViewController extends AbstractDirectoryViewController {
 
     private Node startNode; // The selected starting node for pathfinding
     private Node endNode;
-    private boolean adminMode = false;
 
     @FXML
     private Label title;
@@ -37,23 +35,12 @@ public class DirectoryViewController extends AbstractDirectoryController {
     @FXML
     private Button kiosk;
 
-    /**
-     * Used to specify whether to enable admin mode or not.
-     * @param adminMode Boolean ... True:Admin, False: User
-     */
-    public DirectoryViewController(Boolean adminMode) {
-        super(adminMode);
-    }
+
+    DirectoryViewController() {}
 
     @Override
     public String getURL() {
         return "views/DirectoryView.fxml";
-    }
-
-    @Override
-    public void initData(Object... data) {
-        super.initData(data);
-        adminMode = (Boolean) data[0];
     }
 
     @FXML
@@ -61,30 +48,15 @@ public class DirectoryViewController extends AbstractDirectoryController {
         initializeTable();
         initializeDropdown();
         initializeFilter();
-        // choose mode
-        if (adminMode) {
-            adminMode();
-        } else {
-            directionMode();
-        }
+        // choose direction mode
+        directionMode();
         // listen to location table selection event
         locationsTable.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
             if (locationsTable.getSelectionModel().getSelectedItem() != null) {
-                this.selectedLocation = newValue;
-                if (!adminMode) {
-                    goToFinalSel.setDisable(false); //enable -> button once selection has been made
-                }
-
+                selectedLocation = newValue;
+                goToFinalSel.setDisable(false); //enable -> button once selection has been made
             }
         });
-    }
-
-    private void adminMode() {
-        kiosk.setVisible(false);
-        goToFinalSel.setVisible(false);
-        title.setText("Manage Directory");
-        directions.setText("Add a new Location with the 'New' Button. To edit or remove a location, select a Location" +
-               " from the table and press the corresponding button");
     }
 
     private void directionMode() {
@@ -100,14 +72,14 @@ public class DirectoryViewController extends AbstractDirectoryController {
 
     @FXML  //when user clicks "back" button, they will return to main menu
     private void clickBack(ActionEvent event) {
-        // TODO fix bug Issue #30
-        KioskMain.setScene(adminMode ? new AdminMenuController() : new MainMenuController());
+        KioskMain.setScene(new MainMenuController());
     }
 
     @FXML  //when user clicks -> button, they will be brought to new page and asked to pick final destination
     private void clickGoToFinalSel(ActionEvent event) {
         getDirections();
     }
+
     private void getDirections() {
         if (startNode == null) {
             title.setText("Select Ending Location");
@@ -119,22 +91,6 @@ public class DirectoryViewController extends AbstractDirectoryController {
             endNode = selectedLocation.getNode();
             KioskMain.setScene(new DirectionsViewController(this.startNode, this.endNode));
         }
-    }
-
-    @FXML
-    private void clickModify(ActionEvent event) throws IOException {
-        KioskMain.setScene(new AdminModifyLocationController(selectedLocation));
-    }
-
-    @FXML
-    private void clickAdd(ActionEvent event) throws IOException {
-        KioskMain.setScene(new AdminModifyLocationController());
-    }
-
-    @FXML
-    private void clickRemove(ActionEvent event)throws IOException {
-        KioskMain.getDir().removeLocation(selectedLocation);
-        KioskMain.setScene(new DirectoryViewController(true));
     }
 
     @FXML
