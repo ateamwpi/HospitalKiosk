@@ -93,7 +93,11 @@ BNODEID</ColNames>
       <Position>4</Position>
       <DataType>VARCHAR(50)|12</DataType>
     </column>
-    <key id="31" parent="15" name="PK_NODE">
+    <column id="31" parent="15" name="FLOOR">
+      <Position>5</Position>
+      <DataType>INTEGER(10)|4</DataType>
+    </column>
+    <key id="32" parent="15" name="PK_NODE">
       <ColNames>ID</ColNames>
       <Primary>1</Primary>
     </key>

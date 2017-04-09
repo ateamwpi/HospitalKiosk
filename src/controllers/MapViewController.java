@@ -14,7 +14,7 @@ import java.io.IOException;
 /**
  * Created by mattm on 3/29/2017.
  */
-public class MapViewController {
+public class MapViewController extends AbstractController {
     @FXML
     private Button floor1Btn;
     @FXML
@@ -34,9 +34,13 @@ public class MapViewController {
     @FXML
     private Button backBtn;
 
+    @Override
+    public String getURL() {
+        return "views/MapView.fxml";
+    }
 
     @FXML
     private void clickBack(ActionEvent event) {
-        KioskMain.setScene("views/MainMenu.fxml");
+        KioskMain.setScene(new MainMenuController());
     }
 }

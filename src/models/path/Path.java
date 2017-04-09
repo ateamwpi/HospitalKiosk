@@ -2,6 +2,8 @@ package models.path;
 
 
 import models.dir.Directory;
+import models.dir.LocationType;
+import sun.awt.image.ImageWatched;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,8 +29,15 @@ public class Path {
         this.path.addFirst(n);
     }
 
+    public Path addSteps(Path p){
+        for(Node n : p.getPath()){
+            this.addInOrder(n);
+        }
+        return this;
+    }
+
     public LinkedList<Node> getPath() {
-        return this.path;
+        return (LinkedList<Node>) this.path.clone();
     }
 
     public Node getStep(int i) {
@@ -46,6 +55,10 @@ public class Path {
         attempts.put("left", 0); attempts.put("right", 0); attempts.put("straight", 0); attempts.put("back", 0);
         int stepNum = 2;
         for (int i = 2; i < this.path.size(); i++) {
+            if(this.getStep(i).getPrimaryLocType().equals(LocationType.Elevator) && this.getStep(i-1).getPrimaryLocType().equals(LocationType.Elevator)) {
+                str += stepNum + ". Ride the elevator to the" + strForNum(this.getStep(i).getFloor()) + "floor and exit.\n";
+                stepNum ++;
+            }
             // Calculate the next cardinal turning direction
             Direction next = Direction.dirFor(this.getStep(i-1), this.getStep(i));
 
@@ -74,8 +87,12 @@ public class Path {
                     str += stepNum + ". Your destination (" + this.getEnd().getRoomName() + ") will be on your " + result + ".\n";
                 }
                 else {
-                    str += stepNum + ". Make a " + result + ".\n";
-                    //str += stepNum + ". Make the" + strForNum(attempts.get(result)+1) + result + ".\n";
+                    if(!this.getStep(i-1).getPrimaryLocType().equals(LocationType.Elevator)) {
+                        str += stepNum + ". Make a " + result;
+                        if (this.getStep(i).getPrimaryLocType().equals(LocationType.Elevator))
+                            str += " into the " + this.getStep(i).getRoomName() + ".\n";
+                        else str += ".\n";
+                    }
                 }
                 stepNum ++;
 

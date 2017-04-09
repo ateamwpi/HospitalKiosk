@@ -1,5 +1,7 @@
-package controllers;
+package controllers.admin;
 
+import controllers.AbstractController;
+import controllers.admin.AdminMenuController;
 import core.KioskMain;
 import core.RoomNotFoundException;
 import javafx.event.ActionEvent;
@@ -11,7 +13,7 @@ import models.path.Node;
 /**
  * Created by Kevin O'Brien on 4/8/2017.
  */
-public class ChangeKioskController {
+public class ChangeKioskController extends AbstractController {
     @FXML
     private TextField room;
     
@@ -25,7 +27,7 @@ public class ChangeKioskController {
 
     @FXML
     private void clickBack(ActionEvent event) {
-        KioskMain.setScene("views/AdminMenu.fxml");
+        KioskMain.setScene(new AdminMenuController());
     }
 
     @FXML
@@ -33,7 +35,7 @@ public class ChangeKioskController {
         try {
             Node kioskNode = KioskMain.getPath().getRoom(room.getText());
             KioskMain.getDir().getTheKiosk().setNode(kioskNode);
-            KioskMain.setScene("views/AdminMenu.fxml");
+            KioskMain.setScene(new AdminMenuController());
         } catch(RoomNotFoundException e) {
             Alert invalidRoom = new Alert(Alert.AlertType.ERROR);
             invalidRoom.setHeaderText("Invalid Room!");
@@ -43,5 +45,10 @@ public class ChangeKioskController {
             room.clear();
         }
 
+    }
+
+    @Override
+    public String getURL() {
+        return "views/ChangeKiosk.fxml";
     }
 }

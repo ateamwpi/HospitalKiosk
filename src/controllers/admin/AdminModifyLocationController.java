@@ -1,9 +1,12 @@
-package controllers;
+package controllers.admin;
 
+import controllers.AbstractController;
+import controllers.DirectoryViewController;
 import core.KioskMain;
 import core.RoomNotFoundException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import models.dir.Location;
 import models.dir.LocationType;
@@ -15,7 +18,7 @@ import java.io.IOException;
 /**
  * Created by Jonathan on 3/31/2017.
  */
-public class AdminModifyLocationController implements IControllerWithParams {
+public class AdminModifyLocationController extends AbstractController {
 
     private Location existingLoc;
 
@@ -26,8 +29,15 @@ public class AdminModifyLocationController implements IControllerWithParams {
     @FXML
     private ComboBox<LocationType> locationDropdown;
 
+    AdminModifyLocationController(Location selectedLocation) {
+        super(selectedLocation);
+    }
+
     @FXML
     private void initialize() {
+        name.setText(existingLoc.getName());
+        place.setText(existingLoc.getNode().getRoomName());
+        locationDropdown.getSelectionModel().select(existingLoc.getLocType());
         locationDropdown.getItems().addAll(LocationType.values());
         locationDropdown.getSelectionModel().selectFirst();
     }
@@ -35,26 +45,21 @@ public class AdminModifyLocationController implements IControllerWithParams {
     @FXML
     private void clickBack(ActionEvent event) throws IOException {
         //back button goes to Admin menu
-        KioskMain.setScene("views/DirectoryView.fxml", true);
+        KioskMain.setScene(new ManageDirectoryViewController());
     }
 
     @FXML
     private void clickSubmit(ActionEvent event) throws IOException {
         try {
-            // Edit Location
-            if (existingLoc != null) {
-                editLocation();
-            } else { // New Location
-                newLocation();
-            }
+            editLocation();
         } catch(RoomNotFoundException e) {
             invalidRoomAlert();
         }
     }
 
     private void editLocation() throws RoomNotFoundException {
-        String locName = (String) name.getText();
-        String roomName = (String) place.getText();
+        String locName = name.getText();
+        String roomName = place.getText();
         LocationType locType = locationDropdown.getValue();
         if (!locName.equals(existingLoc.getName())) {
             existingLoc.setName(locName);
@@ -65,16 +70,7 @@ public class AdminModifyLocationController implements IControllerWithParams {
         if (!locType.equals(existingLoc.getLocType())) {
             existingLoc.setLocType(locType);
         }
-        KioskMain.setScene("views/DirectoryView.fxml", true);
-    }
-
-    private void newLocation() throws RoomNotFoundException {
-        String locName = (String) name.getText();
-        String roomName = (String) place.getText();
-        LocationType locType = locationDropdown.getValue();
-        Location L = new Location(locName, locType, KioskMain.getPath().getRoom(roomName));
-        KioskMain.getDir().addLocation(L);
-        KioskMain.setScene("views/DirectoryView.fxml", true);
+        KioskMain.setScene(new ManageDirectoryViewController());
     }
 
     /**
@@ -97,8 +93,10 @@ public class AdminModifyLocationController implements IControllerWithParams {
     @Override
     public void initData(Object... data) {
         existingLoc = (Location) data[0];
-        name.setText(existingLoc.getName());
-        place.setText(existingLoc.getNode().getRoomName());
-        locationDropdown.getSelectionModel().select(existingLoc.getLocType());
+    }
+
+    @Override
+    public String getURL() {
+        return "views/AdminModifyLocation.fxml";
     }
 }

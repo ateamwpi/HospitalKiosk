@@ -1,5 +1,7 @@
-package controllers;
+package controllers.admin;
 
+import controllers.AbstractController;
+import controllers.MainMenuController;
 import core.KioskMain;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -22,7 +24,7 @@ import java.io.IOException;
 /**
  * Created by mattm on 3/29/2017.
  */
-public class AdminLoginController {
+public class AdminLoginController extends AbstractController {
 
     @FXML
     private Button loginBtn;
@@ -31,10 +33,9 @@ public class AdminLoginController {
     @FXML
     private PasswordField password;
 
-
     @FXML
     private void clickBack(ActionEvent event) {
-        KioskMain.setScene("views/MainMenu.fxml");
+        KioskMain.setScene(new MainMenuController());
     }
 
     @FXML
@@ -51,7 +52,7 @@ public class AdminLoginController {
 
     private void checkPassword() {
         if (password.getText().equals("admin")) {
-            KioskMain.setScene("views/AdminMenu.fxml");
+            KioskMain.setScene(new AdminMenuController());
         } else {
             Alert wrongPassword = new Alert(Alert.AlertType.WARNING);
             wrongPassword.setHeaderText("Wrong Password!");
@@ -60,5 +61,10 @@ public class AdminLoginController {
             wrongPassword.showAndWait();
             password.clear();
         }
+    }
+
+    @Override
+    public String getURL() {
+        return "views/AdminLogin.fxml";
     }
 }

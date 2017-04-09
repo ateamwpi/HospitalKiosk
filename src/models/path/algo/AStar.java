@@ -62,6 +62,8 @@ public class AStar implements IPathfindingAlgorithm {
         Path p = new Path();
         p.buildPath(end);
         Node current = end;
+
+
         while(cameFrom.keySet().contains(current)){
             current = cameFrom.get(current);
             p.buildPath(current);
