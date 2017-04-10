@@ -57,11 +57,17 @@ public class AdminAddLocationController extends AbstractController {
 
     private void newLocation() throws RoomNotFoundException {
         String locName = name.getText();
-        String roomName = place.getText();
-        LocationType locType = locationDropdown.getValue();
-        Location L = new Location(locName, locType, KioskMain.getPath().getRoom(roomName));
-        KioskMain.getDir().addLocation(L);
-        KioskMain.setScene(new ManageDirectoryViewController());
+        if (locName != null && !locName.isEmpty()) {
+            String roomName = place.getText();
+            LocationType locType = locationDropdown.getValue();
+            Location L = new Location(locName, locType, KioskMain.getPath().getRoom(roomName));
+            KioskMain.getDir().addLocation(L);
+            KioskMain.setScene(new ManageDirectoryViewController());
+        } else {
+            blankNameAlert();
+        }
+
+
     }
 
     /**
@@ -75,6 +81,14 @@ public class AdminAddLocationController extends AbstractController {
         invalidRoom.setContentText("Please enter a room that is currently in the database!");
         invalidRoom.showAndWait();
         place.clear();
+    }
+
+    private void blankNameAlert() {
+        Alert blankName = new Alert(Alert.AlertType.ERROR);
+        blankName.setHeaderText("Name cannot be blank!");
+        blankName.setTitle("Try Again!");
+        blankName.setContentText("Please enter a name for this location!");
+        blankName.show();
     }
 
 }
