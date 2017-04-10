@@ -57,6 +57,9 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
                 selectedLocation = newValue;
                 removeEntry.setDisable(false);
                 modifyEntry.setDisable(false);
+            } else {
+                removeEntry.setDisable(true);
+                modifyEntry.setDisable(true);
             }
         });
     }
