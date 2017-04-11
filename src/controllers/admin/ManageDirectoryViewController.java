@@ -55,11 +55,18 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
         locationsTable.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
             if (locationsTable.getSelectionModel().getSelectedItem() != null) {
                 selectedLocation = newValue;
+                removeEntry.setDisable(false);
+                modifyEntry.setDisable(false);
+            } else {
+                removeEntry.setDisable(true);
+                modifyEntry.setDisable(true);
             }
         });
     }
 
     private void adminMode() {
+        removeEntry.setDisable(true);
+        modifyEntry.setDisable(true);
         kiosk.setVisible(false);
         goToFinalSel.setVisible(false);
         title.setText("Manage Directory");
