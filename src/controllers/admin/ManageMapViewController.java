@@ -82,8 +82,13 @@ public class ManageMapViewController extends AbstractController {
 
     @FXML
     private void initialize() {
+
+        // load the admin map controller
+        adminMapController = new AdminMapController(this);
+        // add the map to the container
+        mapContainer.getChildren().add(adminMapController.getRoot());
+
         floors.getItems().addAll(floorList);
-        floors.getSelectionModel().selectFirst();
         floors.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
             if (floors.getSelectionModel().getSelectedItem() != null) {
                 String fl = floors.getSelectionModel().getSelectedItem();
@@ -91,10 +96,7 @@ public class ManageMapViewController extends AbstractController {
                 setFloor(fl);
             }
         });
-        // load the admin map controller
-        adminMapController = new AdminMapController(this);
-        // add the map to the container
-        mapContainer.getChildren().add(adminMapController.getRoot());
+        floors.getSelectionModel().selectFirst();
         // init input text properties
         xTextProperty = x.textProperty();
         yTextProperty = y.textProperty();
