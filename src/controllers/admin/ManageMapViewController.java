@@ -91,9 +91,13 @@ public class ManageMapViewController extends AbstractController {
         floors.getItems().addAll(floorList);
         floors.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
             if (floors.getSelectionModel().getSelectedItem() != null) {
-                String fl = floors.getSelectionModel().getSelectedItem();
-                System.out.println("The current selected floor is " + fl);
-                setFloor(fl);
+                if (adminMapController.attemptUnselectNode()) {
+                    String fl = floors.getSelectionModel().getSelectedItem();
+                    System.out.println("The current selected floor is " + fl);
+                    setFloor(fl);
+                } else {
+                }
+
             }
         });
         floors.getSelectionModel().selectFirst();
