@@ -83,9 +83,11 @@ public class ManageMapViewController extends AbstractController {
     @FXML
     private void initialize() {
         floors.getItems().addAll(floorList);
+        floors.getSelectionModel().selectFirst();
         floors.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
             if (floors.getSelectionModel().getSelectedItem() != null) {
-                String fl = newValue;
+                String fl = floors.getSelectionModel().getSelectedItem();
+                System.out.println("The current selected floor is " + fl);
                 setFloor(fl);
             }
         });
@@ -280,6 +282,7 @@ public class ManageMapViewController extends AbstractController {
 
     public void setFloor(String fl) {
         int floor = floorList.indexOf(fl) + 1;
+        System.out.println("We found the floor to be: " + floor);
         adminMapController.setFloor(floor);
 
     }

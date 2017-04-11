@@ -60,7 +60,6 @@ public class AdminMapController extends AbstractController implements IClickable
         draggableNodes = new HashMap<>();
         draggableNodeConnections = new HashMap<>();
 
-        this.currentFloor = 4;
     }
 
     @Override
@@ -76,11 +75,11 @@ public class AdminMapController extends AbstractController implements IClickable
     public void setFloor(int floor) {
         this.currentFloor = floor;
         mapController.setFloor(floor);
-        clearContainer();
+        removeNodesAndLines();
         drawAllNodes();
     }
 
-    public void clearContainer() {
+    public void removeNodesAndLines() {
         for(DraggableNode n : draggableNodes.values()) {
             mapController.removeOverlay(n);
         }
@@ -112,7 +111,7 @@ public class AdminMapController extends AbstractController implements IClickable
     void addNode(double x, double y, String room) {
         System.out.println("add node");
         // create new node
-        Node node = new Node((int) x, (int) y, 4, room);
+        Node node = new Node((int) x, (int) y, this.currentFloor, room);
         // create new visual node with gestures
         DraggableNode draggableNode = getDraggableNode(node);
         // draw node with gestures

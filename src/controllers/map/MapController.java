@@ -94,10 +94,6 @@ public class MapController extends AbstractController implements IClickableContr
 
     public void setFloor(int floor){
         this.floor = floor;
-        if (map != null) {
-            map.cancel();
-        }
-
         map = new Image(getClass().getClassLoader().getResourceAsStream(MAP_URLS[this.floor - 1]));
         mapView.setImage(map);
         mapView.setPreserveRatio(true);
@@ -114,6 +110,7 @@ public class MapController extends AbstractController implements IClickableContr
         canvas = new PannableCanvas(this);
         // add the canvas to overlay
         overlay.getChildren().add(canvas);
+
         floor = 4;
         // load the map into the map view
         map = new Image(getClass().getClassLoader().getResourceAsStream(MAP_URLS[floor -1] ));
