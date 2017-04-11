@@ -72,6 +72,11 @@ public class DirectionsViewController extends AbstractController {
     }
 
     @FXML
+    private void clickSpeak(ActionEvent event) {
+        KioskMain.getTTS().speak(directionsText.getText());
+    }
+
+    @FXML
     private void clickDone(ActionEvent event) {
         KioskMain.setScene(new MainMenuController());
     }

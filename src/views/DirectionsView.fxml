@@ -25,6 +25,7 @@
                     </VBox.margin>
                 </Button>
                 <Region layoutX="10.0" layoutY="48.0" prefHeight="40.0" prefWidth="110.0" />
+            <Button mnemonicParsing="false" onAction="#clickSpeak" text="Speak Directions" />
             <ChoiceBox fx:id="floors" prefHeight="25.0" prefWidth="110.0" />
                 <Text fx:id="directionsText" strokeType="OUTSIDE" strokeWidth="0.0" text="Loading directions..." wrappingWidth="110.0">
                     <font>
