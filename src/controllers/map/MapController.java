@@ -90,6 +90,9 @@ public class MapController extends AbstractController implements IClickableContr
 
     public void setFloor(int floor){
         this.floor = floor;
+        if (map != null) {
+            map.cancel();
+        }
 
         map = new Image(getClass().getClassLoader().getResourceAsStream(MAP_URLS[this.floor - 1]));
         mapView.setImage(map);
