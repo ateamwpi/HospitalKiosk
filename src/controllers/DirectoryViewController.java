@@ -7,6 +7,8 @@ import core.KioskMain;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import models.dir.Location;
+import models.dir.LocationType;
 import models.path.Node;
 
 import java.io.IOException;
@@ -34,6 +36,8 @@ public class DirectoryViewController extends AbstractDirectoryViewController {
     private Button removeEntry;
     @FXML
     private Button kiosk;
+    @FXML
+    private Button findNearest;
 
 
     DirectoryViewController() {}
@@ -57,6 +61,8 @@ public class DirectoryViewController extends AbstractDirectoryViewController {
                 goToFinalSel.setDisable(false); //enable -> button once selection has been made
             }
         });
+        findNearest.setDisable(true);
+        findNearest.setOpacity(0);
     }
 
     private void directionMode() {
@@ -87,19 +93,44 @@ public class DirectoryViewController extends AbstractDirectoryViewController {
                     "to view a path connecting the  selected starting and ending locations.");
             goToFinalSel.setText("Get Path");
             startNode = selectedLocation.getNode();
+            updateNearestButton();
         } else {
             endNode = selectedLocation.getNode();
             KioskMain.setScene(new DirectionsViewController(this.startNode, this.endNode));
         }
     }
 
+    @Override
+    protected void selectDirectory(String s) {
+        updateNearestButton();
+        super.selectDirectory(s);
+    }
+
+    private void updateNearestButton() {
+        if(startNode != null) {// selecting end location only
+            if (LocationType.getType(locationDropdown.getSelectionModel().getSelectedItem()).hasNearest()) {
+                findNearest.setDisable(false);
+                findNearest.setOpacity(1);
+            } else {
+                findNearest.setDisable(true);
+                findNearest.setOpacity(0);
+            }
+        }
+    }
+
     @FXML
     private void clickKiosk(ActionEvent event) {
-        // TODO make this not hard-coded
         selectedLocation = KioskMain.getDir().getTheKiosk();
         System.out.println(selectedLocation);
         getDirections();
         //KioskMain.setScene("views/FinalDestSelectionView.fxml", kiosk);
+    }
+
+    @FXML
+    private void pressedFindNearest(ActionEvent event) {
+        LocationType lt = LocationType.getType(locationDropdown.getSelectionModel().getSelectedItem());
+        selectedLocation = KioskMain.getPath().getNearest(lt, startNode);
+        getDirections();
     }
 
 
