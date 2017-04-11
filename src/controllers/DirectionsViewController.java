@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 import javafx.scene.text.Text;
@@ -31,6 +32,8 @@ public class DirectionsViewController extends AbstractController {
     private AnchorPane mapContainer;
     @FXML
     private Text directionsText;
+    @FXML
+    private ChoiceBox<String> floors;
 
     DirectionsViewController(Node startNode, Node endNode) {
         super(startNode, endNode);
@@ -46,6 +49,18 @@ public class DirectionsViewController extends AbstractController {
         Path path = KioskMain.getPath().findPath(startNode, endNode);
         // draw the path on the map
         mapController.drawPath(path);
+        floors.getItems().addAll(path.getFloorsSpanning());
+        floors.getSelectionModel().selectFirst();
+        if(path.getFloorsSpanning().size() == 1) floors.setDisable(true);
+        floors.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
+            if (floors.getSelectionModel().getSelectedItem() != null) {
+                String fl = floors.getSelectionModel().getSelectedItem();
+                mapController.clearOverlay();
+                mapController.setFloor(Integer.parseInt(fl.substring(0,1)));
+                mapController.drawPath(path);
+            }
+        });
+
         // show the text directions
         directionsText.setText("Directions:\n" + path.textPath());
     }

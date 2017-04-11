@@ -291,7 +291,6 @@ public class ManageMapViewController extends AbstractController {
     public void setFloor(String fl) {
         int floor = floorList.indexOf(fl) + 1;
         setFloor(floor);
-
     }
 
     public void setFloor(int floor) {
