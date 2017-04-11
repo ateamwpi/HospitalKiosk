@@ -33,7 +33,6 @@ public class AdminMapController extends AbstractController implements IClickable
     private Map<Node, DraggableNode> draggableNodes;
     private Map<Pair<DraggableNode, DraggableNode>, Line> draggableNodeConnections;
     private NodeGestures nodeGestures;
-    private int currentFloor;
 
     public MapController getMapController() {
         return mapController;
@@ -73,7 +72,6 @@ public class AdminMapController extends AbstractController implements IClickable
     }
 
     public void setFloor(int floor) {
-        this.currentFloor = floor;
         mapController.setFloor(floor);
         removeNodesAndLines();
         drawAllNodes();
@@ -111,7 +109,7 @@ public class AdminMapController extends AbstractController implements IClickable
     void addNode(double x, double y, String room) {
         System.out.println("add node");
         // create new node
-        Node node = new Node((int) x, (int) y, this.currentFloor, room);
+        Node node = new Node((int) x, (int) y, mapController.getFloor(), room);
         // create new visual node with gestures
         DraggableNode draggableNode = getDraggableNode(node);
         // draw node with gestures
@@ -268,7 +266,7 @@ public class AdminMapController extends AbstractController implements IClickable
 
     private void drawAllNodes() {
         for (Node node : nodes) {
-            if (node.getFloor() == currentFloor) {
+            if (node.getFloor() == mapController.getFloor()) {
                 // create new visual node with gestures
                 DraggableNode draggableNode = getDraggableNode(node);
                 // draw the node

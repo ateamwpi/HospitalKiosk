@@ -210,6 +210,8 @@ public class ManageMapViewController extends AbstractController {
         //refreshScene();
         // update the table of connections with preview connections
         setTableNeighbors(selectedNode.getPreviewConnections());
+
+        newNeighbor.clear();
     }
 
     private void alertAddConnectionError() {
@@ -284,13 +286,20 @@ public class ManageMapViewController extends AbstractController {
 
     public void setFloor(String fl) {
         int floor = floorList.indexOf(fl) + 1;
-        System.out.println("We found the floor to be: " + floor);
-        adminMapController.setFloor(floor);
+        setFloor(floor);
 
     }
 
+    public void setFloor(int floor) {
+        System.out.println("We found the floor to be: " + floor);
+        adminMapController.setFloor(floor);
+    }
+
     private void refreshScene() {
-        KioskMain.setScene(new ManageMapViewController());
+        int floor = adminMapController.getMapController().getFloor();
+        ManageMapViewController con = new ManageMapViewController();
+        con.floors.getSelectionModel().select(floor - 1);
+        KioskMain.setScene(con);
     }
 
 }

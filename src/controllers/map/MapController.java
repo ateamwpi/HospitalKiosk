@@ -47,6 +47,11 @@ public class MapController extends AbstractController implements IClickableContr
     private Image map;
     private Group overlay;
     private int overlayIndex;
+
+    public int getFloor() {
+        return floor;
+    }
+
     private int floor;
     private PannableCanvas canvas;
 
