@@ -21,7 +21,7 @@ mainClassName = "core.KioskMain"
 sourceSets {
     main {
         java {
-            srcDirs = ['src']
+            srcDirs = ['src/main/java']
             exclude 'test/**'
         }
         resources {
