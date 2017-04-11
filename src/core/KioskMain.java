@@ -3,6 +3,9 @@ package core;
 import controllers.IController;
 import controllers.MainMenuController;
 import javafx.application.Application;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -25,7 +28,7 @@ public class KioskMain extends Application {
     private static DirectoryManager theDirManager;
     private static PathfindingManager thePathManager;
     private static DatabaseManager theDBManager;
-
+    private static DoubleProperty fontSize = new SimpleDoubleProperty(10);
     private static Stage stage;
 
     private static final boolean DEBUG = true;
@@ -61,7 +64,10 @@ public class KioskMain extends Application {
     public static DatabaseManager getDB() { return theDBManager; }
 
     public static void setScene(IController controller) {
-        stage.setScene(new Scene(controller.getRoot()));
+        Scene scene = new Scene(controller.getRoot());
+        fontSize.bind(scene.widthProperty().add(scene.heightProperty()).divide(50));
+        stage.setScene(scene);
+
     }
 
 //    public static void setScene(String path) {
