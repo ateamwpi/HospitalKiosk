@@ -36,4 +36,8 @@ public class DirectoryManager {
         return directories.get(locType);
     }
 
+    public void updateLocationType(Location location, LocationType newLocType) {
+        this.getDirectory(location.getLocType()).moveLocation(location, newLocType);
+        this.getDirectory(newLocType).moveLocation(location, newLocType);
+    }
 }

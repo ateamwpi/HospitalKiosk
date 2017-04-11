@@ -55,6 +55,7 @@ public class Location {
     }
 
     public void setLocType(LocationType locType) {
+        KioskMain.getDir().updateLocationType(this, locType);
         this.locType = locType;
         KioskMain.getDB().updateLocation(this);
     }
