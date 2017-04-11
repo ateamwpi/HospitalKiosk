@@ -10,20 +10,19 @@ import models.path.algo.IPathfindingAlgorithm;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.ArrayList;
 
 /**
  * Created by mattm on 3/29/2017.
  */
 public class PathfindingManager {
 
-    private HashMap<Integer, Node> graph;
-    private HashMap<String, Integer> ids;
-    private IPathfindingAlgorithm astar;
+    private final HashMap<Integer, Node> graph;
+    private final HashMap<String, Integer> ids;
+    private final IPathfindingAlgorithm astar;
 
     public PathfindingManager(HashMap<Integer, Node> allNodes) {
         this.graph = allNodes;
-        this.ids = new HashMap<String, Integer>();
+        this.ids = new HashMap<>();
         for (Node n : this.graph.values()) {
             if(n.getRoomName() != null && !n.getRoomName().equals("NONE")) this.ids.put(n.getRoomName(), n.getID());
         }
@@ -73,7 +72,7 @@ public class PathfindingManager {
         return null;
     }
 
-    public Node getNearest(LocationType loc, Node start){
+    private Node getNearest(LocationType loc, Node start){
         Collection<Location> locations = KioskMain.getDir().getDirectory(loc).getLocations().values();
         Node currentShortest = locations.iterator().next().getNode();
 
@@ -99,9 +98,7 @@ public class PathfindingManager {
         double distX = endX - startX;
         double distY = endY - startY;
 
-        double distance = Math.sqrt(Math.pow(distX, 2) + Math.pow(distY, 2));
-
-        return distance;
+        return Math.sqrt(Math.pow(distX, 2) + Math.pow(distY, 2));
     }
 
     public Node getRoom(String roomName) throws RoomNotFoundException {

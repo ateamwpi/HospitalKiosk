@@ -1,6 +1,5 @@
 package models.dir;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -8,8 +7,8 @@ import java.util.HashMap;
  */
 public class DirectoryManager {
 
-    private HashMap<LocationType, Directory> directories;
-    private Location theKiosk;
+    private final HashMap<LocationType, Directory> directories;
+    private final Location theKiosk;
 
     public DirectoryManager(HashMap<LocationType, Directory> allLocations, Location theKiosk) {
         this.directories = allLocations;

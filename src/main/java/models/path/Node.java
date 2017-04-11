@@ -18,15 +18,15 @@ import java.util.*;
 public class Node {
     private static int nextNodeID;
 
-    private IntegerProperty xProperty = new SimpleIntegerProperty();
-    private IntegerProperty yProperty = new SimpleIntegerProperty();
-    private IntegerProperty idProperty = new SimpleIntegerProperty();
-    private IntegerProperty floorProperty = new SimpleIntegerProperty();
-    private StringProperty roomNameProperty = new SimpleStringProperty();
+    private final IntegerProperty xProperty = new SimpleIntegerProperty();
+    private final IntegerProperty yProperty = new SimpleIntegerProperty();
+    private final IntegerProperty idProperty = new SimpleIntegerProperty();
+    private final IntegerProperty floorProperty = new SimpleIntegerProperty();
+    private final StringProperty roomNameProperty = new SimpleStringProperty();
     private String previousRoomName = "";
-    private ArrayList<Node> connections;
-    private HashMap<Integer, Location> locations;
-    private HashMap<LocationType, Integer> counts;
+    private final ArrayList<Node> connections;
+    private final HashMap<Integer, Location> locations;
+    private final HashMap<LocationType, Integer> counts;
     private final boolean isNew;
     private boolean isDone;
 
@@ -39,9 +39,9 @@ public class Node {
         yProperty.set(y);
         floorProperty.set(floor);
         roomNameProperty.set(roomName);
-        this.connections = new ArrayList<Node>();
-        this.locations = new HashMap<Integer, Location>();
-        this.counts = new HashMap<LocationType, Integer>();
+        this.connections = new ArrayList<>();
+        this.locations = new HashMap<>();
+        this.counts = new HashMap<>();
         this.isNew = false;
         this.isDone = false;
     }
@@ -52,9 +52,9 @@ public class Node {
         yProperty.set(y);
         floorProperty.set(floor);
         roomNameProperty.set(roomName);
-        this.connections = new ArrayList<Node>();
-        this.locations = new HashMap<Integer, Location>();
-        this.counts = new HashMap<LocationType, Integer>();
+        this.connections = new ArrayList<>();
+        this.locations = new HashMap<>();
+        this.counts = new HashMap<>();
         this.isNew = true;
         this.isDone = true;
     }
@@ -65,9 +65,9 @@ public class Node {
         yProperty.set(y);
         floorProperty.set(floor);
         roomNameProperty.set("NONE");
-        this.connections = new ArrayList<Node>();
-        this.locations = new HashMap<Integer, Location>();
-        this.counts = new HashMap<LocationType, Integer>();
+        this.connections = new ArrayList<>();
+        this.locations = new HashMap<>();
+        this.counts = new HashMap<>();
         this.isNew = true;
         this.isDone = true;
     }
@@ -100,7 +100,7 @@ public class Node {
         return this.getPrimaryLocType().getNodeColor();
     }
 
-    public void removeConnection(Node other) {
+    private void removeConnection(Node other) {
         if(this.connections.contains(other)) {
             this.connections.remove(other);
             KioskMain.getDB().removeConnection(this, other);
@@ -108,8 +108,8 @@ public class Node {
         }
     }
 
-    public void removeAllConnections() {
-        Collection<Node> clone = (Collection<Node>) this.connections.clone();
+    void removeAllConnections() {
+        Collection<Node> clone = getConnections();
         this.connections.clear();
         for (Node n : clone) {
             n.removeConnection(this);
@@ -130,7 +130,7 @@ public class Node {
         }
 
         // Remove anything old
-        ArrayList<Node> toRemove = new ArrayList<Node>();
+        ArrayList<Node> toRemove = new ArrayList<>();
         for (Node n : this.connections) {
             if(!conns.contains(n)) {
                 toRemove.add(n);
@@ -159,6 +159,7 @@ public class Node {
     }
 
     public Collection<Node> getConnections() {
+        //noinspection unchecked
         return (Collection<Node>)this.connections.clone();
     }
 
@@ -207,11 +208,11 @@ public class Node {
     }
 
     public String toString() {
-        String str= "Node: ID=" + getID() + ", X=" + getX() + ", Y=" + getY() + ", FLOOR=" + getFloor() + ", NAME=" + getRoomName() + "\n";
+        StringBuilder str= new StringBuilder("Node: ID=" + getID() + ", X=" + getX() + ", Y=" + getY() + ", FLOOR=" + getFloor() + ", NAME=" + getRoomName() + "\n");
         for (Node n : this.connections) {
-            str += "Connected to Node ID=" + n.getID() + "\n";
+            str.append("Connected to Node ID=").append(n.getID()).append("\n");
         }
-        return str;
+        return str.toString();
     }
 
 //    public boolean equals(Object o) {
@@ -232,7 +233,7 @@ public class Node {
         nextNodeID = i;
     }
 
-    public static int getNextNodeID() {
+    private static int getNextNodeID() {
         int val = nextNodeID;
         nextNodeID ++;
         return val;

@@ -3,10 +3,7 @@ package core;
 import controllers.IController;
 import controllers.MainMenuController;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 import models.db.DatabaseManager;
 import models.dir.Directory;
@@ -16,7 +13,6 @@ import models.dir.LocationType;
 import models.path.PathfindingManager;
 import models.path.Node;
 
-import java.io.*;
 import java.sql.SQLException;
 import java.util.HashMap;
 

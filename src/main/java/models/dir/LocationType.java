@@ -16,7 +16,7 @@ public enum LocationType {
     Hallway(Color.GRAY),
     Unknown(Color.GRAY);
 
-    private Color nodeColor;
+    private final Color nodeColor;
 
     LocationType(Color nodeColor) {
         this.nodeColor = nodeColor;

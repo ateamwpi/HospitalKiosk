@@ -1,15 +1,10 @@
 package controllers;
 
-import controllers.admin.AdminMenuController;
-import controllers.admin.AdminModifyLocationController;
-import controllers.admin.ManageDirectoryViewController;
 import core.KioskMain;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import models.path.Node;
-
-import java.io.IOException;
 
 /**
  * Created by mattm on 3/29/2017.
@@ -18,7 +13,6 @@ import java.io.IOException;
 public class DirectoryViewController extends AbstractDirectoryViewController {
 
     private Node startNode; // The selected starting node for pathfinding
-    private Node endNode;
 
     @FXML
     private Label title;
@@ -88,8 +82,8 @@ public class DirectoryViewController extends AbstractDirectoryViewController {
             goToFinalSel.setText("Get Path");
             startNode = selectedLocation.getNode();
         } else {
-            endNode = selectedLocation.getNode();
-            KioskMain.setScene(new DirectionsViewController(this.startNode, this.endNode));
+            Node endNode = selectedLocation.getNode();
+            KioskMain.setScene(new DirectionsViewController(this.startNode, endNode));
         }
     }
 

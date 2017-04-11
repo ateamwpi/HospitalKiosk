@@ -7,9 +7,7 @@ import models.dir.Location;
 import models.dir.LocationType;
 import models.path.Node;
 
-import javax.swing.plaf.nimbus.State;
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -32,7 +30,7 @@ public class DatabaseManager {
 
     public HashMap<LocationType, Directory> getAllDirectories() {
         // Run SQL query to get all LOCATIONS from the database
-        HashMap<LocationType, Directory> allDirectories = new HashMap<LocationType, Directory>();
+        HashMap<LocationType, Directory> allDirectories = new HashMap<>();
         Statement stmt = null;
         ResultSet rset = null;
         try {
@@ -125,7 +123,7 @@ public class DatabaseManager {
 
     public HashMap<Integer, Node> getAllNodes() {
         // Run SQL query to get all NODEs from the database
-        HashMap<Integer, Node> allNodes = new HashMap<Integer, Node>();
+        HashMap<Integer, Node> allNodes = new HashMap<>();
         Statement stmt = null;
         ResultSet rset = null;
         try {

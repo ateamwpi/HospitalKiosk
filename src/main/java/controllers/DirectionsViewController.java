@@ -4,16 +4,11 @@ import controllers.map.MapController;
 import core.KioskMain;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Region;
 import javafx.scene.text.Text;
 import models.path.Node;
 import models.path.Path;
-
-import java.io.IOException;
 
 /**
  * Created by mattm on 3/29/2017.

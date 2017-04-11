@@ -9,7 +9,7 @@ import java.util.LinkedList;
  * Created by mattm on 3/29/2017.
  */
 public class Path {
-    private LinkedList<Node> path;
+    private final LinkedList<Node> path;
 
     public Path(){
         this.path = new LinkedList<>();
@@ -33,6 +33,7 @@ public class Path {
     }
 
     public LinkedList<Node> getPath() {
+        //noinspection unchecked
         return (LinkedList<Node>) this.path.clone();
     }
 
@@ -43,16 +44,16 @@ public class Path {
     public String textPath() {
         if(this.path.size() < 2) return "You are already at your destination!";
         // Calculate the cardinal starting direction
-        String str = "1. Start by leaving " + this.path.getFirst().getRoomName() + ".\n";
+        StringBuilder str = new StringBuilder("1. Start by leaving " + this.path.getFirst().getRoomName() + ".\n");
         Direction cur = Direction.dirFor(this.getStep(0), this.getStep(1));
 
         // Initialize the array that keeps track of attempts for each turn
-        HashMap<String, Integer> attempts = new HashMap<String, Integer>();
+        HashMap<String, Integer> attempts = new HashMap<>();
         attempts.put("left", 0); attempts.put("right", 0); attempts.put("straight", 0); attempts.put("back", 0);
         int stepNum = 2;
         for (int i = 2; i < this.path.size(); i++) {
             if(this.getStep(i).getPrimaryLocType().equals(LocationType.Elevator) && this.getStep(i-1).getPrimaryLocType().equals(LocationType.Elevator)) {
-                str += stepNum + ". Ride the elevator to the" + strForNum(this.getStep(i).getFloor()) + "floor and exit.\n";
+                str.append(stepNum).append(". Ride the elevator to the").append(strForNum(this.getStep(i).getFloor())).append("floor and exit.\n");
                 stepNum ++;
             }
             // Calculate the next cardinal turning direction
@@ -73,21 +74,21 @@ public class Path {
                     }
                 }
                 if(hallways > 2) {
-                    str += stepNum + ". Go " + result + " through the intersection.\n";
+                    str.append(stepNum).append(". Go ").append(result).append(" through the intersection.\n");
                     stepNum ++;
                 }
             }
             else {
                 // If actually making a turn, add a message about it to the directions
                 if(i+1 == this.path.size()) {
-                    str += stepNum + ". Your destination (" + this.getEnd().getRoomName() + ") will be on your " + result + ".\n";
+                    str.append(stepNum).append(". Your destination (").append(this.getEnd().getRoomName()).append(") will be on your ").append(result).append(".\n");
                 }
                 else {
                     if(!this.getStep(i-1).getPrimaryLocType().equals(LocationType.Elevator)) {
-                        str += stepNum + ". Make a " + result;
+                        str.append(stepNum).append(". Make a ").append(result);
                         if (this.getStep(i).getPrimaryLocType().equals(LocationType.Elevator))
-                            str += " into the " + this.getStep(i).getRoomName() + ".\n";
-                        else str += ".\n";
+                            str.append(" into the ").append(this.getStep(i).getRoomName()).append(".\n");
+                        else str.append(".\n");
                     }
                 }
                 stepNum ++;
@@ -100,7 +101,7 @@ public class Path {
             cur = next;
         }
 
-        return str;
+        return str.toString();
     }
 
     private String strForNum(int i) {
@@ -115,11 +116,11 @@ public class Path {
 
     public String toString() {
         //System.out.println(this.textPath());
-        String str = "Path: ";
+        StringBuilder str = new StringBuilder("Path: ");
         for (Node n : this.path) {
-            str += n.getID() + ", ";
+            str.append(n.getID()).append(", ");
         }
-        return str;
+        return str.toString();
     }
 
     public Node getStart() {
@@ -132,7 +133,7 @@ public class Path {
 
     @Override
     public boolean equals(Object o) {
-        Path p = (Path)o;
+        Path p = (Path) o;
         if(this.path.size() != p.path.size()) return false;
         for (int i = 0; i < this.path.size(); i++) {
             if(this.path.get(i).getID() != p.path.get(i).getID()) return false;

@@ -1,10 +1,7 @@
 package models.dir;
 
 import core.KioskMain;
-import javafx.beans.InvalidationListener;
-import javafx.beans.property.ReadOnlyProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ChangeListener;
 import models.path.Node;
 
 /**
@@ -77,8 +74,7 @@ public class Location {
     }
 
     public String toString() {
-        String str = "Location " + name + ", ID=" + id + ", locType=" + locType + ", nodeID=" + node.getID();
-        return str;
+        return "Location " + name + ", ID=" + id + ", locType=" + locType + ", nodeID=" + node.getID();
     }
 
 
@@ -88,7 +84,7 @@ public class Location {
         nextLocID = i;
     }
 
-    public static int getNextLocID() {
+    private static int getNextLocID() {
         int val = nextLocID;
         nextLocID ++;
         return val;
