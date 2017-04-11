@@ -22,6 +22,8 @@ import javafx.util.converter.NumberStringConverter;
 import models.path.Node;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.regex.Pattern;
@@ -35,6 +37,10 @@ public class ManageMapViewController extends AbstractController {
     private StringProperty roomNameProperty;
     private StringConverter<Number> converter;
 
+    private ArrayList<String> floorList;
+
+    @FXML
+    private ChoiceBox<String> floors;
     @FXML
     private TextField x;
     @FXML
@@ -71,10 +77,18 @@ public class ManageMapViewController extends AbstractController {
         yTextProperty = new SimpleStringProperty();
         roomNameProperty = new SimpleStringProperty();
         converter = new NumberStringConverter();
+        floorList = new ArrayList<String>(Arrays.asList("1st Floor", "2nd Floor","3rd Floor", "4th Floor", "5th Floor", "6th Floor", "7th Floor"));
     }
 
     @FXML
     private void initialize() {
+        floors.getItems().addAll(floorList);
+        floors.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
+            if (floors.getSelectionModel().getSelectedItem() != null) {
+                String fl = newValue;
+                setFloor(fl);
+            }
+        });
         // load the admin map controller
         adminMapController = new AdminMapController(this);
         // add the map to the container
@@ -262,6 +276,12 @@ public class ManageMapViewController extends AbstractController {
         // check connections
 
         return true;
+    }
+
+    public void setFloor(String fl) {
+        int floor = floorList.indexOf(fl) + 1;
+        adminMapController.setFloor(floor);
+
     }
 
     private void refreshScene() {

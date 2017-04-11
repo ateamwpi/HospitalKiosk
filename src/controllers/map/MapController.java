@@ -80,6 +80,10 @@ public class MapController extends AbstractController implements IClickableContr
         overlay.getChildren().remove(node);
     }
 
+    public void clearOverlay() {
+        overlay.getChildren().clear();
+    }
+
     public void drawPath(Path p) {
         drawNode(p.getStart());
         for (int i = 1; i < p.getPath().size(); i++) {

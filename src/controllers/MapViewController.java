@@ -2,20 +2,12 @@ package controllers;
 
 import controllers.map.MapController;
 import core.KioskMain;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableArray;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -55,13 +47,13 @@ public class MapViewController extends AbstractController {
         floors.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
             if (floors.getSelectionModel().getSelectedItem() != null) {
                 String fl = newValue;
-                setBackground(fl);
+                setFloor(fl);
             }
         });
 
     }
 
-    public void setBackground(String fl){
+    public void setFloor(String fl){
         int floor = floorList.indexOf(fl) + 1;
         mapController.setFloor(floor);
         // add the map to the container

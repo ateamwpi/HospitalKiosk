@@ -33,6 +33,12 @@ public class AdminMapController extends AbstractController implements IClickable
     private Map<Node, DraggableNode> draggableNodes;
     private Map<Pair<DraggableNode, DraggableNode>, Line> draggableNodeConnections;
     private NodeGestures nodeGestures;
+    private int currentFloor;
+
+    public MapController getMapController() {
+        return mapController;
+    }
+
     private MapController mapController;
 
     @FXML
@@ -53,6 +59,8 @@ public class AdminMapController extends AbstractController implements IClickable
         // init props
         draggableNodes = new HashMap<>();
         draggableNodeConnections = new HashMap<>();
+
+        this.currentFloor = 4;
     }
 
     @Override
@@ -63,6 +71,24 @@ public class AdminMapController extends AbstractController implements IClickable
     @Override
     public Parent getRoot() {
         return mapContainer;
+    }
+
+    public void setFloor(int floor) {
+        this.currentFloor = floor;
+        mapController.setFloor(floor);
+        clearContainer();
+        drawAllNodes();
+    }
+
+    public void clearContainer() {
+        for(DraggableNode n : draggableNodes.values()) {
+            mapController.removeOverlay(n);
+        }
+        for(Line l : draggableNodeConnections.values()) {
+            mapController.removeOverlay(l);
+        }
+        draggableNodes = new HashMap<>();
+        draggableNodeConnections = new HashMap<>();
     }
 
     public void handleMouseClick(MouseEvent e) {
@@ -243,12 +269,14 @@ public class AdminMapController extends AbstractController implements IClickable
 
     private void drawAllNodes() {
         for (Node node : nodes) {
-            // create new visual node with gestures
-            DraggableNode draggableNode = getDraggableNode(node);
-            // draw the node
-            drawDraggableNode(draggableNode);
-            // draw the node connections
-            drawDraggableNodeConnections(draggableNode);
+            if (node.getFloor() == currentFloor) {
+                // create new visual node with gestures
+                DraggableNode draggableNode = getDraggableNode(node);
+                // draw the node
+                drawDraggableNode(draggableNode);
+                // draw the node connections
+                drawDraggableNodeConnections(draggableNode);
+            }
         }
     }
 
