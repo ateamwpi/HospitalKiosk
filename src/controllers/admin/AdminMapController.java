@@ -33,6 +33,11 @@ public class AdminMapController extends AbstractController implements IClickable
     private Map<Node, DraggableNode> draggableNodes;
     private Map<Pair<DraggableNode, DraggableNode>, Line> draggableNodeConnections;
     private NodeGestures nodeGestures;
+
+    public MapController getMapController() {
+        return mapController;
+    }
+
     private MapController mapController;
 
     @FXML
@@ -53,6 +58,7 @@ public class AdminMapController extends AbstractController implements IClickable
         // init props
         draggableNodes = new HashMap<>();
         draggableNodeConnections = new HashMap<>();
+
     }
 
     @Override
@@ -63,6 +69,23 @@ public class AdminMapController extends AbstractController implements IClickable
     @Override
     public Parent getRoot() {
         return mapContainer;
+    }
+
+    public void setFloor(int floor) {
+        mapController.setFloor(floor);
+        removeNodesAndLines();
+        drawAllNodes();
+    }
+
+    public void removeNodesAndLines() {
+        for(DraggableNode n : draggableNodes.values()) {
+            mapController.removeOverlay(n);
+        }
+        for(Line l : draggableNodeConnections.values()) {
+            mapController.removeOverlay(l);
+        }
+        draggableNodes = new HashMap<>();
+        draggableNodeConnections = new HashMap<>();
     }
 
     public void handleMouseClick(MouseEvent e) {
@@ -86,7 +109,7 @@ public class AdminMapController extends AbstractController implements IClickable
     void addNode(double x, double y, String room) {
         System.out.println("add node");
         // create new node
-        Node node = new Node((int) x, (int) y, 4, room);
+        Node node = new Node((int) x, (int) y, mapController.getFloor(), room);
         // create new visual node with gestures
         DraggableNode draggableNode = getDraggableNode(node);
         // draw node with gestures
@@ -243,12 +266,14 @@ public class AdminMapController extends AbstractController implements IClickable
 
     private void drawAllNodes() {
         for (Node node : nodes) {
-            // create new visual node with gestures
-            DraggableNode draggableNode = getDraggableNode(node);
-            // draw the node
-            drawDraggableNode(draggableNode);
-            // draw the node connections
-            drawDraggableNodeConnections(draggableNode);
+            if (node.getFloor() == mapController.getFloor()) {
+                // create new visual node with gestures
+                DraggableNode draggableNode = getDraggableNode(node);
+                // draw the node
+                drawDraggableNode(draggableNode);
+                // draw the node connections
+                drawDraggableNodeConnections(draggableNode);
+            }
         }
     }
 

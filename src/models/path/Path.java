@@ -56,7 +56,7 @@ public class Path {
         int stepNum = 2;
         for (int i = 2; i < this.path.size(); i++) {
             if(this.getStep(i).getPrimaryLocType().equals(LocationType.Elevator) && this.getStep(i-1).getPrimaryLocType().equals(LocationType.Elevator)) {
-                str += stepNum + ". Ride the elevator to the" + strForNum(this.getStep(i).getFloor()) + "floor and exit.\n";
+                str += stepNum + ". Ride the elevator to the " + strForNum(this.getStep(i).getFloor()) + " floor and exit.\n";
                 stepNum ++;
             }
             // Calculate the next cardinal turning direction
@@ -110,10 +110,10 @@ public class Path {
     private String strForNum(int i) {
         // Assumes there will never be more than 20 turns options.
         switch(i) {
-            case 1: return " 1st ";
-            case 2: return " 2nd ";
-            case 3: return " 3rd ";
-            default: return " " + i + "th ";
+            case 1: return "1st";
+            case 2: return "2nd";
+            case 3: return "3rd";
+            default: return i + "th";
         }
     }
 
@@ -132,6 +132,17 @@ public class Path {
 
     public Node getEnd() {
         return this.path.getLast();
+    }
+
+    public ArrayList<String> getFloorsSpanning() {
+        ArrayList<String> results = new ArrayList<>();
+
+        for (Node n : this.path) {
+            String floor = strForNum(n.getFloor()) + " Floor";
+            if(!results.contains(floor)) results.add(floor);
+        }
+
+        return results;
     }
 
     @Override
