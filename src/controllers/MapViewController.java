@@ -30,7 +30,7 @@ public class MapViewController extends AbstractController {
     @FXML
     private Button backBtn;
 
-    private ArrayList<String> floorList = new ArrayList<String>(Arrays.asList("1st Floor", "2nd Floor","3rd Floor", "4th Floor", "5th Floor", "6th Floor", "7th Floor"));
+    private ArrayList<String> floorList;
 
     private MapController mapController;
 
@@ -39,12 +39,18 @@ public class MapViewController extends AbstractController {
         return "views/MapView.fxml";
     }
 
+    @Override
+    public void initData(Object... data) {
+        floorList = new ArrayList<String>(Arrays.asList("1st Floor", "2nd Floor","3rd Floor", "4th Floor", "5th Floor", "6th Floor", "7th Floor"));
+    }
+
     @FXML
     private void initialize() {
-        //mapController = new MapController();
-        //mapView.getChildren().add(mapController.getRoot());
 
-        //floors.getItems().addAll(floorList);
+        mapController = new MapController();
+        mapView.getChildren().add(mapController.getRoot());
+
+        floors.getItems().addAll(floorList);
 
         floors.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
             if (floors.getSelectionModel().getSelectedItem() != null) {

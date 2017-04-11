@@ -35,13 +35,13 @@ import java.util.Map;
 public class MapController extends AbstractController implements IClickableController {
 
     private static final String[] MAP_URLS = {
-            "resources/1floor.png",
-            "resources/2floor.png",
-            "resources/3floor.png",
+            "resources/floor1.png",
+            "resources/floor2.png",
+            "resources/floor3.png",
             "resources/4_thefourthfloor.png",
-            "resources/5floor.png",
-            "resources/6floor.png",
-            "resources/7floor.png"
+            "resources/floor5.png",
+            "resources/floor6.png",
+            "resources/floor7.png"
     };
 
     private Image map;
