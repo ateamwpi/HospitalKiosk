@@ -34,11 +34,20 @@ import java.util.Map;
  */
 public class MapController extends AbstractController implements IClickableController {
 
-    private static final String MAP_URL = "resources/4_thefourthfloor.png";
+    private static final String[] MAP_URLS = {
+            "resources/floor1.png",
+            "resources/floor2.png",
+            "resources/floor3.png",
+            "resources/4_thefourthfloor.png",
+            "resources/floor5.png",
+            "resources/floor6.png",
+            "resources/floor7.png"
+    };
 
     private Image map;
     private Group overlay;
     private int overlayIndex;
+    private int floor;
     private PannableCanvas canvas;
 
     @FXML
@@ -71,12 +80,27 @@ public class MapController extends AbstractController implements IClickableContr
         overlay.getChildren().remove(node);
     }
 
+    public void clearOverlay() {
+        overlay.getChildren().clear();
+    }
+
     public void drawPath(Path p) {
         drawNode(p.getStart());
         for (int i = 1; i < p.getPath().size(); i++) {
             drawConnection(p.getStep(i - 1), p.getStep(i));
         }
         drawNode(p.getEnd());
+    }
+
+    public void setFloor(int floor){
+        this.floor = floor;
+        if (map != null) {
+            map.cancel();
+        }
+
+        map = new Image(getClass().getClassLoader().getResourceAsStream(MAP_URLS[this.floor - 1]));
+        mapView.setImage(map);
+        mapView.setPreserveRatio(true);
     }
 
     //// Private API ////
@@ -90,8 +114,9 @@ public class MapController extends AbstractController implements IClickableContr
         canvas = new PannableCanvas(this);
         // add the canvas to overlay
         overlay.getChildren().add(canvas);
+        floor = 4;
         // load the map into the map view
-        map = new Image(getClass().getClassLoader().getResourceAsStream(MAP_URL));
+        map = new Image(getClass().getClassLoader().getResourceAsStream(MAP_URLS[floor -1] ));
         mapView.setImage(map);
         mapView.setPreserveRatio(true);
         // add the map to the canvas
