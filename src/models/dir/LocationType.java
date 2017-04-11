@@ -30,6 +30,10 @@ public enum LocationType {
         return this.equals(Hallway) || this.equals(Unknown) || this.equals(Kiosk);
     }
 
+    public boolean hasNearest() {
+        return this.equals(PointOfInterest) || this.equals(Stairs) || this.equals(Elevator);
+    }
+
     public static LocationType getType(String s) {
         switch (s.toUpperCase()) {
             case "ROOM": return Room;

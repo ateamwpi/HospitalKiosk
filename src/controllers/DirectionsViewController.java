@@ -48,6 +48,7 @@ public class DirectionsViewController extends AbstractController {
         // find the shortest path
         Path path = KioskMain.getPath().findPath(startNode, endNode);
         // draw the path on the map
+        mapController.setFloor(startNode.getFloor());
         mapController.drawPath(path);
         floors.getItems().addAll(path.getFloorsSpanning());
         floors.getSelectionModel().selectFirst();

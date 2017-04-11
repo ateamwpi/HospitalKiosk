@@ -15,63 +15,61 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111"
-            xmlns:fx="http://javafx.com/fxml/1">
-    <SplitPane layoutX="82.0" layoutY="28.0" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0"
-               AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+    <SplitPane layoutX="82.0" layoutY="28.0" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-            <GridPane prefHeight="398.0" prefWidth="478.0" AnchorPane.leftAnchor="5.0"
-                      AnchorPane.rightAnchor="5.0">
+            <GridPane prefHeight="398.0" prefWidth="478.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
                 <columnConstraints>
-                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="339.0" minWidth="10.0" prefWidth="22.0"/>
-                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="397.0" minWidth="10.0"
-                                       prefWidth="268.66668701171875"/>
-                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="389.0" minWidth="10.0"
-                                       prefWidth="171.33331298828125"/>
+                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="339.0" minWidth="10.0" prefWidth="22.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="397.0" minWidth="10.0" prefWidth="268.66668701171875" />
+                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="389.0" minWidth="10.0" prefWidth="171.33331298828125" />
                 </columnConstraints>
                 <rowConstraints>
-                    <RowConstraints maxHeight="128.0" minHeight="10.0" prefHeight="66.0" vgrow="SOMETIMES"/>
-                    <RowConstraints maxHeight="128.0" minHeight="0.0" prefHeight="40.0" vgrow="SOMETIMES"/>
-                    <RowConstraints maxHeight="344.0" minHeight="10.0" prefHeight="210.0" vgrow="SOMETIMES"/>
-                    <RowConstraints maxHeight="94.0" minHeight="3.0" prefHeight="94.0" vgrow="SOMETIMES"/>
+                    <RowConstraints maxHeight="128.0" minHeight="10.0" prefHeight="66.0" vgrow="SOMETIMES" />
+                    <RowConstraints maxHeight="128.0" minHeight="0.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                    <RowConstraints maxHeight="344.0" minHeight="10.0" prefHeight="210.0" vgrow="SOMETIMES" />
+                    <RowConstraints maxHeight="94.0" minHeight="3.0" prefHeight="94.0" vgrow="SOMETIMES" />
                 </rowConstraints>
-                <TableView fx:id="locationsTable" prefHeight="303.0" prefWidth="200.0"
-                           GridPane.columnIndex="1" GridPane.rowIndex="2">
+                <TableView fx:id="locationsTable" prefHeight="303.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                     <columns>
-                        <TableColumn fx:id="nameCol" minWidth="0.0" prefWidth="160.0" text="Name"/>
-                        <TableColumn id="roomCol" fx:id="roomCol" prefWidth="70.6666259765625" text="Room"/>
-                        <TableColumn fx:id="typeCol" prefWidth="75.3333740234375" text="Type"/>
+                        <TableColumn fx:id="nameCol" minWidth="0.0" prefWidth="160.0" text="Name" />
+                        <TableColumn id="roomCol" fx:id="roomCol" prefWidth="70.6666259765625" text="Room" />
+                        <TableColumn fx:id="typeCol" prefWidth="75.3333740234375" text="Type" />
                     </columns>
                 </TableView>
-                <Button fx:id="goToFinalSel" alignment="CENTER" mnemonicParsing="false"
-                        onAction="#clickGoToFinalSel" text="-&gt;" GridPane.columnIndex="2"
-                        GridPane.rowIndex="3"/>
-                <Label fx:id="directions" prefHeight="91.0" prefWidth="275.0" text="Label" wrapText="true"
-                       GridPane.columnIndex="1" GridPane.rowIndex="3">
+                <Button fx:id="goToFinalSel" alignment="CENTER" mnemonicParsing="false" onAction="#clickGoToFinalSel" text="-&gt;" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                <Label fx:id="directions" prefHeight="91.0" prefWidth="275.0" text="Label" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="3">
                     <padding>
-                        <Insets left="5.0"/>
+                        <Insets left="5.0" />
                     </padding>
                 </Label>
                 <Label fx:id="title" text="Label" GridPane.columnIndex="1">
                     <font>
-                        <Font name="System Bold" size="21.0"/>
+                        <Font name="System Bold" size="21.0" />
                     </font>
                 </Label>
-                <TextField fx:id="searchBox" promptText="Search" GridPane.columnIndex="2"
-                           GridPane.rowIndex="1"/>
-                <Button mnemonicParsing="false" onAction="#clickBack" text="Back"/>
-                <ComboBox fx:id="locationDropdown" prefWidth="150.0" GridPane.columnIndex="1"
-                          GridPane.rowIndex="1"/>
+                <TextField fx:id="searchBox" promptText="Search" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                <Button mnemonicParsing="false" onAction="#clickBack" text="Back" />
                 <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
-                    <Button fx:id="addEntry" mnemonicParsing="false" text="Add"/>
-                    <Button fx:id="modifyEntry" mnemonicParsing="false"
-                            text="Modify"/>
-                    <Button fx:id="removeEntry" mnemonicParsing="false"
-                            text="Remove"/>
+                    <Button fx:id="addEntry" mnemonicParsing="false" text="Add" />
+                    <Button fx:id="modifyEntry" mnemonicParsing="false" text="Modify" />
+                    <Button fx:id="removeEntry" mnemonicParsing="false" text="Remove" />
                 </VBox>
-                <Button fx:id="kiosk" mnemonicParsing="false" onAction="#clickKiosk"
-                        text="Use Kiosk Location" GridPane.columnIndex="2"/>
+                <Button fx:id="kiosk" mnemonicParsing="false" onAction="#clickKiosk" text="Use Kiosk Location" GridPane.columnIndex="2" />
+            <GridPane GridPane.columnIndex="1" GridPane.rowIndex="1">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+               <children>
+                      <ComboBox fx:id="locationDropdown" prefWidth="150.0" />
+                  <Button fx:id="findNearest" mnemonicParsing="false" onAction="#pressedFindNearest" text="Find Nearest" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+                     <GridPane.margin>
+                        <Insets right="5.0" />
+                     </GridPane.margin>
+                  </Button>
+               </children>
+            </GridPane>
             </GridPane>
         </AnchorPane>
     </SplitPane>
