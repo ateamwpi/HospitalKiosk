@@ -17,29 +17,30 @@ public class Directory {
     }
 
     public HashMap<Integer, Location> getLocations() {
-        return this.entries;
+        return entries;
     }
 
     public void addLocation(Location l) {
         if (l.isNew()) {
             KioskMain.getDB().addLocation(l);
         }
-        this.entries.put(l.getID(), l);
+        entries.put(l.getID(), l);
     }
 
     public Location getLocation(int id) {
-        return this.entries.get(id);
+        return entries.get(id);
     }
 
     public void removeLocation(Location l) {
+        System.out.println("removing location " + l);
         l.getNode().removeLocation(l);
-        this.entries.remove(l.getID());
+        entries.remove(l.getID());
         KioskMain.getDB().removeLocation(l);
     }
 
     public String toString() {
-        String str = this.name + " Directory\n";
-        for (Location l : this.entries.values()) {
+        String str = name + " Directory\n";
+        for (Location l : entries.values()) {
             str += l.toString() + "\n";
         }
         return str;

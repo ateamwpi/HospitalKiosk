@@ -60,11 +60,13 @@ public class AStar implements IPathfindingAlgorithm {
 
     private Path constructPath(HashMap<Node, Node> cameFrom, Node end) {
         Path p = new Path();
-        p.addStep(end);
+        p.buildPath(end);
         Node current = end;
+
+
         while(cameFrom.keySet().contains(current)){
             current = cameFrom.get(current);
-            p.addStep(current);
+            p.buildPath(current);
         }
         return p;
     }

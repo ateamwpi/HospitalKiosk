@@ -1,6 +1,7 @@
 package models.db;
 
 import core.KioskMain;
+import core.WrongFloorException;
 import models.dir.Directory;
 import models.dir.Location;
 import models.dir.LocationType;
@@ -135,7 +136,7 @@ public class DatabaseManager {
             e.printStackTrace();
         }
 
-        int x, y, id = 0;
+        int x, y, floor, id = 0;
         String roomName;
 
         try {
@@ -144,8 +145,9 @@ public class DatabaseManager {
                 id = rset.getInt("ID");
                 x = rset.getInt("X");
                 y = rset.getInt("Y");
+                floor = rset.getInt("FLOOR");
                 roomName = rset.getString("ROOMNAME");
-                allNodes.put(id, new Node(id, x, y, roomName));
+                allNodes.put(id, new Node(id, x, y, floor, roomName));
             }
 
             // Run SQL query to get all EDGES from the database
@@ -170,6 +172,9 @@ public class DatabaseManager {
             stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (WrongFloorException e) {
+            e.printStackTrace();
+            // this shouldn't be reachable unless there is bad data in the database
         }
 
         // Return the completed list of all nodes
@@ -178,12 +183,13 @@ public class DatabaseManager {
 
     public void addNode(Node n) {
         try {
-            String str = "INSERT INTO NODE VALUES (?, ?, ?, ?)";
+            String str = "INSERT INTO NODE VALUES (?, ?, ?, ?, ?)";
             PreparedStatement stmt = conn.prepareStatement(str);
             stmt.setInt(1, n.getID());
             stmt.setInt(2, n.getX());
             stmt.setInt(3, n.getY());
             stmt.setString(4, n.getRoomName());
+            stmt.setInt(5, n.getFloor());
             stmt.execute();
         }
         catch (SQLException e) {
@@ -217,12 +223,13 @@ public class DatabaseManager {
 
     public void updateNode(Node n) {
         try {
-            String str = "UPDATE NODE SET X=?, Y=?, ROOMNAME=? WHERE ID=?";
+            String str = "UPDATE NODE SET X=?, Y=?, FLOOR=?, ROOMNAME=? WHERE ID=?";
             PreparedStatement stmt = conn.prepareStatement(str);
             stmt.setInt(1, n.getX());
             stmt.setInt(2, n.getY());
-            stmt.setString(3, n.getRoomName());
-            stmt.setInt(4, n.getID());
+            stmt.setInt(3, n.getFloor());
+            stmt.setString(4, n.getRoomName());
+            stmt.setInt(5, n.getID());
             stmt.execute();
         }
         catch (SQLException e) {
@@ -252,10 +259,14 @@ public class DatabaseManager {
     public void removeConnection(Node n1, Node n2) {
         try {
             String str = "DELETE FROM EDGE WHERE ANODEID=? AND BNODEID=?";
-            PreparedStatement stmt = conn.prepareStatement(str);
-            stmt.setInt(1, n1.getID());
-            stmt.setInt(2, n2.getID());
-            stmt.execute();
+            PreparedStatement stmt1 = conn.prepareStatement(str);
+            //PreparedStatement stmt2 = conn.prepareStatement(str);
+            stmt1.setInt(1, n1.getID());
+            stmt1.setInt(2, n2.getID());
+            //stmt2.setInt(1, n2.getID());
+            //stmt2.setInt(2, n1.getID());
+            stmt1.execute();
+            //stmt2.execute();
         }
         catch (SQLException e) {
             System.out.println("Failed to remove connection between " + n1.getID() + " and " + n2.getID() + ".");
