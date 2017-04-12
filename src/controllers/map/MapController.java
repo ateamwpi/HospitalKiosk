@@ -40,7 +40,7 @@ public class MapController extends AbstractController implements IClickableContr
             "resources/floor1.png",
             "resources/floor2.png",
             "resources/floor3.png",
-            "resources/4_thefourthfloor.png",
+            "resources/floor4.png",
             "resources/floor5.png",
             "resources/floor6.png",
             "resources/floor7.png"
