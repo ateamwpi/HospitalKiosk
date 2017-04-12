@@ -78,7 +78,7 @@ public class DirectoryViewController extends AbstractDirectoryViewController {
 
     @FXML  //when user clicks "back" button, they will return to main menu
     private void clickBack(ActionEvent event) {
-        KioskMain.setScene(new MainMenuController());
+        KioskMain.getUI().setScene(new MainMenuController());
     }
 
     @FXML  //when user clicks -> button, they will be brought to new page and asked to pick final destination
@@ -96,7 +96,7 @@ public class DirectoryViewController extends AbstractDirectoryViewController {
             updateNearestButton();
         } else {
             endNode = selectedLocation.getNode();
-            KioskMain.setScene(new DirectionsViewController(this.startNode, this.endNode));
+            KioskMain.getUI().setScene(new DirectionsViewController(this.startNode, this.endNode));
         }
     }
 
@@ -123,7 +123,7 @@ public class DirectoryViewController extends AbstractDirectoryViewController {
         selectedLocation = KioskMain.getDir().getTheKiosk();
         System.out.println(selectedLocation);
         getDirections();
-        //KioskMain.setScene("views/FinalDestSelectionView.fxml", kiosk);
+        //KioskMain.getUI().setScene("views/FinalDestSelectionView.fxml", kiosk);
     }
 
     @FXML

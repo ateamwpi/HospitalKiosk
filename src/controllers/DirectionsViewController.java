@@ -68,7 +68,7 @@ public class DirectionsViewController extends AbstractController {
 
     @FXML
     private void clickBack(ActionEvent event) {
-        KioskMain.setScene(new DirectoryViewController());
+        KioskMain.getUI().setScene(new DirectoryViewController());
     }
 
     @FXML
@@ -78,7 +78,7 @@ public class DirectionsViewController extends AbstractController {
 
     @FXML
     private void clickDone(ActionEvent event) {
-        KioskMain.setScene(new MainMenuController());
+        KioskMain.getUI().setScene(new MainMenuController());
     }
 
     @Override

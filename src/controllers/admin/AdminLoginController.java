@@ -35,7 +35,7 @@ public class AdminLoginController extends AbstractController {
 
     @FXML
     private void clickBack(ActionEvent event) {
-        KioskMain.setScene(new MainMenuController());
+        KioskMain.getUI().setScene(new MainMenuController());
     }
 
     @FXML
@@ -52,7 +52,7 @@ public class AdminLoginController extends AbstractController {
 
     private void checkPassword() {
         if (password.getText().equals("admin")) {
-            KioskMain.setScene(new AdminMenuController());
+            KioskMain.getUI().setScene(new AdminMenuController());
         } else {
             Alert wrongPassword = new Alert(Alert.AlertType.WARNING);
             wrongPassword.setHeaderText("Wrong Password!");

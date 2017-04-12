@@ -22,22 +22,22 @@ public class AdminMenuController extends AbstractController {
 
     @FXML
     private void clickLogout(ActionEvent event) {
-        KioskMain.setScene(new MainMenuController());
+        KioskMain.getUI().setScene(new MainMenuController());
     }
 
     @FXML
     private void clickManageDirectory(ActionEvent event) {
-        KioskMain.setScene(new ManageDirectoryViewController());
+        KioskMain.getUI().setScene(new ManageDirectoryViewController());
     }
 
     @FXML
     private void clickManageMap(ActionEvent event) {
-        KioskMain.setScene(new ManageMapViewController());
+        KioskMain.getUI().setScene(new ManageMapViewController());
     }
 
     @FXML
     private void pressedKiosk(ActionEvent event) {
-        KioskMain.setScene(new ChangeKioskController());
+        KioskMain.getUI().setScene(new ChangeKioskController());
     }
 
     @Override

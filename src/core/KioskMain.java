@@ -3,10 +3,7 @@ package core;
 import controllers.IController;
 import controllers.MainMenuController;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 import models.db.DatabaseManager;
 import models.dir.Directory;
@@ -16,8 +13,8 @@ import models.dir.LocationType;
 import models.path.PathfindingManager;
 import models.path.Node;
 import models.tts.TTSManager;
+import models.ui.UIManager;
 
-import java.io.*;
 import java.sql.SQLException;
 import java.util.HashMap;
 
@@ -27,28 +24,20 @@ public class KioskMain extends Application {
     private static PathfindingManager thePathManager;
     private static DatabaseManager theDBManager;
     private static TTSManager theTTSManager;
-
-    private static Stage stage;
+    private static UIManager theUIManager;
 
     private static final boolean DEBUG = true;
 
     @Override
-    public void start(Stage primaryStage) {
-        stage = primaryStage;
-        stage.show();
-        // load main menu controller
-        MainMenuController mainMenuController = new MainMenuController();
-        // set the scene
-        setScene(mainMenuController);
+    public void start(Stage stage) {
+        initUIMg(stage);
+        // load the main menu
+        getUI().setScene(new MainMenuController());
     }
 
     public static void main(String[] args) {
         // setup the managers
-        initDBMg();
-        initPathMg();
-        initDirMg();
-        initTTSMg();
-
+        initManagers();
         // Launch the JavaFX application after initial setup
         launch(args);
     }
@@ -63,38 +52,18 @@ public class KioskMain extends Application {
 
     public static DatabaseManager getDB() { return theDBManager; }
 
-    public static TTSManager getTTS() { return theTTSManager; }
-
-    public static void setScene(IController controller) {
-        stage.setScene(new Scene(controller.getRoot()));
+    public static TTSManager getTTS() {
+        return theTTSManager;
     }
 
-//    public static void setScene(String path) {
-//        try {
-//            Parent root = FXMLLoader.load(KioskMain.class.getClassLoader().getResource(path));
-//            Scene scene = new Scene(root);
-//            stage.setScene(scene);
-//        } catch (IOException e) {
-//            // TODO
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    // set the scene and return the controller
-//    public static IControllerWithParams setScene(String path, Object... data) {
-//        try {
-//            FXMLLoader loader = new FXMLLoader(KioskMain.class.getClassLoader().getResource(path));
-//            Scene scene = new Scene(loader.load());
-//            IControllerWithParams controller = loader.<IControllerWithParams>getController();
-//            controller.initData(data);
-//            stage.setScene(scene);
-//            return controller;
-//        } catch (IOException e) {
-//            // TODO fix this
-//            e.printStackTrace();
-//            return null;
-//        }
-//    }
+    public static UIManager getUI() { return theUIManager; }
+
+    private static void initManagers() {
+        initDBMg();
+        initPathMg();
+        initDirMg();
+        initTTSMg();
+    }
 
     private static void initDBMg() {
         // create the database manager
@@ -150,5 +119,9 @@ public class KioskMain extends Application {
 
     private static void initTTSMg() {
         theTTSManager = new TTSManager();
+    }
+
+    private static void initUIMg(Stage stage) {
+        theUIManager = new UIManager(stage);
     }
 }
