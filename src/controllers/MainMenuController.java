@@ -47,6 +47,7 @@ public class MainMenuController extends AbstractController {
         // load the map controller
         MapController mapController = new MapController();
         // add the map to the container
+        mapController.setFloor(KioskMain.getDir().getTheKiosk().getNode().getFloor());
         mapContainer.getChildren().add(mapController.getRoot());
         mapContainer.setAlignment(Pos.CENTER);
     }
