@@ -71,6 +71,10 @@ public class MapController extends AbstractController implements IClickableContr
         return "views/Map.fxml";
     }
 
+    public Group getOverlay() {
+        return this.overlay;
+    }
+
     public PannableCanvas getCanvas() {
         return canvas;
     }
@@ -142,9 +146,9 @@ public class MapController extends AbstractController implements IClickableContr
         // create the scene gestures for zooming and panning
         SceneGestures sceneGestures = new SceneGestures(canvas, this);
         // register handlers zooming and panning
-//        anchorPane.addEventHandler(MouseEvent.ANY, new ClickDragHandler(sceneGestures.getOnMouseClickedEventHandler(), sceneGestures.getOnMouseDraggedEventHandler()));
-//        anchorPane.addEventHandler(MouseEvent.MOUSE_PRESSED, sceneGestures.getOnMousePressedEventHandler());
-//        anchorPane.addEventHandler(ScrollEvent.ANY, sceneGestures.getOnScrollEventHandler());
+        canvas.addEventHandler(MouseEvent.ANY, new ClickDragHandler(sceneGestures.getOnMouseClickedEventHandler(), sceneGestures.getOnMouseDraggedEventHandler()));
+        canvas.addEventHandler(MouseEvent.MOUSE_PRESSED, sceneGestures.getOnMousePressedEventHandler());
+        canvas.addEventHandler(ScrollEvent.ANY, sceneGestures.getOnScrollEventHandler());
     }
 
     private void drawConnection(Node nodeA, Node nodeB) {
@@ -155,5 +159,20 @@ public class MapController extends AbstractController implements IClickableContr
     private void drawNode(Node node) {
         Circle circle = new Circle(node.getX(), node.getY(), 5);
         addOverlay(circle);
+    }
+
+    private void replaceAllNodes(Collection<Node> nodes){
+        overlay = new Group();
+        root.getChildren().add(overlay);
+        // add the canvas to overlay
+        overlay.getChildren().add(canvas);
+        mapView.setImage(map);
+        mapView.setPreserveRatio(true);
+        // set base overlay index
+        overlayIndex = overlay.getChildren().size();
+        for(Node n: nodes){
+            drawNode(n);
+
+        }
     }
 }
