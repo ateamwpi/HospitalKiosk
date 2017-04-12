@@ -7,6 +7,7 @@ import core.KioskMain;
 import core.NodeInUseException;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
@@ -100,6 +101,11 @@ public class AdminMapController extends AbstractController implements IClickable
             // pass along mouse press to the node
             selectedNode.fireEvent(e);
         }
+    }
+
+    @Override
+    public Group getOverlay() {
+        return this.mapController.getOverlay();
     }
 
     public NodeGestures getNodeGestures() {

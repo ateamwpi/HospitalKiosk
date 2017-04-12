@@ -57,14 +57,14 @@ public class NodeGestures {
             if (event.getButton().name() != "PRIMARY")// !event.isPrimaryButtonDown())
                 return;
             // get the map zoom scale
-            double scale = canvas.getScale();
+            double scale = adminMapController.getOverlay().getScaleX();//Should be same as scaleY
             // get the node being dragged
             DraggableNode node = (DraggableNode) event.getSource();
             // drag the node only if selected
             if (node.equals(adminMapController.getSelectedNode())) {
                 // calculate the new coordinates
-                int newX = (int) (nodeDragContext.translateAnchorX + ((event.getSceneX() - nodeDragContext.mouseAnchorX) / scale));
-                int newY = (int) (nodeDragContext.translateAnchorY + ((event.getSceneY() - nodeDragContext.mouseAnchorY) / scale));
+                int newX = (int) ((nodeDragContext.translateAnchorX + event.getSceneX() - nodeDragContext.mouseAnchorX) / scale);
+                int newY = (int) ((nodeDragContext.translateAnchorY + event.getSceneY() - nodeDragContext.mouseAnchorY) / scale);
                 // preview the node coordinates
                 node.previewX(newX);
                 node.previewY(newY);

@@ -244,7 +244,7 @@ public class ManageMapViewController extends AbstractController {
     @FXML
     private void clickSave(ActionEvent event) {
         selectedNode.save();
-        refreshScene();
+        //refreshScene();
     }
 
     @FXML

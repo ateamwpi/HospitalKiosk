@@ -12,6 +12,8 @@ import models.dir.LocationType;
 import models.path.Node;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
 
 /**
  * Created by mattm on 3/29/2017.
@@ -129,7 +131,9 @@ public class DirectoryViewController extends AbstractDirectoryViewController {
     @FXML
     private void pressedFindNearest(ActionEvent event) {
         LocationType lt = LocationType.getType(locationDropdown.getSelectionModel().getSelectedItem());
-        selectedLocation = KioskMain.getPath().getNearest(lt, startNode);
+        HashMap<Location, Double> near = KioskMain.getPath().getNearest(lt, startNode);
+        Location min = Collections.min(near.entrySet(), (entry1, entry2) -> (int)entry1.getValue().doubleValue() - (int)entry2.getValue().doubleValue()).getKey();
+        selectedLocation = min;
         getDirections();
     }
 
