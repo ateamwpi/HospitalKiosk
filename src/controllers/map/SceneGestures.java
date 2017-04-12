@@ -1,7 +1,6 @@
 package controllers.map;
 
 import controllers.IClickableController;
-import controllers.admin.AdminMapController;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
@@ -10,18 +9,22 @@ import javafx.scene.input.ScrollEvent;
  * Listeners for making the scene's canvas draggable and zoomable
  */
 public class SceneGestures {
-
-    private static final double MAX_SCALE = 10.0d;
-    private static final double MIN_SCALE = .1d;
+    //Minimum and maximum zoom levels
+    private static final double MAX_SCALE = 5.0d;
+    private static final double MIN_SCALE = 1.0d;
 
     private DragContext sceneDragContext = new DragContext();
 
     PannableCanvas canvas;
-    IClickableController controller;
+    IClickableController mapController;
 
-    public SceneGestures(PannableCanvas canvas, IClickableController controller) {
+    public SceneGestures(PannableCanvas canvas, IClickableController mapController) {
         this.canvas = canvas;
-        this.controller = controller;
+        this.mapController = mapController;
+        //this.mapController.getOverlay().scaleXProperty().bind(canvas.scaleXProperty());
+        //this.mapController.getOverlay().scaleYProperty().bind(canvas.scaleYProperty());
+        //this.mapController.getOverlay().translateXProperty().bind(canvas.translateXProperty());
+        //this.mapController.getOverlay().translateYProperty().bind(canvas.translateYProperty());
     }
 
     public EventHandler<MouseEvent> getOnMousePressedEventHandler() {
@@ -43,15 +46,16 @@ public class SceneGestures {
     private EventHandler<MouseEvent> onMousePressedEventHandler = new EventHandler<MouseEvent>() {
         public void handle(MouseEvent event) {
             // right mouse button => panning
-            if (event.getButton().name() != "PRIMARY")//if( !event.isSecondaryButtonDown())
+            if (event.getButton().name() != "SECONDARY")//if( !event.isSecondaryButtonDown())
                 return;
             System.out.println("scene press");
             // update scene drag context
             sceneDragContext.mouseAnchorX = event.getSceneX();
             sceneDragContext.mouseAnchorY = event.getSceneY();
-            sceneDragContext.translateAnchorX = canvas.getTranslateX();
-            sceneDragContext.translateAnchorY = canvas.getTranslateY();
-
+            sceneDragContext.translateAnchorX = mapController.getOverlay().getTranslateX();
+            sceneDragContext.translateAnchorY = mapController.getOverlay().getTranslateY();
+            //Debugging
+            //System.out.println("LMB: " + sceneDragContext.mouseAnchorX + ", " + sceneDragContext.translateAnchorY);
         }
 
     };
@@ -59,16 +63,16 @@ public class SceneGestures {
     private EventHandler<MouseEvent> onMouseClickedEventHandler = new EventHandler<MouseEvent>() {
         public void handle(MouseEvent event) {
             // right mouse button => panning
-            if (event.getButton().name() != "PRIMARY")//if( !event.isSecondaryButtonDown())
+            if (event.getButton().name() != "SECONDARY")//if( !event.isSecondaryButtonDown())
                 return;
             System.out.println("scene click");
             // unselect the current node
-            controller.handleMouseClick(event);
+            mapController.handleMouseClick(event);
             // update scene drag context
             sceneDragContext.mouseAnchorX = event.getSceneX();
             sceneDragContext.mouseAnchorY = event.getSceneY();
-            sceneDragContext.translateAnchorX = canvas.getTranslateX();
-            sceneDragContext.translateAnchorY = canvas.getTranslateY();
+            sceneDragContext.translateAnchorX = mapController.getOverlay().getTranslateX();
+            sceneDragContext.translateAnchorY = mapController.getOverlay().getTranslateY();
         }
 
     };
@@ -79,41 +83,64 @@ public class SceneGestures {
             if(!event.isSecondaryButtonDown())
                 return;
             // update the canvas
-            canvas.setTranslateX(sceneDragContext.translateAnchorX + event.getSceneX() - sceneDragContext.mouseAnchorX);
-            canvas.setTranslateY(sceneDragContext.translateAnchorY + event.getSceneY() - sceneDragContext.mouseAnchorY);
+            //canvas.setTranslateX(sceneDragContext.translateAnchorX + event.getSceneX() - sceneDragContext.mouseAnchorX);
+            //canvas.setTranslateY(sceneDragContext.translateAnchorY + event.getSceneY() - sceneDragContext.mouseAnchorY);
+
+
+            mapController.getOverlay().setTranslateX(sceneDragContext.translateAnchorX + event.getSceneX() - sceneDragContext.mouseAnchorX);
+            mapController.getOverlay().setTranslateY(sceneDragContext.translateAnchorY + event.getSceneY() - sceneDragContext.mouseAnchorY);
+
+
+            //Clamp view as not to go off the map, even when zoomed
+            if(mapController.getOverlay().getTranslateX() < -canvas.getWidth()/2 * mapController.getOverlay().getScaleX())
+                mapController.getOverlay().setTranslateX(-canvas.getWidth()/2 * mapController.getOverlay().getScaleX());
+            if(mapController.getOverlay().getTranslateX() > canvas.getWidth()/2 * mapController.getOverlay().getScaleX())
+                mapController.getOverlay().setTranslateX(canvas.getWidth()/2 * mapController.getOverlay().getScaleX());
+
+            if(mapController.getOverlay().getTranslateY() < -canvas.getHeight()/2 * mapController.getOverlay().getScaleY())
+                mapController.getOverlay().setTranslateY(-canvas.getHeight()/2 * mapController.getOverlay().getScaleY());
+            if(mapController.getOverlay().getTranslateY() > canvas.getHeight()/2 * mapController.getOverlay().getScaleY())
+                mapController.getOverlay().setTranslateY(canvas.getHeight()/2 * mapController.getOverlay().getScaleY());
+
             // cancel event bubbling
             event.consume();
         }
     };
 
     /**
-     * Mouse wheel handler: zoom to pivot point
+     * Mouse wheel handler: zoom on center of view
      */
     private EventHandler<ScrollEvent> onScrollEventHandler = new EventHandler<ScrollEvent>() {
 
         @Override
         public void handle(ScrollEvent event) {
-            double delta = 1.2;
+            double delta = 0.5;
 
-            double scale = canvas.getScale(); // currently we only use Y, same value is used for X
+            double scale = mapController.getOverlay().getScaleX(); // currently we only use Y, same value is used for X
             double oldScale = scale;
 
             if (event.getDeltaY() < 0)
-                scale /= delta;
+                scale -= delta;
             else
-                scale *= delta;
+                scale += delta;
 
             scale = clamp( scale, MIN_SCALE, MAX_SCALE);
 
             double f = (scale / oldScale)-1;
 
-            double dx = (event.getSceneX() - (canvas.getBoundsInParent().getWidth()/2 + canvas.getBoundsInParent().getMinX()));
-            double dy = (event.getSceneY() - (canvas.getBoundsInParent().getHeight()/2 + canvas.getBoundsInParent().getMinY()));
+            //double dx = (event.getSceneX() - (canvas.getBoundsInParent().getWidth()/2 + canvas.getBoundsInParent().getMinX()/2));
+            //double dy = (event.getSceneY() - (canvas.getBoundsInParent().getHeight()/2 + canvas.getBoundsInParent().getMinY()/2));
 
-            canvas.setScale( scale);
+            //canvas.setScale(scale);
+            mapController.getOverlay().setScaleX(scale);
+            mapController.getOverlay().setScaleY(scale);
+
+            //System.out.println(mapController.getOverlay().getTranslateX());
+            //canvas.setTranslateX(4 * mapController.getOverlay().getScaleX() * mapController.getOverlay().getTranslateX());
+            //canvas.setTranslateY(2 * mapController.getOverlay().getScaleY() * mapController.getOverlay().getTranslateY());
 
             // note: pivot value must be untransformed, i. e. without scaling
-            canvas.setPivot(f*dx, f*dy);
+            canvas.setPivot(f/**dx*/, f/**dy*/);
 
             event.consume();
 

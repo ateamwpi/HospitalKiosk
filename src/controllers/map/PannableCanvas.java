@@ -25,39 +25,6 @@ public class PannableCanvas extends Pane {
 
     }
 
-    /**
-     * Add a grid to the canvas, send it to back
-     */
-//    public void addGrid() {
-//
-//        double w = getBoundsInLocal().getWidth();
-//        double h = getBoundsInLocal().getHeight();
-//
-//        // add grid
-//        Canvas grid = new Canvas(w, h);
-//
-//        // don't catch mouse events
-//        grid.setMouseTransparent(true);
-//
-//        GraphicsContext gc = grid.getGraphicsContext2D();
-//
-//        gc.setStroke(Color.GRAY);
-//        gc.setLineWidth(1);
-//
-//        // draw grid lines
-//        double offset = 50;
-//        for( double i=offset; i < w; i+=offset) {
-//            // vertical
-//            gc.strokeLine( i, 0, i, h);
-//            // horizontal
-//            gc.strokeLine( 0, i, w, i);
-//        }
-//
-//        getChildren().add( grid);
-//
-//        grid.toBack();
-//    }
-
     public double getScale() {
         return myScale.get();
     }

@@ -1,5 +1,6 @@
 package controllers;
 
+import javafx.scene.Group;
 import javafx.scene.input.MouseEvent;
 
 /**
@@ -7,4 +8,5 @@ import javafx.scene.input.MouseEvent;
  */
 public interface IClickableController extends IController {
     void handleMouseClick(MouseEvent event);
+    Group getOverlay();
 }
