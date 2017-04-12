@@ -6,6 +6,7 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.scene.control.Alert;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -78,8 +79,17 @@ public class DraggableNode extends Circle {
     }
 
     public void previewConnection(Node node) {
-        previewConnections.add(node);
-        adminMapController.drawDraggableConnection(this, adminMapController.getDraggableNode(node));
+        if(node.getFloor() == this.node.getFloor()) {
+            previewConnections.add(node);
+            adminMapController.drawDraggableConnection(this, adminMapController.getDraggableNode(node));
+        }
+        else {
+            Alert invalidConnection = new Alert(Alert.AlertType.ERROR);
+            invalidConnection.setHeaderText("Invalid Node Connection");
+            invalidConnection.setContentText("You cannot add this connection as the node is on a different floor.");
+            invalidConnection.setTitle("Invalid Node Connection");
+            invalidConnection.showAndWait();
+        }
     }
 
     public void removePreviewConnection(Node node) {

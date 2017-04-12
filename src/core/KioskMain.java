@@ -20,6 +20,7 @@ import models.dir.Location;
 import models.dir.LocationType;
 import models.path.PathfindingManager;
 import models.path.Node;
+import models.tts.TTSManager;
 
 import java.io.*;
 import java.sql.SQLException;
@@ -30,6 +31,8 @@ public class KioskMain extends Application {
     private static DirectoryManager theDirManager;
     private static PathfindingManager thePathManager;
     private static DatabaseManager theDBManager;
+    private static TTSManager theTTSManager;
+
     private static DoubleProperty fontSize = new SimpleDoubleProperty(10);
     private static Stage stage;
 
@@ -50,6 +53,7 @@ public class KioskMain extends Application {
         initDBMg();
         initPathMg();
         initDirMg();
+        initTTSMg();
 
         // Launch the JavaFX application after initial setup
         launch(args);
@@ -64,6 +68,8 @@ public class KioskMain extends Application {
     }
 
     public static DatabaseManager getDB() { return theDBManager; }
+
+    public static TTSManager getTTS() { return theTTSManager; }
 
     public static void setScene(IController controller) {
         Scene scene = new Scene(controller.getRoot());
@@ -160,5 +166,9 @@ public class KioskMain extends Application {
             }
             System.out.println("The Kiosk: " + getDir().getTheKiosk());
         }
+    }
+
+    private static void initTTSMg() {
+        theTTSManager = new TTSManager();
     }
 }

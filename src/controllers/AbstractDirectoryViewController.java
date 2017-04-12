@@ -38,7 +38,7 @@ public abstract class AbstractDirectoryViewController extends AbstractController
     @FXML
     private TextField searchBox;
     @FXML
-    private ComboBox<String> locationDropdown;
+    protected ComboBox<String> locationDropdown;
 
     protected AbstractDirectoryViewController(Object... data) {
         super(data);
@@ -126,7 +126,7 @@ public abstract class AbstractDirectoryViewController extends AbstractController
      * Selects the directory based upon a given string.
      * @param s Location type string
      */
-    private void selectDirectory(String s) {
+    protected void selectDirectory(String s) {
         if (s.equalsIgnoreCase("Full Directory")) {
             setFullDirectory();
         } else {

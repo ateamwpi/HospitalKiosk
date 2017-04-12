@@ -82,17 +82,25 @@ public class ManageMapViewController extends AbstractController {
 
     @FXML
     private void initialize() {
-        floors.getItems().addAll(floorList);
-        floors.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
-            if (floors.getSelectionModel().getSelectedItem() != null) {
-                String fl = newValue;
-                setFloor(fl);
-            }
-        });
+
         // load the admin map controller
         adminMapController = new AdminMapController(this);
         // add the map to the container
         mapContainer.getChildren().add(adminMapController.getRoot());
+
+        floors.getItems().addAll(floorList);
+        floors.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
+            if (floors.getSelectionModel().getSelectedItem() != null) {
+                if (adminMapController.attemptUnselectNode()) {
+                    String fl = floors.getSelectionModel().getSelectedItem();
+                    System.out.println("The current selected floor is " + fl);
+                    setFloor(fl);
+                } else {
+                }
+
+            }
+        });
+        floors.getSelectionModel().selectFirst();
         // init input text properties
         xTextProperty = x.textProperty();
         yTextProperty = y.textProperty();
@@ -206,6 +214,8 @@ public class ManageMapViewController extends AbstractController {
         //refreshScene();
         // update the table of connections with preview connections
         setTableNeighbors(selectedNode.getPreviewConnections());
+
+        newNeighbor.clear();
     }
 
     private void alertAddConnectionError() {
@@ -280,12 +290,19 @@ public class ManageMapViewController extends AbstractController {
 
     public void setFloor(String fl) {
         int floor = floorList.indexOf(fl) + 1;
-        adminMapController.setFloor(floor);
+        setFloor(floor);
+    }
 
+    public void setFloor(int floor) {
+        System.out.println("We found the floor to be: " + floor);
+        adminMapController.setFloor(floor);
     }
 
     private void refreshScene() {
-        KioskMain.setScene(new ManageMapViewController());
+        int floor = adminMapController.getMapController().getFloor();
+        ManageMapViewController con = new ManageMapViewController();
+        con.floors.getSelectionModel().select(floor - 1);
+        KioskMain.setScene(con);
     }
 
 }

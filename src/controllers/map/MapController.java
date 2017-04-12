@@ -6,8 +6,10 @@ import controllers.admin.ManageMapViewController;
 import core.KioskMain;
 import core.NodeInUseException;
 import javafx.scene.control.Alert;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Pair;
 import models.path.Node;
 import javafx.fxml.FXML;
@@ -47,6 +49,11 @@ public class MapController extends AbstractController implements IClickableContr
     private Image map;
     private Group overlay;
     private int overlayIndex;
+
+    public int getFloor() {
+        return floor;
+    }
+
     private int floor;
     private PannableCanvas canvas;
 
@@ -82,22 +89,30 @@ public class MapController extends AbstractController implements IClickableContr
 
     public void clearOverlay() {
         overlay.getChildren().clear();
+        overlay.getChildren().add(canvas);
     }
 
     public void drawPath(Path p) {
-        drawNode(p.getStart());
+        if(p.getStart().getFloor() == this.floor) drawNode(p.getStart());
         for (int i = 1; i < p.getPath().size(); i++) {
-            drawConnection(p.getStep(i - 1), p.getStep(i));
+            if(p.getStep(i-1).getFloor() == this.floor && p.getStep(i).getFloor() == this.floor)
+                drawConnection(p.getStep(i - 1), p.getStep(i));
+            else if(p.getStep(i-1).getFloor() == this.floor && p.getStep(i).getFloor() != this.floor)
+                drawMidpoint(p.getStep(i-1));
+            else if(p.getStep(i).getFloor() == this.floor && p.getStep(i-1).getFloor() != this.floor)
+                drawMidpoint(p.getStep(i));
         }
-        drawNode(p.getEnd());
+        if(p.getEnd().getFloor() == this.floor) drawNode(p.getEnd());
+    }
+
+    private void drawMidpoint(Node n) {
+        Rectangle r = new Rectangle(n.getX()-5, n.getY()-5, 10, 10);
+        r.setFill(Color.BLACK);
+        addOverlay(r);
     }
 
     public void setFloor(int floor){
         this.floor = floor;
-        if (map != null) {
-            map.cancel();
-        }
-
         map = new Image(getClass().getClassLoader().getResourceAsStream(MAP_URLS[this.floor - 1]));
         mapView.setImage(map);
         mapView.setPreserveRatio(true);
@@ -114,6 +129,7 @@ public class MapController extends AbstractController implements IClickableContr
         canvas = new PannableCanvas(this);
         // add the canvas to overlay
         overlay.getChildren().add(canvas);
+
         floor = 4;
         // load the map into the map view
         map = new Image(getClass().getClassLoader().getResourceAsStream(MAP_URLS[floor -1] ));

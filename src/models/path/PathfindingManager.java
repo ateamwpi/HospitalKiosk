@@ -73,15 +73,15 @@ public class PathfindingManager {
         return null;
     }
 
-    public Node getNearest(LocationType loc, Node start){
+    public Location getNearest(LocationType loc, Node start){
         Collection<Location> locations = KioskMain.getDir().getDirectory(loc).getLocations().values();
-        Node currentShortest = locations.iterator().next().getNode();
+        Location currentShortest = null;
 
 
         for(Location l : locations){
             if(l.getNode().getFloor() == start.getFloor()){
-                if(distanceFormula(l.getNode(), start) < distanceFormula(currentShortest, start)) {
-                    currentShortest = l.getNode();
+                if(currentShortest == null || distanceFormula(l.getNode(), start) < distanceFormula(currentShortest.getNode(), start)) {
+                    currentShortest = l;
                 }
             }
         }
@@ -115,7 +115,8 @@ public class PathfindingManager {
     public Path findPath(Node start, Node end) {
 
         if(start.getFloor() != end.getFloor()){
-            Node elevator = getNearest(LocationType.Elevator, start);
+            Node elevator = getNearest(LocationType.Elevator, start).getNode();
+            System.out.println("start=" + start + " elevator=" + elevator);
             Path startFloor = this.astar.findPath(start, elevator);
             System.out.println(findMatching(elevator, end.getFloor(), LocationType.Elevator));
             Path endFloor = this.astar.findPath(findMatching(elevator, end.getFloor(), LocationType.Elevator), end);
