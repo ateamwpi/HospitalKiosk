@@ -29,8 +29,8 @@
           </rowConstraints>
           <TableView fx:id="locationsTable" minWidth="-Infinity" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS">
               <columns>
-                  <TableColumn fx:id="nameCol" minWidth="0.0" prefWidth="250.0" text="Name" />
-                  <TableColumn id="roomCol" fx:id="roomCol" prefWidth="100.0" text="Room" />
+                  <TableColumn fx:id="nameCol" minWidth="0.0" prefWidth="500.0" text="Name" />
+                  <TableColumn id="roomCol" fx:id="roomCol" prefWidth="350.0" text="Room" />
                   <TableColumn fx:id="typeCol" prefWidth="150.0" text="Type" />
               </columns>
          <GridPane.margin>
