@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.72" xmlns:fx="http://javafx.com/fxml/1">
     <SplitPane layoutX="82.0" layoutY="28.0" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
             <GridPane prefHeight="398.0" prefWidth="478.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -34,8 +34,8 @@
                 <TableView fx:id="locationsTable" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                     <columns>
                         <TableColumn fx:id="nameCol" minWidth="0.0" prefWidth="249.0" text="Name" />
-                        <TableColumn id="roomCol" fx:id="roomCol" prefWidth="72.0" text="Room" />
-                        <TableColumn fx:id="typeCol" prefWidth="107.0" text="Type" />
+                        <TableColumn id="roomCol" fx:id="roomCol" maxWidth="-Infinity" minWidth="300.0" prefWidth="-1.0" text="Room" />
+                        <TableColumn fx:id="typeCol" maxWidth="-Infinity" minWidth="300.0" prefWidth="-1.0" text="Type" />
                     </columns>
                 </TableView>
                 <Button fx:id="goToFinalSel" alignment="CENTER" mnemonicParsing="false" text="-&gt;" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.vgrow="ALWAYS">
