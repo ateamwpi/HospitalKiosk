@@ -62,12 +62,12 @@ public class SceneGestures {
 
     private EventHandler<MouseEvent> onMouseClickedEventHandler = new EventHandler<MouseEvent>() {
         public void handle(MouseEvent event) {
+            if(event.getButton().name().equals("PRIMARY"))
+                mapController.handleMouseClick(event);// unselect the current node
             // right mouse button => panning
             if (event.getButton().name() != "SECONDARY")//if( !event.isSecondaryButtonDown())
                 return;
             System.out.println("scene click");
-            // unselect the current node
-            mapController.handleMouseClick(event);
             // update scene drag context
             sceneDragContext.mouseAnchorX = event.getSceneX();
             sceneDragContext.mouseAnchorY = event.getSceneY();
