@@ -6,11 +6,8 @@ import javafx.application.Application;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.Region;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import models.db.DatabaseManager;
@@ -25,6 +22,7 @@ import models.tts.TTSManager;
 import java.io.*;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Scanner;
 
 public class KioskMain extends Application {
 
