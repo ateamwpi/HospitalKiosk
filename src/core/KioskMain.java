@@ -78,7 +78,7 @@ public class KioskMain extends Application {
         Rectangle2D bounds = screen.getVisualBounds();
 
         controller.getRoot().styleProperty().bind(Bindings.concat("-fx-font-size: ", fontSize.asString(), ";"
-                ,"-fx-base: rgb(255,255,255);"));
+                ,"-fx-base: rgb(135, 138, 150);"));
 
         stage.setX(bounds.getMinX());
         stage.setY(bounds.getMinY());
