@@ -15,63 +15,55 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111"
-            xmlns:fx="http://javafx.com/fxml/1">
-    <SplitPane layoutX="82.0" layoutY="28.0" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0"
-               AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+    <SplitPane layoutX="82.0" layoutY="28.0" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-            <GridPane prefHeight="398.0" prefWidth="478.0" AnchorPane.leftAnchor="5.0"
-                      AnchorPane.rightAnchor="5.0">
+            <GridPane prefHeight="398.0" prefWidth="478.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                 <columnConstraints>
-                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="339.0" minWidth="10.0" prefWidth="22.0"/>
-                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="397.0" minWidth="10.0"
-                                       prefWidth="268.66668701171875"/>
-                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="389.0" minWidth="10.0"
-                                       prefWidth="171.33331298828125"/>
+                    <ColumnConstraints fillWidth="false" hgrow="ALWAYS" maxWidth="53.0" minWidth="100.0" />
+                    <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
+                    <ColumnConstraints fillWidth="false" halignment="RIGHT" hgrow="ALWAYS" minWidth="150.0" />
                 </columnConstraints>
                 <rowConstraints>
-                    <RowConstraints maxHeight="128.0" minHeight="10.0" prefHeight="66.0" vgrow="SOMETIMES"/>
-                    <RowConstraints maxHeight="128.0" minHeight="0.0" prefHeight="40.0" vgrow="SOMETIMES"/>
-                    <RowConstraints maxHeight="344.0" minHeight="10.0" prefHeight="210.0" vgrow="SOMETIMES"/>
-                    <RowConstraints maxHeight="94.0" minHeight="3.0" prefHeight="94.0" vgrow="SOMETIMES"/>
+                    <RowConstraints maxHeight="128.0" minHeight="10.0" prefHeight="63.0" vgrow="SOMETIMES" />
+                    <RowConstraints maxHeight="128.0" minHeight="0.0" prefHeight="39.0" vgrow="SOMETIMES" />
+               <RowConstraints maxHeight="344.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
+                    <RowConstraints maxHeight="344.0" minHeight="10.0" prefHeight="190.0" vgrow="SOMETIMES" />
+                    <RowConstraints maxHeight="94.0" minHeight="3.0" prefHeight="78.0" vgrow="SOMETIMES" />
                 </rowConstraints>
-                <TableView fx:id="locationsTable" prefHeight="303.0" prefWidth="200.0"
-                           GridPane.columnIndex="1" GridPane.rowIndex="2">
+                <TableView fx:id="locationsTable" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                     <columns>
-                        <TableColumn fx:id="nameCol" minWidth="0.0" prefWidth="160.0" text="Name"/>
-                        <TableColumn id="roomCol" fx:id="roomCol" prefWidth="70.6666259765625" text="Room"/>
-                        <TableColumn fx:id="typeCol" prefWidth="75.3333740234375" text="Type"/>
+                        <TableColumn fx:id="nameCol" minWidth="0.0" prefWidth="249.0" text="Name" />
+                        <TableColumn id="roomCol" fx:id="roomCol" prefWidth="72.0" text="Room" />
+                        <TableColumn fx:id="typeCol" prefWidth="107.0" text="Type" />
                     </columns>
                 </TableView>
-                <Button fx:id="goToFinalSel" alignment="CENTER" mnemonicParsing="false"
-                        text="-&gt;" GridPane.columnIndex="2"
-                        GridPane.rowIndex="3"/>
-                <Label fx:id="directions" prefHeight="91.0" prefWidth="275.0" text="Label" wrapText="true"
-                       GridPane.columnIndex="1" GridPane.rowIndex="3">
+                <Button fx:id="goToFinalSel" alignment="CENTER" mnemonicParsing="false" text="-&gt;" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.vgrow="ALWAYS">
+               <GridPane.margin>
+                  <Insets right="20.0" />
+               </GridPane.margin></Button>
+                <Label fx:id="directions" text="Label" wrapText="true" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.vgrow="ALWAYS">
                     <padding>
-                        <Insets left="5.0"/>
+                        <Insets left="5.0" />
                     </padding>
                 </Label>
-                <Label fx:id="title" text="Label" GridPane.columnIndex="1">
+                <Label fx:id="title" text="Label" GridPane.columnIndex="1" GridPane.halignment="CENTER">
                     <font>
-                        <Font name="System Bold" size="21.0"/>
+                        <Font name="SansSerif Bold" size="37.0" />
                     </font>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
                 </Label>
-                <TextField fx:id="searchBox" promptText="Search" GridPane.columnIndex="2"
-                           GridPane.rowIndex="1"/>
-                <Button mnemonicParsing="false" onAction="#clickBack" text="Back"/>
-                <ComboBox fx:id="locationDropdown" prefWidth="150.0" GridPane.columnIndex="1"
-                          GridPane.rowIndex="1"/>
-                <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
-                    <Button fx:id="addEntry" mnemonicParsing="false" onAction="#clickAdd" text="Add"/>
-                    <Button fx:id="modifyEntry" mnemonicParsing="false" onAction="#clickModify"
-                            text="Modify"/>
-                    <Button fx:id="removeEntry" mnemonicParsing="false" onAction="#clickRemove"
-                            text="Remove"/>
+                <TextField fx:id="searchBox" promptText="Search" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <Button mnemonicParsing="false" onAction="#clickBack" text="Back" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                <ComboBox fx:id="locationDropdown" prefHeight="25.0" prefWidth="214.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <VBox GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                    <Button fx:id="addEntry" mnemonicParsing="false" onAction="#clickAdd" text="Add" translateY="10.0" VBox.vgrow="ALWAYS" />
+                    <Button fx:id="modifyEntry" mnemonicParsing="false" onAction="#clickModify" text="Modify" translateY="20.0" VBox.vgrow="ALWAYS" />
+                    <Button fx:id="removeEntry" mnemonicParsing="false" onAction="#clickRemove" text="Remove" translateY="30.0" VBox.vgrow="ALWAYS" />
                 </VBox>
-                <Button fx:id="kiosk" mnemonicParsing="false"
-                        text="Use Kiosk Location" GridPane.columnIndex="2"/>
+                <Button fx:id="kiosk" mnemonicParsing="false" text="Use Kiosk Location" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.valignment="BOTTOM" GridPane.vgrow="ALWAYS" />
             </GridPane>
         </AnchorPane>
     </SplitPane>
