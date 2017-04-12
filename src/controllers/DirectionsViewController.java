@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 import javafx.scene.text.Text;
@@ -31,7 +32,7 @@ public class DirectionsViewController extends AbstractController {
     @FXML
     private AnchorPane mapContainer;
     @FXML
-    private Text directionsText;
+    private TextArea directionsText;
     @FXML
     private ChoiceBox<String> floors;
 
