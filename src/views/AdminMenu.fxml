@@ -25,32 +25,22 @@
          <children>
             <Label text="Admin Main Menu" GridPane.halignment="CENTER">
                <font>
-                  <Font name="SansSerif Bold" size="37.0" />
+                  <Font name="System Bold" size="37.0" />
                </font>
             </Label>
-            <Button fx:id="manageDirectoryBtn" mnemonicParsing="false" onAction="#clickManageDirectory" prefHeight="31.0" prefWidth="179.0" text="Manage Directory" GridPane.halignment="CENTER" GridPane.rowIndex="1">
-               <font>
-                  <Font name="Serif Regular" size="16.0" />
-               </font>
-            </Button>
-            <Button fx:id="manageMapBtn" mnemonicParsing="false" onAction="#clickManageMap" prefHeight="31.0" prefWidth="178.0" text="Manage Map" GridPane.halignment="CENTER" GridPane.rowIndex="2">
-               <font>
-                  <Font name="Serif Regular" size="16.0" />
-               </font></Button>
-            <Button fx:id="kioskButton" mnemonicParsing="false" onAction="#pressedKiosk" text="Manage Kiosk Location" GridPane.halignment="CENTER" GridPane.rowIndex="3">
-               <font>
-                  <Font name="Serif Regular" size="16.0" />
-               </font></Button>
+            <Button fx:id="manageDirectoryBtn" mnemonicParsing="false" onAction="#clickManageDirectory" text="Manage Directory" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS" />
+            <Button fx:id="manageMapBtn" mnemonicParsing="false" onAction="#clickManageMap" text="Manage Map" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS" />
+            <Button fx:id="kioskButton" mnemonicParsing="false" onAction="#pressedKiosk" text="Manage Kiosk Location" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
             <Button fx:id="logoutBtn" mnemonicParsing="false" onAction="#clickLogout" prefHeight="25.0" prefWidth="85.0" text="Logout" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
                <GridPane.margin>
                   <Insets right="20.0" />
                </GridPane.margin>
-               <font>
-                  <Font name="Serif Regular" size="16.0" />
-               </font>
                <opaqueInsets>
                   <Insets right="20.0" />
                </opaqueInsets>
+               <font>
+                  <Font size="16.0" />
+               </font>
             </Button>
          </children>
       </GridPane>

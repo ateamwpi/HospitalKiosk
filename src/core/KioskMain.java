@@ -7,9 +7,11 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Region;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import models.db.DatabaseManager;
 import models.dir.Directory;
@@ -65,7 +67,18 @@ public class KioskMain extends Application {
 
     public static void setScene(IController controller) {
         Scene scene = new Scene(controller.getRoot());
-        fontSize.bind(scene.widthProperty().add(scene.heightProperty()).divide(50));
+        fontSize.bind(scene.widthProperty().add(scene.heightProperty()).divide(100));
+        Screen screen = Screen.getPrimary();
+        Rectangle2D bounds = screen.getVisualBounds();
+
+        controller.getRoot().styleProperty().bind(Bindings.concat("-fx-font-size: ", fontSize.asString(), ";"
+                ,"-fx-base: rgb(255,255,255);"));
+
+        stage.setX(bounds.getMinX());
+        stage.setY(bounds.getMinY());
+        stage.setWidth(bounds.getWidth());
+        stage.setHeight(bounds.getHeight());
+
         stage.setScene(scene);
 
     }

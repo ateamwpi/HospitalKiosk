@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:id="root">
+<AnchorPane fx:id="root" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
@@ -20,25 +20,22 @@
         </columnConstraints>
         <rowConstraints>
           <RowConstraints maxHeight="124.0" minHeight="0.0" prefHeight="88.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="345.66668701171875" minHeight="10.0" prefHeight="59.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="314.0" minHeight="2.33331298828125" prefHeight="151.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="345.66668701171875" minHeight="10.0" prefHeight="85.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="314.0" minHeight="2.33331298828125" prefHeight="123.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="285.0" minHeight="10.0" prefHeight="105.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <TextField fx:id="room" prefHeight="23.0" prefWidth="286.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <TextField fx:id="room" prefHeight="23.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <GridPane.margin>
-                  <Insets />
+                  <Insets left="20.0" right="20.0" />
                </GridPane.margin>
                <padding>
                   <Insets right="10.0" />
                </padding></TextField>
-            <Label text="Room Name:" GridPane.rowIndex="2">
+            <Label text="Room Name:" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
                <padding>
                   <Insets left="20.0" />
-               </padding>
-               <font>
-                  <Font name="Serif Regular" size="19.0" />
-               </font></Label>
+               </padding></Label>
             <Label text="Set Kiosk Location" GridPane.columnIndex="1" GridPane.halignment="CENTER">
                <font>
                   <Font name="SansSerif Bold" size="37.0" />
@@ -46,22 +43,12 @@
                <GridPane.margin>
                   <Insets top="10.0" />
                </GridPane.margin></Label>
-            <Button mnemonicParsing="false" onAction="#clickSubmit" prefHeight="36.0" prefWidth="76.0" text="Submit" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3">
-               <font>
-                  <Font name="Serif Regular" size="16.0" />
-               </font></Button>
-            <Button mnemonicParsing="false" onAction="#clickBack" text="Back">
+            <Button mnemonicParsing="false" onAction="#clickSubmit" text="Submit" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.vgrow="ALWAYS" />
+            <Button mnemonicParsing="false" onAction="#clickBack" text="Back" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
                <GridPane.margin>
                   <Insets left="20.0" />
-               </GridPane.margin>
-               <font>
-                  <Font name="Serif Regular" size="16.0" />
-               </font></Button>
-            <Label prefHeight="38.0" prefWidth="288.0" text="Enter a room name and click 'Submit' to change the location of this kiosk to the given location." wrapText="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
-               <font>
-                  <Font name="Serif Regular" size="14.0" />
-               </font>
-            </Label>
+               </GridPane.margin></Button>
+            <Label text="Enter a room name and click 'Submit' to change the location of this kiosk to the given location." wrapText="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS" />
          </children>
       </GridPane>
    </children>
