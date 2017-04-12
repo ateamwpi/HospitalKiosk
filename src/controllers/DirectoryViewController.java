@@ -70,7 +70,7 @@ public class DirectoryViewController extends AbstractDirectoryViewController {
         modifyEntry.setVisible(false);
         removeEntry.setVisible(false);
         title.setText("Select Starting Location");
-        directions.setText("Select a starting location from the table above. Once a location is selected, click the '->' button " +
+        directions.setText("Select a starting location from the table above.\nOnce a location is selected, click the '->' button\n" +
                 "to next choose a final destination.");
         //disable the -> button so user cannot move on until they have selected an entry
         goToFinalSel.setDisable(true);
@@ -89,8 +89,8 @@ public class DirectoryViewController extends AbstractDirectoryViewController {
     private void getDirections() {
         if (startNode == null) {
             title.setText("Select Ending Location");
-            directions.setText("Select an ending location from the table above. Once a location is selected, click the 'Get Path' button " +
-                    "to view a path connecting the  selected starting and ending locations.");
+            directions.setText("Select an ending location from the table above. Once a location\nis selected, click the 'Get Path' button " +
+                    "to view a path connecting\nthe selected starting and ending locations.");
             goToFinalSel.setText("Get Path");
             startNode = selectedLocation.getNode();
             updateNearestButton();
