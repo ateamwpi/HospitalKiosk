@@ -57,7 +57,7 @@ public class NodeGestures {
             if (event.getButton().name() != "PRIMARY")// !event.isPrimaryButtonDown())
                 return;
             // get the map zoom scale
-            double scale = canvas.getScale();
+            double scale = adminMapController.getOverlay().getScaleX();//Should be same as scaleY
             // get the node being dragged
             DraggableNode node = (DraggableNode) event.getSource();
             // drag the node only if selected
