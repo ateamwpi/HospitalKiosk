@@ -9,6 +9,7 @@ import models.path.algo.AStar;
 import models.path.algo.IPathfindingAlgorithm;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.ArrayList;
 
@@ -73,19 +74,20 @@ public class PathfindingManager {
         return null;
     }
 
-    public Location getNearest(LocationType loc, Node start){
+    public HashMap<Location, Double> getNearest(LocationType loc, Node start){
+        HashMap<Location, Double> nearests = new HashMap<Location, Double>();
         Collection<Location> locations = KioskMain.getDir().getDirectory(loc).getLocations().values();
-        Location currentShortest = null;
-
 
         for(Location l : locations){
             if(l.getNode().getFloor() == start.getFloor()){
-                if(currentShortest == null || distanceFormula(l.getNode(), start) < distanceFormula(currentShortest.getNode(), start)) {
-                    currentShortest = l;
-                }
+                nearests.put(l, distanceFormula(l.getNode(), start));
+//                if(currentShortest == null || distanceFormula(l.getNode(), start) < distanceFormula(currentShortest.getNode(), start)) {
+//                    currentShortest = l;
+//                }
             }
         }
-        return currentShortest;
+        System.out.println(nearests);
+        return nearests;
     }
 
     private double distanceFormula(Node end, Node start){
@@ -115,11 +117,21 @@ public class PathfindingManager {
     public Path findPath(Node start, Node end) {
 
         if(start.getFloor() != end.getFloor()){
-            Node elevator = getNearest(LocationType.Elevator, start).getNode();
-            System.out.println("start=" + start + " elevator=" + elevator);
-            Path startFloor = this.astar.findPath(start, elevator);
-            System.out.println(findMatching(elevator, end.getFloor(), LocationType.Elevator));
-            Path endFloor = this.astar.findPath(findMatching(elevator, end.getFloor(), LocationType.Elevator), end);
+            //Node elevator = getNearest(LocationType.Elevator, start).getNode();
+            //System.out.println("start=" + start + " elevator=" + elevator);
+            HashMap<Location, Double> nearests = getNearest(LocationType.Elevator, start);
+            Node curr;
+            Node matching;
+            do {
+                Location min = Collections.min(nearests.entrySet(), (entry1, entry2) -> (int)entry1.getValue().doubleValue() - (int)entry2.getValue().doubleValue()).getKey();
+                curr = min.getNode();
+                matching = findMatching(curr, end.getFloor(), LocationType.Elevator);
+                nearests.remove(min);
+            } while(matching == null);
+            System.out.println("curr=" + curr + " matching=" + matching);
+            Path startFloor = this.astar.findPath(start, curr);
+            //System.out.println(findMatching(elevator, end.getFloor(), LocationType.Elevator));
+            Path endFloor = this.astar.findPath(matching, end);
             System.out.println("startFloor: " + startFloor);
             System.out.println("endFloor: " + endFloor);
             return startFloor.addSteps(endFloor);

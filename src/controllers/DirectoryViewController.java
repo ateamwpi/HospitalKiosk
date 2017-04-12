@@ -12,6 +12,8 @@ import models.dir.LocationType;
 import models.path.Node;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
 
 /**
  * Created by mattm on 3/29/2017.
@@ -70,7 +72,7 @@ public class DirectoryViewController extends AbstractDirectoryViewController {
         modifyEntry.setVisible(false);
         removeEntry.setVisible(false);
         title.setText("Select Starting Location");
-        directions.setText("Select a starting location from the table above. Once a location is selected, click the '->' button " +
+        directions.setText("Select a starting location from the table above.\nOnce a location is selected, click the '->' button\n" +
                 "to next choose a final destination.");
         //disable the -> button so user cannot move on until they have selected an entry
         goToFinalSel.setDisable(true);
@@ -89,8 +91,8 @@ public class DirectoryViewController extends AbstractDirectoryViewController {
     private void getDirections() {
         if (startNode == null) {
             title.setText("Select Ending Location");
-            directions.setText("Select an ending location from the table above. Once a location is selected, click the 'Get Path' button " +
-                    "to view a path connecting the  selected starting and ending locations.");
+            directions.setText("Select an ending location from the table above. Once a location\nis selected, click the 'Get Path' button " +
+                    "to view a path connecting\nthe selected starting and ending locations.");
             goToFinalSel.setText("Get Path");
             startNode = selectedLocation.getNode();
             updateNearestButton();
@@ -129,7 +131,9 @@ public class DirectoryViewController extends AbstractDirectoryViewController {
     @FXML
     private void pressedFindNearest(ActionEvent event) {
         LocationType lt = LocationType.getType(locationDropdown.getSelectionModel().getSelectedItem());
-        selectedLocation = KioskMain.getPath().getNearest(lt, startNode);
+        HashMap<Location, Double> near = KioskMain.getPath().getNearest(lt, startNode);
+        Location min = Collections.min(near.entrySet(), (entry1, entry2) -> (int)entry1.getValue().doubleValue() - (int)entry2.getValue().doubleValue()).getKey();
+        selectedLocation = min;
         getDirections();
     }
 

@@ -44,4 +44,8 @@ public class AdminMenuController extends AbstractController {
     public String getURL() {
         return "views/AdminMenu.fxml";
     }
+
+
+
+
 }

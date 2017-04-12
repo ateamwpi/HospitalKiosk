@@ -3,7 +3,12 @@ package core;
 import controllers.IController;
 import controllers.MainMenuController;
 import javafx.application.Application;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import models.db.DatabaseManager;
 import models.dir.Directory;
@@ -17,6 +22,7 @@ import models.ui.UIManager;
 
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Scanner;
 
 public class KioskMain extends Application {
 
@@ -25,6 +31,8 @@ public class KioskMain extends Application {
     private static DatabaseManager theDBManager;
     private static TTSManager theTTSManager;
     private static UIManager theUIManager;
+    private static DoubleProperty fontSize = new SimpleDoubleProperty(10);
+    private static Stage stage;
 
     private static final boolean DEBUG = true;
 
@@ -52,8 +60,23 @@ public class KioskMain extends Application {
 
     public static DatabaseManager getDB() { return theDBManager; }
 
-    public static TTSManager getTTS() {
-        return theTTSManager;
+    public static TTSManager getTTS() { return theTTSManager; }
+
+    public static void setScene(IController controller) {
+        Scene scene = new Scene(controller.getRoot());
+        fontSize.bind(scene.widthProperty().add(scene.heightProperty()).divide(100));
+        Screen screen = Screen.getPrimary();
+        Rectangle2D bounds = screen.getVisualBounds();
+
+        controller.getRoot().styleProperty().bind(Bindings.concat("-fx-font-size: ", fontSize.asString(), ";"
+                ,"-fx-base: rgb(135, 138, 150);"));
+
+        stage.setX(bounds.getMinX());
+        stage.setY(bounds.getMinY());
+        stage.setWidth(bounds.getWidth());
+        stage.setHeight(bounds.getHeight());
+
+        stage.setScene(scene);
     }
 
     public static UIManager getUI() { return theUIManager; }
