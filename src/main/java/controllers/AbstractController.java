@@ -64,7 +64,7 @@ public abstract class AbstractController implements IController {
     }
 
     private void bindAllHandlers() {
-        getHandlers().forEach((q, h) -> bindNodeHandlers(q, h));
+        getHandlers().forEach(this::bindNodeHandlers);
     }
 
     private void bindNodeHandlers(String query, Map<String, EventHandler<Event>> handlers) {
@@ -81,6 +81,7 @@ public abstract class AbstractController implements IController {
                 return handler;
             }
         };
+        //noinspection unchecked
         eventProperty.bind(handlerProperty);
     }
 

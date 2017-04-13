@@ -8,5 +8,5 @@ import models.path.Path;
  */
 public interface IPathfindingAlgorithm {
 
-    public Path findPath(Node start, Node goal);
+    Path findPath(Node start, Node goal);
 }

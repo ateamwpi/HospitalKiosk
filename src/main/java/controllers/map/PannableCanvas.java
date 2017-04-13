@@ -31,7 +31,7 @@ public class PannableCanvas extends Pane {
 
     /**
      * Set x/y scale
-     * @param scale
+     * @param scale Scale
      */
     public void setScale( double scale) {
         myScale.set(scale);
@@ -39,8 +39,8 @@ public class PannableCanvas extends Pane {
 
     /**
      * Set x/y pivot points
-     * @param x
-     * @param y
+     * @param x X
+     * @param y Y
      */
     public void setPivot( double x, double y) {
         setTranslateX(getTranslateX()-x);

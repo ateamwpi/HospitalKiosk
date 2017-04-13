@@ -53,11 +53,11 @@ public class DraggableNode extends Circle {
         previewYProperty.set(y);
     }
 
-    public void previewRoomName(String roomName) {
+    private void previewRoomName(String roomName) {
         previewRoomNameProperty.set(roomName);
     }
 
-    public void previewConnections(Collection<Node> nodes) {
+    private void previewConnections(Collection<Node> nodes) {
         // redraw connections
 
         // Add anything new
@@ -67,7 +67,7 @@ public class DraggableNode extends Circle {
             }
         }
         // Remove anything old
-        ArrayList<Node> toRemove = new ArrayList<Node>();
+        ArrayList<Node> toRemove = new ArrayList<>();
         for (Node n : previewConnections) {
             if(!nodes.contains(n)) {
                 toRemove.add(n);
@@ -109,7 +109,7 @@ public class DraggableNode extends Circle {
         return previewYProperty.get();
     }
 
-    public final String getPreviewRoomName() {
+    private String getPreviewRoomName() {
         return previewRoomNameProperty.get();
     }
 
@@ -125,7 +125,7 @@ public class DraggableNode extends Circle {
         return previewRoomNameProperty;
     }
 
-    public void cancelPreview() {
+    private void cancelPreview() {
         System.out.println("cancel");
         previewConnections(node.getConnections());
         setDefaultPreview();

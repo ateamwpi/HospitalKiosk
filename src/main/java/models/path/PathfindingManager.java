@@ -8,10 +8,7 @@ import models.dir.LocationType;
 import models.path.algo.AStar;
 import models.path.algo.IPathfindingAlgorithm;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.ArrayList;
+import java.util.*;
 
 /**
  * Created by mattm on 3/29/2017.
@@ -24,7 +21,7 @@ public class PathfindingManager {
 
     public PathfindingManager(HashMap<Integer, Node> allNodes) {
         this.graph = allNodes;
-        this.ids = new HashMap<String, Integer>();
+        this.ids = new HashMap<>();
         for (Node n : this.graph.values()) {
             if(n.getRoomName() != null && !n.getRoomName().equals("NONE")) this.ids.put(n.getRoomName(), n.getID());
         }
@@ -75,7 +72,7 @@ public class PathfindingManager {
     }
 
     public HashMap<Location, Double> getNearest(LocationType loc, Node start){
-        HashMap<Location, Double> nearests = new HashMap<Location, Double>();
+        HashMap<Location, Double> nearests = new HashMap<>();
         Collection<Location> locations = KioskMain.getDir().getDirectory(loc).getLocations().values();
 
         for(Location l : locations){
@@ -101,9 +98,7 @@ public class PathfindingManager {
         double distX = endX - startX;
         double distY = endY - startY;
 
-        double distance = Math.sqrt(Math.pow(distX, 2) + Math.pow(distY, 2));
-
-        return distance;
+        return Math.sqrt(Math.pow(distX, 2) + Math.pow(distY, 2));
     }
 
     public Node getRoom(String roomName) throws RoomNotFoundException {
@@ -123,7 +118,7 @@ public class PathfindingManager {
             Node curr;
             Node matching;
             do {
-                Location min = Collections.min(nearests.entrySet(), (entry1, entry2) -> (int)entry1.getValue().doubleValue() - (int)entry2.getValue().doubleValue()).getKey();
+                Location min = Collections.min(nearests.entrySet(), Comparator.comparingInt(entry -> (int) entry.getValue().doubleValue())).getKey();
                 curr = min.getNode();
                 matching = findMatching(curr, end.getFloor(), LocationType.Elevator);
                 nearests.remove(min);

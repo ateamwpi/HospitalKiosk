@@ -33,7 +33,7 @@ public class MapViewController extends AbstractController {
 
     @Override
     public void initData(Object... data) {
-        floorList = new ArrayList<String>(Arrays.asList("1st Floor", "2nd Floor","3rd Floor", "4th Floor", "5th Floor", "6th Floor", "7th Floor"));
+        floorList = new ArrayList<>(Arrays.asList("1st Floor", "2nd Floor", "3rd Floor", "4th Floor", "5th Floor", "6th Floor", "7th Floor"));
     }
 
     @FXML
@@ -46,14 +46,13 @@ public class MapViewController extends AbstractController {
 
         floors.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
             if (floors.getSelectionModel().getSelectedItem() != null) {
-                String fl = newValue;
-                setFloor(fl);
+                setFloor(newValue);
             }
         });
 
     }
 
-    public void setFloor(String fl){
+    private void setFloor(String fl){
         int floor = floorList.indexOf(fl) + 1;
         mapController.setFloor(floor);
         // add the map to the container

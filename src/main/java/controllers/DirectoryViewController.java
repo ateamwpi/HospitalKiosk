@@ -132,8 +132,7 @@ public class DirectoryViewController extends AbstractDirectoryViewController {
     private void pressedFindNearest(ActionEvent event) {
         LocationType lt = LocationType.getType(locationDropdown.getSelectionModel().getSelectedItem());
         HashMap<Location, Double> near = KioskMain.getPath().getNearest(lt, startNode);
-        Location min = Collections.min(near.entrySet(), (entry1, entry2) -> (int)entry1.getValue().doubleValue() - (int)entry2.getValue().doubleValue()).getKey();
-        selectedLocation = min;
+        selectedLocation = Collections.min(near.entrySet(), (entry1, entry2) -> (int)entry1.getValue().doubleValue() - (int)entry2.getValue().doubleValue()).getKey();
         getDirections();
     }
 

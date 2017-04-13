@@ -5,6 +5,8 @@ import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 
+import java.util.Objects;
+
 /**
  * Listeners for making the scene's canvas draggable and zoomable
  */
@@ -15,8 +17,8 @@ public class SceneGestures {
 
     private DragContext sceneDragContext = new DragContext();
 
-    PannableCanvas canvas;
-    IClickableController mapController;
+    private PannableCanvas canvas;
+    private IClickableController mapController;
 
     public SceneGestures(PannableCanvas canvas, IClickableController mapController) {
         this.canvas = canvas;
@@ -46,7 +48,7 @@ public class SceneGestures {
     private EventHandler<MouseEvent> onMousePressedEventHandler = new EventHandler<MouseEvent>() {
         public void handle(MouseEvent event) {
             // right mouse button => panning
-            if (event.getButton().name() != "SECONDARY")//if( !event.isSecondaryButtonDown())
+            if (!Objects.equals(event.getButton().name(), "SECONDARY"))//if( !event.isSecondaryButtonDown())
                 return;
             System.out.println("scene press");
             // update scene drag context
@@ -65,7 +67,7 @@ public class SceneGestures {
             if(event.getButton().name().equals("PRIMARY"))
                 mapController.handleMouseClick(event);// unselect the current node
             // right mouse button => panning
-            if (event.getButton().name() != "SECONDARY")//if( !event.isSecondaryButtonDown())
+            if (!Objects.equals(event.getButton().name(), "SECONDARY"))//if( !event.isSecondaryButtonDown())
                 return;
             System.out.println("scene click");
             // update scene drag context
@@ -77,14 +79,13 @@ public class SceneGestures {
 
     };
 
-    private EventHandler<MouseEvent> onMouseDraggedEventHandler = new EventHandler<MouseEvent>() {
-        public void handle(MouseEvent event) {
-            // right mouse button => panning
-            if(!event.isSecondaryButtonDown())
-                return;
-            // update the canvas
-            //canvas.setTranslateX(sceneDragContext.translateAnchorX + event.getSceneX() - sceneDragContext.mouseAnchorX);
-            //canvas.setTranslateY(sceneDragContext.translateAnchorY + event.getSceneY() - sceneDragContext.mouseAnchorY);
+    private EventHandler<MouseEvent> onMouseDraggedEventHandler = event -> {
+        // right mouse button => panning
+        if(!event.isSecondaryButtonDown())
+            return;
+        // update the canvas
+        //canvas.setTranslateX(sceneDragContext.translateAnchorX + event.getSceneX() - sceneDragContext.mouseAnchorX);
+        //canvas.setTranslateY(sceneDragContext.translateAnchorY + event.getSceneY() - sceneDragContext.mouseAnchorY);
 
 
 //            mapController.getOverlay().setTranslateX(sceneDragContext.translateAnchorX + event.getSceneX() - sceneDragContext.mouseAnchorX);
@@ -102,9 +103,8 @@ public class SceneGestures {
 //            if(mapController.getOverlay().getTranslateY() > canvas.getHeight()/2 * mapController.getOverlay().getScaleY())
 //                mapController.getOverlay().setTranslateY(canvas.getHeight()/2 * mapController.getOverlay().getScaleY());
 
-            // cancel event bubbling
-            event.consume();
-        }
+        // cancel event bubbling
+        event.consume();
     };
 
     /**
@@ -149,7 +149,7 @@ public class SceneGestures {
     };
 
 
-    public static double clamp( double value, double min, double max) {
+    private static double clamp(double value, double min, double max) {
 
         if( Double.compare(value, min) < 0)
             return min;

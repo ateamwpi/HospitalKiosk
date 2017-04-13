@@ -78,7 +78,7 @@ public class AdminMapController extends AbstractController implements IClickable
         drawAllNodes();
     }
 
-    public void removeNodesAndLines() {
+    private void removeNodesAndLines() {
         for(DraggableNode n : draggableNodes.values()) {
             mapController.removeOverlay(n);
         }
@@ -132,6 +132,7 @@ public class AdminMapController extends AbstractController implements IClickable
         }
         if (warnDeleteNode()) {
             deleteSelectedNode();
+            return true;
         }
         return false;
     }
@@ -148,7 +149,7 @@ public class AdminMapController extends AbstractController implements IClickable
         return result.get() == delete;
     }
 
-    public void deleteSelectedNode() {
+    private void deleteSelectedNode() {
         // try to delete the node
         try {
             System.out.println("delete node");

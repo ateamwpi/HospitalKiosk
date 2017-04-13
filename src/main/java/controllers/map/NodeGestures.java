@@ -4,6 +4,8 @@ import controllers.admin.AdminMapController;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
+import java.util.Objects;
+
 /**
  * Listeners for making the nodes draggable via left mouse button. Considers if parent is zoomed.
  */
@@ -30,7 +32,7 @@ public class NodeGestures {
     private EventHandler<MouseEvent> onMouseClickedEventHandler = new EventHandler<MouseEvent>() {
         public void handle(MouseEvent event) {
             // right mouse button => panning
-            if (event.getButton().name() != "PRIMARY") {// !event.isPrimaryButtonDown())
+            if (!Objects.equals(event.getButton().name(), "PRIMARY")) {// !event.isPrimaryButtonDown())
                 return;
             }
             System.out.println("node clicked");
@@ -54,7 +56,7 @@ public class NodeGestures {
     private EventHandler<MouseEvent> onMouseDraggedEventHandler = new EventHandler<MouseEvent>() {
         public void handle(MouseEvent event) {
             // right mouse button => panning
-            if (event.getButton().name() != "PRIMARY")// !event.isPrimaryButtonDown())
+            if (!Objects.equals(event.getButton().name(), "PRIMARY"))// !event.isPrimaryButtonDown())
                 return;
             // get the map zoom scale
             double scale = adminMapController.getOverlay().getScaleX();//Should be same as scaleY

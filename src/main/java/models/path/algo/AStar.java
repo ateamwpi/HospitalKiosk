@@ -17,17 +17,17 @@ public class AStar implements IPathfindingAlgorithm {
         HashMap<Node, Double> gScore;
         HashMap<Node, Double> fScore;
 
-        closedSet = new LinkedList<Node>();
-        openSet = new LinkedList<Node>();
+        closedSet = new LinkedList<>();
+        openSet = new LinkedList<>();
         openSet.add(start);
 
-        fScore = new HashMap<Node, Double>();
+        fScore = new HashMap<>();
         fScore.put(start, this.heuristicCost(start, goal));
 
-        gScore = new HashMap<Node, Double>();
+        gScore = new HashMap<>();
         gScore.put(start, 0.0);
 
-        cameFrom = new HashMap<Node, Node>();
+        cameFrom = new HashMap<>();
 
 
         while(!openSet.isEmpty()){

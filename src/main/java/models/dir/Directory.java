@@ -13,7 +13,7 @@ public class Directory {
 
     public Directory(String name) {
         this.name = name;
-        this.entries = new HashMap<Integer, Location>();
+        this.entries = new HashMap<>();
     }
 
     public HashMap<Integer, Location> getLocations() {
@@ -27,7 +27,7 @@ public class Directory {
         entries.put(l.getID(), l);
     }
 
-    public LocationType getType() {
+    private LocationType getType() {
         return LocationType.getType(this.name);
     }
 
@@ -44,7 +44,7 @@ public class Directory {
         return entries.get(id);
     }
 
-    public void removeLocation(Location l) {
+    void removeLocation(Location l) {
         System.out.println("removing location " + l);
         l.getNode().removeLocation(l);
         entries.remove(l.getID());
@@ -52,10 +52,10 @@ public class Directory {
     }
 
     public String toString() {
-        String str = name + " Directory\n";
+        StringBuilder str = new StringBuilder(name + " Directory\n");
         for (Location l : entries.values()) {
-            str += l.toString() + "\n";
+            str.append(l.toString()).append("\n");
         }
-        return str;
+        return str.toString();
     }
 }

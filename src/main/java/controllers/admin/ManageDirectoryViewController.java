@@ -80,19 +80,19 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
     }
 
     @FXML
-    private void clickModify(ActionEvent event) throws IOException {
+    private void clickModify(ActionEvent event) {
         if (selectedLocation != null) {
             KioskMain.getUI().setScene(new AdminModifyLocationController(selectedLocation));
         }
     }
 
     @FXML
-    private void clickAdd(ActionEvent event) throws IOException {
+    private void clickAdd(ActionEvent event) {
         KioskMain.getUI().setScene(new AdminAddLocationController());
     }
 
     @FXML
-    private void clickRemove(ActionEvent event)throws IOException {
+    private void clickRemove(ActionEvent event) {
         if (selectedLocation != null) {
             KioskMain.getDir().removeLocation(selectedLocation);
             KioskMain.getUI().setScene(new ManageDirectoryViewController());

@@ -41,13 +41,13 @@ public class AdminAddLocationController extends AbstractController {
     }
 
     @FXML
-    private void clickBack(ActionEvent event) throws IOException {
+    private void clickBack(ActionEvent event) {
         //back button goes to Admin menu
         KioskMain.getUI().setScene(new ManageDirectoryViewController());
     }
 
     @FXML
-    private void clickSubmit(ActionEvent event) throws IOException {
+    private void clickSubmit(ActionEvent event) {
         try {
             newLocation();
         } catch(RoomNotFoundException e) {
