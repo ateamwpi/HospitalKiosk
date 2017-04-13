@@ -25,7 +25,7 @@ public class UIManager {
     }
 
     public void setScene(IController controller) {
-        Scene scene = new Scene(controller.getRoot());
+        scene = new Scene(controller.getRoot());
         fontSize.bind(scene.widthProperty().add(scene.heightProperty()).divide(100));
         Screen screen = Screen.getPrimary();
         Rectangle2D bounds = screen.getVisualBounds();
