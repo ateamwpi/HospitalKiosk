@@ -1,10 +1,7 @@
 package models.path;
 
 import core.KioskMain;
-import core.exception.NearestNotFoundException;
-import core.exception.NodeInUseException;
-import core.exception.PathNotFoundException;
-import core.exception.RoomNotFoundException;
+import core.exception.*;
 import models.dir.Location;
 import models.dir.LocationType;
 import models.path.algo.AStar;
@@ -13,6 +10,7 @@ import models.path.algo.IPathfindingAlgorithm;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.NoSuchElementException;
 
 /**
  * Created by mattm on 3/29/2017.
@@ -118,7 +116,7 @@ public class PathfindingManager {
     }
 
 
-    public Path findPath(Node start, Node end) throws PathNotFoundException, NearestNotFoundException {
+    public Path findPath(Node start, Node end) throws PathNotFoundException, NearestNotFoundException, FloorNotReachableException {
 
         if(start.getFloor() != end.getFloor()){
             //Node elevator = getNearest(LocationType.Elevator, start).getNode();
@@ -126,8 +124,14 @@ public class PathfindingManager {
             HashMap<Location, Double> nearests = getNearest(LocationType.Elevator, start);
             Node curr;
             Node matching;
+            Location min;
             do {
-                Location min = Collections.min(nearests.entrySet(), (entry1, entry2) -> (int)entry1.getValue().doubleValue() - (int)entry2.getValue().doubleValue()).getKey();
+                try {
+                    min = Collections.min(nearests.entrySet(), (entry1, entry2) -> (int)entry1.getValue().doubleValue() - (int)entry2.getValue().doubleValue()).getKey();
+                }
+                catch (NoSuchElementException e) {
+                    throw new FloorNotReachableException(start, end.getFloor());
+                }
                 curr = min.getNode();
                 matching = findMatching(curr, end.getFloor(), LocationType.Elevator);
                 nearests.remove(min);

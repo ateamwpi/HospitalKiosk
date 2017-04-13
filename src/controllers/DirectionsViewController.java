@@ -2,6 +2,7 @@ package controllers;
 
 import controllers.map.MapController;
 import core.KioskMain;
+import core.exception.FloorNotReachableException;
 import core.exception.NearestNotFoundException;
 import core.exception.PathNotFoundException;
 import javafx.event.ActionEvent;
@@ -61,6 +62,11 @@ public class DirectionsViewController extends AbstractController {
         catch (NearestNotFoundException e) {
             // TODO catch and tell user
             // this should only happen if there is no elevator on the current floor
+            return;
+        }
+        catch (FloorNotReachableException e) {
+            // TODO catch and tell user
+            // this should only happen if the admin messes with the elvators
             return;
         }
         // draw the path on the map
