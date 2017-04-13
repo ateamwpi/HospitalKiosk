@@ -5,12 +5,14 @@ import core.KioskMain;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.print.PrinterJob;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import models.path.Node;
 import models.path.Path;
@@ -75,6 +77,20 @@ public class DirectionsViewController extends AbstractController {
     @FXML
     private void clickSpeak(ActionEvent event) {
         KioskMain.getTTS().speak(directionsText.getText());
+    }
+
+    @FXML
+    private void clickPrint(ActionEvent event) {
+        Text text = new Text();
+        text.setFont(new Font(20));
+        text.setText(directionsText.getText());
+        PrinterJob job = PrinterJob.createPrinterJob();
+        if (job != null && job.showPrintDialog(null)) {
+            boolean success = job.printPage(text);
+            if (success) {
+                job.endJob();
+            }
+        }
     }
 
     @FXML
