@@ -31,8 +31,6 @@ public class KioskMain extends Application {
     private static DatabaseManager theDBManager;
     private static TTSManager theTTSManager;
     private static UIManager theUIManager;
-    private static DoubleProperty fontSize = new SimpleDoubleProperty(10);
-    private static Stage stage;
 
     private static final boolean DEBUG = true;
 
@@ -61,23 +59,6 @@ public class KioskMain extends Application {
     public static DatabaseManager getDB() { return theDBManager; }
 
     public static TTSManager getTTS() { return theTTSManager; }
-
-    public static void setScene(IController controller) {
-        Scene scene = new Scene(controller.getRoot());
-        fontSize.bind(scene.widthProperty().add(scene.heightProperty()).divide(100));
-        Screen screen = Screen.getPrimary();
-        Rectangle2D bounds = screen.getVisualBounds();
-
-        controller.getRoot().styleProperty().bind(Bindings.concat("-fx-font-size: ", fontSize.asString(), ";"
-                ,"-fx-base: rgb(135, 138, 150);"));
-
-        stage.setX(bounds.getMinX());
-        stage.setY(bounds.getMinY());
-        stage.setWidth(bounds.getWidth());
-        stage.setHeight(bounds.getHeight());
-
-        stage.setScene(scene);
-    }
 
     public static UIManager getUI() { return theUIManager; }
 
