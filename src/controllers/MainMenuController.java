@@ -54,17 +54,17 @@ public class MainMenuController extends AbstractController {
 
     @FXML
     private void clickViewMap(ActionEvent event) {
-        KioskMain.setScene(new MapViewController());
+        KioskMain.getUI().setScene(new MapViewController());
     }
 
     @FXML
     private void clickViewDirectory(ActionEvent event) {
-        KioskMain.setScene(new DirectoryViewController());
+        KioskMain.getUI().setScene(new DirectoryViewController());
     }
 
     @FXML
     private void clickAdmin(ActionEvent event) {
-        KioskMain.setScene(new AdminLoginController());
+        KioskMain.getUI().setScene(new AdminLoginController());
     }
 
 }

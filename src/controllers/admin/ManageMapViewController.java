@@ -194,7 +194,7 @@ public class ManageMapViewController extends AbstractController {
     @FXML
     private void clickBack(ActionEvent event) {
         if (adminMapController.attemptUnselectNode()) {
-            KioskMain.setScene(new AdminMenuController());
+            KioskMain.getUI().setScene(new AdminMenuController());
         }
     }
 
@@ -302,7 +302,7 @@ public class ManageMapViewController extends AbstractController {
         int floor = adminMapController.getMapController().getFloor();
         ManageMapViewController con = new ManageMapViewController();
         con.floors.getSelectionModel().select(floor - 1);
-        KioskMain.setScene(con);
+        KioskMain.getUI().setScene(con);
     }
 
 }
