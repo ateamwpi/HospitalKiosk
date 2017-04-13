@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextArea;
@@ -43,49 +44,60 @@ public class DirectionsViewController extends AbstractController {
         super(startNode, endNode);
     }
 
+    private void showError(String title, String body) {
+        Alert a = new Alert(Alert.AlertType.ERROR);
+        a.setHeaderText(title);
+        a.setTitle("Try Again!");
+        a.setContentText(body);
+        a.showAndWait();
+    }
+
     @FXML
     private void initialize() {
         // load the map controller
         MapController mapController = new MapController();
         // add the map to the container
         mapContainer.getChildren().add(mapController.getRoot());
-        // find the shortest path
         Path path;
         try {
+            // find the shortest path
             path = KioskMain.getPath().findPath(startNode, endNode);
+
+            // draw the path on the map
+            mapController.setFloor(startNode.getFloor());
+            mapController.drawPath(path);
+            floors.getItems().addAll(path.getFloorsSpanning());
+            floors.getSelectionModel().selectFirst();
+            if(path.getFloorsSpanning().size() == 1) floors.setDisable(true);
+            floors.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
+                if (floors.getSelectionModel().getSelectedItem() != null) {
+                    String fl = floors.getSelectionModel().getSelectedItem();
+                    mapController.clearOverlay();
+                    mapController.setFloor(Integer.parseInt(fl.substring(0,1)));
+                    mapController.drawPath(path);
+                }
+            });
+
+            // show the text directions
+            directionsText.setText("Directions:\n" + path.textPath());
         }
         catch (PathNotFoundException e) {
-            // TODO catch and tell user
-            e.printStackTrace();
-            return;
+            // Path not found
+            String body = "There is no known way to get from " + startNode.getRoomName() + " to " + endNode.getRoomName() + "!\nThis is most likely caused by an issue with the database. Please contact a hospital administrator to fix this problem!";
+            showError("Path Not Found!", body);
+            directionsText.setText(body);
+            floors.getItems().add(Path.strForNum(startNode.getFloor()) + " Floor");
+            floors.getSelectionModel().selectFirst();
+            mapController.drawNode(startNode);
         }
         catch (NearestNotFoundException e) {
             // TODO catch and tell user
             // this should only happen if there is no elevator on the current floor
-            return;
         }
         catch (FloorNotReachableException e) {
             // TODO catch and tell user
             // this should only happen if the admin messes with the elvators
-            return;
         }
-        // draw the path on the map
-        mapController.setFloor(startNode.getFloor());
-        mapController.drawPath(path);
-        floors.getItems().addAll(path.getFloorsSpanning());
-        floors.getSelectionModel().selectFirst();
-        if(path.getFloorsSpanning().size() == 1) floors.setDisable(true);
-        floors.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
-            if (floors.getSelectionModel().getSelectedItem() != null) {
-                String fl = floors.getSelectionModel().getSelectedItem();
-                mapController.clearOverlay();
-                mapController.setFloor(Integer.parseInt(fl.substring(0,1)));
-                mapController.drawPath(path);
-            }
-        });
-
-        // show the text directions
-        directionsText.setText("Directions:\n" + path.textPath());
     }
 
     @FXML

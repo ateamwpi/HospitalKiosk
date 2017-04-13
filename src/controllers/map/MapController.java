@@ -143,7 +143,7 @@ public class MapController extends AbstractController implements IClickableContr
         addOverlay(0, line);
     }
 
-    private void drawNode(Node node) {
+    public void drawNode(Node node) {
         Circle circle = new Circle(node.getX(), node.getY(), 5);
         addOverlay(circle);
     }

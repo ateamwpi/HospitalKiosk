@@ -107,7 +107,7 @@ public class Path {
         return str;
     }
 
-    private String strForNum(int i) {
+    public static String strForNum(int i) {
         // Assumes there will never be more than 20 turns options.
         switch(i) {
             case 1: return "1st";
