@@ -1,7 +1,7 @@
 package controllers.map;
 
 import controllers.admin.AdminMapController;
-import core.WrongFloorException;
+import core.exception.WrongFloorException;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;

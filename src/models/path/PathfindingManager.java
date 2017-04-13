@@ -1,8 +1,8 @@
 package models.path;
 
 import core.KioskMain;
-import core.NodeInUseException;
-import core.RoomNotFoundException;
+import core.exception.NodeInUseException;
+import core.exception.RoomNotFoundException;
 import models.dir.Location;
 import models.dir.LocationType;
 import models.path.algo.AStar;
@@ -11,7 +11,6 @@ import models.path.algo.IPathfindingAlgorithm;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.ArrayList;
 
 /**
  * Created by mattm on 3/29/2017.

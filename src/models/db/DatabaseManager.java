@@ -1,15 +1,13 @@
 package models.db;
 
 import core.KioskMain;
-import core.WrongFloorException;
+import core.exception.WrongFloorException;
 import models.dir.Directory;
 import models.dir.Location;
 import models.dir.LocationType;
 import models.path.Node;
 
-import javax.swing.plaf.nimbus.State;
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**

@@ -1,17 +1,13 @@
 package controllers.admin;
 
 import controllers.AbstractController;
-import controllers.DirectoryViewController;
 import core.KioskMain;
-import core.RoomNotFoundException;
+import core.exception.RoomNotFoundException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
 import javafx.scene.control.*;
 import models.dir.Location;
 import models.dir.LocationType;
-
-import java.sql.*;
 
 import java.io.IOException;
 
