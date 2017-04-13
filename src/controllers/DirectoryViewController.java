@@ -4,6 +4,7 @@ import controllers.admin.AdminMenuController;
 import controllers.admin.AdminModifyLocationController;
 import controllers.admin.ManageDirectoryViewController;
 import core.KioskMain;
+import core.exception.NearestNotFoundException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -131,10 +132,17 @@ public class DirectoryViewController extends AbstractDirectoryViewController {
     @FXML
     private void pressedFindNearest(ActionEvent event) {
         LocationType lt = LocationType.getType(locationDropdown.getSelectionModel().getSelectedItem());
-        HashMap<Location, Double> near = KioskMain.getPath().getNearest(lt, startNode);
-        Location min = Collections.min(near.entrySet(), (entry1, entry2) -> (int)entry1.getValue().doubleValue() - (int)entry2.getValue().doubleValue()).getKey();
-        selectedLocation = min;
-        getDirections();
+        HashMap<Location, Double> near;
+        try {
+            near = KioskMain.getPath().getNearest(lt, startNode);
+            Location min = Collections.min(near.entrySet(), (entry1, entry2) -> (int)entry1.getValue().doubleValue() - (int)entry2.getValue().doubleValue()).getKey();
+            selectedLocation = min;
+            getDirections();
+        }
+        catch (NearestNotFoundException e) {
+            // TODO catch this and tell user
+            return;
+        }
     }
 
 

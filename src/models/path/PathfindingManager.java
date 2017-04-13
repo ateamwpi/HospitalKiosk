@@ -1,7 +1,9 @@
 package models.path;
 
 import core.KioskMain;
+import core.exception.NearestNotFoundException;
 import core.exception.NodeInUseException;
+import core.exception.PathNotFoundException;
 import core.exception.RoomNotFoundException;
 import models.dir.Location;
 import models.dir.LocationType;
@@ -73,7 +75,7 @@ public class PathfindingManager {
         return null;
     }
 
-    public HashMap<Location, Double> getNearest(LocationType loc, Node start){
+    public HashMap<Location, Double> getNearest(LocationType loc, Node start) throws NearestNotFoundException {
         HashMap<Location, Double> nearests = new HashMap<Location, Double>();
         Collection<Location> locations = KioskMain.getDir().getDirectory(loc).getLocations().values();
 
@@ -86,6 +88,9 @@ public class PathfindingManager {
             }
         }
         System.out.println(nearests);
+        if(nearests.size() == 0) {
+            throw new NearestNotFoundException(loc, start.getFloor());
+        }
         return nearests;
     }
 
@@ -113,7 +118,7 @@ public class PathfindingManager {
     }
 
 
-    public Path findPath(Node start, Node end) {
+    public Path findPath(Node start, Node end) throws PathNotFoundException, NearestNotFoundException {
 
         if(start.getFloor() != end.getFloor()){
             //Node elevator = getNearest(LocationType.Elevator, start).getNode();

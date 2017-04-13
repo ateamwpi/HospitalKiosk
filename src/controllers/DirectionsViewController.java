@@ -2,6 +2,8 @@ package controllers;
 
 import controllers.map.MapController;
 import core.KioskMain;
+import core.exception.NearestNotFoundException;
+import core.exception.PathNotFoundException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -47,7 +49,20 @@ public class DirectionsViewController extends AbstractController {
         // add the map to the container
         mapContainer.getChildren().add(mapController.getRoot());
         // find the shortest path
-        Path path = KioskMain.getPath().findPath(startNode, endNode);
+        Path path;
+        try {
+            path = KioskMain.getPath().findPath(startNode, endNode);
+        }
+        catch (PathNotFoundException e) {
+            // TODO catch and tell user
+            e.printStackTrace();
+            return;
+        }
+        catch (NearestNotFoundException e) {
+            // TODO catch and tell user
+            // this should only happen if there is no elevator on the current floor
+            return;
+        }
         // draw the path on the map
         mapController.setFloor(startNode.getFloor());
         mapController.drawPath(path);
