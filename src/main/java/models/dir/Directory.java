@@ -8,12 +8,12 @@ import java.util.HashMap;
  * Created by mattm on 3/29/2017.
  */
 public class Directory {
-    private final String name;
-    private final HashMap<Integer, Location> entries;
+    private String name;
+    private HashMap<Integer, Location> entries;
 
     public Directory(String name) {
         this.name = name;
-        this.entries = new HashMap<>();
+        this.entries = new HashMap<Integer, Location>();
     }
 
     public HashMap<Integer, Location> getLocations() {
@@ -25,6 +25,19 @@ public class Directory {
             KioskMain.getDB().addLocation(l);
         }
         entries.put(l.getID(), l);
+    }
+
+    public LocationType getType() {
+        return LocationType.getType(this.name);
+    }
+
+    void moveLocation(Location l, LocationType newType) {
+        if(newType.equals(this.getType())) {
+            this.entries.put(l.getID(), l);
+        }
+        else {
+            this.entries.remove(l.getID());
+        }
     }
 
     public Location getLocation(int id) {
@@ -39,10 +52,10 @@ public class Directory {
     }
 
     public String toString() {
-        StringBuilder str = new StringBuilder(name + " Directory\n");
+        String str = name + " Directory\n";
         for (Location l : entries.values()) {
-            str.append(l.toString()).append("\n");
+            str += l.toString() + "\n";
         }
-        return str.toString();
+        return str;
     }
 }

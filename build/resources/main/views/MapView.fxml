@@ -2,68 +2,28 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.112"
-            xmlns:fx="http://javafx.com/fxml/1">
-   <SplitPane dividerPositions="0.29797979797979796" layoutX="82.0" layoutY="28.0" prefHeight="160.0" prefWidth="200.0"
-              AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-              AnchorPane.topAnchor="0.0">
-      <AnchorPane maxWidth="80.0" prefWidth="80.0">
-         <VBox maxWidth="80.0" prefHeight="200.0" spacing="5.0" AnchorPane.bottomAnchor="0.0"
-               AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+   <SplitPane dividerPositions="0.29797979797979796" layoutX="82.0" layoutY="28.0" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <AnchorPane maxWidth="-Infinity">
+         <VBox maxWidth="-Infinity" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
             <Button fx:id="backBtn" mnemonicParsing="false" onAction="#clickBack" text="Back">
                <VBox.margin>
-                  <Insets left="8.0" top="8.0"/>
+                  <Insets left="8.0" top="8.0" />
                </VBox.margin>
             </Button>
-            <Region prefHeight="40.0" prefWidth="110.0"/>
-            <Button fx:id="floor1Btn" mnemonicParsing="false" text="Floor 1">
+            <Region prefHeight="40.0" prefWidth="110.0" />
+            <ChoiceBox fx:id="floors" prefWidth="150.0">
                <VBox.margin>
-                  <Insets left="8.0"/>
-               </VBox.margin>
-            </Button>
-            <Button fx:id="floor2Btn" mnemonicParsing="false" text="Floor 2">
-               <VBox.margin>
-                  <Insets left="8.0"/>
-               </VBox.margin>
-            </Button>
-            <Button fx:id="floor3Btn" mnemonicParsing="false" text="Floor 3">
-               <VBox.margin>
-                  <Insets left="8.0"/>
-               </VBox.margin>
-            </Button>
-            <Button fx:id="floor4Btn" mnemonicParsing="false" text="Floor 4">
-               <VBox.margin>
-                  <Insets left="8.0"/>
-               </VBox.margin>
-            </Button>
-            <Button fx:id="floor5Btn" mnemonicParsing="false" text="Floor 5">
-               <VBox.margin>
-                  <Insets left="8.0"/>
-               </VBox.margin>
-            </Button>
-            <Button fx:id="floor6Btn" mnemonicParsing="false" text="Floor 6">
-               <VBox.margin>
-                  <Insets left="8.0"/>
-               </VBox.margin>
-            </Button>
-            <Button fx:id="floor7Btn" mnemonicParsing="false" text="Floor 7">
-               <VBox.margin>
-                  <Insets left="8.0"/>
-               </VBox.margin>
-            </Button>
-            <Button fx:id="floor8Btn" mnemonicParsing="false" text="Floor 8">
-               <VBox.margin>
-                  <Insets left="8.0"/>
-               </VBox.margin>
-            </Button>
+                  <Insets left="8.0" right="5.0" />
+               </VBox.margin></ChoiceBox>
          </VBox>
       </AnchorPane>
-      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0"/>
+      <AnchorPane fx:id="mapView" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
    </SplitPane>
 </AnchorPane>

@@ -6,6 +6,7 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.scene.control.Alert;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -24,13 +25,13 @@ public class DraggableNode extends Circle {
     //private static final Color UNSELECTED_COLOR = Color.BLACK;
     private static final Color SELECTED_COLOR = Color.RED;
 
-    private final Node node;
-    private final IntegerProperty previewXProperty = new SimpleIntegerProperty();
-    private final IntegerProperty previewYProperty = new SimpleIntegerProperty();
-    private final StringProperty previewRoomNameProperty = new SimpleStringProperty();
+    private Node node;
+    private IntegerProperty previewXProperty = new SimpleIntegerProperty();
+    private IntegerProperty previewYProperty = new SimpleIntegerProperty();
+    private StringProperty previewRoomNameProperty = new SimpleStringProperty();
     private Collection<Node> previewConnections = new ArrayList<>();
 
-    private final AdminMapController adminMapController;
+    private AdminMapController adminMapController;
 
     public DraggableNode(Node node, NodeGestures nodeGestures, AdminMapController adminMapController) {
         super(node.getX(), node.getY(), UNSELECTED_RADIUS, node.getColor());
@@ -52,11 +53,11 @@ public class DraggableNode extends Circle {
         previewYProperty.set(y);
     }
 
-    private void previewRoomName(String roomName) {
+    public void previewRoomName(String roomName) {
         previewRoomNameProperty.set(roomName);
     }
 
-    private void previewConnections(Collection<Node> nodes) {
+    public void previewConnections(Collection<Node> nodes) {
         // redraw connections
 
         // Add anything new
@@ -66,7 +67,7 @@ public class DraggableNode extends Circle {
             }
         }
         // Remove anything old
-        ArrayList<Node> toRemove = new ArrayList<>();
+        ArrayList<Node> toRemove = new ArrayList<Node>();
         for (Node n : previewConnections) {
             if(!nodes.contains(n)) {
                 toRemove.add(n);
@@ -78,8 +79,17 @@ public class DraggableNode extends Circle {
     }
 
     public void previewConnection(Node node) {
-        previewConnections.add(node);
-        adminMapController.drawDraggableConnection(this, adminMapController.getDraggableNode(node));
+        if(node.getFloor() == this.node.getFloor()) {
+            previewConnections.add(node);
+            adminMapController.drawDraggableConnection(this, adminMapController.getDraggableNode(node));
+        }
+        else {
+            Alert invalidConnection = new Alert(Alert.AlertType.ERROR);
+            invalidConnection.setHeaderText("Invalid Node Connection");
+            invalidConnection.setContentText("You cannot add this connection as the node is on a different floor.");
+            invalidConnection.setTitle("Invalid Node Connection");
+            invalidConnection.showAndWait();
+        }
     }
 
     public void removePreviewConnection(Node node) {
@@ -99,7 +109,7 @@ public class DraggableNode extends Circle {
         return previewYProperty.get();
     }
 
-    private String getPreviewRoomName() {
+    public final String getPreviewRoomName() {
         return previewRoomNameProperty.get();
     }
 
@@ -115,7 +125,7 @@ public class DraggableNode extends Circle {
         return previewRoomNameProperty;
     }
 
-    private void cancelPreview() {
+    public void cancelPreview() {
         System.out.println("cancel");
         previewConnections(node.getConnections());
         setDefaultPreview();

@@ -16,7 +16,7 @@ public enum LocationType {
     Hallway(Color.GRAY),
     Unknown(Color.GRAY);
 
-    private final Color nodeColor;
+    private Color nodeColor;
 
     LocationType(Color nodeColor) {
         this.nodeColor = nodeColor;
@@ -28,6 +28,10 @@ public enum LocationType {
 
     public boolean isInternal() {
         return this.equals(Hallway) || this.equals(Unknown) || this.equals(Kiosk);
+    }
+
+    public boolean hasNearest() {
+        return this.equals(PointOfInterest) || this.equals(Stairs) || this.equals(Elevator);
     }
 
     public static LocationType getType(String s) {

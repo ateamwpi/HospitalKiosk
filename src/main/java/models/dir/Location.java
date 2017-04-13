@@ -1,7 +1,10 @@
 package models.dir;
 
 import core.KioskMain;
+import javafx.beans.InvalidationListener;
+import javafx.beans.property.ReadOnlyProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
 import models.path.Node;
 
 /**
@@ -52,6 +55,7 @@ public class Location {
     }
 
     public void setLocType(LocationType locType) {
+        KioskMain.getDir().updateLocationType(this, locType);
         this.locType = locType;
         KioskMain.getDB().updateLocation(this);
     }
@@ -74,7 +78,8 @@ public class Location {
     }
 
     public String toString() {
-        return "Location " + name + ", ID=" + id + ", locType=" + locType + ", nodeID=" + node.getID();
+        String str = "Location " + name + ", ID=" + id + ", locType=" + locType + ", nodeID=" + node.getID();
+        return str;
     }
 
 
@@ -84,7 +89,7 @@ public class Location {
         nextLocID = i;
     }
 
-    private static int getNextLocID() {
+    public static int getNextLocID() {
         int val = nextLocID;
         nextLocID ++;
         return val;

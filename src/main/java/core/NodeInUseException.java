@@ -6,7 +6,7 @@ import models.path.Node;
  * Created by mattm on 4/1/2017.
  */
 public class NodeInUseException extends Exception {
-    private final Node n;
+    private Node n;
 
     public NodeInUseException(Node n) {
         this.n = n;

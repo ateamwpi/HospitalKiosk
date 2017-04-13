@@ -1,6 +1,9 @@
 package controllers.admin;
 
+import controllers.AbstractController;
 import controllers.AbstractDirectoryViewController;
+import controllers.DirectionsViewController;
+import controllers.MainMenuController;
 import core.KioskMain;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -73,26 +76,26 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
 
     @FXML  //when user clicks "back" button, they will return to main menu
     private void clickBack(ActionEvent event) {
-        KioskMain.setScene(new AdminMenuController());
+        KioskMain.getUI().setScene(new AdminMenuController());
     }
 
     @FXML
     private void clickModify(ActionEvent event) throws IOException {
         if (selectedLocation != null) {
-            KioskMain.setScene(new AdminModifyLocationController(selectedLocation));
+            KioskMain.getUI().setScene(new AdminModifyLocationController(selectedLocation));
         }
     }
 
     @FXML
     private void clickAdd(ActionEvent event) throws IOException {
-        KioskMain.setScene(new AdminAddLocationController());
+        KioskMain.getUI().setScene(new AdminAddLocationController());
     }
 
     @FXML
     private void clickRemove(ActionEvent event)throws IOException {
         if (selectedLocation != null) {
             KioskMain.getDir().removeLocation(selectedLocation);
-            KioskMain.setScene(new ManageDirectoryViewController());
+            KioskMain.getUI().setScene(new ManageDirectoryViewController());
         }
     }
 

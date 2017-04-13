@@ -4,17 +4,15 @@ import controllers.admin.AdminMapController;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
-import java.util.Objects;
-
 /**
  * Listeners for making the nodes draggable via left mouse button. Considers if parent is zoomed.
  */
 public class NodeGestures {
 
-    private final DragContext nodeDragContext = new DragContext();
+    private DragContext nodeDragContext = new DragContext();
 
-    private final PannableCanvas canvas;
-    private final AdminMapController adminMapController;
+    private PannableCanvas canvas;
+    private AdminMapController adminMapController;
 
     public NodeGestures(PannableCanvas canvas, AdminMapController adminMapController) {
         this.canvas = canvas;
@@ -29,10 +27,10 @@ public class NodeGestures {
         return onMouseDraggedEventHandler;
     }
 
-    private final EventHandler<MouseEvent> onMouseClickedEventHandler = new EventHandler<MouseEvent>() {
+    private EventHandler<MouseEvent> onMouseClickedEventHandler = new EventHandler<MouseEvent>() {
         public void handle(MouseEvent event) {
             // right mouse button => panning
-            if (!Objects.equals(event.getButton().name(), "PRIMARY")) {// !event.isPrimaryButtonDown())
+            if (event.getButton().name() != "PRIMARY") {// !event.isPrimaryButtonDown())
                 return;
             }
             System.out.println("node clicked");
@@ -53,20 +51,20 @@ public class NodeGestures {
         }
     };
 
-    private final EventHandler<MouseEvent> onMouseDraggedEventHandler = new EventHandler<MouseEvent>() {
+    private EventHandler<MouseEvent> onMouseDraggedEventHandler = new EventHandler<MouseEvent>() {
         public void handle(MouseEvent event) {
             // right mouse button => panning
-            if (!Objects.equals(event.getButton().name(), "PRIMARY"))// !event.isPrimaryButtonDown())
+            if (event.getButton().name() != "PRIMARY")// !event.isPrimaryButtonDown())
                 return;
             // get the map zoom scale
-            double scale = canvas.getScale();
+            double scale = adminMapController.getOverlay().getScaleX();//Should be same as scaleY
             // get the node being dragged
             DraggableNode node = (DraggableNode) event.getSource();
             // drag the node only if selected
             if (node.equals(adminMapController.getSelectedNode())) {
                 // calculate the new coordinates
-                int newX = (int) (nodeDragContext.translateAnchorX + ((event.getSceneX() - nodeDragContext.mouseAnchorX) / scale));
-                int newY = (int) (nodeDragContext.translateAnchorY + ((event.getSceneY() - nodeDragContext.mouseAnchorY) / scale));
+                int newX = (int) ((nodeDragContext.translateAnchorX + event.getSceneX() - nodeDragContext.mouseAnchorX) / scale);
+                int newY = (int) ((nodeDragContext.translateAnchorY + event.getSceneY() - nodeDragContext.mouseAnchorY) / scale);
                 // preview the node coordinates
                 node.previewX(newX);
                 node.previewY(newY);

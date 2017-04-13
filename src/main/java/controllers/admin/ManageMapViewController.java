@@ -1,13 +1,18 @@
 package controllers.admin;
 
 import controllers.AbstractController;
+import controllers.IController;
 import controllers.map.DraggableNode;
+import controllers.map.MapController;
 import core.KioskMain;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
@@ -16,7 +21,11 @@ import javafx.util.converter.IntegerStringConverter;
 import javafx.util.converter.NumberStringConverter;
 import models.path.Node;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.regex.Pattern;
 
 public class ManageMapViewController extends AbstractController {
@@ -28,6 +37,10 @@ public class ManageMapViewController extends AbstractController {
     private StringProperty roomNameProperty;
     private StringConverter<Number> converter;
 
+    private ArrayList<String> floorList;
+
+    @FXML
+    private ChoiceBox<String> floors;
     @FXML
     private TextField x;
     @FXML
@@ -64,14 +77,30 @@ public class ManageMapViewController extends AbstractController {
         yTextProperty = new SimpleStringProperty();
         roomNameProperty = new SimpleStringProperty();
         converter = new NumberStringConverter();
+        floorList = new ArrayList<String>(Arrays.asList("1st Floor", "2nd Floor","3rd Floor", "4th Floor", "5th Floor", "6th Floor", "7th Floor"));
     }
 
     @FXML
     private void initialize() {
+
         // load the admin map controller
         adminMapController = new AdminMapController(this);
         // add the map to the container
         mapContainer.getChildren().add(adminMapController.getRoot());
+
+        floors.getItems().addAll(floorList);
+        floors.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
+            if (floors.getSelectionModel().getSelectedItem() != null) {
+                if (adminMapController.attemptUnselectNode()) {
+                    String fl = floors.getSelectionModel().getSelectedItem();
+                    System.out.println("The current selected floor is " + fl);
+                    setFloor(fl);
+                } else {
+                }
+
+            }
+        });
+        floors.getSelectionModel().selectFirst();
         // init input text properties
         xTextProperty = x.textProperty();
         yTextProperty = y.textProperty();
@@ -165,7 +194,7 @@ public class ManageMapViewController extends AbstractController {
     @FXML
     private void clickBack(ActionEvent event) {
         if (adminMapController.attemptUnselectNode()) {
-            KioskMain.setScene(new AdminMenuController());
+            KioskMain.getUI().setScene(new AdminMenuController());
         }
     }
 
@@ -185,6 +214,8 @@ public class ManageMapViewController extends AbstractController {
         //refreshScene();
         // update the table of connections with preview connections
         setTableNeighbors(selectedNode.getPreviewConnections());
+
+        newNeighbor.clear();
     }
 
     private void alertAddConnectionError() {
@@ -257,8 +288,21 @@ public class ManageMapViewController extends AbstractController {
         return true;
     }
 
+    public void setFloor(String fl) {
+        int floor = floorList.indexOf(fl) + 1;
+        setFloor(floor);
+    }
+
+    public void setFloor(int floor) {
+        System.out.println("We found the floor to be: " + floor);
+        adminMapController.setFloor(floor);
+    }
+
     private void refreshScene() {
-        KioskMain.setScene(new ManageMapViewController());
+        int floor = adminMapController.getMapController().getFloor();
+        ManageMapViewController con = new ManageMapViewController();
+        con.floors.getSelectionModel().select(floor - 1);
+        KioskMain.getUI().setScene(con);
     }
 
 }

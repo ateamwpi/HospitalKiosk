@@ -7,6 +7,7 @@ import core.KioskMain;
 import core.NodeInUseException;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
@@ -33,6 +34,11 @@ public class AdminMapController extends AbstractController implements IClickable
     private Map<Node, DraggableNode> draggableNodes;
     private Map<Pair<DraggableNode, DraggableNode>, Line> draggableNodeConnections;
     private NodeGestures nodeGestures;
+
+    public MapController getMapController() {
+        return mapController;
+    }
+
     private MapController mapController;
 
     @FXML
@@ -53,6 +59,7 @@ public class AdminMapController extends AbstractController implements IClickable
         // init props
         draggableNodes = new HashMap<>();
         draggableNodeConnections = new HashMap<>();
+
     }
 
     @Override
@@ -63,6 +70,23 @@ public class AdminMapController extends AbstractController implements IClickable
     @Override
     public Parent getRoot() {
         return mapContainer;
+    }
+
+    public void setFloor(int floor) {
+        mapController.setFloor(floor);
+        removeNodesAndLines();
+        drawAllNodes();
+    }
+
+    public void removeNodesAndLines() {
+        for(DraggableNode n : draggableNodes.values()) {
+            mapController.removeOverlay(n);
+        }
+        for(Line l : draggableNodeConnections.values()) {
+            mapController.removeOverlay(l);
+        }
+        draggableNodes = new HashMap<>();
+        draggableNodeConnections = new HashMap<>();
     }
 
     public void handleMouseClick(MouseEvent e) {
@@ -79,6 +103,11 @@ public class AdminMapController extends AbstractController implements IClickable
         }
     }
 
+    @Override
+    public Group getOverlay() {
+        return this.mapController.getOverlay();
+    }
+
     public NodeGestures getNodeGestures() {
         return nodeGestures;
     }
@@ -86,7 +115,7 @@ public class AdminMapController extends AbstractController implements IClickable
     void addNode(double x, double y, String room) {
         System.out.println("add node");
         // create new node
-        Node node = new Node((int) x, (int) y, 4, room);
+        Node node = new Node((int) x, (int) y, mapController.getFloor(), room);
         // create new visual node with gestures
         DraggableNode draggableNode = getDraggableNode(node);
         // draw node with gestures
@@ -103,7 +132,6 @@ public class AdminMapController extends AbstractController implements IClickable
         }
         if (warnDeleteNode()) {
             deleteSelectedNode();
-            return true;
         }
         return false;
     }
@@ -120,7 +148,7 @@ public class AdminMapController extends AbstractController implements IClickable
         return result.get() == delete;
     }
 
-    private void deleteSelectedNode() {
+    public void deleteSelectedNode() {
         // try to delete the node
         try {
             System.out.println("delete node");
@@ -244,12 +272,14 @@ public class AdminMapController extends AbstractController implements IClickable
 
     private void drawAllNodes() {
         for (Node node : nodes) {
-            // create new visual node with gestures
-            DraggableNode draggableNode = getDraggableNode(node);
-            // draw the node
-            drawDraggableNode(draggableNode);
-            // draw the node connections
-            drawDraggableNodeConnections(draggableNode);
+            if (node.getFloor() == mapController.getFloor()) {
+                // create new visual node with gestures
+                DraggableNode draggableNode = getDraggableNode(node);
+                // draw the node
+                drawDraggableNode(draggableNode);
+                // draw the node connections
+                drawDraggableNodeConnections(draggableNode);
+            }
         }
     }
 

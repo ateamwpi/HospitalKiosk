@@ -2,8 +2,6 @@ language: java
 
 sudo: false
 
-sudo: false
-
 addons:
   apt:
     packages:

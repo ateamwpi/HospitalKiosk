@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.loadui:testFx:3.1.2">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.loadui/testFx/3.1.2/d2e14de732df7b97f6eb2896eb2a432df4d6852c/testFx-3.1.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.loadui/testFx/3.1.2/757dc5d357396290e1e2f3286d9e1157972d36de/testFx-3.1.2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
