@@ -83,20 +83,34 @@ public class DirectionsViewController extends AbstractController {
         }
         catch (PathNotFoundException e) {
             // Path not found
+            // should only happen if an admin adds a dead end/unconnected node
             String body = "There is no known way to get from " + startNode.getRoomName() + " to " + endNode.getRoomName() + "!\nThis is most likely caused by an issue with the database. Please contact a hospital administrator to fix this problem!";
             showError("Path Not Found!", body);
             directionsText.setText(body);
             floors.getItems().add(Path.strForNum(startNode.getFloor()) + " Floor");
             floors.getSelectionModel().selectFirst();
             mapController.drawNode(startNode);
+            mapController.setFloor(startNode.getFloor());
         }
         catch (NearestNotFoundException e) {
-            // TODO catch and tell user
             // this should only happen if there is no elevator on the current floor
+            String body = "There is no elevator on the " + Path.strForNum(startNode.getFloor()) + " Floor!\nThis is most likely caused by an issue with the database. Please contact a hospital administrator to fix this problem!";
+            showError("Elevator Not Found!", body);
+            directionsText.setText(body);
+            floors.getItems().add(Path.strForNum(startNode.getFloor()) + " Floor");
+            floors.getSelectionModel().selectFirst();
+            mapController.drawNode(startNode);
+            mapController.setFloor(startNode.getFloor());
         }
         catch (FloorNotReachableException e) {
-            // TODO catch and tell user
-            // this should only happen if the admin messes with the elvators
+            // this should only happen if the admin messes with the elevators
+            String body = "There is no known way to reach the " + Path.strForNum(endNode.getFloor()) + " Floor from the " + Path.strForNum(startNode.getFloor()) + " Floor!\nThis is most likely caused by an issue with the database. Please contact a hospital administrator to fix this problem!";
+            showError("Floor Not Reachable!", body);
+            directionsText.setText(body);
+            floors.getItems().add(Path.strForNum(startNode.getFloor()) + " Floor");
+            floors.getSelectionModel().selectFirst();
+            mapController.drawNode(startNode);
+            mapController.setFloor(startNode.getFloor());
         }
     }
 
