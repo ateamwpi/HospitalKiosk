@@ -1,9 +1,8 @@
 package models.path;
 
 
-import models.dir.Directory;
+import core.Utils;
 import models.dir.LocationType;
-import sun.awt.image.ImageWatched;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,7 +55,7 @@ public class Path {
         int stepNum = 2;
         for (int i = 2; i < this.path.size(); i++) {
             if(this.getStep(i).getPrimaryLocType().equals(LocationType.Elevator) && this.getStep(i-1).getPrimaryLocType().equals(LocationType.Elevator)) {
-                str += stepNum + ". Ride the elevator to the " + strForNum(this.getStep(i).getFloor()) + " floor and exit.\n";
+                str += stepNum + ". Ride the elevator to the " + Utils.strForNum(this.getStep(i).getFloor()) + " floor and exit.\n";
                 stepNum ++;
             }
             // Calculate the next cardinal turning direction
@@ -107,16 +106,6 @@ public class Path {
         return str;
     }
 
-    public static String strForNum(int i) {
-        // Assumes there will never be more than 20 turns options.
-        switch(i) {
-            case 1: return "1st";
-            case 2: return "2nd";
-            case 3: return "3rd";
-            default: return i + "th";
-        }
-    }
-
     public String toString() {
         //System.out.println(this.textPath());
         String str = "Path: ";
@@ -138,7 +127,7 @@ public class Path {
         ArrayList<String> results = new ArrayList<>();
 
         for (Node n : this.path) {
-            String floor = strForNum(n.getFloor()) + " Floor";
+            String floor = Utils.strForNum(n.getFloor()) + " Floor";
             if(!results.contains(floor)) results.add(floor);
         }
 

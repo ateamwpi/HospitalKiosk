@@ -2,24 +2,18 @@ package controllers;
 
 import controllers.map.MapController;
 import core.KioskMain;
+import core.Utils;
 import core.exception.FloorNotReachableException;
 import core.exception.NearestNotFoundException;
 import core.exception.PathNotFoundException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Region;
-import javafx.scene.text.Text;
 import models.path.Node;
 import models.path.Path;
-
-import java.io.IOException;
 
 /**
  * Created by mattm on 3/29/2017.
@@ -42,14 +36,6 @@ public class DirectionsViewController extends AbstractController {
 
     DirectionsViewController(Node startNode, Node endNode) {
         super(startNode, endNode);
-    }
-
-    private void showError(String title, String body) {
-        Alert a = new Alert(Alert.AlertType.ERROR);
-        a.setHeaderText(title);
-        a.setTitle("Try Again!");
-        a.setContentText(body);
-        a.showAndWait();
     }
 
     @FXML
@@ -85,29 +71,29 @@ public class DirectionsViewController extends AbstractController {
             // Path not found
             // should only happen if an admin adds a dead end/unconnected node
             String body = "There is no known way to get from " + startNode.getRoomName() + " to " + endNode.getRoomName() + "!\nThis is most likely caused by an issue with the database. Please contact a hospital administrator to fix this problem!";
-            showError("Path Not Found!", body);
+            Utils.showError("Path Not Found!", body);
             directionsText.setText(body);
-            floors.getItems().add(Path.strForNum(startNode.getFloor()) + " Floor");
+            floors.getItems().add(Utils.strForNum(startNode.getFloor()) + " Floor");
             floors.getSelectionModel().selectFirst();
             mapController.drawNode(startNode);
             mapController.setFloor(startNode.getFloor());
         }
         catch (NearestNotFoundException e) {
             // this should only happen if there is no elevator on the current floor
-            String body = "There is no elevator on the " + Path.strForNum(startNode.getFloor()) + " Floor!\nThis is most likely caused by an issue with the database. Please contact a hospital administrator to fix this problem!";
-            showError("Elevator Not Found!", body);
+            String body = "There is no elevator on the " + Utils.strForNum(startNode.getFloor()) + " Floor!\nThis is most likely caused by an issue with the database. Please contact a hospital administrator to fix this problem!";
+            Utils.showError("Elevator Not Found!", body);
             directionsText.setText(body);
-            floors.getItems().add(Path.strForNum(startNode.getFloor()) + " Floor");
+            floors.getItems().add(Utils.strForNum(startNode.getFloor()) + " Floor");
             floors.getSelectionModel().selectFirst();
             mapController.drawNode(startNode);
             mapController.setFloor(startNode.getFloor());
         }
         catch (FloorNotReachableException e) {
             // this should only happen if the admin messes with the elevators
-            String body = "There is no known way to reach the " + Path.strForNum(endNode.getFloor()) + " Floor from the " + Path.strForNum(startNode.getFloor()) + " Floor!\nThis is most likely caused by an issue with the database. Please contact a hospital administrator to fix this problem!";
-            showError("Floor Not Reachable!", body);
+            String body = "There is no known way to reach the " + Utils.strForNum(endNode.getFloor()) + " Floor from the " + Utils.strForNum(startNode.getFloor()) + " Floor!\nThis is most likely caused by an issue with the database. Please contact a hospital administrator to fix this problem!";
+            Utils.showError("Floor Not Reachable!", body);
             directionsText.setText(body);
-            floors.getItems().add(Path.strForNum(startNode.getFloor()) + " Floor");
+            floors.getItems().add(Utils.strForNum(startNode.getFloor()) + " Floor");
             floors.getSelectionModel().selectFirst();
             mapController.drawNode(startNode);
             mapController.setFloor(startNode.getFloor());

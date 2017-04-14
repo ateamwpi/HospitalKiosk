@@ -1,9 +1,7 @@
 package controllers;
 
-import controllers.admin.AdminMenuController;
-import controllers.admin.AdminModifyLocationController;
-import controllers.admin.ManageDirectoryViewController;
 import core.KioskMain;
+import core.Utils;
 import core.exception.NearestNotFoundException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,7 +10,6 @@ import models.dir.Location;
 import models.dir.LocationType;
 import models.path.Node;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 
@@ -140,8 +137,8 @@ public class DirectoryViewController extends AbstractDirectoryViewController {
             getDirections();
         }
         catch (NearestNotFoundException e) {
-            // TODO catch this and tell user
-            return;
+            String body = "There are no " + lt.name() + " on the " + Utils.strForNum(startNode.getFloor()) + " Floor!";
+            Utils.showError("Nearest Not Found!", body);
         }
     }
 
