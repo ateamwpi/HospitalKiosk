@@ -42,7 +42,7 @@ public class AdminAddLocationController extends AbstractController {
     @FXML
     private void clickBack(ActionEvent event) throws IOException {
         //back button goes to Admin menu
-        KioskMain.setScene(new ManageDirectoryViewController());
+        KioskMain.getUI().setScene(new ManageDirectoryViewController());
     }
 
     @FXML
@@ -61,7 +61,7 @@ public class AdminAddLocationController extends AbstractController {
             LocationType locType = locationDropdown.getValue();
             Location L = new Location(locName, locType, KioskMain.getPath().getRoom(roomName));
             KioskMain.getDir().addLocation(L);
-            KioskMain.setScene(new ManageDirectoryViewController());
+            KioskMain.getUI().setScene(new ManageDirectoryViewController());
         } else {
             blankNameAlert();
         }

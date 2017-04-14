@@ -26,7 +26,7 @@ public class ChangeKioskController extends AbstractController {
 
     @FXML
     private void clickBack(ActionEvent event) {
-        KioskMain.setScene(new AdminMenuController());
+        KioskMain.getUI().setScene(new AdminMenuController());
     }
 
     @FXML
@@ -34,7 +34,7 @@ public class ChangeKioskController extends AbstractController {
         try {
             Node kioskNode = KioskMain.getPath().getRoom(room.getText());
             KioskMain.getDir().getTheKiosk().setNode(kioskNode);
-            KioskMain.setScene(new AdminMenuController());
+            KioskMain.getUI().setScene(new AdminMenuController());
         } catch(RoomNotFoundException e) {
             Alert invalidRoom = new Alert(Alert.AlertType.ERROR);
             invalidRoom.setHeaderText("Invalid Room!");
