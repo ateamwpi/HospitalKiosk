@@ -1,15 +1,6 @@
 group 'com.example'
 version '1.0'
 
-//buildscript {
-//    dependencies {
-//        classpath group: 'de.dynamicfiles.projects.gradle.plugins', name: 'javafx-gradle-plugin', version: '8.7.0'
-//    }
-//    repositories {
-//        jcenter()
-//    }
-//}
-
 apply plugin: 'java'
 apply plugin: 'application'
 //apply plugin: 'javafx-gradle-plugin'
@@ -41,7 +32,3 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     testCompile group: "org.loadui", name: "testFx", version: "3.1.2"
 }
-
-//jfx {
-//    mainClass = 'org.core.KioskMain'
-//}
