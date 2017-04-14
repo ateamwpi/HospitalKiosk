@@ -35,7 +35,6 @@ public class PathfindingTests {
         expected.addInOrder(n3);
 
         assertEquals(test.findPath(n1, n3), expected);
-        assertEquals(1,0);
     }
 
     @Test
