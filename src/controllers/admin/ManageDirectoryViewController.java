@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import models.dir.Location;
 import models.path.Node;
 
 import java.io.IOException;
@@ -50,7 +51,7 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
         initializeDropdown();
         initializeFilter();
         // choose admin mode
-            adminMode();
+        adminMode();
         // listen to location table selection event
         locationsTable.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
             if (locationsTable.getSelectionModel().getSelectedItem() != null) {
@@ -65,6 +66,7 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
     }
 
     private void adminMode() {
+        setTableEdit();
         removeEntry.setDisable(true);
         modifyEntry.setDisable(true);
         kiosk.setVisible(false);

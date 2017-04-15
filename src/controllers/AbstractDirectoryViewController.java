@@ -1,14 +1,16 @@
 package controllers;
 
 import core.KioskMain;
+import core.RoomNotFoundException;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.util.Callback;
 import models.dir.Directory;
 import models.dir.Location;
 import models.dir.LocationType;
@@ -26,15 +28,14 @@ public abstract class AbstractDirectoryViewController extends AbstractController
     private Collection<Location> selectedLocations; // all Locations of the current LocationType
     private Collection<Location> filteredLocations; // all Locations that match the searchBox
     @FXML
-    protected
-    TableView<Location> locationsTable; //table to hold all locations
+    protected TableView<Location> locationsTable; //table to hold all locations
     protected Location selectedLocation;
     @FXML
     private TableColumn<Location, String> nameCol; //column that holds names of locations
     @FXML
     private TableColumn<Location, String> roomCol; //column that holds room names
     @FXML
-    private TableColumn<Location, String> typeCol;
+    private TableColumn<Location, LocationType> typeCol;
     @FXML
     private TextField searchBox;
     @FXML
@@ -87,7 +88,8 @@ public abstract class AbstractDirectoryViewController extends AbstractController
         String filterString = searchBox.getText().toLowerCase(); // get the keyword
         // check which locations contain the keyword
         for (Location loc : selectedLocations) {
-            if (loc.getName().toLowerCase().contains(filterString)) {
+            if (loc.getName().toLowerCase().contains(filterString) ||
+                    loc.getNode().getRoomName().toLowerCase().contains(filterString)) {
                 filteredLocations.add(loc);
             }
         }
@@ -161,5 +163,35 @@ public abstract class AbstractDirectoryViewController extends AbstractController
             return locations.values();
         }
         return new ArrayList<>(); //returns empty array list if there are no locations of given type
+    }
+
+    protected void setTableEdit() {
+        locationsTable.setEditable(true);
+        nameCol.setCellFactory(TextFieldTableCell.<Location>forTableColumn());
+        nameCol.setOnEditCommit((TableColumn.CellEditEvent<Location, String> t) -> {
+            t.getTableView().getItems().get(t.getTablePosition().getRow()).setName(t.getNewValue());
+        });
+        roomCol.setCellFactory(TextFieldTableCell.<Location>forTableColumn());
+        roomCol.setOnEditCommit((TableColumn.CellEditEvent<Location, String> t) -> {
+            try {
+                t.getTableView().getItems().get(t.getTablePosition().getRow()).setNode(KioskMain.getPath().getRoom(t.getNewValue()));
+            } catch (RoomNotFoundException e) {
+                invalidRoomAlert();
+                t.getTableView().getItems().set(t.getTablePosition().getRow(), t.getRowValue());
+            }
+        });
+        typeCol.setCellFactory(ComboBoxTableCell.forTableColumn(LocationType.values()));
+        typeCol.setOnEditCommit((TableColumn.CellEditEvent<Location, LocationType> t) -> {
+            t.getTableView().getItems().get(t.getTablePosition().getRow()).setLocType(t.getNewValue());
+        });
+    }
+
+
+    private void invalidRoomAlert() {
+        Alert invalidRoom = new Alert(Alert.AlertType.ERROR);
+        invalidRoom.setHeaderText("Invalid Room!");
+        invalidRoom.setTitle("Try Again!");
+        invalidRoom.setContentText("Please enter a room that is currently in the database!");
+        invalidRoom.showAndWait();
     }
 }
