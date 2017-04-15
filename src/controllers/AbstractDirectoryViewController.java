@@ -124,7 +124,7 @@ public abstract class AbstractDirectoryViewController extends AbstractController
      * Select the LocationType to use for the directory.
      * @param locType Location type of directory
      */
-    private void selectDirectory(LocationType locType) {
+    protected void selectDirectory(LocationType locType) {
         selectLocations(getLocationsOfType(locType));
     }
 
@@ -143,7 +143,7 @@ public abstract class AbstractDirectoryViewController extends AbstractController
     /**
      * Selects the locations based upon every location type.
      */
-    private void setFullDirectory() {
+    protected void setFullDirectory() {
         Collection<Location> locations = new ArrayList<>();
         KioskMain.getDir().getDirectories().values();
         for(LocationType locType : LocationType.values()) {

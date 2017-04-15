@@ -2,52 +2,52 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.72" xmlns:fx="http://javafx.com/fxml/1">
-    <SplitPane layoutX="82.0" layoutY="28.0" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-            <GridPane prefHeight="398.0" prefWidth="478.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                <columnConstraints>
-                    <ColumnConstraints fillWidth="false" hgrow="ALWAYS" maxWidth="53.0" minWidth="100.0" />
-                    <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
-                    <ColumnConstraints fillWidth="false" halignment="RIGHT" hgrow="ALWAYS" minWidth="150.0" />
-                </columnConstraints>
-                <rowConstraints>
-                    <RowConstraints maxHeight="128.0" minHeight="10.0" prefHeight="63.0" vgrow="SOMETIMES" />
-                    <RowConstraints maxHeight="128.0" minHeight="0.0" prefHeight="39.0" vgrow="SOMETIMES" />
-               <RowConstraints maxHeight="344.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
-                    <RowConstraints maxHeight="344.0" minHeight="10.0" prefHeight="190.0" vgrow="SOMETIMES" />
-                    <RowConstraints maxHeight="94.0" minHeight="3.0" prefHeight="78.0" vgrow="SOMETIMES" />
-                </rowConstraints>
-                <TableView fx:id="locationsTable" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
-                    <columns>
-                        <TableColumn fx:id="nameCol" minWidth="0.0" prefWidth="249.0" text="Name" />
-                        <TableColumn id="roomCol" fx:id="roomCol" maxWidth="-Infinity" minWidth="300.0" prefWidth="-1.0" text="Room" />
-                        <TableColumn fx:id="typeCol" maxWidth="-Infinity" minWidth="300.0" prefWidth="-1.0" text="Type" />
-                    </columns>
-                </TableView>
-                <Button fx:id="goToFinalSel" alignment="CENTER" mnemonicParsing="false" text="-&gt;" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.vgrow="ALWAYS">
-               <GridPane.margin>
-                  <Insets right="20.0" />
-               </GridPane.margin></Button>
-                <Label fx:id="directions" text="Label" wrapText="true" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.vgrow="ALWAYS">
-                    <padding>
-                        <Insets left="5.0" />
-                    </padding>
-                </Label>
-                <Label fx:id="title" text="Label" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+      <GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+          <columnConstraints>
+              <ColumnConstraints fillWidth="false" hgrow="ALWAYS" maxWidth="412.33331298828125" minWidth="72.33334350585938" prefWidth="167.33334350585938" />
+              <ColumnConstraints hgrow="ALWAYS" maxWidth="1142.0000305175781" minWidth="10.0" prefWidth="1112.6666564941406" />
+          </columnConstraints>
+          <rowConstraints>
+              <RowConstraints maxHeight="229.33334350585938" minHeight="0.0" prefHeight="59.333343505859375" vgrow="SOMETIMES" />
+              <RowConstraints maxHeight="664.0" minHeight="10.0" prefHeight="644.6666564941406" vgrow="SOMETIMES" />
+              <RowConstraints maxHeight="94.0" minHeight="3.0" prefHeight="78.0" vgrow="SOMETIMES" />
+          </rowConstraints>
+          <Button mnemonicParsing="false" onAction="#clickBack" text="&lt;-" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+          <VBox fx:id="locationTypes" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+             <TextField fx:id="searchBox" promptText="Search" />
+          </VBox>
+          <TableView fx:id="locationsTable" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+              <columns>
+                  <TableColumn fx:id="nameCol" minWidth="0.0" prefWidth="249.0" text="Name" />
+                  <TableColumn id="roomCol" fx:id="roomCol" maxWidth="-Infinity" minWidth="300.0" prefWidth="-1.0" text="Room" />
+                  <TableColumn fx:id="typeCol" maxWidth="-Infinity" minWidth="300.0" prefWidth="-1.0" text="Type" />
+              </columns>
+         <GridPane.margin>
+            <Insets left="5.0" right="5.0" />
+         </GridPane.margin>
+          </TableView>
+          <Label fx:id="directions" text="Label" wrapText="true" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS">
+              <padding>
+                  <Insets left="5.0" />
+              </padding>
+          </Label>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
+         <children>
+                <Label fx:id="title" text="Manage Directory">
                     <font>
                         <Font name="SansSerif Bold" size="37.0" />
                     </font>
@@ -55,16 +55,14 @@
                   <Insets left="10.0" />
                </padding>
                 </Label>
-                <TextField fx:id="searchBox" promptText="Search" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                <Button mnemonicParsing="false" onAction="#clickBack" text="Back" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
-                <ComboBox fx:id="locationDropdown" prefHeight="25.0" prefWidth="214.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                <VBox GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
-                    <Button fx:id="addEntry" mnemonicParsing="false" onAction="#clickAdd" text="Add" translateY="10.0" VBox.vgrow="ALWAYS" />
-                    <Button fx:id="modifyEntry" mnemonicParsing="false" onAction="#clickModify" text="Modify" translateY="20.0" VBox.vgrow="ALWAYS" />
-                    <Button fx:id="removeEntry" mnemonicParsing="false" onAction="#clickRemove" text="Remove" translateY="30.0" VBox.vgrow="ALWAYS" />
-                </VBox>
-                <Button fx:id="kiosk" mnemonicParsing="false" text="Use Kiosk Location" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.valignment="BOTTOM" GridPane.vgrow="ALWAYS" />
-            </GridPane>
-        </AnchorPane>
-    </SplitPane>
+            <Pane prefHeight="200.0" prefWidth="200.0" />
+            <Button fx:id="addEntry" mnemonicParsing="false" onAction="#clickAdd" text="Add" />
+            <Button fx:id="removeEntry" mnemonicParsing="false" onAction="#clickRemove" text="Remove">
+               <HBox.margin>
+                  <Insets left="20.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
+      </GridPane>
 </AnchorPane>
