@@ -15,6 +15,7 @@ import javafx.util.Callback;
 import models.dir.Directory;
 import models.dir.Location;
 import models.dir.LocationType;
+import models.path.Node;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -170,18 +171,22 @@ public abstract class AbstractDirectoryViewController extends AbstractController
 
     protected void setTableEdit() {
         locationsTable.setEditable(true);
+
         nameCol.setCellFactory(TextFieldTableCell.<Location>forTableColumn());
         nameCol.setOnEditCommit((TableColumn.CellEditEvent<Location, String> t) -> {
-            t.getTableView().getItems().get(t.getTablePosition().getRow()).setName(t.getNewValue());
+            Location editedLoc = t.getRowValue();
+            t.getRowValue().setName(t.getNewValue());
+            locationsTable.sort();
+            locationsTable.scrollTo(editedLoc);
         });
 
         ArrayList<String> roomNames = new ArrayList<String>(KioskMain.getPath().getRoomNames());
         Collections.sort(roomNames);
-
         roomCol.setCellFactory(ComboBoxTableCell.forTableColumn(roomNames.toArray(new String[roomNames.size()])));
         roomCol.setOnEditCommit((TableColumn.CellEditEvent<Location, String> t) -> {
             try {
-                t.getTableView().getItems().get(t.getTablePosition().getRow()).setNode(KioskMain.getPath().getRoom(t.getNewValue()));
+                Node roomNode = KioskMain.getPath().getRoom(t.getNewValue());
+                t.getRowValue().setNode(roomNode);
             } catch (RoomNotFoundException e) {
                 invalidRoomAlert();
                 t.getTableView().getItems().set(t.getTablePosition().getRow(), t.getRowValue());
@@ -190,7 +195,7 @@ public abstract class AbstractDirectoryViewController extends AbstractController
 
         typeCol.setCellFactory(ComboBoxTableCell.forTableColumn(LocationType.userValues()));
         typeCol.setOnEditCommit((TableColumn.CellEditEvent<Location, LocationType> t) -> {
-            t.getTableView().getItems().get(t.getTablePosition().getRow()).setLocType(t.getNewValue());
+            t.getRowValue().setLocType(t.getNewValue());
         });
 
     }
