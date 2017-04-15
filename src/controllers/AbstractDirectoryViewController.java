@@ -6,6 +6,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.print.PageLayout;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -15,8 +16,10 @@ import models.dir.Directory;
 import models.dir.Location;
 import models.dir.LocationType;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 
 /**
@@ -171,7 +174,11 @@ public abstract class AbstractDirectoryViewController extends AbstractController
         nameCol.setOnEditCommit((TableColumn.CellEditEvent<Location, String> t) -> {
             t.getTableView().getItems().get(t.getTablePosition().getRow()).setName(t.getNewValue());
         });
-        roomCol.setCellFactory(TextFieldTableCell.<Location>forTableColumn());
+
+        ArrayList<String> roomNames = new ArrayList<String>(KioskMain.getPath().getRoomNames());
+        Collections.sort(roomNames);
+
+        roomCol.setCellFactory(ComboBoxTableCell.forTableColumn(roomNames.toArray(new String[roomNames.size()])));
         roomCol.setOnEditCommit((TableColumn.CellEditEvent<Location, String> t) -> {
             try {
                 t.getTableView().getItems().get(t.getTablePosition().getRow()).setNode(KioskMain.getPath().getRoom(t.getNewValue()));
@@ -180,10 +187,12 @@ public abstract class AbstractDirectoryViewController extends AbstractController
                 t.getTableView().getItems().set(t.getTablePosition().getRow(), t.getRowValue());
             }
         });
-        typeCol.setCellFactory(ComboBoxTableCell.forTableColumn(LocationType.values()));
+
+        typeCol.setCellFactory(ComboBoxTableCell.forTableColumn(LocationType.userValues()));
         typeCol.setOnEditCommit((TableColumn.CellEditEvent<Location, LocationType> t) -> {
             t.getTableView().getItems().get(t.getTablePosition().getRow()).setLocType(t.getNewValue());
         });
+
     }
 
 

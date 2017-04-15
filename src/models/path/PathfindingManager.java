@@ -140,4 +140,8 @@ public class PathfindingManager {
             return this.astar.findPath(start, end);
         }
     }
+
+    public Collection<String> getRoomNames() {
+        return this.ids.keySet();
+    }
 }
