@@ -42,7 +42,7 @@
                   <Font size="16.0" />
                </font>
             </Button>
-            <ComboBox fx:id="kioskLocations" prefWidth="150.0" GridPane.rowIndex="3" />
+            <ComboBox fx:id="kioskLocations" prefWidth="150.0" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
          </children>
       </GridPane>
    </children>
