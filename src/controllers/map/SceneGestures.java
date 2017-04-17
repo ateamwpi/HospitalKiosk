@@ -86,7 +86,6 @@ public class SceneGestures {
             //canvas.setTranslateX(sceneDragContext.translateAnchorX + event.getSceneX() - sceneDragContext.mouseAnchorX);
             //canvas.setTranslateY(sceneDragContext.translateAnchorY + event.getSceneY() - sceneDragContext.mouseAnchorY);
 
-
             mapController.getOverlay().setTranslateX(sceneDragContext.translateAnchorX + event.getSceneX() - sceneDragContext.mouseAnchorX);
             mapController.getOverlay().setTranslateY(sceneDragContext.translateAnchorY + event.getSceneY() - sceneDragContext.mouseAnchorY);
 
@@ -132,15 +131,21 @@ public class SceneGestures {
             //double dy = (event.getSceneY() - (canvas.getBoundsInParent().getHeight()/2 + canvas.getBoundsInParent().getMinY()/2));
 
             //canvas.setScale(scale);
+
             mapController.getOverlay().setScaleX(scale);
+            mapController.getOverlay().setTranslateX(
+                    mapController.getOverlay().getTranslateX()*scale/oldScale);//mapController.getOverlay().getScaleX());
             mapController.getOverlay().setScaleY(scale);
+
+            mapController.getOverlay().setTranslateY(
+                    mapController.getOverlay().getTranslateY()*scale/oldScale);//mapController.getOverlay().getScaleX());
 
             //System.out.println(mapController.getOverlay().getTranslateX());
             //canvas.setTranslateX(4 * mapController.getOverlay().getScaleX() * mapController.getOverlay().getTranslateX());
             //canvas.setTranslateY(2 * mapController.getOverlay().getScaleY() * mapController.getOverlay().getTranslateY());
 
             // note: pivot value must be untransformed, i. e. without scaling
-            canvas.setPivot(f/**dx*/, f/**dy*/);
+            canvas.setPivot(f,f);//*dx, f*dy);
 
             event.consume();
 

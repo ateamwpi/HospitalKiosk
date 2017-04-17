@@ -160,7 +160,7 @@ public class MapController extends AbstractController implements IClickableContr
         Circle circle = new Circle(node.getX(), node.getY(), 5);
         addOverlay(circle);
     }
-
+/*
     private void replaceAllNodes(Collection<Node> nodes){
         overlay = new Group();
         root.getChildren().add(overlay);
@@ -174,5 +174,5 @@ public class MapController extends AbstractController implements IClickableContr
             drawNode(n);
 
         }
-    }
+    }*/
 }
