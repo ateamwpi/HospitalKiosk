@@ -1,6 +1,7 @@
 package models.path;
 
 import core.KioskMain;
+import core.exception.NameInUseException;
 import core.exception.WrongFloorException;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -134,7 +135,10 @@ public class Node {
         }
     }
 
-    public void setRoomName(String name) {
+    public void setRoomName(String name) throws NameInUseException {
+        if(KioskMain.getPath().hasRoomName(name)) {
+            throw new NameInUseException(name);
+        }
         this.previousRoomName = this.getRoomName();
         roomNameProperty.setValue(name);
     }
@@ -192,7 +196,7 @@ public class Node {
         return floorProperty.get();
     }
 
-    public final void setFloor(int value){
+    public final void setFloor(int value) {
         floorProperty.set(value);
     }
 
