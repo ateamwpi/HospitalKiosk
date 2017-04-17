@@ -84,7 +84,7 @@ public class MapController extends AbstractController implements IClickableContr
     }
 
     public void drawPath(Path p) {
-        if(p.getStart().getFloor() == this.floor) drawNode(p.getStart());
+        if(p.getStart().getFloor() == this.floor) drawNode(p.getStart(), Color.BLUE);
         for (int i = 1; i < p.getPath().size(); i++) {
             if(p.getStep(i-1).getFloor() == this.floor && p.getStep(i).getFloor() == this.floor)
                 drawConnection(p.getStep(i - 1), p.getStep(i));
@@ -93,12 +93,12 @@ public class MapController extends AbstractController implements IClickableContr
             else if(p.getStep(i).getFloor() == this.floor && p.getStep(i-1).getFloor() != this.floor)
                 drawMidpoint(p.getStep(i));
         }
-        if(p.getEnd().getFloor() == this.floor) drawNode(p.getEnd());
+        if(p.getEnd().getFloor() == this.floor) drawNode(p.getEnd(), Color.RED);
     }
 
     private void drawMidpoint(Node n) {
         Rectangle r = new Rectangle(n.getX()-5, n.getY()-5, 10, 10);
-        r.setFill(Color.BLACK);
+        r.setFill(Color.GREEN);
         addOverlay(r);
     }
 
@@ -143,9 +143,13 @@ public class MapController extends AbstractController implements IClickableContr
         addOverlay(0, line);
     }
 
-    public void drawNode(Node node) {
-        Circle circle = new Circle(node.getX(), node.getY(), 5);
+    public void drawNode(Node node, Color c) {
+        Circle circle = new Circle(node.getX(), node.getY(), 5, c);
         addOverlay(circle);
+    }
+
+    public void drawNode(Node node) {
+        drawNode(node, Color.BLACK);
     }
 
     private void replaceAllNodes(Collection<Node> nodes){

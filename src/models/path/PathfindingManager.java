@@ -20,6 +20,9 @@ public class PathfindingManager {
     private HashMap<Integer, Node> graph;
     private HashMap<String, Integer> ids;
     private IPathfindingAlgorithm astar;
+    //private IPathfindingAlgorithm bfs;
+    //private IPathfindingAlgorithm dfs;
+    private IPathfindingAlgorithm cur;
 
     public PathfindingManager(HashMap<Integer, Node> allNodes) {
         this.graph = allNodes;
@@ -28,6 +31,9 @@ public class PathfindingManager {
             if(n.getRoomName() != null && !n.getRoomName().equals("NONE")) this.ids.put(n.getRoomName(), n.getID());
         }
         this.astar = new AStar();
+        //this.bfs = new BreadthFirst();
+        //this.dfs = new DepthFirst();
+        this.cur = this.astar;
     }
 
     public Node getNode(int id) {
@@ -115,37 +121,54 @@ public class PathfindingManager {
         else return this.graph.get(this.ids.get(roomName));
     }
 
-
     public Path findPath(Node start, Node end) throws PathNotFoundException, NearestNotFoundException, FloorNotReachableException {
+        if(start.isBelkin() == end.isBelkin()) {
+            return this.findSameBuilding(start, end);
+        }
+        else {
+            return this.findDifferentBuilding(start, end);
+        }
+    }
 
-        if(start.getFloor() != end.getFloor()){
-            //Node elevator = getNearest(LocationType.Elevator, start).getNode();
-            //System.out.println("start=" + start + " elevator=" + elevator);
+    private Path findDifferentBuilding(Node start, Node end) throws PathNotFoundException, NearestNotFoundException, FloorNotReachableException {
+        Node startBuild;
+        Node endBuild;
+        if(start.isBelkin()) {
+            startBuild = KioskMain.getDir().getBelkinEntr().getNode();
+            endBuild = KioskMain.getDir().getMainEntr().getNode();
+        }
+        else {
+            startBuild = KioskMain.getDir().getMainEntr().getNode();
+            endBuild = KioskMain.getDir().getBelkinEntr().getNode();
+        }
+        Path build1 = this.findSameBuilding(start, startBuild);
+        Path crossLot = this.cur.findPath(startBuild, endBuild);
+        Path build2 = this.findSameBuilding(endBuild, end);
+        return build1.addSteps(crossLot).addSteps(build2);
+    }
+
+    private Path findSameBuilding(Node start, Node end) throws PathNotFoundException, NearestNotFoundException, FloorNotReachableException {
+        if (start.getFloor() != end.getFloor()) {
             HashMap<Location, Double> nearests = getNearest(LocationType.Elevator, start);
             Node curr;
             Node matching;
             Location min;
             do {
                 try {
-                    min = Collections.min(nearests.entrySet(), (entry1, entry2) -> (int)entry1.getValue().doubleValue() - (int)entry2.getValue().doubleValue()).getKey();
-                }
-                catch (NoSuchElementException e) {
+                    min = Collections.min(nearests.entrySet(), (entry1, entry2) -> (int) entry1.getValue().doubleValue() - (int) entry2.getValue().doubleValue()).getKey();
+                } catch (NoSuchElementException e) {
                     throw new FloorNotReachableException(start, end.getFloor());
                 }
                 curr = min.getNode();
                 matching = findMatching(curr, end.getFloor(), LocationType.Elevator);
                 nearests.remove(min);
-            } while(matching == null);
-            System.out.println("curr=" + curr + " matching=" + matching);
-            Path startFloor = this.astar.findPath(start, curr);
-            //System.out.println(findMatching(elevator, end.getFloor(), LocationType.Elevator));
-            Path endFloor = this.astar.findPath(matching, end);
-            System.out.println("startFloor: " + startFloor);
-            System.out.println("endFloor: " + endFloor);
+            } while (matching == null);
+            Path startFloor = this.cur.findPath(start, curr);
+            Path endFloor = this.cur.findPath(matching, end);
             return startFloor.addSteps(endFloor);
         }
-        else{
-            return this.astar.findPath(start, end);
+        else {
+            return this.cur.findPath(start, end);
         }
     }
 }
