@@ -3,9 +3,12 @@ package controllers.admin;
 import controllers.AbstractController;
 import controllers.MainMenuController;
 import core.KioskMain;
+import core.exception.RoomNotFoundException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import models.path.Node;
 
 /**
  * Created by mattm on 3/29/2017.
@@ -18,7 +21,22 @@ public class AdminMenuController extends AbstractController {
     @FXML
     private Button manageMapBtn;
     @FXML
-    private Button kioskButton;
+    private ComboBox<String> kioskLocations;
+
+    @FXML
+    private void initialize() {
+        kioskLocations.getItems().addAll(KioskMain.getPath().getRoomNames());
+        kioskLocations.getSelectionModel().select(KioskMain.getDir().getTheKiosk().getNode().getRoomName());
+        kioskLocations.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
+            try {
+                Node newNode = KioskMain.getPath().getRoom(newValue);
+                KioskMain.getDir().getTheKiosk().setNode(newNode);
+            } catch (RoomNotFoundException e) {
+                e.printStackTrace();
+            }
+        }));
+    }
+
 
     @FXML
     private void clickLogout(ActionEvent event) {
@@ -35,10 +53,6 @@ public class AdminMenuController extends AbstractController {
         KioskMain.getUI().setScene(new ManageMapViewController());
     }
 
-    @FXML
-    private void pressedKiosk(ActionEvent event) {
-        KioskMain.getUI().setScene(new ChangeKioskController());
-    }
 
     @Override
     public String getURL() {
