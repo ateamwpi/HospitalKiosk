@@ -142,6 +142,8 @@ public class PathfindingManager {
     }
 
     public Collection<String> getRoomNames() {
-        return this.ids.keySet();
+        ArrayList<String> roomNames = new ArrayList<String>(this.ids.keySet());
+        Collections.sort(roomNames);
+        return roomNames;
     }
 }

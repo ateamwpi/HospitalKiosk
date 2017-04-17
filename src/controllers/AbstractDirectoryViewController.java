@@ -35,7 +35,7 @@ public abstract class AbstractDirectoryViewController extends AbstractController
     protected TableView<Location> locationsTable; //table to hold all locations
     protected Location selectedLocation;
     @FXML
-    private TableColumn<Location, String> nameCol; //column that holds names of locations
+    protected TableColumn<Location, String> nameCol; //column that holds names of locations
     @FXML
     private TableColumn<Location, String> roomCol; //column that holds room names
     @FXML
@@ -180,8 +180,7 @@ public abstract class AbstractDirectoryViewController extends AbstractController
             locationsTable.scrollTo(editedLoc);
         });
 
-        ArrayList<String> roomNames = new ArrayList<String>(KioskMain.getPath().getRoomNames());
-        Collections.sort(roomNames);
+        Collection<String> roomNames = KioskMain.getPath().getRoomNames();
         roomCol.setCellFactory(ComboBoxTableCell.forTableColumn(roomNames.toArray(new String[roomNames.size()])));
         roomCol.setOnEditCommit((TableColumn.CellEditEvent<Location, String> t) -> {
             try {
