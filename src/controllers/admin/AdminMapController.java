@@ -4,7 +4,7 @@ import controllers.AbstractController;
 import controllers.IClickableController;
 import controllers.map.*;
 import core.KioskMain;
-import core.NodeInUseException;
+import core.exception.NodeInUseException;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;

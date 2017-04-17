@@ -1,5 +1,6 @@
 package models.path.algo;
 
+import core.exception.PathNotFoundException;
 import models.path.Node;
 import models.path.Path;
 
@@ -10,7 +11,7 @@ import java.util.*;
  */
 public class AStar implements IPathfindingAlgorithm {
 
-    public Path findPath(Node start, Node goal){
+    public Path findPath(Node start, Node goal) throws PathNotFoundException {
         LinkedList<Node> closedSet;
         LinkedList<Node> openSet;
         HashMap<Node, Node> cameFrom;
@@ -55,7 +56,7 @@ public class AStar implements IPathfindingAlgorithm {
                 fScore.put(n, score + this.heuristicCost(n, goal));
             }
         }
-        return null;
+        throw new PathNotFoundException(start, goal);
     }
 
     private Path constructPath(HashMap<Node, Node> cameFrom, Node end) {

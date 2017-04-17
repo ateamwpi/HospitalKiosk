@@ -1,4 +1,4 @@
-package core;
+package core.exception;
 
 import models.path.Node;
 
