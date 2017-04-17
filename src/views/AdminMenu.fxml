@@ -23,15 +23,15 @@
           <RowConstraints maxHeight="252.0" minHeight="10.0" prefHeight="101.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label text="Admin Main Menu" GridPane.halignment="CENTER">
+            <Label fx:id="title" alignment="CENTER" prefHeight="96.0" prefWidth="611.0" styleClass="title" stylesheets="@style.css" text="Admin Main Menu" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
                <font>
                   <Font name="System Bold" size="37.0" />
                </font>
             </Label>
-            <JFXButton fx:id="manageDirectoryBtn" buttonType="RAISED" mnemonicParsing="false" onAction="#clickManageDirectory" styleClass="button-raised" stylesheets="@style.css" text="Manage Directory" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS" />
-            <JFXButton fx:id="manageMapBtn" buttonType="RAISED" mnemonicParsing="false" onAction="#clickManageMap" styleClass="button-raised" stylesheets="@style.css" text="Manage Map" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS" />
-            <JFXButton fx:id="kioskButton" buttonType="RAISED" mnemonicParsing="false" onAction="#pressedKiosk" styleClass="button-raised" stylesheets="@style.css" text="Manage Kiosk Location" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-            <JFXButton fx:id="logoutBtn" buttonType="RAISED" mnemonicParsing="false" onAction="#clickLogout" prefHeight="25.0" prefWidth="85.0" styleClass="button-raised" stylesheets="@style.css" text="Logout" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
+            <JFXButton fx:id="manageDirectoryBtn" buttonType="RAISED" mnemonicParsing="false" onAction="#clickManageDirectory" styleClass="content-button" stylesheets="@style.css" text="Manage Directory" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS" />
+            <JFXButton fx:id="manageMapBtn" buttonType="RAISED" mnemonicParsing="false" onAction="#clickManageMap" styleClass="content-button" stylesheets="@style.css" text="Manage Map" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS" />
+            <JFXButton fx:id="kioskButton" buttonType="RAISED" mnemonicParsing="false" onAction="#pressedKiosk" styleClass="content-button" stylesheets="@style.css" text="Manage Kiosk Location" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+            <JFXButton fx:id="logoutBtn" buttonType="RAISED" mnemonicParsing="false" onAction="#clickLogout" prefHeight="25.0" prefWidth="85.0" styleClass="navigation-button" stylesheets="@style.css" text="Logout" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
                <GridPane.margin>
                   <Insets right="20.0" />
                </GridPane.margin>

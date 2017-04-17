@@ -4,38 +4,47 @@
 <?import com.jfoenix.controls.JFXPasswordField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
-    <GridPane layoutX="191.0" layoutY="149.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="294.0" minWidth="20.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="536.0" minWidth="10.0" />
-         <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" />
-        </columnConstraints>
-        <rowConstraints>
-            <RowConstraints maxHeight="106.0" minHeight="10.0" prefHeight="106.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="62.0" minHeight="10.0" prefHeight="59.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="114.0" minHeight="10.0" prefHeight="95.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="158.0" minHeight="10.0" prefHeight="80.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-        <Label text="Admin Login" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
-         <font>
-            <Font name="SansSerif Bold" size="37.0" />
-         </font></Label>
-        <Label text="Enter Password: " GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
-      <JFXButton fx:id="backBtn" buttonType="RAISED" onAction="#clickBack" styleClass="button-raised" stylesheets="@style.css" text="Back">
-         <GridPane.margin>
-            <Insets left="30.0" />
-         </GridPane.margin>
-      </JFXButton>
-      <JFXButton fx:id="loginBtn" buttonType="RAISED" onAction="#clickLogin" ripplerFill="BLACK" styleClass="button-raised" stylesheets="@style.css" text="Login" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-      <JFXPasswordField fx:id="password" maxWidth="-Infinity" minWidth="-Infinity" onKeyPressed="#keyPressed" prefHeight="25.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-    </GridPane>
+<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+   <SplitPane dividerPositions="0.14824120603015076" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" orientation="VERTICAL" prefHeight="400.0" prefWidth="600.0" stylesheets="@style.css">
+     <items>
+       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="title" stylesheets="@style.css">
+            <children>
+               <HBox prefHeight="56.0" prefWidth="598.0">
+                  <children>
+                     <JFXButton fx:id="backBtn" alignment="CENTER" buttonType="RAISED" onAction="#clickBack" styleClass="navigation-button" stylesheets="@style.css" text="Back">
+                        <HBox.margin>
+                           <Insets left="10.0" top="15.0" />
+                        </HBox.margin>
+                     </JFXButton>
+                       <Label prefHeight="56.0" prefWidth="266.0" styleClass="title" stylesheets="@style.css" text="Admin Login">
+                        <font>
+                           <Font name="SansSerif Bold" size="37.0" />
+                        </font>
+                        <HBox.margin>
+                           <Insets left="10.0" />
+                        </HBox.margin>
+                     </Label>
+                  </children>
+               </HBox>
+            </children>
+         </AnchorPane>
+       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+            <children>
+               <VBox layoutX="186.0" layoutY="46.0" prefHeight="200.0" prefWidth="100.0">
+                  <children>
+                       <Label text="Enter Password: " translateX="60.0" translateY="25.0" />
+                     <JFXPasswordField fx:id="password" maxWidth="-Infinity" minWidth="-Infinity" onKeyPressed="#keyPressed" prefHeight="25.0" prefWidth="200.0" translateY="35.0" />
+                     <JFXButton fx:id="loginBtn" buttonType="RAISED" onAction="#clickLogin" ripplerFill="BLACK" styleClass="content-button" stylesheets="@style.css" text="Login" textAlignment="CENTER" translateX="75.0" translateY="60.0" />
+                  </children>
+               </VBox>
+            </children>
+         </AnchorPane>
+     </items>
+   </SplitPane>
 </AnchorPane>
