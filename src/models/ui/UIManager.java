@@ -17,7 +17,7 @@ public class UIManager {
 
     private Stage stage;
     private Scene scene;
-    private static DoubleProperty fontSize = new SimpleDoubleProperty(10);
+    private static DoubleProperty fontSize = new SimpleDoubleProperty(15);
 
     public UIManager(Stage stage) {
         this.stage = stage;
