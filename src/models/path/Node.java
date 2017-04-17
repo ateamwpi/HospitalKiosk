@@ -201,7 +201,6 @@ public class Node {
     }
 
     public void removeLocation(Location l) {
-        System.out.println("hi");
         this.locations.remove(l.getID());
         this.counts.put(l.getLocType(), this.counts.get(l.getLocType())-1);
     }
