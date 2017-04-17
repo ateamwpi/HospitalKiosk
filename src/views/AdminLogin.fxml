@@ -30,7 +30,7 @@
             <Font name="SansSerif Bold" size="37.0" />
          </font></Label>
         <Label text="Enter Password: " GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
-      <JFXButton fx:id="backBtn" buttonType="RAISED" onAction="#clickBack" text="Back">
+      <JFXButton fx:id="backBtn" buttonType="RAISED" onAction="#clickBack" styleClass="button-raised" stylesheets="@style.css" text="Back">
          <GridPane.margin>
             <Insets left="30.0" />
          </GridPane.margin>

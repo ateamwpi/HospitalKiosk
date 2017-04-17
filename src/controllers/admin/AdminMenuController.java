@@ -1,5 +1,6 @@
 package controllers.admin;
 
+import com.jfoenix.controls.JFXButton;
 import controllers.AbstractController;
 import controllers.MainMenuController;
 import core.KioskMain;
@@ -12,13 +13,13 @@ import javafx.scene.control.Button;
  */
 public class AdminMenuController extends AbstractController {
     @FXML
-    private Button logoutBtn;
+    private JFXButton logoutBtn;
     @FXML
-    private Button manageDirectoryBtn;
+    private JFXButton manageDirectoryBtn;
     @FXML
-    private Button manageMapBtn;
+    private JFXButton manageMapBtn;
     @FXML
-    private Button kioskButton;
+    private JFXButton kioskButton;
 
     @FXML
     private void clickLogout(ActionEvent event) {
