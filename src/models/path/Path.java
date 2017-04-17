@@ -84,6 +84,7 @@ public class Path {
                 // If actually making a turn, add a message about it to the directions
                 if(i+1 == this.path.size()) {
                     str += stepNum + ". Your destination (" + this.getEnd().getRoomName() + ") will be on your " + result + ".\n";
+                    stepNum ++;
                 }
                 else {
                     if(!this.getStep(i-1).getPrimaryLocType().equals(LocationType.Elevator)) {
@@ -91,10 +92,9 @@ public class Path {
                         if (this.getStep(i).getPrimaryLocType().equals(LocationType.Elevator))
                             str += " into the " + this.getStep(i).getRoomName() + ".\n";
                         else str += ".\n";
+                        stepNum ++;
                     }
                 }
-                stepNum ++;
-
                 // Reset attempt counters every time a turn is made
                 attempts.put("left", 0); attempts.put("right", 0); attempts.put("straight", 0); attempts.put("back", 0);
             }
