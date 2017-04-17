@@ -102,12 +102,6 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
         Location newLoc = new Location("", LocationType.userValues()[0], defaultNode);
         locationsTable.getItems().add(0, newLoc);
         KioskMain.getDir().addLocation(newLoc);
-        //System.out.println(locationsTable.getItems());
-        //locationsTable.edit(0, nameCol);
-        //System.out.println(locationsTable.getItems().iterator().next());
-        locationsTable.getSelectionModel().select(0);
-        locationsTable.edit(0, nameCol);
-
     }
 
     @FXML
