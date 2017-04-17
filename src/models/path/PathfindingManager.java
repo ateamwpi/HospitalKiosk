@@ -121,6 +121,10 @@ public class PathfindingManager {
         else return this.graph.get(this.ids.get(roomName));
     }
 
+    public boolean hasRoomName(String name) {
+        return this.ids.containsKey(name);
+    }
+
     public Path findPath(Node start, Node end) throws PathNotFoundException, NearestNotFoundException, FloorNotReachableException {
         if(start.isBelkin() == end.isBelkin()) {
             return this.findSameBuilding(start, end);
