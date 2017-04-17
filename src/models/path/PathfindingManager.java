@@ -1,8 +1,7 @@
 package models.path;
 
 import core.KioskMain;
-import core.NodeInUseException;
-import core.RoomNotFoundException;
+import core.exception.*;
 import models.dir.Location;
 import models.dir.LocationType;
 import models.path.algo.AStar;
@@ -11,7 +10,7 @@ import models.path.algo.IPathfindingAlgorithm;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 /**
  * Created by mattm on 3/29/2017.
@@ -80,7 +79,7 @@ public class PathfindingManager {
         return null;
     }
 
-    public HashMap<Location, Double> getNearest(LocationType loc, Node start){
+    public HashMap<Location, Double> getNearest(LocationType loc, Node start) throws NearestNotFoundException {
         HashMap<Location, Double> nearests = new HashMap<Location, Double>();
         Collection<Location> locations = KioskMain.getDir().getDirectory(loc).getLocations().values();
 
@@ -93,6 +92,9 @@ public class PathfindingManager {
             }
         }
         System.out.println(nearests);
+        if(nearests.size() == 0) {
+            throw new NearestNotFoundException(loc, start.getFloor());
+        }
         return nearests;
     }
 
@@ -119,32 +121,37 @@ public class PathfindingManager {
         else return this.graph.get(this.ids.get(roomName));
     }
 
-    public Path findPath(Node start, Node end) {
 
-        if(start.isBelkin() == end.isBelkin()) {
-            if (start.getFloor() != end.getFloor()) {
-                return this.findCrossFloor(start, end);
-            } else {
-                return this.cur.findPath(start, end);
-            }
-        }
-        else {
-            return null;
-        }
-    }
+    public Path findPath(Node start, Node end) throws PathNotFoundException, NearestNotFoundException, FloorNotReachableException {
 
-    private Path findCrossFloor(Node start, Node end) {
-        HashMap<Location, Double> nearests = getNearest(LocationType.Elevator, start);
-        Node curr;
-        Node matching;
-        do {
-            Location min = Collections.min(nearests.entrySet(), (entry1, entry2) -> (int) entry1.getValue().doubleValue() - (int) entry2.getValue().doubleValue()).getKey();
-            curr = min.getNode();
-            matching = findMatching(curr, end.getFloor(), LocationType.Elevator);
-            nearests.remove(min);
-        } while (matching == null);
-        Path startFloor = this.cur.findPath(start, curr);
-        Path endFloor = this.cur.findPath(matching, end);
-        return startFloor.addSteps(endFloor);
+        if(start.getFloor() != end.getFloor()){
+            //Node elevator = getNearest(LocationType.Elevator, start).getNode();
+            //System.out.println("start=" + start + " elevator=" + elevator);
+            HashMap<Location, Double> nearests = getNearest(LocationType.Elevator, start);
+            Node curr;
+            Node matching;
+            Location min;
+            do {
+                try {
+                    min = Collections.min(nearests.entrySet(), (entry1, entry2) -> (int)entry1.getValue().doubleValue() - (int)entry2.getValue().doubleValue()).getKey();
+                }
+                catch (NoSuchElementException e) {
+                    throw new FloorNotReachableException(start, end.getFloor());
+                }
+                curr = min.getNode();
+                matching = findMatching(curr, end.getFloor(), LocationType.Elevator);
+                nearests.remove(min);
+            } while(matching == null);
+            System.out.println("curr=" + curr + " matching=" + matching);
+            Path startFloor = this.astar.findPath(start, curr);
+            //System.out.println(findMatching(elevator, end.getFloor(), LocationType.Elevator));
+            Path endFloor = this.astar.findPath(matching, end);
+            System.out.println("startFloor: " + startFloor);
+            System.out.println("endFloor: " + endFloor);
+            return startFloor.addSteps(endFloor);
+        }
+        else{
+            return this.astar.findPath(start, end);
+        }
     }
 }

@@ -1,5 +1,6 @@
 package models.path.algo;
 
+import core.exception.PathNotFoundException;
 import models.path.Node;
 import models.path.Path;
 
@@ -8,5 +9,5 @@ import models.path.Path;
  */
 public interface IPathfindingAlgorithm {
 
-    public Path findPath(Node start, Node goal);
+    public Path findPath(Node start, Node goal) throws PathNotFoundException;
 }
