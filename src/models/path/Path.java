@@ -1,9 +1,8 @@
 package models.path;
 
 
-import models.dir.Directory;
+import core.Utils;
 import models.dir.LocationType;
-import sun.awt.image.ImageWatched;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,7 +55,7 @@ public class Path {
         int stepNum = 2;
         for (int i = 2; i < this.path.size(); i++) {
             if(this.getStep(i).getPrimaryLocType().equals(LocationType.Elevator) && this.getStep(i-1).getPrimaryLocType().equals(LocationType.Elevator)) {
-                str += stepNum + ". Ride the elevator to the " + strForNum(this.getStep(i).getFloor()) + " floor and exit.\n";
+                str += stepNum + ". Ride the elevator to the " + Utils.strForNum(this.getStep(i).getFloor()) + " floor and exit.\n";
                 stepNum ++;
             }
             // Calculate the next cardinal turning direction
@@ -85,6 +84,7 @@ public class Path {
                 // If actually making a turn, add a message about it to the directions
                 if(i+1 == this.path.size()) {
                     str += stepNum + ". Your destination (" + this.getEnd().getRoomName() + ") will be on your " + result + ".\n";
+                    stepNum ++;
                 }
                 else {
                     if(!this.getStep(i-1).getPrimaryLocType().equals(LocationType.Elevator)) {
@@ -92,10 +92,9 @@ public class Path {
                         if (this.getStep(i).getPrimaryLocType().equals(LocationType.Elevator))
                             str += " into the " + this.getStep(i).getRoomName() + ".\n";
                         else str += ".\n";
+                        stepNum ++;
                     }
                 }
-                stepNum ++;
-
                 // Reset attempt counters every time a turn is made
                 attempts.put("left", 0); attempts.put("right", 0); attempts.put("straight", 0); attempts.put("back", 0);
             }
@@ -105,16 +104,6 @@ public class Path {
         }
 
         return str;
-    }
-
-    private String strForNum(int i) {
-        // Assumes there will never be more than 20 turns options.
-        switch(i) {
-            case 1: return "1st";
-            case 2: return "2nd";
-            case 3: return "3rd";
-            default: return i + "th";
-        }
     }
 
     public String toString() {
@@ -138,7 +127,7 @@ public class Path {
         ArrayList<String> results = new ArrayList<>();
 
         for (Node n : this.path) {
-            String floor = strForNum(n.getFloor()) + " Floor";
+            String floor = Utils.strForNum(n.getFloor()) + " Floor";
             if(!results.contains(floor)) results.add(floor);
         }
 

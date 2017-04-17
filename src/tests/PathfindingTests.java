@@ -8,6 +8,7 @@ import org.junit.Test;
 import java.util.HashMap;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  * Created by mattm on 4/4/2017.
@@ -35,8 +36,12 @@ public class PathfindingTests {
         expected.addInOrder(n1);
         expected.addInOrder(n2);
         expected.addInOrder(n3);
-
-        assertEquals(test.findPath(n1, n3), expected);
+        try {
+            assertEquals(test.findPath(n1, n3), expected);
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail();
+        }
     }
 
     @Test
@@ -116,7 +121,11 @@ public class PathfindingTests {
         expected.addInOrder(n8);
         expected.addInOrder(n9);
         expected.addInOrder(n12);
-        assertEquals(path.findPath(n1, n12), expected);
+        try {
+            assertEquals(path.findPath(n1, n12), expected);
+        } catch (Exception e) {
+            fail();
+        }
     }
 
 }

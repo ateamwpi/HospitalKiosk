@@ -1,8 +1,7 @@
 package models.path;
 
 import core.KioskMain;
-import core.NodeInUseException;
-import core.RoomNotFoundException;
+import core.exception.*;
 import models.dir.Location;
 import models.dir.LocationType;
 import models.path.algo.AStar;
@@ -11,7 +10,7 @@ import models.path.algo.IPathfindingAlgorithm;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 /**
  * Created by mattm on 3/29/2017.
@@ -74,7 +73,7 @@ public class PathfindingManager {
         return null;
     }
 
-    public HashMap<Location, Double> getNearest(LocationType loc, Node start){
+    public HashMap<Location, Double> getNearest(LocationType loc, Node start) throws NearestNotFoundException {
         HashMap<Location, Double> nearests = new HashMap<Location, Double>();
         Collection<Location> locations = KioskMain.getDir().getDirectory(loc).getLocations().values();
 
@@ -87,6 +86,9 @@ public class PathfindingManager {
             }
         }
         System.out.println(nearests);
+        if(nearests.size() == 0) {
+            throw new NearestNotFoundException(loc, start.getFloor());
+        }
         return nearests;
     }
 
@@ -114,7 +116,7 @@ public class PathfindingManager {
     }
 
 
-    public Path findPath(Node start, Node end) {
+    public Path findPath(Node start, Node end) throws PathNotFoundException, NearestNotFoundException, FloorNotReachableException {
 
         if(start.getFloor() != end.getFloor()){
             //Node elevator = getNearest(LocationType.Elevator, start).getNode();
@@ -122,8 +124,14 @@ public class PathfindingManager {
             HashMap<Location, Double> nearests = getNearest(LocationType.Elevator, start);
             Node curr;
             Node matching;
+            Location min;
             do {
-                Location min = Collections.min(nearests.entrySet(), (entry1, entry2) -> (int)entry1.getValue().doubleValue() - (int)entry2.getValue().doubleValue()).getKey();
+                try {
+                    min = Collections.min(nearests.entrySet(), (entry1, entry2) -> (int)entry1.getValue().doubleValue() - (int)entry2.getValue().doubleValue()).getKey();
+                }
+                catch (NoSuchElementException e) {
+                    throw new FloorNotReachableException(start, end.getFloor());
+                }
                 curr = min.getNode();
                 matching = findMatching(curr, end.getFloor(), LocationType.Elevator);
                 nearests.remove(min);
