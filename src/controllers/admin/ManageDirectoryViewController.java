@@ -124,23 +124,15 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
 
         Button fulldir = new Button();
         fulldir.setText("Full Directory");
-        fulldir.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                setFullDirectory();
-            }
-        });
+        fulldir.setOnAction(event -> setFullDirectory());
+        fulldir.setPrefWidth(250);
         locationTypes.getChildren().add(fulldir);
 
         for (LocationType locType : LocationType.userValues()) {
             Button loc = new Button();
             loc.setText(locType.name());
-            loc.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    selectDirectory(locType);
-                }
-            });
+            loc.setOnAction(event -> selectDirectory(locType));
+            loc.setPrefWidth(250);
             locationTypes.getChildren().add(loc);
         }
 

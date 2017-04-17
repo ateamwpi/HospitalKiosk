@@ -27,8 +27,11 @@
               <RowConstraints maxHeight="94.0" minHeight="3.0" prefHeight="78.0" vgrow="SOMETIMES" />
           </rowConstraints>
           <Button mnemonicParsing="false" onAction="#clickBack" text="&lt;-" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
-          <VBox fx:id="locationTypes" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
-             <TextField fx:id="searchBox" promptText="Search" />
+          <VBox fx:id="locationTypes" spacing="10.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+              <TextField fx:id="searchBox" promptText="Search" />
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin>
           </VBox>
           <TableView fx:id="locationsTable" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
               <columns>
