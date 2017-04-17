@@ -21,6 +21,9 @@ public class PathfindingManager {
     private HashMap<Integer, Node> graph;
     private HashMap<String, Integer> ids;
     private IPathfindingAlgorithm astar;
+    //private IPathfindingAlgorithm bfs;
+    //private IPathfindingAlgorithm dfs;
+    private IPathfindingAlgorithm cur;
 
     public PathfindingManager(HashMap<Integer, Node> allNodes) {
         this.graph = allNodes;
@@ -29,6 +32,9 @@ public class PathfindingManager {
             if(n.getRoomName() != null && !n.getRoomName().equals("NONE")) this.ids.put(n.getRoomName(), n.getID());
         }
         this.astar = new AStar();
+        //this.bfs = new BreadthFirst();
+        //this.dfs = new DepthFirst();
+        this.cur = this.astar;
     }
 
     public Node getNode(int id) {
@@ -113,31 +119,32 @@ public class PathfindingManager {
         else return this.graph.get(this.ids.get(roomName));
     }
 
-
     public Path findPath(Node start, Node end) {
 
-        if(start.getFloor() != end.getFloor()){
-            //Node elevator = getNearest(LocationType.Elevator, start).getNode();
-            //System.out.println("start=" + start + " elevator=" + elevator);
-            HashMap<Location, Double> nearests = getNearest(LocationType.Elevator, start);
-            Node curr;
-            Node matching;
-            do {
-                Location min = Collections.min(nearests.entrySet(), (entry1, entry2) -> (int)entry1.getValue().doubleValue() - (int)entry2.getValue().doubleValue()).getKey();
-                curr = min.getNode();
-                matching = findMatching(curr, end.getFloor(), LocationType.Elevator);
-                nearests.remove(min);
-            } while(matching == null);
-            System.out.println("curr=" + curr + " matching=" + matching);
-            Path startFloor = this.astar.findPath(start, curr);
-            //System.out.println(findMatching(elevator, end.getFloor(), LocationType.Elevator));
-            Path endFloor = this.astar.findPath(matching, end);
-            System.out.println("startFloor: " + startFloor);
-            System.out.println("endFloor: " + endFloor);
-            return startFloor.addSteps(endFloor);
+        if(start.isBelkin() == end.isBelkin()) {
+            if (start.getFloor() != end.getFloor()) {
+                return this.findCrossFloor(start, end);
+            } else {
+                return this.cur.findPath(start, end);
+            }
         }
-        else{
-            return this.astar.findPath(start, end);
+        else {
+            return null;
         }
+    }
+
+    private Path findCrossFloor(Node start, Node end) {
+        HashMap<Location, Double> nearests = getNearest(LocationType.Elevator, start);
+        Node curr;
+        Node matching;
+        do {
+            Location min = Collections.min(nearests.entrySet(), (entry1, entry2) -> (int) entry1.getValue().doubleValue() - (int) entry2.getValue().doubleValue()).getKey();
+            curr = min.getNode();
+            matching = findMatching(curr, end.getFloor(), LocationType.Elevator);
+            nearests.remove(min);
+        } while (matching == null);
+        Path startFloor = this.cur.findPath(start, curr);
+        Path endFloor = this.cur.findPath(matching, end);
+        return startFloor.addSteps(endFloor);
     }
 }
