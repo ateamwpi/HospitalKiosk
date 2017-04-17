@@ -1,7 +1,7 @@
 package controllers;
 
 import core.KioskMain;
-import core.RoomNotFoundException;
+import core.exception.RoomNotFoundException;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;

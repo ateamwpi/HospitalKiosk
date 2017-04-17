@@ -5,7 +5,7 @@ import controllers.AbstractDirectoryViewController;
 import controllers.DirectionsViewController;
 import controllers.MainMenuController;
 import core.KioskMain;
-import core.RoomNotFoundException;
+import core.exception.RoomNotFoundException;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -100,15 +100,14 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
         } catch (RoomNotFoundException e) {
         }
         Location newLoc = new Location("", LocationType.userValues()[0], defaultNode);
-        locationsTable.getItems().add(1, newLoc);
-
+        locationsTable.getItems().add(0, newLoc);
         KioskMain.getDir().addLocation(newLoc);
-        int rowToEdit = locationsTable.getItems().indexOf(newLoc);
-        System.out.println("Row to edit is " + rowToEdit);
-        System.out.println(locationsTable.getItems());
-        //locationsTable.scrollTo(rowToEdit);
-        //locationsTable.getFocusModel().focus();
+        //System.out.println(locationsTable.getItems());
+        //locationsTable.edit(0, nameCol);
+        //System.out.println(locationsTable.getItems().iterator().next());
+        locationsTable.getSelectionModel().select(0);
         locationsTable.edit(0, nameCol);
+
     }
 
     @FXML

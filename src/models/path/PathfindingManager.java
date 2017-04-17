@@ -7,10 +7,7 @@ import models.dir.LocationType;
 import models.path.algo.AStar;
 import models.path.algo.IPathfindingAlgorithm;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 /**
  * Created by mattm on 3/29/2017.

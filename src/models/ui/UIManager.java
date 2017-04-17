@@ -17,7 +17,7 @@ public class UIManager {
 
     private Stage stage;
     private Scene scene;
-    private static DoubleProperty fontSize = new SimpleDoubleProperty(10);
+    private static DoubleProperty fontSize = new SimpleDoubleProperty(15);
 
     public UIManager(Stage stage) {
         this.stage = stage;
@@ -26,18 +26,18 @@ public class UIManager {
 
     public void setScene(IController controller) {
         scene = new Scene(controller.getRoot());
-        fontSize.bind(scene.widthProperty().add(scene.heightProperty()).divide(100));
+        //fontSize.bind(scene.widthProperty().add(scene.heightProperty()).divide(100));
         Screen screen = Screen.getPrimary();
-        Rectangle2D bounds = screen.getVisualBounds();
+//        Rectangle2D bounds = screen.getVisualBounds();
 
         controller.getRoot().styleProperty().bind(Bindings.concat("-fx-font-size: ", fontSize.asString(), ";"
                 ,"-fx-base: rgb(135, 138, 150);"));
-
+/*
         stage.setX(bounds.getMinX());
         stage.setY(bounds.getMinY());
         stage.setWidth(bounds.getWidth());
         stage.setHeight(bounds.getHeight());
-
+*/
         stage.setScene(scene);
     }
 
