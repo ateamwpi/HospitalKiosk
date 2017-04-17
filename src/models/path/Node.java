@@ -29,6 +29,7 @@ public class Node {
     private HashMap<LocationType, Integer> counts;
     private final boolean isNew;
     private boolean isBelkin;
+    private boolean isMain;
     private boolean isDone;
 
     /** This constructor should _ONLY_ be used when loading from the database. For any
@@ -117,6 +118,12 @@ public class Node {
             this.isBelkin = true;
         else
             this.isBelkin = false;
+
+
+        if(this.getX() >= 110 && this.getX() <= 910 && this.getY() >= 230 && this.getY() <= 680)
+            this.isMain = true;
+        else
+            this.isMain = false;
     }
 
     public void removeAllConnections() {
@@ -159,6 +166,10 @@ public class Node {
 
     public boolean isBelkin() {
         return this.isBelkin;
+    }
+
+    public boolean isMain() {
+        return this.isMain;
     }
 
     public final String getRoomName() {
