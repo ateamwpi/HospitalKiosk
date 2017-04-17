@@ -29,11 +29,6 @@
                         <Font size="36.0" />
                      </font>
                   </Label>
-                  <Label text="Submitted May 2017">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
                   <Pane prefHeight="42.0" prefWidth="1280.0" />
                   <Label text="Designed and Created by:">
                      <font>
@@ -111,8 +106,13 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
+                  <Label text="Submitted May 2017">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
                   <Pane prefHeight="42.0" prefWidth="1280.0" />
-                  <Label text="Special Thanks to Brigham and Woman's Faulkner Hospital and Andrew Shinn for their time and input.">
+                  <Label text="Special thanks to Brigham and Woman's Faulkner Hospital and Andrew Shinn for their time and input.">
                      <font>
                         <Font size="18.0" />
                      </font>
