@@ -26,6 +26,7 @@
       <element id="extracted-dir" path="$PROJECT_DIR$/derby-lib/derbyLocale_zh_CN.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/derby-lib/derbyLocale_zh_TW.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/derby-lib/derbyoptionaltools.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/jfoenix.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

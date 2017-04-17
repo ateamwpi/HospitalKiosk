@@ -1,24 +1,36 @@
 package controllers.admin;
 
+import com.jfoenix.controls.JFXButton;
 import controllers.AbstractController;
 import controllers.MainMenuController;
 import core.KioskMain;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 
 /**
  * Created by mattm on 3/29/2017.
  */
 public class AdminMenuController extends AbstractController {
     @FXML
-    private Button logoutBtn;
+    private JFXButton logoutBtn;
     @FXML
-    private Button manageDirectoryBtn;
+    private JFXButton manageDirectoryBtn;
     @FXML
-    private Button manageMapBtn;
+    private JFXButton manageMapBtn;
     @FXML
-    private Button kioskButton;
+    private JFXButton kioskButton;
+    @FXML
+    private Label title;
+    @FXML
+    private AnchorPane root;
+
+    @FXML
+    private void initialize(){
+        title.prefWidthProperty().bind(root.widthProperty());
+    }
 
     @FXML
     private void clickLogout(ActionEvent event) {
