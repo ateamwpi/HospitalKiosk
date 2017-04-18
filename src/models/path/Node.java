@@ -136,6 +136,7 @@ public class Node {
     }
 
     public void setRoomName(String name) throws NameInUseException {
+        if(name.equals(this.getRoomName())) return;
         if(KioskMain.getPath().hasRoomName(name)) {
             throw new NameInUseException(name);
         }
