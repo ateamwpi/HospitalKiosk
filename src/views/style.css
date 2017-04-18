@@ -19,11 +19,36 @@
 }
 
 /*title banner*/
-.title{
-    -fx-background-color: #004C8C;
-    -fx-text-fill: white;
-    -fx-alignment: center;
+.title {
+    -fx-text-fill: black;
+    -fx-alignment: center_left;
+    -fx-font: bold 21px sansserif;
+}
 
+.body {
+    -fx-text-fill: black;
+    -fx-font: 15px system;
+}
+
+.alert-vbox {
+    -fx-spacing: 20;
+    -fx-alignment: top_left;
+    -fx-padding: 24, 24, 24, 24;
+    -fx-background-color: #FAFAFA;
+}
+
+.alert-action-hbox {
+    -fx-spacing: 8;
+    -fx-alignmnet: bottom_right;
+    -fx-padding: 12, 24, 12, 24;
+
+}
+
+.alert-button {
+    -fx-font: bold 15px system;
+    -fx-text-fill: #2196f3;
+    -fx-alignment: center;
+    -jfx-button-type: flat;
 }
 
 

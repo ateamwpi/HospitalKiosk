@@ -9,7 +9,7 @@ import java.util.*;
 /**
  * Created by Jacob on 4/3/2017.
  */
-public class AStar implements IPathfindingAlgorithm {
+public class AStar extends AbstractPathfindingAlgorithm {
 
     public Path findPath(Node start, Node goal) throws PathNotFoundException {
         LinkedList<Node> closedSet;
@@ -59,17 +59,9 @@ public class AStar implements IPathfindingAlgorithm {
         throw new PathNotFoundException(start, goal);
     }
 
-    private Path constructPath(HashMap<Node, Node> cameFrom, Node end) {
-        Path p = new Path();
-        p.buildPath(end);
-        Node current = end;
-
-
-        while(cameFrom.keySet().contains(current)){
-            current = cameFrom.get(current);
-            p.buildPath(current);
-        }
-        return p;
+    @Override
+    public String getName() {
+        return "A* Search";
     }
 
     private double heuristicCost(Node start, Node goal){
