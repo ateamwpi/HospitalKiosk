@@ -1,0 +1,29 @@
+/*logout and back buttons on pages*/
+.navigation-button{
+    -fx-font-size: 14px;
+    -fx-background-color: #0097A7;
+    -fx-text-fill: white;
+    -fx-valignment: center;
+}
+
+ /*option buttons on pages*/
+.content-button{
+    -fx-font-size: 14px;
+    -fx-background-color: #0277BD;
+    -fx-text-fill: white;
+}
+
+/*main background color*/
+.background {
+    -fx-background-color: #FAFAFA;
+}
+
+/*title banner*/
+.title{
+    -fx-background-color: #004C8C;
+    -fx-text-fill: white;
+    -fx-alignment: center;
+
+}
+
+

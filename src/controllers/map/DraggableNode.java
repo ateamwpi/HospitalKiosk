@@ -1,7 +1,11 @@
 package controllers.map;
 
 import controllers.admin.AdminMapController;
-import core.WrongFloorException;
+import core.KioskMain;
+import core.Utils;
+import core.exception.NameInUseException;
+import core.exception.RoomNotFoundException;
+import core.exception.WrongFloorException;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -133,9 +137,16 @@ public class DraggableNode extends Circle {
 
     public void save() {
         // update the node
+        try {
+            node.setRoomName(getPreviewRoomName());
+        }
+        catch(NameInUseException e) {
+            Utils.showError("Room Name in Use!", "The room name " + getPreviewRoomName() + " is already in use on a different node! Please choose a new name.");
+            return;
+        }
+
         node.setX(getPreviewX());
         node.setY(getPreviewY());
-        node.setRoomName(getPreviewRoomName());
         try {
             node.setConnections(previewConnections);
         }

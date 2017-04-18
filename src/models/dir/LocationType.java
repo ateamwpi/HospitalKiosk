@@ -2,6 +2,8 @@ package models.dir;
 
 import javafx.scene.paint.Color;
 
+import java.util.ArrayList;
+
 /**
  * Created by mattm on 3/29/2017.
  */
@@ -11,6 +13,7 @@ public enum LocationType {
     Physician(Color.CADETBLUE),
     PointOfInterest(Color.ORANGE),
     Kiosk(Color.GREEN),
+    Entrance(Color.GREEN),
     Stairs(Color.DARKBLUE),
     Elevator(Color.DARKBLUE),
     Hallway(Color.GRAY),
@@ -27,7 +30,7 @@ public enum LocationType {
     }
 
     public boolean isInternal() {
-        return this.equals(Hallway) || this.equals(Unknown) || this.equals(Kiosk);
+        return this.equals(Hallway) || this.equals(Unknown) || this.equals(Kiosk) || this.equals(Entrance);
     }
 
     public boolean hasNearest() {
@@ -44,7 +47,22 @@ public enum LocationType {
             case "HALLWAY": return Hallway;
             case "PHYSICIAN": return Physician;
             case "KIOSK": return Kiosk;
+            case "ENTRANCE": return Entrance;
             default: return Unknown;
         }
+    }
+
+    /**
+     *
+     * @return The LocationTypes that a user can set a location to through the admin interface
+     */
+    public static LocationType[] userValues() {
+        ArrayList<LocationType> values = new ArrayList<>();
+        for(LocationType locType : values()) {
+            if(!locType.isInternal()) {
+                values.add(locType);
+            }
+        }
+        return values.toArray(new LocationType[values.size()]);
     }
 }

@@ -1,5 +1,7 @@
 package controllers.admin;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXPasswordField;
 import controllers.AbstractController;
 import controllers.MainMenuController;
 import core.KioskMain;
@@ -17,6 +19,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -27,11 +30,13 @@ import java.io.IOException;
 public class AdminLoginController extends AbstractController {
 
     @FXML
-    private Button loginBtn;
+    private JFXButton loginBtn;
     @FXML
-    private Button backBtn;
+    private JFXButton backBtn;
     @FXML
-    private PasswordField password;
+    private JFXPasswordField password;
+    @FXML
+    private AnchorPane root;
 
     @FXML
     private void clickBack(ActionEvent event) {
@@ -41,6 +46,11 @@ public class AdminLoginController extends AbstractController {
     @FXML
     private void clickLogin(ActionEvent event) {
         checkPassword();
+    }
+
+    @FXML
+    private void initialize() {
+//        loginBtn.getStyleClass().add("button-raised");
     }
 
     @FXML

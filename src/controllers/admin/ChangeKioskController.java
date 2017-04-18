@@ -1,9 +1,8 @@
 package controllers.admin;
 
 import controllers.AbstractController;
-import controllers.admin.AdminMenuController;
 import core.KioskMain;
-import core.RoomNotFoundException;
+import core.exception.RoomNotFoundException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
