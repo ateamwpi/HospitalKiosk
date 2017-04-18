@@ -160,19 +160,4 @@ public class MapController extends AbstractController implements IClickableContr
         Circle circle = new Circle(node.getX(), node.getY(), 5);
         addOverlay(circle);
     }
-/*
-    private void replaceAllNodes(Collection<Node> nodes){
-        overlay = new Group();
-        root.getChildren().add(overlay);
-        // add the canvas to overlay
-        overlay.getChildren().add(canvas);
-        mapView.setImage(map);
-        mapView.setPreserveRatio(true);
-        // set base overlay index
-        overlayIndex = overlay.getChildren().size();
-        for(Node n: nodes){
-            drawNode(n);
-
-        }
-    }*/
 }
