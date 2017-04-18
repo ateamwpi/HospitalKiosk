@@ -1,5 +1,6 @@
 package controllers.admin;
 
+import com.jfoenix.controls.JFXButton;
 import controllers.AbstractController;
 import controllers.MainMenuController;
 import core.KioskMain;
@@ -9,6 +10,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import models.path.Node;
+import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 
 /**
  * Created by mattm on 3/29/2017.
@@ -23,8 +26,15 @@ public class AdminMenuController extends AbstractController {
     @FXML
     private ComboBox<String> kioskLocations;
 
+    private JFXButton kioskButton;
     @FXML
-    private void initialize() {
+    private Label title;
+    @FXML
+    private AnchorPane root;
+
+    @FXML
+    private void initialize(){
+        title.prefWidthProperty().bind(root.widthProperty());
         kioskLocations.getItems().addAll(KioskMain.getPath().getRoomNames());
         kioskLocations.getSelectionModel().select(KioskMain.getDir().getTheKiosk().getNode().getRoomName());
         kioskLocations.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
@@ -36,7 +46,6 @@ public class AdminMenuController extends AbstractController {
             }
         }));
     }
-
 
     @FXML
     private void clickLogout(ActionEvent event) {
