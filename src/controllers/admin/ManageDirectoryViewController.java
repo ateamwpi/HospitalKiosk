@@ -127,7 +127,7 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
 
         for (LocationType locType : LocationType.userValues()) {
             Button loc = new Button();
-            loc.setText(locType.name());
+            loc.setText(locType.friendlyName());
             loc.setOnAction(event -> selectDirectory(locType));
             loc.setPrefWidth(250);
             locationTypes.getChildren().add(loc);
