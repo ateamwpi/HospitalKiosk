@@ -52,6 +52,10 @@ public class UIManager {
         return scene;
     }
 
+    public Stage getStage() {
+        return stage;
+    }
+
     public Parent getRoot() {
         return root;
     }

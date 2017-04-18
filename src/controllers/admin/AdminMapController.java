@@ -1,12 +1,16 @@
 package controllers.admin;
 
+import com.jfoenix.controls.JFXDialog;
 import com.sun.jndi.toolkit.url.Uri;
 import controllers.AbstractController;
 import controllers.IClickableController;
+import controllers.OptionAlertController;
 import controllers.map.*;
 import core.KioskMain;
 import core.Utils;
 import core.exception.NodeInUseException;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
@@ -201,8 +205,30 @@ public class AdminMapController extends AbstractController implements IClickable
         return false;
     }
 
+//    private boolean popupResult;
+//    private OptionAlertController popup;
+
     // returns true if admin chooses to discard changes
     private Boolean warnDiscardChanges() {
+//        popup = new OptionAlertController(getManageMapViewController().getRoot(), "Unsaved Changes", "All unsaved changed will be lost. Are you sure you want to continue?",
+//                "Cancel",
+//                new EventHandler<ActionEvent>() {
+//                    public void handle(ActionEvent event) {
+//                        popupResult = false;
+//                        popup.hide();
+//                    }
+//                },
+//                "Discard Change",
+//                new EventHandler<ActionEvent>() {
+//                    public void handle(ActionEvent event) {
+//                        System.out.println("handle");
+//                        popupResult = true;
+//                        System.out.println(popupResult);
+//                        popup.hide();
+//
+//                    }
+//                });
+//        popup.showCentered();
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Unsaved changes");
         alert.setHeaderText("All unsaved changes will be lost.");
@@ -211,6 +237,7 @@ public class AdminMapController extends AbstractController implements IClickable
         ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
         alert.getButtonTypes().setAll(discard, cancel);
         Optional<ButtonType> result = alert.showAndWait();
+//        System.out.println("done" + popupResult);
         return result.get() == discard;
     }
 

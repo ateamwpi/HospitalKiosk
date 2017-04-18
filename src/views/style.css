@@ -38,7 +38,7 @@
 }
 
 .alert-action-hbox {
-    -fx-spacing: 20;
+    -fx-spacing: 8;
     -fx-alignmnet: bottom_right;
     -fx-padding: 12, 24, 12, 24;
 

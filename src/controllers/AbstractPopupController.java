@@ -23,7 +23,7 @@ public abstract class AbstractPopupController extends AbstractController {
         this.instance = new JFXPopup(this.getRegion());
     }
 
-    protected JFXPopup getInstance() {
+    public JFXPopup getInstance() {
         return this.instance;
     }
 
@@ -33,6 +33,10 @@ public abstract class AbstractPopupController extends AbstractController {
 
     public void setParent(Parent parent) {
         this.parent = parent;
+    }
+
+    public void showAndWait() {
+        this.showCentered();
     }
 
     public void show(double x, double y) {
