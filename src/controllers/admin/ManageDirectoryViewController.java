@@ -99,7 +99,11 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
             defaultNode = KioskMain.getPath().getRoom(defaultRoomName);
         } catch (RoomNotFoundException e) {
         }
-        Location newLoc = new Location("", LocationType.userValues()[0], defaultNode);
+        LocationType newType = LocationType.userValues()[0];
+        if(dirType != null) {
+            newType = dirType;
+        }
+        Location newLoc = new Location("", newType, defaultNode);
         locationsTable.getItems().add(0, newLoc);
         KioskMain.getDir().addLocation(newLoc);
     }

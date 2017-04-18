@@ -45,6 +45,8 @@ public abstract class AbstractDirectoryViewController extends AbstractController
     @FXML
     protected ComboBox<String> locationDropdown;
 
+    protected LocationType dirType;
+
     protected AbstractDirectoryViewController(Object... data) {
         super(data);
     }
@@ -125,6 +127,7 @@ public abstract class AbstractDirectoryViewController extends AbstractController
      * @param locType Location type of directory
      */
     protected void selectDirectory(LocationType locType) {
+        dirType =locType;
         selectLocations(getLocationsOfType(locType));
     }
 
@@ -144,6 +147,7 @@ public abstract class AbstractDirectoryViewController extends AbstractController
      * Selects the locations based upon every location type.
      */
     protected void setFullDirectory() {
+        dirType = null;
         Collection<Location> locations = new ArrayList<>();
         KioskMain.getDir().getDirectories().values();
         for(LocationType locType : LocationType.values()) {
