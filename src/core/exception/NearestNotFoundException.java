@@ -15,7 +15,7 @@ public class NearestNotFoundException extends Exception {
     }
 
     public void printStackTrace() {
-        System.out.println("There are no " + this.loc.name() + "s on floor " + floor + "!");
+        System.out.println("There is no " + this.loc.friendlyName().toLowerCase() + " on floor " + floor + "!");
         super.printStackTrace();
     }
 }

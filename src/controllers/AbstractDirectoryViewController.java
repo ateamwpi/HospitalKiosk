@@ -78,7 +78,7 @@ public abstract class AbstractDirectoryViewController extends AbstractController
         locationDropdown.getItems().add("Full Directory");
         for (LocationType locType : LocationType.values()) {
             if (!locType.isInternal()) {
-                locationDropdown.getItems().add(locType.name());
+                locationDropdown.getItems().add(locType.friendlyName());
             }
 
         }

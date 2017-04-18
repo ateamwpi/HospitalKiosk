@@ -31,8 +31,8 @@ public class OptionAlertController extends AbstractPopupController {
         super(parent);
         this.alertTitle.setText(title);
         this.alertBody.setText(body);
-        this.button1.setText(btn1text);
-        this.button2.setText(btn2text);
+        this.button1.setText(btn1text.toUpperCase());
+        this.button2.setText(btn2text.toUpperCase());
         this.button1.setOnAction(btn1);
         this.button2.setOnAction(btn2);
     }

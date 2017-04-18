@@ -160,7 +160,7 @@ public class DirectoryViewController extends AbstractDirectoryViewController {
             getDirections();
         }
         catch (NearestNotFoundException e) {
-            String body = "There are no " + lt.name() + " on the " + Utils.strForNum(startNode.getFloor()) + " Floor!";
+            String body = "There is no " + lt.friendlyName().toLowerCase() + " on the " + Utils.strForNum(startNode.getFloor()) + " Floor!";
             Utils.showAlert(getRoot(), "Nearest Not Found!", body);
         }
     }
