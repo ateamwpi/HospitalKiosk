@@ -4,6 +4,7 @@ import controllers.AbstractController;
 import controllers.IClickableController;
 import controllers.map.*;
 import core.KioskMain;
+import core.Utils;
 import core.exception.NodeInUseException;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
@@ -29,6 +30,7 @@ import java.util.Optional;
 public class AdminMapController extends AbstractController implements IClickableController {
 
     private Collection<Node> nodes;
+
     private ManageMapViewController manageMapViewController;
     private DraggableNode selectedNode;
     private Map<Node, DraggableNode> draggableNodes;
@@ -171,6 +173,10 @@ public class AdminMapController extends AbstractController implements IClickable
             selectedNode.select();
             manageMapViewController.selectNode(selectedNode);
         }
+    }
+
+    public ManageMapViewController getManageMapViewController() {
+        return manageMapViewController;
     }
 
     private Boolean nodeIsSelected() {
