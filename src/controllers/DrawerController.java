@@ -2,6 +2,8 @@ package controllers;
 
 import com.jfoenix.controls.JFXHamburger;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
 
 /**
  * Created by dylan on 4/16/17.
@@ -9,10 +11,10 @@ import javafx.fxml.FXML;
 public class DrawerController extends AbstractController {
 
     @FXML
-    private JFXHamburger hamburger;
+    private Label drawerClose;
 
-    public JFXHamburger getHamburger() {
-        return hamburger;
+    public Label getDrawerClose() {
+        return drawerClose;
     }
 
     @Override

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXHamburger?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox fx:id="root" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<?import javafx.scene.control.Label?>
+<Pane fx:id="root" layoutX="6.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
     <VBox spacing="10.0">
         <padding>
           <Insets bottom="10" left="10" right="10" top="10" />
@@ -20,7 +20,10 @@
         <JFXButton fx:id="b2" buttonType="RAISED" prefHeight="74.0" prefWidth="200.0" text="Color 2" />
         <JFXButton fx:id="b3" buttonType="RAISED" prefHeight="74.0" prefWidth="200.0" text="Color 3" />
     </VBox>
-    <JFXHamburger fx:id="hamburger" alignment="TOP_CENTER">
-        <padding><Insets left="10.0" top="10.0" /></padding>
-    </JFXHamburger>
-</HBox>
+    <VBox>
+        <padding>
+            <Insets left="210" top="10"/>
+        </padding>
+        <Label fx:id="drawerClose" prefHeight="48.0" prefWidth="23.0" styleClass="chevron-left" stylesheets="@../styles/main-menu.css"/>
+    </VBox>
+</Pane>

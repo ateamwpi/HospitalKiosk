@@ -1,0 +1,10 @@
+.chevron-left {
+    -fx-background-image: url("../resources/icons/chevron-left.png");
+    -fx-background-size: 30px;
+    -fx-background-repeat: no-repeat;
+}
+.chevron-right {
+    -fx-background-image: url("../resources/icons/chevron-right.png");
+    -fx-background-size: 30px;
+    -fx-background-repeat: no-repeat;
+}

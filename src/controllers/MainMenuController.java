@@ -18,13 +18,11 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -39,7 +37,7 @@ public class MainMenuController extends AbstractController {
     private JFXDrawer drawer;
 
     @FXML
-    private JFXHamburger hamburger;
+    private Label drawerOpen;
 
     @FXML
     private StackPane mapContainer;
@@ -56,34 +54,24 @@ public class MainMenuController extends AbstractController {
         // add the map to the container
         mapController.setFloor(KioskMain.getDir().getTheKiosk().getNode().getFloor());
         mapContainer.getChildren().add(mapController.getRoot());
-
+        // setup drawer
         DrawerController drawerController = new DrawerController();
         drawer.setSidePane(drawerController.getRoot());
-        HamburgerBackArrowBasicTransition transition = new HamburgerBackArrowBasicTransition(hamburger);
-        transition.setRate(DRAWER_RATE);
-        hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED,(e)->{
-            transition.setRate(transition.getRate()*-1);
-            transition.play();
-            if(drawer.isShown()) {
-                drawer.close();
-            } else {
-                drawer.open();
-                hamburger.setVisible(false);
-            }
-        });
-        drawer.setOnDrawerClosed(new EventHandler<JFXDrawerEvent>() {
+        drawer.open();
+        drawerOpen.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
-            public void handle(JFXDrawerEvent event) {
-//                hamburger.setLayoutX(HAMBURGER_CLOSED_X);
-                hamburger.setVisible(true);
+            public void handle(MouseEvent event) {
+                drawerOpen.setVisible(false);
+                drawer.open();
             }
         });
-//        drawer.setOnDrawerOpened(new EventHandler<JFXDrawerEvent>() {
-//            @Override
-//            public void handle(JFXDrawerEvent event) {
-//                hamburger.setLayoutX(HAMBURGER_OPENED_X);
-//            }
-//        });
+        drawerController.getDrawerClose().setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                drawer.close();
+                drawerOpen.setVisible(true);
+            }
+        });
     }
 
 }
