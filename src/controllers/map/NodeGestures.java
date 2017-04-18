@@ -63,8 +63,14 @@ public class NodeGestures {
             // drag the node only if selected
             if (node.equals(adminMapController.getSelectedNode())) {
                 // calculate the new coordinates
-                int newX = (int) ((nodeDragContext.translateAnchorX + event.getSceneX() - nodeDragContext.mouseAnchorX) / scale);
-                int newY = (int) ((nodeDragContext.translateAnchorY + event.getSceneY() - nodeDragContext.mouseAnchorY) / scale);
+                int newX = (int) ((nodeDragContext.translateAnchorX + event.getSceneX() - nodeDragContext.mouseAnchorX) / scale
+                - adminMapController.getMapController().getOverlay().getTranslateX()/scale
+                        +(scale-1)/(scale*scale)*adminMapController.getMapController().getOverlay().getBoundsInParent().getWidth()*0.5
+                );
+                int newY = (int) ((nodeDragContext.translateAnchorY + event.getSceneY() - nodeDragContext.mouseAnchorY) / scale
+                - adminMapController.getMapController().getOverlay().getTranslateY()/scale
+                        +(scale-1)/(scale*scale)*adminMapController.getMapController().getOverlay().getBoundsInParent().getHeight()*0.5
+                );
                 // preview the node coordinates
                 node.previewX(newX);
                 node.previewY(newY);

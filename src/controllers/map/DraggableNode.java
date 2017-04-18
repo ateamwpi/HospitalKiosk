@@ -67,7 +67,7 @@ public class DraggableNode extends Circle {
             }
         }
         // Remove anything old
-        ArrayList<Node> toRemove = new ArrayList<Node>();
+         ArrayList<Node> toRemove = new ArrayList<Node>();
         for (Node n : previewConnections) {
             if(!nodes.contains(n)) {
                 toRemove.add(n);
