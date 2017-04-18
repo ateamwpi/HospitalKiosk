@@ -1,12 +1,16 @@
 package controllers.admin;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
 import controllers.AbstractController;
 import controllers.MainMenuController;
 import core.KioskMain;
+import core.exception.RoomNotFoundException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import models.path.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
@@ -15,12 +19,14 @@ import javafx.scene.layout.AnchorPane;
  */
 public class AdminMenuController extends AbstractController {
     @FXML
-    private JFXButton logoutBtn;
+    private Button logoutBtn;
     @FXML
-    private JFXButton manageDirectoryBtn;
+    private Button manageDirectoryBtn;
     @FXML
-    private JFXButton manageMapBtn;
+    private Button manageMapBtn;
     @FXML
+    private JFXComboBox<String> kioskLocations;
+
     private JFXButton kioskButton;
     @FXML
     private Label title;
@@ -30,6 +36,16 @@ public class AdminMenuController extends AbstractController {
     @FXML
     private void initialize(){
         title.prefWidthProperty().bind(root.widthProperty());
+        kioskLocations.getItems().addAll(KioskMain.getPath().getRoomNames());
+        kioskLocations.getSelectionModel().select(KioskMain.getDir().getTheKiosk().getNode().getRoomName());
+        kioskLocations.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
+            try {
+                Node newNode = KioskMain.getPath().getRoom(newValue);
+                KioskMain.getDir().getTheKiosk().setNode(newNode);
+            } catch (RoomNotFoundException e) {
+                e.printStackTrace();
+            }
+        }));
     }
 
     @FXML
@@ -47,10 +63,6 @@ public class AdminMenuController extends AbstractController {
         KioskMain.getUI().setScene(new ManageMapViewController());
     }
 
-    @FXML
-    private void pressedKiosk(ActionEvent event) {
-        KioskMain.getUI().setScene(new ChangeKioskController());
-    }
 
     @Override
     public String getURL() {
