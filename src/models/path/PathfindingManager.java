@@ -31,6 +31,8 @@ public class PathfindingManager {
         this.algorithms.add(new BreadthFirst());
         this.algorithms.add(new DepthFirst());
         this.selectAlgorithm("A* Search");
+        System.out.println("Loaded algorithms " + this.getAlgorithms());
+        System.out.println("Selected algorithm: " + this.getSelectedAlgorithm().getName());
     }
 
     public Node getNode(int id) {
@@ -50,6 +52,20 @@ public class PathfindingManager {
             }
         }
         return false;
+    }
+
+    public AbstractPathfindingAlgorithm getSelectedAlgorithm() {
+        return this.cur;
+    }
+
+    public ArrayList<String> getAlgorithms() {
+        ArrayList<String> names = new ArrayList<>();
+
+        for(AbstractPathfindingAlgorithm algo : this.algorithms) {
+            names.add(algo.getName());
+        }
+
+        return names;
     }
 
     public void addNode(Node n) {
