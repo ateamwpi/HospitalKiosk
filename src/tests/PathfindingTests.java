@@ -3,6 +3,7 @@ package tests;
 import models.path.Node;
 import models.path.Path;
 import models.path.PathfindingManager;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -17,8 +18,11 @@ public class PathfindingTests {
 
     public PathfindingTests() {}
 
-    @Test
-    public void testAStar1() {
+    private PathfindingManager pm1;
+    private PathfindingManager pm2;
+
+    @Before
+    public void setup1() {
         HashMap<Integer, Node> n = new HashMap<Integer, Node>();
         Node n1 = new Node(1, 1, 1, 4, "NONE");
         Node n2 = new Node(2, 2, 2, 4, "NONE");
@@ -30,22 +34,11 @@ public class PathfindingTests {
         n.put(1, n1);
         n.put(2, n2);
         n.put(3, n3);
-        PathfindingManager test = new PathfindingManager(n);
-
-        Path expected = new Path();
-        expected.addInOrder(n1);
-        expected.addInOrder(n2);
-        expected.addInOrder(n3);
-        try {
-            assertEquals(test.findPath(n1, n3), expected);
-        } catch (Exception e) {
-            e.printStackTrace();
-            fail();
-        }
+        this.pm1 = new PathfindingManager(n);
     }
 
-    @Test
-    public void testAStar2() {
+    @Before
+    public void setup2() {
         HashMap<Integer, Node> n = new HashMap<Integer, Node>();
         Node n1  = new Node(1,  1, 1, 4, "NONE");
         Node n2  = new Node(2,  1, 2, 4, "NONE");
@@ -107,23 +100,85 @@ public class PathfindingTests {
             n24.addConnection(n25);
             n25.addConnection(n19);
         } catch (Exception e) {}
-        PathfindingManager path = new PathfindingManager(n);
+        pm2 = new PathfindingManager(n);
+    }
+
+    @Test
+    public void testAStar1() {
+        pm1.selectAlgorithm("A* Search");
 
         Path expected = new Path();
-        expected.addInOrder(n1);
-        expected.addInOrder(n2);
-        expected.addInOrder(n3);
-        expected.addInOrder(n4);
-        expected.addInOrder(n5);
-        expected.addInOrder(n14);
-        expected.addInOrder(n6);
-        expected.addInOrder(n7);
-        expected.addInOrder(n8);
-        expected.addInOrder(n9);
-        expected.addInOrder(n12);
+        expected.addInOrder(pm1.getNode(1));
+        expected.addInOrder(pm1.getNode(2));
+        expected.addInOrder(pm1.getNode(3));
         try {
-            assertEquals(path.findPath(n1, n12), expected);
+            assertEquals(pm1.findPath(pm1.getNode(1), pm1.getNode(3)), expected);
         } catch (Exception e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @Test
+    public void testAStar2() {
+        pm2.selectAlgorithm("A* Search");
+
+        Path expected = new Path();
+        expected.addInOrder(pm2.getNode(1));
+        expected.addInOrder(pm2.getNode(2));
+        expected.addInOrder(pm2.getNode(3));
+        expected.addInOrder(pm2.getNode(4));
+        expected.addInOrder(pm2.getNode(5));
+        expected.addInOrder(pm2.getNode(14));
+        expected.addInOrder(pm2.getNode(6));
+        expected.addInOrder(pm2.getNode(7));
+        expected.addInOrder(pm2.getNode(8));
+        expected.addInOrder(pm2.getNode(9));
+        expected.addInOrder(pm2.getNode(12));
+        try {
+            assertEquals(pm2.findPath(pm2.getNode(1), pm2.getNode(12)), expected);
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @Test
+    public void testBFS1() {
+        pm1.selectAlgorithm("Breadth-First Search");
+
+        Path expected = new Path();
+        expected.addInOrder(pm1.getNode(1));
+        expected.addInOrder(pm1.getNode(2));
+        expected.addInOrder(pm1.getNode(3));
+        try {
+            assertEquals(pm1.findPath(pm1.getNode(1), pm1.getNode(3)), expected);
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @Test
+    public void testBFS2() {
+        pm2.selectAlgorithm("Breadth-First Search");
+
+        Path expected = new Path();
+        expected.addInOrder(pm2.getNode(1));
+        expected.addInOrder(pm2.getNode(2));
+        expected.addInOrder(pm2.getNode(3));
+        expected.addInOrder(pm2.getNode(4));
+        expected.addInOrder(pm2.getNode(5));
+        expected.addInOrder(pm2.getNode(14));
+        expected.addInOrder(pm2.getNode(6));
+        expected.addInOrder(pm2.getNode(7));
+        expected.addInOrder(pm2.getNode(8));
+        expected.addInOrder(pm2.getNode(9));
+        expected.addInOrder(pm2.getNode(12));
+        try {
+            assertEquals(pm2.findPath(pm2.getNode(1), pm2.getNode(12)), expected);
+        } catch (Exception e) {
+            e.printStackTrace();
             fail();
         }
     }
