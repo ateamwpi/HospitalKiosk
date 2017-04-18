@@ -74,8 +74,7 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
         setTableEdit();
         removeEntry.setDisable(true);
         title.setText("Manage Directory");
-        directions.setText("Add a new Location with the 'New' Button. To edit or remove a location, select a Location" +
-                " from the table and press the corresponding button");
+        directions.setText("");
         addLocationBtns();
 
     }
