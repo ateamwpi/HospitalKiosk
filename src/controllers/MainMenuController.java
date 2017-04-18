@@ -29,10 +29,6 @@ import java.io.IOException;
 
 public class MainMenuController extends AbstractController {
 
-    private static final Double DRAWER_RATE = -1.0;
-    private static final Integer HAMBURGER_OPENED_X = 220;
-    private static final Integer HAMBURGER_CLOSED_X = 10;
-
     @FXML
     private JFXDrawer drawer;
 
@@ -58,19 +54,13 @@ public class MainMenuController extends AbstractController {
         DrawerController drawerController = new DrawerController();
         drawer.setSidePane(drawerController.getRoot());
         drawer.open();
-        drawerOpen.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                drawerOpen.setVisible(false);
-                drawer.open();
-            }
+        drawerOpen.setOnMouseClicked(event -> {
+            drawerOpen.setVisible(false);
+            drawer.open();
         });
-        drawerController.getDrawerClose().setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                drawer.close();
-                drawerOpen.setVisible(true);
-            }
+        drawerController.getDrawerClose().setOnMouseClicked(event -> {
+            drawer.close();
+            drawerOpen.setVisible(true);
         });
     }
 
