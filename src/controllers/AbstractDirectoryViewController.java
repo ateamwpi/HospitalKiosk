@@ -127,7 +127,7 @@ public abstract class AbstractDirectoryViewController extends AbstractController
      * @param locType Location type of directory
      */
     protected void selectDirectory(LocationType locType) {
-        dirType =locType;
+        dirType = locType;
         selectLocations(getLocationsOfType(locType));
     }
 

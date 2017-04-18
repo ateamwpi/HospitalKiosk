@@ -1,6 +1,7 @@
 package controllers.admin;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
 import controllers.AbstractController;
 import controllers.MainMenuController;
 import core.KioskMain;
@@ -24,7 +25,7 @@ public class AdminMenuController extends AbstractController {
     @FXML
     private Button manageMapBtn;
     @FXML
-    private ComboBox<String> kioskLocations;
+    private JFXComboBox<String> kioskLocations;
 
     private JFXButton kioskButton;
     @FXML
