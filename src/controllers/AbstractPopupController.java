@@ -40,6 +40,7 @@ public abstract class AbstractPopupController extends AbstractController {
     }
 
     public void show(double x, double y) {
+        KioskMain.getUI().setPopup(this);
         this.instance.show(parent, JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.LEFT, x, y);
     }
 
@@ -48,6 +49,7 @@ public abstract class AbstractPopupController extends AbstractController {
     }
 
     public void hide() {
+        KioskMain.getUI().setPopup(null);
         this.instance.hide();
     }
 

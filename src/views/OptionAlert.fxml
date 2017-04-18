@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Text?>
 
 <AnchorPane fx:id="root" styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
-   <VBox prefHeight="208.0" prefWidth="275.0" spacing="20.0" styleClass="alert-vbox" stylesheets="@style.css">
+   <VBox spacing="20.0" styleClass="alert-vbox" stylesheets="@style.css">
       <children>
            <Label fx:id="alertTitle" prefHeight="45.0" prefWidth="231.0" styleClass="title" stylesheets="@style.css" text="Alert Title">
             <font>
@@ -25,10 +25,10 @@
                <Font size="15.0" />
             </font>
          </Text>
-         <HBox alignment="BOTTOM_RIGHT" prefHeight="100.0" prefWidth="200.0" styleClass="alert-action-hbox" stylesheets="@style.css">
+         <HBox alignment="BOTTOM_RIGHT" styleClass="alert-action-hbox" stylesheets="@style.css">
             <children>
-               <JFXButton fx:id="button1" minHeight="36.0" styleClass="alert-button" stylesheets="@style.css" text="Btn1" textAlignment="CENTER" />
-               <JFXButton fx:id="button2" alignment="CENTER_RIGHT" contentDisplay="CENTER" maxHeight="36.0" minHeight="36.0" ripplerFill="BLACK" styleClass="alert-button" stylesheets="@style.css" text="Btn2" textAlignment="CENTER" textFill="#2196f3">
+               <JFXButton fx:id="button1" maxHeight="36.0" minHeight="36.0" prefHeight="36.0" styleClass="alert-button" stylesheets="@style.css" text="button1" textAlignment="CENTER" />
+               <JFXButton fx:id="button2" alignment="CENTER_RIGHT" contentDisplay="CENTER" maxHeight="36.0" minHeight="36.0" prefHeight="36.0" ripplerFill="BLACK" styleClass="alert-button" stylesheets="@style.css" text="button2" textAlignment="CENTER" textFill="#2196f3">
                   <font>
                      <Font name="System Bold" size="15.0" />
                   </font>
