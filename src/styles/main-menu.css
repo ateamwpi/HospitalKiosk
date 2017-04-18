@@ -11,6 +11,45 @@
     -fx-background-position: center;
 }
 .drawer-toggle {
-    /*noinspection CssInvalidFunction*/
-    -fx-background-color: rgb(255, 255, 255, 0.9);
+    -fx-background-color: rgba(255, 255, 255, 0.9);
+}
+.start-icon {
+    -fx-background-image: url("../resources/icons/start.png");
+    -fx-background-size: 20px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+.end-icon {
+    -fx-background-image: url("../resources/icons/end.png");
+    -fx-background-size: 20px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+.ellipsis-icon {
+    -fx-background-image: url("../resources/icons/ellipsis.png");
+    -fx-background-size: 15px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+.place-icon {
+    -fx-background-image: url("../resources/icons/place.png");
+    -fx-background-size: 30px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+.hamburger-icon {
+    -fx-background-image: url("../resources/icons/hamburger.png");
+    -fx-background-size: 30px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+.search {
+    -fx-text-fill: #e7effe;
+
+    -jfx-unfocus-color: rgba(255,255,255,0.87);
+    -jfx-focus-color: rgba(255,255,255,0);
+}
+.location-border {
+    -fx-border-color: #e6e6e6;
+    -fx-border-style: solid none none none;
 }

@@ -18,5 +18,5 @@
             <Label fx:id="drawerOpen" prefHeight="48.0" prefWidth="23.0" styleClass="chevron-right" stylesheets="@../styles/main-menu.css"/>
         </Pane>
     </VBox>
-    <JFXDrawer fx:id="drawer" defaultDrawerSize="210.0" layoutY="-6.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" />
+    <JFXDrawer fx:id="drawer" defaultDrawerSize="310.0" layoutY="-6.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" />
 </AnchorPane>
