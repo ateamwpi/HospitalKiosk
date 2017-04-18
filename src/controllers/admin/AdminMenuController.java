@@ -26,6 +26,8 @@ public class AdminMenuController extends AbstractController {
     private Button manageMapBtn;
     @FXML
     private JFXComboBox<String> kioskLocations;
+    @FXML
+    private JFXComboBox<String> pathAlgos;
 
     private JFXButton kioskButton;
     @FXML
@@ -36,6 +38,14 @@ public class AdminMenuController extends AbstractController {
     @FXML
     private void initialize(){
         title.prefWidthProperty().bind(root.widthProperty());
+
+        pathAlgos.getItems().addAll(KioskMain.getPath().getAlgorithms());
+        pathAlgos.getSelectionModel().select(KioskMain.getPath().getSelectedAlgorithm().getName());
+        pathAlgos.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
+            KioskMain.getPath().selectAlgorithm(newValue);
+        }));
+
+
         kioskLocations.getItems().addAll(KioskMain.getPath().getRoomNames());
         kioskLocations.getSelectionModel().select(KioskMain.getDir().getTheKiosk().getNode().getRoomName());
         kioskLocations.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
