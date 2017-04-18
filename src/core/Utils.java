@@ -1,6 +1,9 @@
 package core;
 
+import controllers.AlertController;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
+import javafx.scene.layout.AnchorPane;
 
 /**
  * Created by mattm on 4/14/2017.
@@ -17,11 +20,8 @@ public class Utils {
         }
     }
 
-    public static void showError(String title, String body) {
-        Alert a = new Alert(Alert.AlertType.ERROR);
-        a.setHeaderText(title);
-        a.setTitle("Try Again!");
-        a.setContentText(body);
-        a.showAndWait();
+    public static void showAlert(Parent root, String title, String body) {
+        AlertController alert = new AlertController(root, title, body);
+        alert.showCentered();
     }
 }

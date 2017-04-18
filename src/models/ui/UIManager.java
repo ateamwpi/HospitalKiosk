@@ -6,6 +6,7 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -16,6 +17,7 @@ import javafx.stage.Stage;
 public class UIManager {
 
     private Stage stage;
+    private Parent root;
     private Scene scene;
     private static DoubleProperty fontSize = new SimpleDoubleProperty(15);
 
@@ -25,7 +27,8 @@ public class UIManager {
     }
 
     public void setScene(IController controller) {
-        scene = new Scene(controller.getRoot());
+        this.root = controller.getRoot();
+        scene = new Scene(this.root);
 //        fontSize.bind(scene.widthProperty().add(scene.heightProperty()).divide(100));
 //        Screen screen = Screen.getPrimary();
 //        Rectangle2D bounds = screen.getVisualBounds();
@@ -43,5 +46,17 @@ public class UIManager {
 
     public Node lookup(String query) {
         return scene.lookup(query);
+    }
+
+    public Scene getScene() {
+        return scene;
+    }
+
+    public Stage getStage() {
+        return stage;
+    }
+
+    public Parent getRoot() {
+        return root;
     }
 }
