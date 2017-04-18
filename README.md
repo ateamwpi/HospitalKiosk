@@ -13,4 +13,4 @@ This is a pathfinding application for Brigham and Woman's Faulkner Hospital deve
 ## Special Thanks
 * Wilson Wong - Professor
 * Binam Kayastha - Team Coach
-* Brigham and Woman's Faulkner Hospital and Andrew Shinn
+* Brigham and Women's Faulkner Hospital and Andrew Shinn
