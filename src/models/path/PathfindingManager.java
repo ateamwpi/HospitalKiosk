@@ -5,7 +5,9 @@ import core.exception.*;
 import models.dir.Location;
 import models.dir.LocationType;
 import models.path.algo.AStar;
-import models.path.algo.IPathfindingAlgorithm;
+import models.path.algo.BreadthFirst;
+import models.path.algo.AbstractPathfindingAlgorithm;
+import models.path.algo.DepthFirst;
 
 import java.util.*;
 
@@ -16,10 +18,8 @@ public class PathfindingManager {
 
     private HashMap<Integer, Node> graph;
     private HashMap<String, Integer> ids;
-    private IPathfindingAlgorithm astar;
-    //private IPathfindingAlgorithm bfs;
-    //private IPathfindingAlgorithm dfs;
-    private IPathfindingAlgorithm cur;
+    private ArrayList<AbstractPathfindingAlgorithm> algorithms = new ArrayList<AbstractPathfindingAlgorithm>();
+    private AbstractPathfindingAlgorithm cur;
 
     public PathfindingManager(HashMap<Integer, Node> allNodes) {
         this.graph = allNodes;
@@ -27,10 +27,10 @@ public class PathfindingManager {
         for (Node n : this.graph.values()) {
             if(n.getRoomName() != null && !n.getRoomName().equals("NONE")) this.ids.put(n.getRoomName(), n.getID());
         }
-        this.astar = new AStar();
-        //this.bfs = new BreadthFirst();
-        //this.dfs = new DepthFirst();
-        this.cur = this.astar;
+        this.algorithms.add(new AStar());
+        this.algorithms.add(new BreadthFirst());
+        this.algorithms.add(new DepthFirst());
+        this.selectAlgorithm("A* Search");
     }
 
     public Node getNode(int id) {
@@ -40,6 +40,16 @@ public class PathfindingManager {
     public void updateRoomName(Node n, String oldName) {
         this.ids.remove(oldName);
         this.ids.put(n.getRoomName(), n.getID());
+    }
+
+    public boolean selectAlgorithm(String name) {
+        for(AbstractPathfindingAlgorithm algo : this.algorithms) {
+            if(name.equals(algo.getName())) {
+                this.cur = algo;
+                return true;
+            }
+        }
+        return false;
     }
 
     public void addNode(Node n) {
