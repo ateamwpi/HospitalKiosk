@@ -41,6 +41,7 @@ public class NodeGestures {
             nodeDragContext.mouseAnchorY = event.getSceneY();
             nodeDragContext.translateAnchorX = node.getPreviewX();
             nodeDragContext.translateAnchorY = node.getPreviewY();
+
             // cancel event bubbling
             event.consume();
             // select node if not already selected
