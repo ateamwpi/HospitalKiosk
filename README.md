@@ -9,7 +9,7 @@ This is a pathfinding application for Brigham and Woman's Faulkner Hospital deve
 * Nik Castelino - Test Engineer
 * Jonathan Ariza - Document Analyst
 * Jacob Berman-Jolton - Software Engineer
-* Daving Tang - Software Engineer
+* David Tang - Software Engineer
 ## Special Thanks
 * Wilson Wong - Professor
 * Binam Kayastha - Team Coach
