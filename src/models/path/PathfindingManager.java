@@ -7,6 +7,7 @@ import models.dir.LocationType;
 import models.path.algo.AStar;
 import models.path.algo.BreadthFirst;
 import models.path.algo.AbstractPathfindingAlgorithm;
+import models.path.algo.DepthFirst;
 
 import java.util.*;
 
@@ -28,7 +29,7 @@ public class PathfindingManager {
         }
         this.algorithms.add(new AStar());
         this.algorithms.add(new BreadthFirst());
-        //this.algorithms.add(new DepthFirst());
+        this.algorithms.add(new DepthFirst());
         this.selectAlgorithm("A* Search");
     }
 

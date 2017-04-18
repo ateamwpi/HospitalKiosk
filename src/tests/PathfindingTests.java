@@ -112,7 +112,7 @@ public class PathfindingTests {
         expected.addInOrder(pm1.getNode(2));
         expected.addInOrder(pm1.getNode(3));
         try {
-            assertEquals(pm1.findPath(pm1.getNode(1), pm1.getNode(3)), expected);
+            assertEquals(expected, pm1.findPath(pm1.getNode(1), pm1.getNode(3)));
         } catch (Exception e) {
             e.printStackTrace();
             fail();
@@ -136,7 +136,7 @@ public class PathfindingTests {
         expected.addInOrder(pm2.getNode(9));
         expected.addInOrder(pm2.getNode(12));
         try {
-            assertEquals(pm2.findPath(pm2.getNode(1), pm2.getNode(12)), expected);
+            assertEquals(expected, pm2.findPath(pm2.getNode(1), pm2.getNode(12)));
         } catch (Exception e) {
             e.printStackTrace();
             fail();
@@ -152,7 +152,7 @@ public class PathfindingTests {
         expected.addInOrder(pm1.getNode(2));
         expected.addInOrder(pm1.getNode(3));
         try {
-            assertEquals(pm1.findPath(pm1.getNode(1), pm1.getNode(3)), expected);
+            assertEquals(expected, pm1.findPath(pm1.getNode(1), pm1.getNode(3)));
         } catch (Exception e) {
             e.printStackTrace();
             fail();
@@ -176,7 +176,54 @@ public class PathfindingTests {
         expected.addInOrder(pm2.getNode(9));
         expected.addInOrder(pm2.getNode(12));
         try {
-            assertEquals(pm2.findPath(pm2.getNode(1), pm2.getNode(12)), expected);
+            assertEquals(expected, pm2.findPath(pm2.getNode(1), pm2.getNode(12)));
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @Test
+    public void testDFS1() {
+        pm1.selectAlgorithm("Depth-First Search");
+
+        Path expected = new Path();
+        expected.addInOrder(pm1.getNode(1));
+        expected.addInOrder(pm1.getNode(2));
+        expected.addInOrder(pm1.getNode(3));
+        try {
+            assertEquals(expected, pm1.findPath(pm1.getNode(1), pm1.getNode(3)));
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @Test
+    public void testDFS2() {
+        pm2.selectAlgorithm("Depth-First Search");
+
+        Path expected = new Path();
+        expected.addInOrder(pm2.getNode(1));
+        expected.addInOrder(pm2.getNode(2));
+        expected.addInOrder(pm2.getNode(3));
+        expected.addInOrder(pm2.getNode(4));
+        expected.addInOrder(pm2.getNode(5));
+        expected.addInOrder(pm2.getNode(14));
+        expected.addInOrder(pm2.getNode(13));
+        expected.addInOrder(pm2.getNode(11));
+        expected.addInOrder(pm2.getNode(21));
+        expected.addInOrder(pm2.getNode(22));
+        expected.addInOrder(pm2.getNode(20));
+        expected.addInOrder(pm2.getNode(24));
+        expected.addInOrder(pm2.getNode(25));
+        expected.addInOrder(pm2.getNode(19));
+        expected.addInOrder(pm2.getNode(18));
+        expected.addInOrder(pm2.getNode(17));
+        expected.addInOrder(pm2.getNode(9));
+        expected.addInOrder(pm2.getNode(12));
+        try {
+            assertEquals(expected, pm2.findPath(pm2.getNode(1), pm2.getNode(12)));
         } catch (Exception e) {
             e.printStackTrace();
             fail();

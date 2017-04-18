@@ -1,5 +1,6 @@
 package models.path.algo;
 
+import controllers.AbstractController;
 import core.KioskMain;
 import core.exception.PathNotFoundException;
 import models.path.Node;
@@ -11,7 +12,7 @@ import java.util.Stack;
 /**
  * Created by Kevin O'Brien on 4/18/2017.
  */
-public class DepthFirst implements IPathfindingAlgorithm {
+public class DepthFirst extends AbstractPathfindingAlgorithm {
     private HashMap<Node, Boolean> marked;
     private HashMap<Node, Node> edgeTo;
     private Node s;
@@ -23,7 +24,12 @@ public class DepthFirst implements IPathfindingAlgorithm {
         s = start;
         dfs(s);
 
-        return pathTo(goal);
+        return constructPath(edgeTo, goal);
+    }
+
+    @Override
+    public String getName() {
+        return "Depth-First Search";
     }
 
     private void dfs(Node v) {
@@ -35,20 +41,4 @@ public class DepthFirst implements IPathfindingAlgorithm {
             }
         }
     }
-
-    private Path pathTo(Node v) {
-        Path path = new Path();
-        if (!hasPathTo(v)) return path;
-        for (Node x = v; x != s; x = edgeTo.get(x)) {
-            path.buildPath(x);
-        }
-        path.buildPath(s);
-        System.out.println(path);
-        return path;
-    }
-
-    private boolean hasPathTo(Node v) {
-        return marked.get(v);
-    }
-
 }
