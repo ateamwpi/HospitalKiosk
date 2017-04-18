@@ -28,6 +28,11 @@
                <VBox.margin>
                   <Insets left="10.0" right="10.0" />
                </VBox.margin></Button>
+            <Button mnemonicParsing="false" onAction="#clickPrint" text="Print Directions">
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin>
+            </Button>
             <ChoiceBox fx:id="floors">
                <VBox.margin>
                   <Insets left="10.0" right="10.0" />
