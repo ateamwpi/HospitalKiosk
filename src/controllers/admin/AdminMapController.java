@@ -1,5 +1,6 @@
 package controllers.admin;
 
+import com.sun.jndi.toolkit.url.Uri;
 import controllers.AbstractController;
 import controllers.IClickableController;
 import controllers.map.*;
@@ -305,11 +306,7 @@ public class AdminMapController extends AbstractController implements IClickable
     }
 
     private void showNodeInUseAlert() {
-        Alert nodeUsed = new Alert(Alert.AlertType.ERROR);
-        nodeUsed.setHeaderText("This Node is in Use");
-        nodeUsed.setContentText("A location in the directory currently refers to this node.");
-        nodeUsed.setTitle("Node In Use");
-        nodeUsed.showAndWait();
+        Utils.showAlert(getRoot(), "Node In Use", "A location in the directory currently refers to this node.");
     }
 
     private void drawDraggableNode(DraggableNode draggableNode) {

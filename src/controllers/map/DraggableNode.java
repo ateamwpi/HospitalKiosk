@@ -86,11 +86,7 @@ public class DraggableNode extends Circle {
             adminMapController.drawDraggableConnection(this, adminMapController.getDraggableNode(node));
         }
         else {
-            Alert invalidConnection = new Alert(Alert.AlertType.ERROR);
-            invalidConnection.setHeaderText("Invalid Node Connection");
-            invalidConnection.setContentText("You cannot add this connection as the node is on a different floor.");
-            invalidConnection.setTitle("Invalid Node Connection");
-            invalidConnection.showAndWait();
+            Utils.showAlert(adminMapController.getManageMapViewController().getRoot(), "Invalid Node Connection!", "You cannot add this connection as the nodes are on different floors!");
         }
     }
 

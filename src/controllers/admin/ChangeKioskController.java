@@ -2,6 +2,7 @@ package controllers.admin;
 
 import controllers.AbstractController;
 import core.KioskMain;
+import core.Utils;
 import core.exception.RoomNotFoundException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -36,11 +37,7 @@ public class ChangeKioskController extends AbstractController {
             KioskMain.getDir().getTheKiosk().setNode(kioskNode);
             KioskMain.getUI().setScene(new AdminMenuController());
         } catch(RoomNotFoundException e) {
-            Alert invalidRoom = new Alert(Alert.AlertType.ERROR);
-            invalidRoom.setHeaderText("Invalid Room!");
-            invalidRoom.setTitle("Try Again!");
-            invalidRoom.setContentText("Please enter a room that is currently in the database!");
-            invalidRoom.showAndWait();
+            Utils.showAlert(getRoot(), "Invalid Room!", "Please enter a room that is currently in the database!");
             room.clear();
         }
 

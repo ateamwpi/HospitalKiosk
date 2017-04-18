@@ -80,6 +80,8 @@ public class AdminAddLocationController extends AbstractController {
 
     private void blankNameAlert() {
         Utils.showAlert(getRoot(), "Name cannot be blank!", "Please enter a name for this location!");
+//        Alert blankName = new Alert(Alert.AlertType.ERROR);
+//        blankName.setContentText("Please enter a name for this location!");
     }
 
 }
