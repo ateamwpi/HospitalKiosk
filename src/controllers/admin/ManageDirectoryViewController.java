@@ -129,7 +129,7 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
 
         for (LocationType locType : LocationType.userValues()) {
             JFXButton loc = new JFXButton();
-            loc.setText(locType.name());
+            loc.setText(locType.friendlyName());
             loc.setOnAction(event -> selectDirectory(locType));
             loc.setPrefWidth(120);
             loc.getStylesheets().add("@../../views/style.css");
