@@ -4,25 +4,28 @@ import controllers.map.MapController;
 import core.KioskMain;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
+import javafx.print.*;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Region;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import models.path.Node;
+import javafx.scene.transform.Scale;
 import models.path.Path;
 
-import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by mattm on 3/29/2017.
  */
 public class DirectionsViewController extends AbstractController {
 
-    private Node startNode;
-    private Node endNode;
+    private Path path;
+
+    private MapController mapController;
 
     @FXML
     private Button backBtn;
@@ -31,24 +34,22 @@ public class DirectionsViewController extends AbstractController {
     @FXML
     private AnchorPane mapContainer;
     @FXML
-    private Text directionsText;
+    private TextArea directionsText;
     @FXML
     private ChoiceBox<String> floors;
 
-    DirectionsViewController(Node startNode, Node endNode) {
-        super(startNode, endNode);
+    DirectionsViewController(Path path) {
+        super(path);
     }
 
     @FXML
     private void initialize() {
         // load the map controller
-        MapController mapController = new MapController();
+        mapController = new MapController();
         // add the map to the container
         mapContainer.getChildren().add(mapController.getRoot());
-        // find the shortest path
-        Path path = KioskMain.getPath().findPath(startNode, endNode);
         // draw the path on the map
-        mapController.setFloor(startNode.getFloor());
+        mapController.setFloor(path.getStart().getFloor());
         mapController.drawPath(path);
         floors.getItems().addAll(path.getFloorsSpanning());
         floors.getSelectionModel().selectFirst();
@@ -68,7 +69,7 @@ public class DirectionsViewController extends AbstractController {
 
     @FXML
     private void clickBack(ActionEvent event) {
-        KioskMain.setScene(new DirectoryViewController());
+        KioskMain.getUI().setScene(new DirectoryViewController());
     }
 
     @FXML
@@ -77,14 +78,49 @@ public class DirectionsViewController extends AbstractController {
     }
 
     @FXML
+    private void clickPrint(ActionEvent event) {
+        String dirs = "\n\nBrigham and Women's Faulkner Hospital Directions\n";
+        dirs += "From: " + path.getStart().getRoomName() + "\n";
+        dirs += "To: " + path.getEnd().getRoomName() + "\n";
+        dirs += directionsText.getText();
+        Text text = new Text();
+        text.setFont(new Font(14));
+        text.setText(dirs);
+        print(text);
+
+    }
+
+    private void print(Node first) {
+        Printer printer = Printer.getDefaultPrinter();
+        PageLayout pageLayout = printer.createPageLayout(Paper.NA_LETTER, PageOrientation.PORTRAIT, Printer.MarginType.DEFAULT);
+        PrinterJob job = PrinterJob.createPrinterJob();
+        if (job != null && job.showPrintDialog(null)) {
+            boolean success = false;
+            job.printPage(first);
+            String orig = floors.getSelectionModel().getSelectedItem();
+            for (String s : path.getFloorsSpanning()) {
+                floors.getSelectionModel().select(s);
+                double scaleX = pageLayout.getPrintableWidth() / mapContainer.getBoundsInParent().getWidth();
+                Scale scale = new Scale(scaleX, scaleX);
+                mapContainer.getTransforms().add(scale);
+                success = job.printPage(mapContainer);
+                mapContainer.getTransforms().remove(scale);
+            }
+            floors.getSelectionModel().select(orig);
+            if (success) {
+                job.endJob();
+            }
+        }
+    }
+
+    @FXML
     private void clickDone(ActionEvent event) {
-        KioskMain.setScene(new MainMenuController());
+        KioskMain.getUI().setScene(new MainMenuController());
     }
 
     @Override
     public void initData(Object... data) {
-        this.startNode = (Node) data[0];
-        this.endNode = (Node) data[1];
+        this.path = (Path)data[0];
     }
 
     @Override

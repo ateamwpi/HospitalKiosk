@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="root" styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+   <VBox prefHeight="208.0" prefWidth="275.0" spacing="20.0" styleClass="alert-vbox" stylesheets="@style.css">
+      <children>
+           <Label fx:id="alertTitle" prefHeight="45.0" prefWidth="231.0" styleClass="title" stylesheets="@style.css" text="Alert Title">
+            <font>
+               <Font name="SansSerif Bold" size="21.0" />
+            </font>
+            <VBox.margin>
+               <Insets />
+            </VBox.margin>
+         </Label>
+         <Text fx:id="alertBody" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="body" text="test" wrappingWidth="230.0">
+            <font>
+               <Font size="15.0" />
+            </font>
+         </Text>
+         <HBox alignment="BOTTOM_RIGHT" prefHeight="100.0" prefWidth="200.0" styleClass="alert-action-hbox" stylesheets="@style.css">
+            <children>
+               <JFXButton fx:id="okButton" alignment="CENTER_RIGHT" contentDisplay="CENTER" maxHeight="36.0" minHeight="36.0" onAction="#clickOk" ripplerFill="BLACK" styleClass="alert-button" stylesheets="@style.css" text="OK" textAlignment="CENTER" textFill="#2196f3">
+                  <font>
+                     <Font name="System Bold" size="15.0" />
+                  </font>
+               </JFXButton>
+            </children>
+         </HBox>
+      </children>
+      <padding>
+         <Insets bottom="24.0" left="24.0" right="24.0" top="24.0" />
+      </padding>
+   </VBox>
+</AnchorPane>

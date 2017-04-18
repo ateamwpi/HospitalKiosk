@@ -10,10 +10,14 @@ public class DirectoryManager {
 
     private HashMap<LocationType, Directory> directories;
     private Location theKiosk;
+    private Location mainEntr;
+    private Location belkinEntr;
 
-    public DirectoryManager(HashMap<LocationType, Directory> allLocations, Location theKiosk) {
+    public DirectoryManager(HashMap<LocationType, Directory> allLocations, Location theKiosk, Location mainEntr, Location belkinEntr) {
         this.directories = allLocations;
         this.theKiosk = theKiosk;
+        this.mainEntr = mainEntr;
+        this.belkinEntr = belkinEntr;
     }
 
     public void addLocation(Location l) {
@@ -22,6 +26,14 @@ public class DirectoryManager {
 
     public Location getTheKiosk() {
         return this.theKiosk;
+    }
+
+    public Location getMainEntr() {
+        return this.mainEntr;
+    }
+
+    public Location getBelkinEntr() {
+        return this.belkinEntr;
     }
 
     public void removeLocation(Location l) {

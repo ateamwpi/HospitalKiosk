@@ -1,9 +1,9 @@
 package controllers.admin;
 
 import controllers.AbstractController;
-import controllers.IController;
 import core.KioskMain;
-import core.RoomNotFoundException;
+import core.Utils;
+import core.exception.RoomNotFoundException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -43,7 +43,7 @@ public class AdminAddLocationController extends AbstractController {
     @FXML
     private void clickBack(ActionEvent event) throws IOException {
         //back button goes to Admin menu
-        KioskMain.setScene(new ManageDirectoryViewController());
+        KioskMain.getUI().setScene(new ManageDirectoryViewController());
     }
 
     @FXML
@@ -62,7 +62,7 @@ public class AdminAddLocationController extends AbstractController {
             LocationType locType = locationDropdown.getValue();
             Location L = new Location(locName, locType, KioskMain.getPath().getRoom(roomName));
             KioskMain.getDir().addLocation(L);
-            KioskMain.setScene(new ManageDirectoryViewController());
+            KioskMain.getUI().setScene(new ManageDirectoryViewController());
         } else {
             blankNameAlert();
         }
@@ -75,20 +75,13 @@ public class AdminAddLocationController extends AbstractController {
      * for rooms.
      */
     private void invalidRoomAlert() {
-        Alert invalidRoom = new Alert(Alert.AlertType.ERROR);
-        invalidRoom.setHeaderText("Invalid Room!");
-        invalidRoom.setTitle("Try Again!");
-        invalidRoom.setContentText("Please enter a room that is currently in the database!");
-        invalidRoom.showAndWait();
-        place.clear();
+        Utils.showAlert(getRoot(), "Invalid Room!", "Please enter a room that is currently in the database!");
     }
 
     private void blankNameAlert() {
-        Alert blankName = new Alert(Alert.AlertType.ERROR);
-        blankName.setHeaderText("Name cannot be blank!");
-        blankName.setTitle("Try Again!");
-        blankName.setContentText("Please enter a name for this location!");
-        blankName.show();
+        Utils.showAlert(getRoot(), "Name cannot be blank!", "Please enter a name for this location!");
+//        Alert blankName = new Alert(Alert.AlertType.ERROR);
+//        blankName.setContentText("Please enter a name for this location!");
     }
 
 }

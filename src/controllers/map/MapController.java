@@ -2,34 +2,21 @@ package controllers.map;
 
 import controllers.AbstractController;
 import controllers.IClickableController;
-import controllers.admin.ManageMapViewController;
-import core.KioskMain;
-import core.NodeInUseException;
-import javafx.scene.control.Alert;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
-import javafx.util.Pair;
 import models.path.Node;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Point2D;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Region;
 import models.path.Path;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by dylan on 4/2/17.
@@ -97,7 +84,7 @@ public class MapController extends AbstractController implements IClickableContr
     }
 
     public void drawPath(Path p) {
-        if(p.getStart().getFloor() == this.floor) drawNode(p.getStart());
+        if(p.getStart().getFloor() == this.floor) drawNode(p.getStart(), Color.BLUE);
         for (int i = 1; i < p.getPath().size(); i++) {
             if(p.getStep(i-1).getFloor() == this.floor && p.getStep(i).getFloor() == this.floor)
                 drawConnection(p.getStep(i - 1), p.getStep(i));
@@ -106,12 +93,12 @@ public class MapController extends AbstractController implements IClickableContr
             else if(p.getStep(i).getFloor() == this.floor && p.getStep(i-1).getFloor() != this.floor)
                 drawMidpoint(p.getStep(i));
         }
-        if(p.getEnd().getFloor() == this.floor) drawNode(p.getEnd());
+        if(p.getEnd().getFloor() == this.floor) drawNode(p.getEnd(), Color.RED);
     }
 
     private void drawMidpoint(Node n) {
         Rectangle r = new Rectangle(n.getX()-5, n.getY()-5, 10, 10);
-        r.setFill(Color.BLACK);
+        r.setFill(Color.GREEN);
         addOverlay(r);
     }
 
@@ -156,8 +143,27 @@ public class MapController extends AbstractController implements IClickableContr
         addOverlay(0, line);
     }
 
-    private void drawNode(Node node) {
-        Circle circle = new Circle(node.getX(), node.getY(), 5);
+    public void drawNode(Node node, Color c) {
+        Circle circle = new Circle(node.getX(), node.getY(), 5, c);
         addOverlay(circle);
+    }
+
+    public void drawNode(Node node) {
+        drawNode(node, Color.BLACK);
+    }
+
+    private void replaceAllNodes(Collection<Node> nodes){
+        overlay = new Group();
+        root.getChildren().add(overlay);
+        // add the canvas to overlay
+        overlay.getChildren().add(canvas);
+        mapView.setImage(map);
+        mapView.setPreserveRatio(true);
+        // set base overlay index
+        overlayIndex = overlay.getChildren().size();
+        for(Node n: nodes){
+            drawNode(n);
+
+        }
     }
 }

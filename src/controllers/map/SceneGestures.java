@@ -136,6 +136,8 @@ public class SceneGestures {
             mapController.getOverlay().setTranslateX(
                     mapController.getOverlay().getTranslateX()*scale/oldScale);//mapController.getOverlay().getScaleX());
             mapController.getOverlay().setScaleY(scale);
+//            mapController.getOverlay().setScaleX(scale);
+//            mapController.getOverlay().setScaleY(scale);
 
             mapController.getOverlay().setTranslateY(
                     mapController.getOverlay().getTranslateY()*scale/oldScale);//mapController.getOverlay().getScaleX());
@@ -146,6 +148,7 @@ public class SceneGestures {
 
             // note: pivot value must be untransformed, i. e. without scaling
             canvas.setPivot(f,f);//*dx, f*dy);
+            //canvas.setPivot(f/**dx*/, f/**dy*/);
 
             event.consume();
 

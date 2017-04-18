@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
@@ -8,33 +9,111 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Text?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.Line?>
 
-<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
-    <SplitPane dividerPositions="0.29797979797979796" prefHeight="400.0" prefWidth="600.0">
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-            <Text layoutX="30.0" layoutY="82.0" strokeType="OUTSIDE" strokeWidth="0.0" text="x" />
-            <TextField layoutX="60.0" layoutY="64.0" prefHeight="27.0" prefWidth="59.0" fx:id="x" />
-            <Text layoutX="30.0" layoutY="117.0" strokeType="OUTSIDE" strokeWidth="0.0" text="y" />
-            <TextField fx:id="y" layoutX="60.0" layoutY="99.0" prefHeight="27.0" prefWidth="59.0" />
-            <Text layoutX="16.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0" text="room" />
-            <TextField fx:id="room" layoutX="60.0" layoutY="133.0" prefHeight="27.0" prefWidth="59.0" />
-            <Button fx:id="backBtn" layoutX="11.0" layoutY="14.0" mnemonicParsing="false" onAction="#clickBack" text="Back" />
-            <Text layoutX="13.0" layoutY="178.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Connections" />
-            <Button fx:id="saveNode" layoutX="15.0" layoutY="320.0" mnemonicParsing="false" onAction="#clickSave" prefHeight="27.0" prefWidth="146.0" text="Save" />
-            <Text layoutX="69.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="id" />
-            <Button fx:id="nodeAction" layoutX="14.0" layoutY="357.0" mnemonicParsing="false" onAction="#clickNodeAction" prefHeight="27.0" prefWidth="146.0" text="Delete" />
-            <TableView fx:id="tableNeighbors" layoutX="8.0" layoutY="185.0" prefHeight="86.0" prefWidth="160.0">
-                <columns>
-                    <TableColumn fx:id="idColumn" prefWidth="114.33334350585938" text="Node ID" />
-                </columns>
-            </TableView>
-            <TextField fx:id="newNeighbor" layoutX="23.0" layoutY="276.0" prefHeight="25.0" prefWidth="86.0" />
-            <Button fx:id="deleteNeighbor" layoutX="139.0" layoutY="159.0" mnemonicParsing="false" onAction="#clickDeleteNeighbor" text="X" />
-            <Button fx:id="addNeighbor" layoutX="118.0" layoutY="276.0" mnemonicParsing="false" onAction="#clickAddNeighbor" text="Add" />
-            <Label fx:id="id" layoutX="90.0" layoutY="39.0" prefHeight="17.0" prefWidth="59.0" />
-         <ChoiceBox fx:id="floors" layoutX="62.0" layoutY="14.0" prefHeight="25.0" prefWidth="100.0" />
-        </AnchorPane>
-        <AnchorPane fx:id="mapContainer" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
-    </SplitPane>
+<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <SplitPane dividerPositions="0.29797979797979796" prefHeight="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <GridPane layoutY="14.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="ALWAYS" minWidth="20.0" />
+                      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints maxHeight="125.0" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="241.0" minHeight="10.0" prefHeight="16.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="309.0" minHeight="0.0" prefHeight="29.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="309.0" minHeight="0.0" prefHeight="26.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="309.0" minHeight="0.0" prefHeight="31.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="309.0" minHeight="10.0" prefHeight="24.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="309.0" minHeight="10.0" prefHeight="18.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="309.0" minHeight="0.0" prefHeight="166.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="309.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="309.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Button fx:id="backBtn" mnemonicParsing="false" onAction="#clickBack" text="Back" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                           <GridPane.margin>
+                              <Insets left="10.0" />
+                           </GridPane.margin>
+                        </Button>
+                        <ChoiceBox fx:id="floors" prefWidth="150.0" GridPane.columnIndex="1">
+                           <GridPane.margin>
+                              <Insets left="5.0" right="5.0" />
+                           </GridPane.margin>
+                        </ChoiceBox>
+                        <Label text="ID :" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                           <GridPane.margin>
+                              <Insets right="10.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <Label fx:id="id" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </Label>
+                        <Label text="x :" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                           <GridPane.margin>
+                              <Insets right="10.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <Label text="y :" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                           <GridPane.margin>
+                              <Insets right="10.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" fx:id="x">
+                           <GridPane.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </GridPane.margin>
+                        </TextField>
+                        <TextField fx:id="y" prefHeight="20.0" prefWidth="56.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                           <GridPane.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </GridPane.margin>
+                        </TextField>
+                        <Label text="room" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                           <GridPane.margin>
+                              <Insets right="10.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <TextField fx:id="room" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                           <GridPane.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </GridPane.margin>
+                        </TextField>
+                        <Button fx:id="deleteNeighbor" mnemonicParsing="false" onAction="#clickDeleteNeighbor" text="Delete Connection" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                           <GridPane.margin>
+                              <Insets right="5.0" />
+                           </GridPane.margin>
+                        </Button>
+                        <TableView fx:id="tableNeighbors" GridPane.columnSpan="2147483647" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7" GridPane.vgrow="ALWAYS">
+                          <columns>
+                            <TableColumn fx:id="idColumn" minWidth="300.0" prefWidth="-1.0" resizable="false" text="Connection Node ID" />
+                          </columns>
+                        </TableView>
+                        <TextField fx:id="newNeighbor" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="9" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                           <GridPane.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </GridPane.margin>
+                        </TextField>
+                        <Button fx:id="addNeighbor" mnemonicParsing="false" onAction="#clickAddNeighbor" text="Add Connection" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="9" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Button fx:id="saveNode" mnemonicParsing="false" onAction="#clickSave" text="Save" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Button fx:id="nodeAction" mnemonicParsing="false" onAction="#clickNodeAction" text="Delete" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Line endX="100.0" startX="-100.0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" GridPane.vgrow="ALWAYS" />
+                        <Line endX="100.0" startX="-100.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" GridPane.vgrow="ALWAYS" />
+                     </children>
+                  </GridPane>
+               </children>
+            </AnchorPane>
+          <AnchorPane fx:id="mapContainer" minHeight="0.0" minWidth="0.0" prefHeight="398.0" prefWidth="386.0" />
+        </items>
+      </SplitPane>
+   </children>
 </AnchorPane>

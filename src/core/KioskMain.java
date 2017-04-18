@@ -3,10 +3,12 @@ package core;
 import controllers.IController;
 import controllers.MainMenuController;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
-import javafx.scene.layout.Region;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import models.db.DatabaseManager;
 import models.dir.Directory;
@@ -16,10 +18,11 @@ import models.dir.LocationType;
 import models.path.PathfindingManager;
 import models.path.Node;
 import models.tts.TTSManager;
+import models.ui.UIManager;
 
-import java.io.*;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Scanner;
 
 public class KioskMain extends Application {
 
@@ -27,28 +30,22 @@ public class KioskMain extends Application {
     private static PathfindingManager thePathManager;
     private static DatabaseManager theDBManager;
     private static TTSManager theTTSManager;
-
-    private static Stage stage;
+    private static UIManager theUIManager;
 
     private static final boolean DEBUG = true;
+    private static final String MAIN_ENTR_NAME = "Main Entrance";
+    private static final String BELKIN_ENTR_NAME = "Belkin Entrance";
 
     @Override
-    public void start(Stage primaryStage) {
-        stage = primaryStage;
-        stage.show();
-        // load main menu controller
-        MainMenuController mainMenuController = new MainMenuController();
-        // set the scene
-        setScene(mainMenuController);
+    public void start(Stage stage) {
+        initUIMg(stage);
+        // load the main menu
+        getUI().setScene(new MainMenuController());
     }
 
     public static void main(String[] args) {
         // setup the managers
-        initDBMg();
-        initPathMg();
-        initDirMg();
-        initTTSMg();
-
+        initManagers();
         // Launch the JavaFX application after initial setup
         launch(args);
     }
@@ -65,36 +62,14 @@ public class KioskMain extends Application {
 
     public static TTSManager getTTS() { return theTTSManager; }
 
-    public static void setScene(IController controller) {
-        stage.setScene(new Scene(controller.getRoot()));
-    }
+    public static UIManager getUI() { return theUIManager; }
 
-//    public static void setScene(String path) {
-//        try {
-//            Parent root = FXMLLoader.load(KioskMain.class.getClassLoader().getResource(path));
-//            Scene scene = new Scene(root);
-//            stage.setScene(scene);
-//        } catch (IOException e) {
-//            // TODO
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    // set the scene and return the controller
-//    public static IControllerWithParams setScene(String path, Object... data) {
-//        try {
-//            FXMLLoader loader = new FXMLLoader(KioskMain.class.getClassLoader().getResource(path));
-//            Scene scene = new Scene(loader.load());
-//            IControllerWithParams controller = loader.<IControllerWithParams>getController();
-//            controller.initData(data);
-//            stage.setScene(scene);
-//            return controller;
-//        } catch (IOException e) {
-//            // TODO fix this
-//            e.printStackTrace();
-//            return null;
-//        }
-//    }
+    private static void initManagers() {
+        initDBMg();
+        initPathMg();
+        initDirMg();
+        initTTSMg();
+    }
 
     private static void initDBMg() {
         // create the database manager
@@ -128,6 +103,8 @@ public class KioskMain extends Application {
         // create the directory manager with directories from the db
         HashMap<LocationType, Directory> allDirectories = getDB().getAllDirectories();
         HashMap<Integer, Location> kiosks = allDirectories.get(LocationType.Kiosk).getLocations();
+
+        // Find the kiosk
         if(kiosks.size() > 1) {
             System.out.println("Error initializing DirectoryManager: More than one Kiosk was found in the database!");
             System.exit(1);
@@ -138,7 +115,28 @@ public class KioskMain extends Application {
         }
         Location theKiosk = kiosks.values().iterator().next();
         allDirectories.remove(LocationType.Kiosk);
-        theDirManager = new DirectoryManager(allDirectories, theKiosk);
+
+        // Find main entrance and belkin entrance
+        Location mainEntr = null;
+        Location belkinEntr = null;
+        for(Location l : allDirectories.get(LocationType.Entrance).getLocations().values()) {
+            if(l.getName().equals(MAIN_ENTR_NAME)) {
+                mainEntr = l;
+            }
+            if(l.getName().equals(BELKIN_ENTR_NAME)) {
+                belkinEntr = l;
+            }
+        }
+        if(mainEntr == null) {
+            System.out.println("Error initializing DirectoryManager: No location named " + MAIN_ENTR_NAME + " was found!");
+            System.exit(1);
+        }
+        if(belkinEntr == null) {
+            System.out.println("Error initializing DirectoryManager: No location named " + BELKIN_ENTR_NAME + " was found!");
+            System.exit(1);
+        }
+
+        theDirManager = new DirectoryManager(allDirectories, theKiosk, mainEntr, belkinEntr);
         // Test code to print all directories/locations
         if (DEBUG) {
             for (Directory d : getDir().getDirectories().values()) {
@@ -150,5 +148,9 @@ public class KioskMain extends Application {
 
     private static void initTTSMg() {
         theTTSManager = new TTSManager();
+    }
+
+    private static void initUIMg(Stage stage) {
+        theUIManager = new UIManager(stage);
     }
 }

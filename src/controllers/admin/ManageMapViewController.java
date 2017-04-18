@@ -5,6 +5,7 @@ import controllers.IController;
 import controllers.map.DraggableNode;
 import controllers.map.MapController;
 import core.KioskMain;
+import core.Utils;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -194,7 +195,7 @@ public class ManageMapViewController extends AbstractController {
     @FXML
     private void clickBack(ActionEvent event) {
         if (adminMapController.attemptUnselectNode()) {
-            KioskMain.setScene(new AdminMenuController());
+            KioskMain.getUI().setScene(new AdminMenuController());
         }
     }
 
@@ -219,12 +220,7 @@ public class ManageMapViewController extends AbstractController {
     }
 
     private void alertAddConnectionError() {
-        System.out.print("Error: Trying to add node connection to itself.");
-        Alert nodeUsed = new Alert(Alert.AlertType.ERROR);
-        nodeUsed.setHeaderText("Node Connection Failure");
-        nodeUsed.setContentText("This node cannot be connected to itself.");
-        nodeUsed.setTitle("Node Connection Error");
-        nodeUsed.showAndWait();
+        Utils.showAlert(getRoot(), "Invalid Node Connection!", "This node cannot be connected to itself!");
     }
 
     private void setTableNeighbors(Collection<Node> nodes) {
@@ -244,7 +240,7 @@ public class ManageMapViewController extends AbstractController {
     @FXML
     private void clickSave(ActionEvent event) {
         selectedNode.save();
-        //refreshScene();
+        refreshScene();
     }
 
     @FXML
@@ -302,7 +298,7 @@ public class ManageMapViewController extends AbstractController {
         int floor = adminMapController.getMapController().getFloor();
         ManageMapViewController con = new ManageMapViewController();
         con.floors.getSelectionModel().select(floor - 1);
-        KioskMain.setScene(con);
+        KioskMain.getUI().setScene(con);
     }
 
 }
