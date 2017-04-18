@@ -20,19 +20,30 @@
         </columnConstraints>
         <rowConstraints>
           <RowConstraints maxHeight="99.0" minHeight="10.0" prefHeight="99.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="136.0" minHeight="7.0" prefHeight="67.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="252.0" minHeight="0.0" prefHeight="137.3333740234375" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="359.0" minHeight="10.0" prefHeight="159.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="359.0" minHeight="10.0" prefHeight="128.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="252.0" minHeight="10.0" prefHeight="101.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="169.0" minHeight="7.0" prefHeight="147.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="252.0" minHeight="0.0" prefHeight="150.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="359.0" minHeight="10.0" prefHeight="149.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="359.0" minHeight="10.0" prefHeight="140.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="252.0" minHeight="10.0" prefHeight="115.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
             <HBox alignment="CENTER" styleClass="title" stylesheets="@style.css" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
                <children>
-                   <Label fx:id="title" alignment="CENTER" prefHeight="96.0" prefWidth="611.0" styleClass="title" stylesheets="@style.css" text="Admin Main Menu">
+                  <JFXButton fx:id="logoutBtn" alignment="CENTER" buttonType="RAISED" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clickLogout" styleClass="navigation-button" stylesheets="@style.css" text="Logout">
+                     <opaqueInsets>
+                        <Insets right="20.0" />
+                     </opaqueInsets>
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin>
+                  </JFXButton>
+                   <Label fx:id="title" prefHeight="96.0" prefWidth="1135.0" styleClass="title" stylesheets="@style.css" text="Admin Main Menu">
                      <font>
                         <Font name="System Bold" size="37.0" />
                      </font>
+                     <padding>
+                        <Insets left="20.0" />
+                     </padding>
                   </Label>
                </children>
             </HBox>
@@ -47,23 +58,10 @@
                   <Insets />
                </GridPane.margin></JFXButton>
             <JFXButton fx:id="manageMapBtn" buttonType="RAISED" mnemonicParsing="false" onAction="#clickManageMap" prefHeight="36.0" styleClass="content-button" stylesheets="@style.css" text="Manage Map" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS" />
-            <VBox alignment="CENTER_RIGHT" prefHeight="101.0" prefWidth="1309.0" styleClass="bottom" stylesheets="@style.css" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
+            <VBox alignment="CENTER_RIGHT" prefHeight="101.0" prefWidth="1309.0" stylesheets="@style.css" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin>
-               <children>
-                  <JFXButton fx:id="logoutBtn" alignment="CENTER" buttonType="RAISED" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#clickLogout" prefHeight="36.0" prefWidth="85.0" styleClass="navigation-button" stylesheets="@style.css" text="Logout">
-                     <opaqueInsets>
-                        <Insets right="20.0" />
-                     </opaqueInsets>
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets right="24.0" />
-                     </VBox.margin>
-                  </JFXButton>
-               </children>
             </VBox>
             <VBox alignment="CENTER" prefHeight="144.0" prefWidth="493.0" GridPane.rowIndex="4">
                <children>
@@ -71,6 +69,9 @@
                      <VBox.margin>
                         <Insets bottom="10.0" />
                      </VBox.margin>
+                     <font>
+                        <Font size="27.0" />
+                     </font>
                   </Label>
                   <JFXComboBox fx:id="kioskLocations" />
                </children>
@@ -84,6 +85,9 @@
                      <VBox.margin>
                         <Insets bottom="10.0" />
                      </VBox.margin>
+                     <font>
+                        <Font size="27.0" />
+                     </font>
                   </Label>
                   <JFXComboBox fx:id="pathAlgos" />
                </children>

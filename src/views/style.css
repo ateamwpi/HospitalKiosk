@@ -1,6 +1,6 @@
 /*logout and back buttons on pages*/
 .navigation-button{
-    -fx-font: 14px system;
+    -fx-font: 20px system;
     -fx-background-color: #0097A7;
     -fx-text-fill: white;
     -fx-padding: 11, 16, 11, 16;
@@ -8,7 +8,7 @@
 
  /*option buttons on pages*/
 .content-button{
-    -fx-font: 14px system;
+    -fx-font: 20px system;
     -fx-background-color: #0277BD;
     -fx-padding: 11, 16, 11, 16;
     -fx-text-fill: white;
