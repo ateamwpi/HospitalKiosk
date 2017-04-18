@@ -12,7 +12,7 @@
 <AnchorPane fx:id="root" styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <VBox prefHeight="208.0" prefWidth="275.0" spacing="20.0" styleClass="alert-vbox" stylesheets="@style.css">
       <children>
-           <Label fx:id="alertTitle" prefHeight="45.0" prefWidth="231.0" styleClass="title" stylesheets="@style.css" text="Alert Title">
+           <Label fx:id="alertTitle" prefHeight="45.0" prefWidth="231.0" styleClass="alert-title" stylesheets="@style.css" text="Alert Title">
             <font>
                <Font name="SansSerif Bold" size="21.0" />
             </font>

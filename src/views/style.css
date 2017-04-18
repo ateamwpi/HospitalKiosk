@@ -19,10 +19,14 @@
 }
 
 /*title banner*/
-.title {
+.alert-title {
     -fx-text-fill: black;
     -fx-alignment: center_left;
     -fx-font: bold 21px sansserif;
+}
+
+.title {
+    -fx-alignment: center;
 }
 
 .body {
