@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXDrawer?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.control.Label?>
 
 <AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
     <StackPane fx:id="mapContainer" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
     <VBox>
         <padding>
-            <Insets top="10"/>
+            <Insets top="10" />
         </padding>
         <Pane styleClass="drawer-toggle" stylesheets="@../styles/main-menu.css">
-            <Label fx:id="drawerOpen" prefHeight="48.0" prefWidth="23.0" styleClass="chevron-right" stylesheets="@../styles/main-menu.css"/>
+            <Label fx:id="drawerOpen" prefHeight="48.0" prefWidth="23.0" styleClass="chevron-right" stylesheets="@../styles/main-menu.css" />
         </Pane>
     </VBox>
     <JFXDrawer fx:id="drawer" defaultDrawerSize="310.0" layoutY="-6.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" />
+   <JFXDrawer fx:id="optionsMenu" defaultDrawerSize="250.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" />
 </AnchorPane>

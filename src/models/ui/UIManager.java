@@ -44,4 +44,12 @@ public class UIManager {
     public Node lookup(String query) {
         return scene.lookup(query);
     }
+
+    public Scene getScene() {
+        return this.scene;
+    }
+
+    public Stage getStage() {
+        return stage;
+    }
 }
