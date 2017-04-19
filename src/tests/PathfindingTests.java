@@ -1,5 +1,9 @@
 package tests;
 
+import core.exception.FloorNotReachableException;
+import core.exception.NearestNotFoundException;
+import core.exception.PathNotFoundException;
+import models.dir.LocationType;
 import models.path.Node;
 import models.path.Path;
 import models.path.PathfindingManager;
@@ -8,6 +12,10 @@ import org.junit.Test;
 
 import java.util.HashMap;
 
+import static java.awt.Color.MAGENTA;
+import static models.dir.LocationType.Elevator;
+import static models.dir.LocationType.PointOfInterest;
+import static models.dir.LocationType.Restroom;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
@@ -27,6 +35,9 @@ public class PathfindingTests {
         Node n1 = new Node(1, 1, 1, 4, "NONE");
         Node n2 = new Node(2, 2, 2, 4, "NONE");
         Node n3 = new Node(3, 3, 3, 4, "NONE");
+        Node n4 = new Node(4,4, 4, 4, "NONE");
+        Node n5 = new Node(5,5,5,5,"NONE");
+        Node n6 = new Node(6,6,6,6,"NONE");
         try {
             n1.addConnection(n2);
             n2.addConnection(n3);
@@ -34,6 +45,9 @@ public class PathfindingTests {
         n.put(1, n1);
         n.put(2, n2);
         n.put(3, n3);
+        n.put(4, n4);
+        n.put(5, n5);
+        n.put(6,n6);
         this.pm1 = new PathfindingManager(n);
     }
 
@@ -65,6 +79,9 @@ public class PathfindingTests {
         Node n23 = new Node(23, 6, 4, 4, "NONE");
         Node n24 = new Node(24, 6, 2, 4, "NONE");
         Node n25 = new Node(25, 5, 2, 4, "NONE");
+        Node n26 = new Node(26, 10, 12, 4, "NONE");
+        Node n27 = new Node(27,11,22,5,"NONE");
+
         n.put(1, n1); n.put(2, n2); n.put(3, n3); n.put(4, n4);
         n.put(5, n5); n.put(6, n6); n.put(7, n7); n.put(8, n8);
         n.put(9, n9); n.put(10, n10); n.put(11, n11); n.put(12, n12);
@@ -72,6 +89,8 @@ public class PathfindingTests {
         n.put(17, n17); n.put(18, n18); n.put(19, n19); n.put(20, n20);
         n.put(21, n21); n.put(22, n22); n.put(23, n23); n.put(24, n24);
         n.put(25, n25);
+        n.put(26, n26);
+        n.put(27,n27);
         try {
             n1.addConnection(n2);
             n2.addConnection(n3);
@@ -104,7 +123,7 @@ public class PathfindingTests {
     }
 
     @Test
-    public void testAStar1() {
+    public void testAStar1() throws PathNotFoundException, NearestNotFoundException, FloorNotReachableException  {
         pm1.selectAlgorithm("A* Search");
 
         Path expected = new Path();
@@ -120,7 +139,7 @@ public class PathfindingTests {
     }
 
     @Test
-    public void testAStar2() {
+    public void testAStar2() throws PathNotFoundException, NearestNotFoundException, FloorNotReachableException  {
         pm2.selectAlgorithm("A* Search");
 
         Path expected = new Path();
@@ -143,8 +162,22 @@ public class PathfindingTests {
         }
     }
 
+    @Test(expected = PathNotFoundException.class)
+    public void testAStar3() throws PathNotFoundException, NearestNotFoundException, FloorNotReachableException {
+        pm1.selectAlgorithm("A* Search");
+
+        pm1.findPath(pm1.getNode(1), pm1.getNode(4));
+    }
+
+    @Test(expected = PathNotFoundException.class)
+    public void testAStar4() throws PathNotFoundException, NearestNotFoundException, FloorNotReachableException {
+        pm2.selectAlgorithm("A* Search");
+
+        pm2.findPath(pm2.getNode(26), pm2.getNode(1));
+    }
+
     @Test
-    public void testBFS1() {
+    public void testBFS1() throws PathNotFoundException, NearestNotFoundException, FloorNotReachableException  {
         pm1.selectAlgorithm("Breadth-First Search");
 
         Path expected = new Path();
@@ -160,7 +193,7 @@ public class PathfindingTests {
     }
 
     @Test
-    public void testBFS2() {
+    public void testBFS2() throws PathNotFoundException, NearestNotFoundException, FloorNotReachableException  {
         pm2.selectAlgorithm("Breadth-First Search");
 
         Path expected = new Path();
@@ -183,8 +216,22 @@ public class PathfindingTests {
         }
     }
 
+    @Test(expected = PathNotFoundException.class)
+    public void testBFS3() throws PathNotFoundException, NearestNotFoundException, FloorNotReachableException {
+        pm1.selectAlgorithm("Breadth-First Search");
+
+        pm1.findPath(pm1.getNode(1), pm1.getNode(4));
+    }
+
+    @Test(expected = PathNotFoundException.class)
+    public void testBFS4() throws PathNotFoundException, NearestNotFoundException, FloorNotReachableException {
+        pm2.selectAlgorithm("Breadth-First Search");
+
+        pm2.findPath(pm2.getNode(26), pm2.getNode(1));
+    }
+
     @Test
-    public void testDFS1() {
+    public void testDFS1() throws PathNotFoundException, NearestNotFoundException, FloorNotReachableException  {
         pm1.selectAlgorithm("Depth-First Search");
 
         Path expected = new Path();
@@ -200,7 +247,7 @@ public class PathfindingTests {
     }
 
     @Test
-    public void testDFS2() {
+    public void testDFS2() throws PathNotFoundException, NearestNotFoundException, FloorNotReachableException  {
         pm2.selectAlgorithm("Depth-First Search");
 
         Path expected = new Path();
@@ -230,4 +277,17 @@ public class PathfindingTests {
         }
     }
 
+    @Test(expected = PathNotFoundException.class)
+    public void testDFS3() throws PathNotFoundException, NearestNotFoundException, FloorNotReachableException {
+        pm1.selectAlgorithm("Depth-First Search");
+
+        pm1.findPath(pm1.getNode(1), pm1.getNode(4));
+    }
+
+    @Test(expected = PathNotFoundException.class)
+    public void testDFS4() throws PathNotFoundException, NearestNotFoundException, FloorNotReachableException {
+        pm2.selectAlgorithm("Depth-First Search");
+
+        pm2.findPath(pm2.getNode(26), pm2.getNode(1));
+    }
 }
