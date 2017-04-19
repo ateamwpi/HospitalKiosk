@@ -27,6 +27,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import sun.plugin.javascript.navig.Anchor;
 
+import javax.swing.*;
 import java.io.IOException;
 
 public class MainMenuController extends AbstractController {
@@ -73,6 +74,11 @@ public class MainMenuController extends AbstractController {
     private void clickAdmin(ActionEvent event) {
         AdminLoginController login = new AdminLoginController(root);
         login.showCentered();
+    }
+
+    @FXML
+    private void clickAbout(ActionEvent event) {
+        KioskMain.getUI().setScene(new AboutPageController());
     }
 
 }

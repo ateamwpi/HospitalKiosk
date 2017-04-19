@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="views.AboutPage">
+<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <GridPane alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
@@ -120,7 +120,7 @@
             </VBox>
             <HBox prefHeight="100.0" prefWidth="1280.0" styleClass="banner" stylesheets="@style.css">
                <children>
-                  <Button mnemonicParsing="false" styleClass="navigation-button" stylesheets="@style.css" text="Back">
+                  <Button mnemonicParsing="false" onAction="#clickBack" styleClass="navigation-button" stylesheets="@style.css" text="Back">
                      <font>
                         <Font size="16.0" />
                      </font>
