@@ -1,6 +1,7 @@
 package models.path;
 
 import core.KioskMain;
+import core.exception.NameInUseException;
 import core.exception.WrongFloorException;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -28,6 +29,8 @@ public class Node {
     private HashMap<Integer, Location> locations;
     private HashMap<LocationType, Integer> counts;
     private final boolean isNew;
+    private boolean isBelkin;
+    private boolean isMain;
     private boolean isDone;
 
     /** This constructor should _ONLY_ be used when loading from the database. For any
@@ -44,6 +47,7 @@ public class Node {
         this.counts = new HashMap<LocationType, Integer>();
         this.isNew = false;
         this.isDone = false;
+        this.updateBuilding();
     }
 
     public Node(int x, int y, int floor, String roomName) {
@@ -57,6 +61,7 @@ public class Node {
         this.counts = new HashMap<LocationType, Integer>();
         this.isNew = true;
         this.isDone = true;
+        this.updateBuilding();
     }
 
     public Node(int x, int y, int floor) {
@@ -70,6 +75,7 @@ public class Node {
         this.counts = new HashMap<LocationType, Integer>();
         this.isNew = true;
         this.isDone = true;
+        this.updateBuilding();
     }
 
     public void addLocation(Location l) {
@@ -108,6 +114,19 @@ public class Node {
         }
     }
 
+    public void updateBuilding() {
+        if(this.getX() >= 30 && this.getX() <= 220 && this.getY() >= 10 && this.getY() <= 210)
+            this.isBelkin = true;
+        else
+            this.isBelkin = false;
+
+
+        if(this.getX() >= 110 && this.getX() <= 910 && this.getY() >= 230 && this.getY() <= 680)
+            this.isMain = true;
+        else
+            this.isMain = false;
+    }
+
     public void removeAllConnections() {
         Collection<Node> clone = (Collection<Node>) this.connections.clone();
         this.connections.clear();
@@ -116,7 +135,11 @@ public class Node {
         }
     }
 
-    public void setRoomName(String name) {
+    public void setRoomName(String name) throws NameInUseException {
+        if(name.equals(this.getRoomName())) return;
+        if(KioskMain.getPath().hasRoomName(name)) {
+            throw new NameInUseException(name);
+        }
         this.previousRoomName = this.getRoomName();
         roomNameProperty.setValue(name);
     }
@@ -146,6 +169,14 @@ public class Node {
         return idProperty.get();
     }
 
+    public boolean isBelkin() {
+        return this.isBelkin;
+    }
+
+    public boolean isMain() {
+        return this.isMain;
+    }
+
     public final String getRoomName() {
         return roomNameProperty.get();
     }
@@ -166,7 +197,7 @@ public class Node {
         return floorProperty.get();
     }
 
-    public final void setFloor(int value){
+    public final void setFloor(int value) {
         floorProperty.set(value);
     }
 
@@ -176,6 +207,7 @@ public class Node {
 
     public final void setX(int value){
         xProperty.set(value);
+        this.updateBuilding();
     }
 
     public IntegerProperty xProperty() {
@@ -188,6 +220,7 @@ public class Node {
 
     public final void setY(int value){
         yProperty.set(value);
+        this.updateBuilding();
     }
 
     public final void save() {
@@ -201,7 +234,6 @@ public class Node {
     }
 
     public void removeLocation(Location l) {
-        System.out.println("hi");
         this.locations.remove(l.getID());
         this.counts.put(l.getLocType(), this.counts.get(l.getLocType())-1);
     }

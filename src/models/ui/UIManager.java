@@ -1,11 +1,13 @@
 package models.ui;
 
+import controllers.AbstractPopupController;
 import controllers.IController;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -16,8 +18,11 @@ import javafx.stage.Stage;
 public class UIManager {
 
     private Stage stage;
+    private Parent root;
     private Scene scene;
-    private static DoubleProperty fontSize = new SimpleDoubleProperty(10);
+
+    private AbstractPopupController popup;
+    private static DoubleProperty fontSize = new SimpleDoubleProperty(15);
 
     public UIManager(Stage stage) {
         this.stage = stage;
@@ -51,5 +56,25 @@ public class UIManager {
 
     public Stage getStage() {
         return stage;
+    }
+
+    public Scene getScene() {
+        return scene;
+    }
+
+    public Stage getStage() {
+        return stage;
+    }
+
+    public Parent getRoot() {
+        return root;
+    }
+
+    public AbstractPopupController getPopup() {
+        return popup;
+    }
+
+    public void setPopup(AbstractPopupController popup) {
+        this.popup = popup;
     }
 }

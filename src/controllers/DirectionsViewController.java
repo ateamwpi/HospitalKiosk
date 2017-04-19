@@ -3,26 +3,30 @@ package controllers;
 import controllers.map.MapController;
 import controllers.mapView.MapViewController;
 import core.KioskMain;
-import core.Utils;
-import core.exception.FloorNotReachableException;
-import core.exception.NearestNotFoundException;
-import core.exception.PathNotFoundException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.print.*;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
-import models.path.Node;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.transform.Scale;
 import models.path.Path;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by mattm on 3/29/2017.
  */
 public class DirectionsViewController extends AbstractController {
 
-    private Node startNode;
-    private Node endNode;
+    private Path path;
+
+    private MapController mapController;
 
     @FXML
     private Button backBtn;
@@ -35,70 +39,33 @@ public class DirectionsViewController extends AbstractController {
     @FXML
     private ChoiceBox<String> floors;
 
-    DirectionsViewController(Node startNode, Node endNode) {
-        super(startNode, endNode);
+    DirectionsViewController(Path path) {
+        super(path);
     }
 
     @FXML
     private void initialize() {
         // load the map controller
-        MapController mapController = new MapController();
+        mapController = new MapController();
         // add the map to the container
         mapContainer.getChildren().add(mapController.getRoot());
-        Path path;
-        try {
-            // find the shortest path
-            path = KioskMain.getPath().findPath(startNode, endNode);
+        // draw the path on the map
+        mapController.setFloor(path.getStart().getFloor());
+        mapController.drawPath(path);
+        floors.getItems().addAll(path.getFloorsSpanning());
+        floors.getSelectionModel().selectFirst();
+        if(path.getFloorsSpanning().size() == 1) floors.setDisable(true);
+        floors.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
+            if (floors.getSelectionModel().getSelectedItem() != null) {
+                String fl = floors.getSelectionModel().getSelectedItem();
+                mapController.clearOverlay();
+                mapController.setFloor(Integer.parseInt(fl.substring(0,1)));
+                mapController.drawPath(path);
+            }
+        });
 
-            // draw the path on the map
-            mapController.setFloor(startNode.getFloor());
-            mapController.drawPath(path);
-            floors.getItems().addAll(path.getFloorsSpanning());
-            floors.getSelectionModel().selectFirst();
-            if(path.getFloorsSpanning().size() == 1) floors.setDisable(true);
-            floors.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
-                if (floors.getSelectionModel().getSelectedItem() != null) {
-                    String fl = floors.getSelectionModel().getSelectedItem();
-                    mapController.clearOverlay();
-                    mapController.setFloor(Integer.parseInt(fl.substring(0,1)));
-                    mapController.drawPath(path);
-                }
-            });
-
-            // show the text directions
-            directionsText.setText("Directions:\n" + path.textPath());
-        }
-        catch (PathNotFoundException e) {
-            // Path not found
-            // should only happen if an admin adds a dead end/unconnected node
-            String body = "There is no known way to get from " + startNode.getRoomName() + " to " + endNode.getRoomName() + "!\nThis is most likely caused by an issue with the database. Please contact a hospital administrator to fix this problem!";
-            Utils.showError("Path Not Found!", body);
-            directionsText.setText(body);
-            floors.getItems().add(Utils.strForNum(startNode.getFloor()) + " Floor");
-            floors.getSelectionModel().selectFirst();
-            mapController.drawNode(startNode);
-            mapController.setFloor(startNode.getFloor());
-        }
-        catch (NearestNotFoundException e) {
-            // this should only happen if there is no elevator on the current floor
-            String body = "There is no elevator on the " + Utils.strForNum(startNode.getFloor()) + " Floor!\nThis is most likely caused by an issue with the database. Please contact a hospital administrator to fix this problem!";
-            Utils.showError("Elevator Not Found!", body);
-            directionsText.setText(body);
-            floors.getItems().add(Utils.strForNum(startNode.getFloor()) + " Floor");
-            floors.getSelectionModel().selectFirst();
-            mapController.drawNode(startNode);
-            mapController.setFloor(startNode.getFloor());
-        }
-        catch (FloorNotReachableException e) {
-            // this should only happen if the admin messes with the elevators
-            String body = "There is no known way to reach the " + Utils.strForNum(endNode.getFloor()) + " Floor from the " + Utils.strForNum(startNode.getFloor()) + " Floor!\nThis is most likely caused by an issue with the database. Please contact a hospital administrator to fix this problem!";
-            Utils.showError("Floor Not Reachable!", body);
-            directionsText.setText(body);
-            floors.getItems().add(Utils.strForNum(startNode.getFloor()) + " Floor");
-            floors.getSelectionModel().selectFirst();
-            mapController.drawNode(startNode);
-            mapController.setFloor(startNode.getFloor());
-        }
+        // show the text directions
+        directionsText.setText("Directions:\n" + path.textPath());
     }
 
     @FXML
@@ -112,14 +79,49 @@ public class DirectionsViewController extends AbstractController {
     }
 
     @FXML
+    private void clickPrint(ActionEvent event) {
+        String dirs = "\n\nBrigham and Women's Faulkner Hospital Directions\n";
+        dirs += "From: " + path.getStart().getRoomName() + "\n";
+        dirs += "To: " + path.getEnd().getRoomName() + "\n";
+        dirs += directionsText.getText();
+        Text text = new Text();
+        text.setFont(new Font(14));
+        text.setText(dirs);
+        print(text);
+
+    }
+
+    private void print(Node first) {
+        Printer printer = Printer.getDefaultPrinter();
+        PageLayout pageLayout = printer.createPageLayout(Paper.NA_LETTER, PageOrientation.PORTRAIT, Printer.MarginType.DEFAULT);
+        PrinterJob job = PrinterJob.createPrinterJob();
+        if (job != null && job.showPrintDialog(null)) {
+            boolean success = false;
+            job.printPage(first);
+            String orig = floors.getSelectionModel().getSelectedItem();
+            for (String s : path.getFloorsSpanning()) {
+                floors.getSelectionModel().select(s);
+                double scaleX = pageLayout.getPrintableWidth() / mapContainer.getBoundsInParent().getWidth();
+                Scale scale = new Scale(scaleX, scaleX);
+                mapContainer.getTransforms().add(scale);
+                success = job.printPage(mapContainer);
+                mapContainer.getTransforms().remove(scale);
+            }
+            floors.getSelectionModel().select(orig);
+            if (success) {
+                job.endJob();
+            }
+        }
+    }
+
+    @FXML
     private void clickDone(ActionEvent event) {
         KioskMain.getUI().setScene(new MapViewController());
     }
 
     @Override
     public void initData(Object... data) {
-        this.startNode = (Node) data[0];
-        this.endNode = (Node) data[1];
+        this.path = (Path)data[0];
     }
 
     @Override

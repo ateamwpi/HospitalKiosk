@@ -1,7 +1,15 @@
 package core;
 
-import controllers.mapView.MapViewController;
+import controllers.IController;
+import controllers.MainMenuController;
+import controllers.WelcomeScreenController;
 import javafx.application.Application;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.Scene;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import models.db.DatabaseManager;
 import models.dir.Directory;
@@ -15,6 +23,7 @@ import models.ui.UIManager;
 
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Scanner;
 
 public class KioskMain extends Application {
 
@@ -25,12 +34,15 @@ public class KioskMain extends Application {
     private static UIManager theUIManager;
 
     private static final boolean DEBUG = true;
+    private static final String MAIN_ENTR_NAME = "Main Entrance";
+    private static final String BELKIN_ENTR_NAME = "Belkin Entrance";
 
     @Override
     public void start(Stage stage) {
         initUIMg(stage);
         // load the main menu
-        getUI().setScene(new MapViewController());
+        //getUI().setScene(new MapViewController());
+        getUI().setScene(new WelcomeScreenController());
     }
 
     public static void main(String[] args) {
@@ -93,6 +105,8 @@ public class KioskMain extends Application {
         // create the directory manager with directories from the db
         HashMap<LocationType, Directory> allDirectories = getDB().getAllDirectories();
         HashMap<Integer, Location> kiosks = allDirectories.get(LocationType.Kiosk).getLocations();
+
+        // Find the kiosk
         if(kiosks.size() > 1) {
             System.out.println("Error initializing DirectoryManager: More than one Kiosk was found in the database!");
             System.exit(1);
@@ -103,7 +117,28 @@ public class KioskMain extends Application {
         }
         Location theKiosk = kiosks.values().iterator().next();
         allDirectories.remove(LocationType.Kiosk);
-        theDirManager = new DirectoryManager(allDirectories, theKiosk);
+
+        // Find main entrance and belkin entrance
+        Location mainEntr = null;
+        Location belkinEntr = null;
+        for(Location l : allDirectories.get(LocationType.Entrance).getLocations().values()) {
+            if(l.getName().equals(MAIN_ENTR_NAME)) {
+                mainEntr = l;
+            }
+            if(l.getName().equals(BELKIN_ENTR_NAME)) {
+                belkinEntr = l;
+            }
+        }
+        if(mainEntr == null) {
+            System.out.println("Error initializing DirectoryManager: No location named " + MAIN_ENTR_NAME + " was found!");
+            System.exit(1);
+        }
+        if(belkinEntr == null) {
+            System.out.println("Error initializing DirectoryManager: No location named " + BELKIN_ENTR_NAME + " was found!");
+            System.exit(1);
+        }
+
+        theDirManager = new DirectoryManager(allDirectories, theKiosk, mainEntr, belkinEntr);
         // Test code to print all directories/locations
         if (DEBUG) {
             for (Directory d : getDir().getDirectories().values()) {

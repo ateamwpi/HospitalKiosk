@@ -3,6 +3,7 @@ package models.path;
 
 import com.jfoenix.controls.JFXPopup;
 import controllers.mapView.DirectionStep;
+import core.KioskMain;
 import core.Utils;
 import models.dir.LocationType;
 
@@ -61,7 +62,39 @@ public class Path {
         HashMap<String, Integer> attempts = new HashMap<String, Integer>();
         attempts.put("left", 0); attempts.put("right", 0); attempts.put("straight", 0); attempts.put("back", 0);
         int stepNum = 2;
+        boolean waiting = false;
         for (int i = 2; i < this.path.size(); i++) {
+            if(this.getStep(i-1).equals(this.getStep(i))) continue;
+
+            if(this.getStep(i-1).isBelkin() && !this.getStep(i).isBelkin()) {
+                // leaving belkin
+                str += stepNum + ". Leave the Belkin House and walk across the parking lot.\n";
+                stepNum ++;
+                waiting = true;
+            }
+            else if(this.getStep(i-1).isMain() && !this.getStep(i).isMain()) {
+                // leaving main
+                str += stepNum + ". Leave the main building and walk across the parking lot.\n";
+                stepNum ++;
+                waiting = true;
+            }
+            else if(!this.getStep(i-1).isBelkin() && this.getStep(i).isBelkin()) {
+                // entering belkin
+                str += stepNum + ". Enter the Belkin House.\n";
+                stepNum ++;
+                waiting = false;
+                continue;
+            }
+            else if(!this.getStep(i-1).isMain() && this.getStep(i).isMain()) {
+                // entering main
+                str += stepNum + ". Enter the main building.\n";
+                stepNum ++;
+                waiting = false;
+                continue;
+            }
+
+            if(waiting) continue;
+
             if(this.getStep(i).getPrimaryLocType().equals(LocationType.Elevator) && this.getStep(i-1).getPrimaryLocType().equals(LocationType.Elevator)) {
                 str += stepNum + ". Ride the elevator to the " + Utils.strForNum(this.getStep(i).getFloor()) + " floor and exit.\n";
                 steps.add(new DirectionStep(DirectionIcon.STRAIGHT, "Ride the elevator to the " + Utils.strForNum(this.getStep(i).getFloor()) + " floor"));
