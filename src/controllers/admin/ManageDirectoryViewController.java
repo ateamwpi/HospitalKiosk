@@ -122,7 +122,7 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
         fulldir.setText("Full Directory");
         fulldir.setOnAction(event -> setFullDirectory());
         fulldir.setPrefWidth(150);
-        fulldir.getStylesheets().add("@../../views/style.css");
+        fulldir.getStylesheets().add(getClass().getClassLoader().getResource("views/style.css").toExternalForm());
         fulldir.getStyleClass().add("content-button");
         locationTypes.getChildren().add(fulldir);
 
@@ -131,7 +131,7 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
             loc.setText(locType.friendlyName());
             loc.setOnAction(event -> selectDirectory(locType));
             loc.setPrefWidth(150);
-            loc.getStylesheets().add("@../../views/style.css");
+            loc.getStylesheets().add(getClass().getClassLoader().getResource("views/style.css").toExternalForm());
             loc.getStyleClass().add("content-button");
             locationTypes.getChildren().add(loc);
         }

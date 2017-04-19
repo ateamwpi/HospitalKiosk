@@ -207,14 +207,6 @@ public class MapController extends AbstractController implements IClickableContr
         ArrayList<String> floorList = new ArrayList<String>(Arrays.asList("1", "2","3", "4", "5", "6", "7"));
         int wid = 36;
 
-        this.zoomOut = new JFXButton();
-        zoomOut.setText("-");
-        zoomOut.setOnAction(event -> sceneGestures.zoomOut());
-        zoomOut.setPrefWidth(wid);
-        zoomOut.getStylesheets().add(getClass().getClassLoader().getResource("views/style.css").toExternalForm());
-        zoomOut.getStyleClass().add("floor-button");
-        floorVBox.getChildren().add(zoomOut);
-
         for(String s : floorList) {
             JFXButton floor = new JFXButton();
             floor.setText(s);
@@ -234,6 +226,14 @@ public class MapController extends AbstractController implements IClickableContr
         zoomIn.getStyleClass().add("floor-button");
         floorVBox.getChildren().add(zoomIn);
         floorVBox.toFront();
+
+        this.zoomOut = new JFXButton();
+        zoomOut.setText("-");
+        zoomOut.setOnAction(event -> sceneGestures.zoomOut());
+        zoomOut.setPrefWidth(wid);
+        zoomOut.getStylesheets().add(getClass().getClassLoader().getResource("views/style.css").toExternalForm());
+        zoomOut.getStyleClass().add("floor-button");
+        floorVBox.getChildren().add(zoomOut);
     }
 
     public void hideButtons() {
