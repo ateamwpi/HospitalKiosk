@@ -43,8 +43,8 @@ public class ManageMapViewController extends AbstractController {
 
     private ArrayList<String> floorList;
 
-    @FXML
-    private JFXComboBox<String> floors;
+//    @FXML
+//    private JFXComboBox<String> floors;
     @FXML
     private JFXTextField x;
     @FXML
@@ -92,19 +92,23 @@ public class ManageMapViewController extends AbstractController {
         // add the map to the container
         mapContainer.getChildren().add(adminMapController.getRoot());
 
-        floors.getItems().addAll(floorList);
-        floors.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
-            if (floors.getSelectionModel().getSelectedItem() != null) {
-                if (adminMapController.attemptUnselectNode()) {
-                    String fl = floors.getSelectionModel().getSelectedItem();
-                    System.out.println("The current selected floor is " + fl);
-                    setFloor(fl);
-                } else {
-                }
+        for(JFXButton b: adminMapController.getMapController().getFloorButtons()) {
+            b.setOnAction(event -> setFloor(b.getText()));
+        }
 
-            }
-        });
-        floors.getSelectionModel().selectFirst();
+//        floors.getItems().addAll(floorList);
+//        floors.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
+//            if (floors.getSelectionModel().getSelectedItem() != null) {
+//                if (adminMapController.attemptUnselectNode()) {
+//                    String fl = floors.getSelectionModel().getSelectedItem();
+//                    System.out.println("The current selected floor is " + fl);
+//                    setFloor(fl);
+//                } else {
+//                }
+//
+//            }
+//        });
+//        floors.getSelectionModel().selectFirst();
         // init input text properties
         xTextProperty = x.textProperty();
         yTextProperty = y.textProperty();
@@ -300,7 +304,7 @@ public class ManageMapViewController extends AbstractController {
     private void refreshScene() {
         int floor = adminMapController.getMapController().getFloor();
         ManageMapViewController con = new ManageMapViewController();
-        con.floors.getSelectionModel().select(floor - 1);
+        //con.floors.getSelectionModel().select(floor - 1);
         KioskMain.getUI().setScene(con);
     }
 

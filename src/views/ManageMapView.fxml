@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -26,7 +25,6 @@
                               <JFXButton fx:id="backBtn" mnemonicParsing="false" onAction="#clickBack" styleClass="navigation-button" stylesheets="@style.css" text="Back" />
                            </children>
                         </HBox>
-                        <JFXComboBox fx:id="floors" prefWidth="150.0" />
                         <Line endX="100.0" startX="-100.0" />
                         <HBox>
                            <children>
