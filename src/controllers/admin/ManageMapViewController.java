@@ -1,5 +1,8 @@
 package controllers.admin;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextField;
 import controllers.AbstractController;
 import controllers.IController;
 import controllers.map.DraggableNode;
@@ -41,29 +44,29 @@ public class ManageMapViewController extends AbstractController {
     private ArrayList<String> floorList;
 
     @FXML
-    private ChoiceBox<String> floors;
+    private JFXComboBox<String> floors;
     @FXML
-    private TextField x;
+    private JFXTextField x;
     @FXML
-    private TextField y;
+    private JFXTextField y;
     @FXML
-    private TextField room;
+    private JFXTextField room;
     @FXML
     private AnchorPane mapContainer;
     @FXML
-    private Button nodeAction;
+    private JFXButton nodeAction;
     @FXML
-    private Button saveNode;
+    private JFXButton saveNode;
     @FXML
     private TableView<Node> tableNeighbors;
     @FXML
     private TableColumn<Node, Integer> idColumn;
     @FXML
-    private Button deleteNeighbor;
+    private JFXButton deleteNeighbor;
     @FXML
-    private Button addNeighbor;
+    private JFXButton addNeighbor;
     @FXML
-    private TextField newNeighbor;
+    private JFXTextField newNeighbor;
     @FXML
     private Label id;
 
@@ -143,7 +146,7 @@ public class ManageMapViewController extends AbstractController {
         Bindings.bindBidirectional(yTextProperty, selectedNode.previewYProperty(), converter);
         Bindings.bindBidirectional(roomNameProperty, selectedNode.previewRoomNameProperty());
         // update node id
-        id.setText(Integer.toString(node.getID()));
+        id.setText("ID: " + Integer.toString(node.getID()));
         // show save button
         saveNode.setVisible(true);
         // enable add connection button
@@ -164,7 +167,7 @@ public class ManageMapViewController extends AbstractController {
         // unset selected node
         selectedNode = null;
         // update edit view
-        id.setText(null);
+        id.setText("");
         x.setText("");
         y.setText("");
         room.setText("");
