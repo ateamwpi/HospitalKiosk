@@ -214,6 +214,7 @@ public class DrawerController extends AbstractController {
                         mapController.drawPath(path);
                     });
                 }
+                mapController.drawPath(path);
                 mapController.enableButtons(path.getFloorsSpanning());
 
             } catch (PathNotFoundException | NearestNotFoundException | FloorNotReachableException e) {
@@ -257,6 +258,7 @@ public class DrawerController extends AbstractController {
     private void showSearch() {
         setStart(KioskMain.getDir().getTheKiosk());
         mapController.enableAllButtons();
+        mapController.clearOverlay();
         //setEnd(null);
         start.requestFocus();
         end.requestFocus();
