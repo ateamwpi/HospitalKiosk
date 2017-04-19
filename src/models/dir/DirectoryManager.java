@@ -64,9 +64,10 @@ public class DirectoryManager {
     }
 
     public List<Location> search(String query) {
+        query = query.toLowerCase();
         List<Location> locations = new ArrayList<>();
         for (Location loc : getAllLocations()) {
-            if (loc.getName().toLowerCase().contains(query)) {
+            if (loc.getName().toLowerCase().contains(query) || loc.getNode().getRoomName().toLowerCase().equals(query)) {
                 locations.add(loc);
             }
         }

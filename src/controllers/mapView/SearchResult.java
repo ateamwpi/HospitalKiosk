@@ -37,7 +37,7 @@ public class SearchResult extends AbstractController {
 
     @FXML
     private void initialize() {
-        locationLabel.setText(location.getName());
+        locationLabel.setText(location.getName() + " - " + location.getNode().getRoomName());
         locationIcon.getStyleClass().add(PLACE_ICON);
         // TODO add icons for POI
         // add click handler
