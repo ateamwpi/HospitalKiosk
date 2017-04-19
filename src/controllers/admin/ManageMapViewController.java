@@ -1,5 +1,6 @@
 package controllers.admin;
 
+import com.jfoenix.controls.JFXButton;
 import controllers.AbstractController;
 import controllers.IController;
 import controllers.map.DraggableNode;
@@ -88,6 +89,10 @@ public class ManageMapViewController extends AbstractController {
         adminMapController = new AdminMapController(this);
         // add the map to the container
         mapContainer.getChildren().add(adminMapController.getRoot());
+
+        for(JFXButton b: adminMapController.getMapController().getFloorButtons()) {
+            b.setOnAction(event -> setFloor(b.getText()));
+        }
 
         floors.getItems().addAll(floorList);
         floors.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {

@@ -3,9 +3,6 @@ package controllers.map;
 import com.jfoenix.controls.JFXButton;
 import controllers.AbstractController;
 import controllers.IClickableController;
-import core.KioskMain;
-import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -45,7 +42,13 @@ public class MapController extends AbstractController implements IClickableContr
     private int overlayIndex;
 
     @FXML
-    private VBox floorButtons;
+    private VBox floorVBox;
+
+    public ArrayList<JFXButton> getFloorButtons() {
+        return floorButtons;
+    }
+
+    private ArrayList<JFXButton> floorButtons;
 
     public int getFloor() {
         return floor;
@@ -123,6 +126,7 @@ public class MapController extends AbstractController implements IClickableContr
 
     @FXML
     private void initialize() {
+        floorButtons = new ArrayList<>();
         // create overlay
         overlay = new Group();
         root.getChildren().add(overlay);
@@ -188,8 +192,9 @@ public class MapController extends AbstractController implements IClickableContr
             floor.setPrefWidth(115);
             floor.getStylesheets().add("@../../views/style.css");
             floor.getStyleClass().add("content-button");
-            floorButtons.getChildren().add(floor);
+            floorVBox.getChildren().add(floor);
+            floorButtons.add(floor);
         }
-        floorButtons.toFront();
+        floorVBox.toFront();
     }
 }
