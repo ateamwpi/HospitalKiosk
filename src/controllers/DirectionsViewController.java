@@ -1,5 +1,6 @@
 package controllers;
 
+import com.jfoenix.controls.JFXButton;
 import controllers.map.MapController;
 import core.KioskMain;
 import javafx.event.ActionEvent;
@@ -35,8 +36,6 @@ public class DirectionsViewController extends AbstractController {
     private AnchorPane mapContainer;
     @FXML
     private TextArea directionsText;
-    @FXML
-    private ChoiceBox<String> floors;
 
     DirectionsViewController(Path path) {
         super(path);
@@ -51,17 +50,16 @@ public class DirectionsViewController extends AbstractController {
         // draw the path on the map
         mapController.setFloor(path.getStart().getFloor());
         mapController.drawPath(path);
-        floors.getItems().addAll(path.getFloorsSpanning());
-        floors.getSelectionModel().selectFirst();
-        if(path.getFloorsSpanning().size() == 1) floors.setDisable(true);
-        floors.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
-            if (floors.getSelectionModel().getSelectedItem() != null) {
-                String fl = floors.getSelectionModel().getSelectedItem();
+
+        for(JFXButton b: mapController.getFloorButtons()) {
+            b.setOnAction(event -> {
                 mapController.clearOverlay();
-                mapController.setFloor(Integer.parseInt(fl.substring(0,1)));
+                mapController.setFloor(Integer.parseInt(b.getText().substring(0,1)));
                 mapController.drawPath(path);
-            }
-        });
+            });
+        }
+
+        mapController.enableButtons(path.getFloorsSpanning());
 
         // show the text directions
         directionsText.setText("Directions:\n" + path.textPath());
@@ -97,16 +95,13 @@ public class DirectionsViewController extends AbstractController {
         if (job != null && job.showPrintDialog(null)) {
             boolean success = false;
             job.printPage(first);
-            String orig = floors.getSelectionModel().getSelectedItem();
             for (String s : path.getFloorsSpanning()) {
-                floors.getSelectionModel().select(s);
                 double scaleX = pageLayout.getPrintableWidth() / mapContainer.getBoundsInParent().getWidth();
                 Scale scale = new Scale(scaleX, scaleX);
                 mapContainer.getTransforms().add(scale);
                 success = job.printPage(mapContainer);
                 mapContainer.getTransforms().remove(scale);
             }
-            floors.getSelectionModel().select(orig);
             if (success) {
                 job.endJob();
             }

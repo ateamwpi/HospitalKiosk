@@ -49,6 +49,8 @@ public class MapController extends AbstractController implements IClickableContr
     }
 
     private ArrayList<JFXButton> floorButtons;
+    private JFXButton zoomIn;
+    private JFXButton zoomOut;
 
     public int getFloor() {
         return floor;
@@ -96,6 +98,17 @@ public class MapController extends AbstractController implements IClickableContr
     public void clearOverlay() {
         overlay.getChildren().clear();
         overlay.getChildren().add(canvas);
+    }
+
+    public void enableButtons(ArrayList<String> floors) {
+        floorVBox.getChildren().clear();
+        for(JFXButton b : this.floorButtons) {
+            if(floors.contains(b.getText())) {
+                floorVBox.getChildren().add(b);
+            }
+        }
+        floorVBox.getChildren().add(zoomIn);
+        floorVBox.getChildren().add(zoomOut);
     }
 
     public void drawPath(Path p) {
@@ -198,14 +211,14 @@ public class MapController extends AbstractController implements IClickableContr
             floorButtons.add(floor);
         }
 
-        JFXButton zoomIn = new JFXButton();
+        this.zoomIn = new JFXButton();
         zoomIn.setText("+");
         zoomIn.setOnAction(event -> sceneGestures.zoomIn());
         zoomIn.getStylesheets().add("@../../views/style.css");
         zoomIn.getStyleClass().add("content-button");
         floorVBox.getChildren().add(zoomIn);
 
-        JFXButton zoomOut = new JFXButton();
+        this.zoomOut = new JFXButton();
         zoomOut.setText("-");
         zoomOut.setOnAction(event -> sceneGestures.zoomOut());
         zoomOut.getStylesheets().add("@../../views/style.css");
