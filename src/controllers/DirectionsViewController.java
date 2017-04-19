@@ -55,7 +55,7 @@ public class DirectionsViewController extends AbstractController {
         for(JFXButton b: mapController.getFloorButtons()) {
             b.setOnAction(event -> {
                 mapController.clearOverlay();
-                mapController.setFloor(Integer.parseInt(b.getText().substring(0,1)));
+                mapController.setFloor(Integer.parseInt(b.getText()));
                 mapController.drawPath(path);
             });
         }

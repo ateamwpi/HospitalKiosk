@@ -1,5 +1,6 @@
 package controllers.mapView;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.controls.JFXTextField;
 import controllers.AbstractController;
@@ -204,6 +205,17 @@ public class DrawerController extends AbstractController {
                 drawPath.accept(path);
                 // show the directions
                 showDirections(path.getDirections());
+                mapController.setFloor(path.getStart().getFloor());
+                // bind actions
+                for(JFXButton b: mapController.getFloorButtons()) {
+                    b.setOnAction(event -> {
+                        mapController.clearOverlay();
+                        mapController.setFloor(Integer.parseInt(b.getText()));
+                        mapController.drawPath(path);
+                    });
+                }
+                mapController.enableButtons(path.getFloorsSpanning());
+
             } catch (PathNotFoundException | NearestNotFoundException | FloorNotReachableException e) {
                 e.printStackTrace();
             }
@@ -244,6 +256,7 @@ public class DrawerController extends AbstractController {
     @FXML
     private void showSearch() {
         setStart(KioskMain.getDir().getTheKiosk());
+        mapController.enableAllButtons();
         //setEnd(null);
         start.requestFocus();
         end.requestFocus();

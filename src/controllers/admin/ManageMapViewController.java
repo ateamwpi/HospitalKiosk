@@ -93,7 +93,7 @@ public class ManageMapViewController extends AbstractController {
         mapContainer.getChildren().add(adminMapController.getRoot());
 
         for(JFXButton b: adminMapController.getMapController().getFloorButtons()) {
-            b.setOnAction(event -> setFloor(b.getText()));
+            b.setOnAction(event -> setFloor(Utils.strForNum(Integer.parseInt(b.getText())) + " Floor"));
         }
 
 //        floors.getItems().addAll(floorList);

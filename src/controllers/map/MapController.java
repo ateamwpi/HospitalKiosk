@@ -3,6 +3,7 @@ package controllers.map;
 import com.jfoenix.controls.JFXButton;
 import controllers.AbstractController;
 import controllers.IClickableController;
+import core.Utils;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -100,10 +101,14 @@ public class MapController extends AbstractController implements IClickableContr
         overlay.getChildren().add(canvas);
     }
 
+    public void enableAllButtons() {
+        enableButtons(new ArrayList<>(Arrays.asList("1st Floor", "2nd Floor", "3rd Floor", "4th Floor", "5th Floor", "6th Floor", "7th Floor")));
+    }
+
     public void enableButtons(ArrayList<String> floors) {
         floorVBox.getChildren().clear();
         for(JFXButton b : this.floorButtons) {
-            if(floors.contains(b.getText())) {
+            if(floors.contains(Utils.strForNum(Integer.parseInt(b.getText())) + " Floor")) {
                 floorVBox.getChildren().add(b);
             }
         }
@@ -198,15 +203,24 @@ public class MapController extends AbstractController implements IClickableContr
     }
 
     private void addFloorButtons() {
-        ArrayList<String> floorList = new ArrayList<String>(Arrays.asList("1st Floor", "2nd Floor","3rd Floor", "4th Floor", "5th Floor", "6th Floor", "7th Floor"));
+        ArrayList<String> floorList = new ArrayList<String>(Arrays.asList("1", "2","3", "4", "5", "6", "7"));
+        int wid = 36;
+
+        this.zoomOut = new JFXButton();
+        zoomOut.setText("-");
+        zoomOut.setOnAction(event -> sceneGestures.zoomOut());
+        zoomOut.setPrefWidth(wid);
+        zoomOut.getStylesheets().add("@../../views/style.css");
+        zoomOut.getStyleClass().add("floor-button");
+        floorVBox.getChildren().add(zoomOut);
 
         for(String s : floorList) {
             JFXButton floor = new JFXButton();
             floor.setText(s);
             floor.setOnAction(event -> setFloor(floorList.indexOf(s) + 1));
-            floor.setPrefWidth(115);
+            floor.setPrefWidth(wid);
             floor.getStylesheets().add("@../../views/style.css");
-            floor.getStyleClass().add("content-button");
+            floor.getStyleClass().add("floor-button");
             floorVBox.getChildren().add(floor);
             floorButtons.add(floor);
         }
@@ -214,17 +228,10 @@ public class MapController extends AbstractController implements IClickableContr
         this.zoomIn = new JFXButton();
         zoomIn.setText("+");
         zoomIn.setOnAction(event -> sceneGestures.zoomIn());
+        zoomIn.setMinWidth(wid);
         zoomIn.getStylesheets().add("@../../views/style.css");
-        zoomIn.getStyleClass().add("content-button");
+        zoomIn.getStyleClass().add("floor-button");
         floorVBox.getChildren().add(zoomIn);
-
-        this.zoomOut = new JFXButton();
-        zoomOut.setText("-");
-        zoomOut.setOnAction(event -> sceneGestures.zoomOut());
-        zoomOut.getStylesheets().add("@../../views/style.css");
-        zoomOut.getStyleClass().add("content-button");
-        floorVBox.getChildren().add(zoomOut);
-
         floorVBox.toFront();
     }
 
