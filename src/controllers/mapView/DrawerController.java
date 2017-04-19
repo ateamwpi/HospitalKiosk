@@ -9,15 +9,21 @@ import core.exception.NearestNotFoundException;
 import core.exception.PathNotFoundException;
 import javafx.fxml.FXML;
 import javafx.geometry.Point3D;
+import javafx.print.*;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.*;
+import javafx.scene.transform.Scale;
 import models.dir.Location;
 import models.path.Direction;
 import models.path.Path;
+import sun.plugin.javascript.navig.Anchor;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -62,14 +68,16 @@ public class DrawerController extends AbstractController {
     private Location endLocation;
     private Consumer<Path> drawPath;
     private Path path;
+    private StackPane mapContainer;
 
-    public DrawerController(Consumer<Path> drawPath) {
-        super(drawPath);
+    public DrawerController(Consumer<Path> drawPath, StackPane mapContainer) {
+        super(drawPath, mapContainer);
     }
 
     @Override
     public void initData(Object... data) {
         drawPath = (Consumer<Path>) data[0];
+        mapContainer = (StackPane) data[1];
     }
 
     @FXML
@@ -83,7 +91,35 @@ public class DrawerController extends AbstractController {
 
     @FXML
     private void printDirections() {
+        String dirs = "\n\nBrigham and Women's Faulkner Hospital Directions\n";
+        dirs += "From: " + path.getStart().getRoomName() + "\n";
+        dirs += "To: " + path.getEnd().getRoomName() + "\n";
+        dirs += path.textPath();
+        Text text = new Text();
+        text.setFont(new Font(14));
+        text.setText(dirs);
+        print(text);
 
+    }
+
+    private void print(Node first) {
+        Printer printer = Printer.getDefaultPrinter();
+        PageLayout pageLayout = printer.createPageLayout(Paper.NA_LETTER, PageOrientation.PORTRAIT, Printer.MarginType.DEFAULT);
+        PrinterJob job = PrinterJob.createPrinterJob();
+        if (job != null && job.showPrintDialog(null)) {
+            boolean success = false;
+            job.printPage(first);
+            for (String s : path.getFloorsSpanning()) {
+                double scaleX = pageLayout.getPrintableWidth() / mapContainer.getBoundsInParent().getWidth();
+                Scale scale = new Scale(scaleX, scaleX);
+                mapContainer.getTransforms().add(scale);
+                success = job.printPage(mapContainer);
+                mapContainer.getTransforms().remove(scale);
+            }
+            if (success) {
+                job.endJob();
+            }
+        }
     }
 
     @FXML
