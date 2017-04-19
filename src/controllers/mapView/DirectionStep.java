@@ -11,11 +11,27 @@ import models.path.Direction;
  */
 public class DirectionStep extends AbstractController {
 
-    private static final String TURN_LEFT_ICON = "turn-left-icon";
-    private static final String TURN_RIGHT_ICON = "turn-right-icon";
-    private static final String GO_STRAIGHT_ICON = "go-straight-icon";
+    public static enum DirectionIcon{
+        LEFT("turn-left-icon"),
+        RIGHT("turn-right-icon"),
+        STRAIGHT("go-straight-icon");
 
-    private Direction direction;
+        public String path;
+
+        DirectionIcon(String path) {
+            this.path = path;
+        }
+
+        public static DirectionIcon forString(String name) {
+            switch (name.toUpperCase()) {
+                case "LEFT": return LEFT;
+                case "RIGHT": return RIGHT;
+                default: return STRAIGHT;
+            }
+        }
+    }
+
+    private DirectionIcon direction;
     private String message;
 
     @FXML
@@ -23,13 +39,13 @@ public class DirectionStep extends AbstractController {
     @FXML
     private Label directionIcon;
 
-    public DirectionStep (Direction direction, String message) {
+    public DirectionStep (DirectionIcon direction, String message) {
         super(direction, message);
     }
 
     @Override
     public void initData(Object... data) {
-        direction = (Direction) data[0];
+        direction = (DirectionIcon) data[0];
         message = (String) data[1];
     }
 
@@ -37,7 +53,11 @@ public class DirectionStep extends AbstractController {
     private void initialize() {
         directionLabel.setText(message);
         // add direction icon
-        directionIcon.getStyleClass().add(TURN_LEFT_ICON);
+        directionIcon.getStyleClass().add(this.direction.path);
+    }
+
+    public String toString() {
+        return this.direction.name() + " " + this.message;
     }
 
     @Override

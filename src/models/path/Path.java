@@ -1,6 +1,7 @@
 package models.path;
 
 
+import com.jfoenix.controls.JFXPopup;
 import controllers.mapView.DirectionStep;
 import core.Utils;
 import models.dir.LocationType;
@@ -10,11 +11,14 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import static controllers.mapView.DirectionStep.DirectionIcon;
+
 /**
  * Created by mattm on 3/29/2017.
  */
 public class Path {
     private LinkedList<Node> path;
+    private ArrayList<DirectionStep> steps;
 
     public Path(){
         this.path = new LinkedList<>();
@@ -46,9 +50,11 @@ public class Path {
     }
 
     public String textPath() {
+        this.steps = new ArrayList<>();
         if(this.path.size() < 2) return "You are already at your destination!";
         // Calculate the cardinal starting direction
         String str = "1. Start by leaving " + this.path.getFirst().getRoomName() + ".\n";
+        steps.add(new DirectionStep(DirectionIcon.STRAIGHT, "Leave " + this.path.getFirst().getRoomName()));
         Direction cur = Direction.dirFor(this.getStep(0), this.getStep(1));
 
         // Initialize the array that keeps track of attempts for each turn
@@ -58,6 +64,7 @@ public class Path {
         for (int i = 2; i < this.path.size(); i++) {
             if(this.getStep(i).getPrimaryLocType().equals(LocationType.Elevator) && this.getStep(i-1).getPrimaryLocType().equals(LocationType.Elevator)) {
                 str += stepNum + ". Ride the elevator to the " + Utils.strForNum(this.getStep(i).getFloor()) + " floor and exit.\n";
+                steps.add(new DirectionStep(DirectionIcon.STRAIGHT, "Ride the elevator to the " + Utils.strForNum(this.getStep(i).getFloor()) + " floor"));
                 stepNum ++;
             }
             // Calculate the next cardinal turning direction
@@ -79,6 +86,7 @@ public class Path {
                 }
                 if(hallways > 2) {
                     str += stepNum + ". Go " + result + " through the intersection.\n";
+                    steps.add(new DirectionStep(DirectionIcon.forString(result), "Go " + result + " through the intersection."));
                     stepNum ++;
                 }
             }
@@ -86,6 +94,7 @@ public class Path {
                 // If actually making a turn, add a message about it to the directions
                 if(i+1 == this.path.size()) {
                     str += stepNum + ". Your destination (" + this.getEnd().getRoomName() + ") will be on your " + result + ".\n";
+                    steps.add(new DirectionStep(DirectionIcon.forString(result), "Your destination will be on your " + result));
                     stepNum ++;
                 }
                 else {
@@ -95,6 +104,7 @@ public class Path {
                             str += " into the " + this.getStep(i).getRoomName() + ".\n";
                         else str += ".\n";
                         stepNum ++;
+                        steps.add(new DirectionStep(DirectionIcon.forString(result), "Make a " + result + ((this.getStep(i).getPrimaryLocType().equals(LocationType.Elevator)) ? (" into the " + this.getStep(i).getRoomName()) : "")));
                     }
                 }
                 // Reset attempt counters every time a turn is made
@@ -147,6 +157,8 @@ public class Path {
     }
 
     public Collection<DirectionStep> getDirections() {
-        return null;
+        if(this.steps == null) this.textPath();
+        System.out.println(this.steps);
+        return this.steps;
     }
 }
