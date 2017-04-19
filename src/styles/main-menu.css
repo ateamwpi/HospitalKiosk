@@ -80,3 +80,15 @@
 .header {
     -fx-background-color:  #4285f4;
 }
+.volume-icon {
+    -fx-background-image: url("../resources/icons/volume.png");
+    -fx-background-size: 30px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+.printer-icon {
+    -fx-background-image: url("../resources/icons/printer.png");
+    -fx-background-size: 30px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}

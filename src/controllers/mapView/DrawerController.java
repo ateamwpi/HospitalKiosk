@@ -59,6 +59,7 @@ public class DrawerController extends AbstractController {
     private Location startLocation;
     private Location endLocation;
     private Consumer<Path> drawPath;
+    private Path path;
 
     public DrawerController(Consumer<Path> drawPath) {
         super(drawPath);
@@ -71,9 +72,21 @@ public class DrawerController extends AbstractController {
 
     @FXML
     private void initialize() {
-        showSearch();
+        // listen to search input
         start.textProperty().addListener(observable -> handleKeyPressStart());
         end.textProperty().addListener(observable -> handleKeyPressEnd());
+        // show search container
+        showSearch();
+    }
+
+    @FXML
+    private void printDirections() {
+
+    }
+
+    @FXML
+    private void speakDirections() {
+        KioskMain.getTTS().speak(path.textPath());
     }
 
     private void handleKeyPressStart() {
@@ -98,6 +111,11 @@ public class DrawerController extends AbstractController {
 
     private void clearSearchResults() {
         searchResults.getChildren().clear();
+        Collection<Location> POIs = KioskMain.getDir().getPOI();
+        searchResults.getChildren().clear();
+        for (Location location : POIs) {
+            searchResults.getChildren().add(new SearchResult(location, this::setEnd).getRoot());
+        }
     }
 
     private void setStart(Location location) {
@@ -140,7 +158,7 @@ public class DrawerController extends AbstractController {
         if (startLocation != null && endLocation != null) {
             try {
                 // attempt to find the path
-                Path path = KioskMain.getPath().findPath(startLocation.getNode(), endLocation.getNode());
+                path = KioskMain.getPath().findPath(startLocation.getNode(), endLocation.getNode());
                 // draw the path on the map
                 drawPath.accept(path);
                 // show the directions
@@ -184,8 +202,10 @@ public class DrawerController extends AbstractController {
 
     @FXML
     private void showSearch() {
-        setStart(null);
-        setEnd(null);
+        setStart(KioskMain.getDir().getTheKiosk());
+        //setEnd(null);
+        start.requestFocus();
+        end.requestFocus();
         // render
         root.getChildren().clear();
         root.getChildren().addAll(toggleContainer, searchContainer);

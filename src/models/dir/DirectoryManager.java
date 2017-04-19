@@ -1,8 +1,10 @@
 package models.dir;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
+import core.KioskMain;
+import core.exception.NearestNotFoundException;
+
+import java.awt.*;
+import java.util.*;
 import java.util.List;
 
 /**
@@ -77,5 +79,21 @@ public class DirectoryManager {
         } else {
             throw new RuntimeException("Could not find location type: " + locType.toString());
         }
+    }
+
+    public List<Location> getPOI() {
+        HashMap<Location, Double> nearests = null;
+        try {
+            nearests = KioskMain.getPath().getNearest(LocationType.PointOfInterest, theKiosk.getNode());
+        } catch (NearestNotFoundException e) {
+            return new ArrayList<>();
+        }
+        List<Location> ret = new ArrayList();
+        while (!nearests.isEmpty()) {
+            Location l = Collections.min(nearests.entrySet(), Comparator.comparingInt(entry -> (int) entry.getValue().doubleValue())).getKey();
+            nearests.remove(l);
+            ret.add(l);
+        }
+        return ret;
     }
 }

@@ -78,6 +78,23 @@
             </VBox>
          </children>
       </HBox>
+      <HBox>
+         <children>
+            <HBox alignment="CENTER" prefWidth="155.0">
+               <children>
+                  <Label onMouseClicked="#printDirections" prefHeight="20.0" prefWidth="20.0" styleClass="printer-icon" stylesheets="@../styles/main-menu.css" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefWidth="155.0">
+               <children>
+                  <Label onMouseClicked="#speakDirections" prefHeight="20.0" prefWidth="20.0" styleClass="volume-icon" stylesheets="@../styles/main-menu.css" />
+               </children>
+            </HBox>
+         </children>
+         <padding>
+            <Insets bottom="10.0" top="10.0" />
+         </padding>
+      </HBox>
       <VBox alignment="CENTER_LEFT">
          <children>
             <Label fx:id="startLabel" text="Start">
