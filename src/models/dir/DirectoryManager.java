@@ -94,16 +94,29 @@ public class DirectoryManager {
     }
 
     public List<Location> getPOI() {
-        HashMap<Location, Double> nearests = null;
+        HashMap<Location, Double> nearPOI = null;
+        HashMap<Location, Double> nearRest = null;
         try {
-            nearests = KioskMain.getPath().getNearest(LocationType.PointOfInterest, theKiosk.getNode());
+            nearPOI = KioskMain.getPath().getNearest(LocationType.PointOfInterest, theKiosk.getNode());
+
         } catch (NearestNotFoundException e) {
-            return new ArrayList<>();
         }
+        try {
+            nearRest = KioskMain.getPath().getNearest(LocationType.Restroom, theKiosk.getNode());
+        } catch (NearestNotFoundException e) {
+        }
+
+        if(nearPOI == null && nearRest == null) return new ArrayList<>();
         List<Location> ret = new ArrayList();
-        while (!nearests.isEmpty()) {
-            Location l = Collections.min(nearests.entrySet(), Comparator.comparingInt(entry -> (int) entry.getValue().doubleValue())).getKey();
-            nearests.remove(l);
+
+        while (nearPOI != null && !nearPOI.isEmpty()) {
+            Location l = Collections.min(nearPOI.entrySet(), Comparator.comparingInt(entry -> (int) entry.getValue().doubleValue())).getKey();
+            nearPOI.remove(l);
+            ret.add(l);
+        }
+        while (nearRest != null && !nearRest.isEmpty()) {
+            Location l = Collections.min(nearRest.entrySet(), Comparator.comparingInt(entry -> (int) entry.getValue().doubleValue())).getKey();
+            nearRest.remove(l);
             ret.add(l);
         }
         return ret;

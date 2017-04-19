@@ -68,6 +68,7 @@
     -fx-text-fill: #e7effe;
     -jfx-unfocus-color: rgba(255,255,255,0.87);
     -jfx-focus-color: rgba(255,255,255,0);
+    -fx-accent: rgba(255,255,255,0.2);
 }
 .list-border {
     -fx-border-color: #e6e6e6;
