@@ -62,6 +62,8 @@ public class MapController extends AbstractController implements IClickableContr
     @FXML
     private ImageView mapView;
 
+    private SceneGestures sceneGestures;
+
     //// Public API ////
 
     public void handleMouseClick(MouseEvent event) {}
@@ -146,7 +148,7 @@ public class MapController extends AbstractController implements IClickableContr
         overlayIndex = overlay.getChildren().size();
         addFloorButtons();
         // create the scene gestures for zooming and panning
-        SceneGestures sceneGestures = new SceneGestures(canvas, this);
+        sceneGestures = new SceneGestures(canvas, this);
         // register handlers zooming and panning
         canvas.addEventHandler(MouseEvent.ANY, new ClickDragHandler(sceneGestures.getOnMouseClickedEventHandler(), sceneGestures.getOnMouseDraggedEventHandler()));
         canvas.addEventHandler(MouseEvent.MOUSE_PRESSED, sceneGestures.getOnMousePressedEventHandler());
