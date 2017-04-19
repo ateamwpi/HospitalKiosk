@@ -88,8 +88,7 @@
 }
 .go-straight-icon {
     -fx-background-image: url("../resources/icons/go-straight.png");
-    /*TODO */
-    -fx-background-size: 30px;
+    -fx-background-size: 20px;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
 }

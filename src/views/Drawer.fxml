@@ -82,12 +82,12 @@
          <children>
             <HBox alignment="CENTER" prefWidth="155.0">
                <children>
-                  <Label onMouseClicked="#printDirections" prefHeight="20.0" prefWidth="20.0" styleClass="printer-icon" stylesheets="@../styles/main-menu.css" />
+                  <Label onMouseClicked="#printDirections" prefHeight="30.0" prefWidth="30.0" styleClass="printer-icon" stylesheets="@../styles/main-menu.css" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefWidth="155.0">
                <children>
-                  <Label onMouseClicked="#speakDirections" prefHeight="20.0" prefWidth="20.0" styleClass="volume-icon" stylesheets="@../styles/main-menu.css" />
+                  <Label onMouseClicked="#speakDirections" prefHeight="30.0" prefWidth="30.0" styleClass="volume-icon" stylesheets="@../styles/main-menu.css" />
                </children>
             </HBox>
          </children>
