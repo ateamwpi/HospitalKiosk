@@ -1,9 +1,11 @@
 /*logout and back buttons on pages*/
 .navigation-button{
-    -fx-font-size: 14px;
+    -fx-font-size: 18px;
     -fx-background-color: #0097A7;
     -fx-text-fill: white;
     -fx-valignment: center;
+    -fx-margin: 25, 10, 0, 10;
+    -fx-padding: 5, 5, 5, 5;
 }
 
  /*option buttons on pages*/
@@ -25,8 +27,16 @@
     -fx-font: bold 21px sansserif;
 }
 
-.title {
-    -fx-alignment: center;
+.title-text {
+    /*-fx-alignment: center-left;*/
+    -fx-text-fill: white;
+    -fx-font: bold 37px sannserif;
+    -fx-background-color: #004C8C;
+}
+
+.banner {
+    -fx-background-color: #004C8C;
+
 }
 
 .body {
