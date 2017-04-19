@@ -1,14 +1,16 @@
 /*logout and back buttons on pages*/
 .navigation-button{
-    -fx-font: 20px system;
+    -fx-font-size: 18px;
     -fx-background-color: #0097A7;
     -fx-text-fill: white;
-    -fx-padding: 11, 16, 11, 16;
+    -fx-valignment: center;
+    -fx-margin: 25, 10, 0, 10;
+    -fx-padding: 5, 5, 5, 5;
 }
 
  /*option buttons on pages*/
 .content-button{
-    -fx-font: 20px system;
+    -fx-font-size: 14px;
     -fx-background-color: #0277BD;
     -fx-padding: 11, 16, 11, 16;
     -fx-text-fill: white;
@@ -19,6 +21,7 @@
     -fx-background-color: #FAFAFA;
 }
 
+/*title banner*/
 .title {
     -fx-background-color: #004C8C;
     -fx-text-fill: white;
@@ -34,6 +37,18 @@
     -fx-text-fill: black;
     -fx-alignment: center_left;
     -fx-font: bold 21px sansserif;
+}
+
+.title-text {
+    /*-fx-alignment: center-left;*/
+    -fx-text-fill: white;
+    -fx-font: bold 37px sannserif;
+    -fx-background-color: #004C8C;
+}
+
+.banner {
+    -fx-background-color: #004C8C;
+
 }
 
 .alert-body {

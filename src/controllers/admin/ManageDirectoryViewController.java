@@ -1,5 +1,6 @@
 package controllers.admin;
 
+import com.jfoenix.controls.JFXButton;
 import controllers.AbstractController;
 import controllers.AbstractDirectoryViewController;
 import controllers.DirectionsViewController;
@@ -35,9 +36,9 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
     @FXML
     private Label directions; //label to give user instructions
     @FXML
-    private Button addEntry;
+    private JFXButton addEntry;
     @FXML
-    private Button removeEntry;
+    private JFXButton removeEntry;
     @FXML
     private Button kiosk;
     @FXML
@@ -73,8 +74,7 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
         setTableEdit();
         removeEntry.setDisable(true);
         title.setText("Manage Directory");
-        directions.setText("Add a new Location with the 'New' Button. To edit or remove a location, select a Location" +
-                " from the table and press the corresponding button");
+        directions.setText("");
         addLocationBtns();
 
     }
@@ -119,17 +119,21 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
     @FXML
     private void addLocationBtns() {
 
-        Button fulldir = new Button();
+        JFXButton fulldir = new JFXButton();
         fulldir.setText("Full Directory");
         fulldir.setOnAction(event -> setFullDirectory());
-        fulldir.setPrefWidth(250);
+        fulldir.setPrefWidth(120);
+        fulldir.getStylesheets().add("@../../views/style.css");
+        fulldir.getStyleClass().add("content-button");
         locationTypes.getChildren().add(fulldir);
 
         for (LocationType locType : LocationType.userValues()) {
-            Button loc = new Button();
-            loc.setText(locType.name());
+            JFXButton loc = new JFXButton();
+            loc.setText(locType.friendlyName());
             loc.setOnAction(event -> selectDirectory(locType));
-            loc.setPrefWidth(250);
+            loc.setPrefWidth(120);
+            loc.getStylesheets().add("@../../views/style.css");
+            loc.getStyleClass().add("content-button");
             locationTypes.getChildren().add(loc);
         }
 
