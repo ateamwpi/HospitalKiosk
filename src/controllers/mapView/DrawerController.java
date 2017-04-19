@@ -47,6 +47,8 @@ public class DrawerController extends AbstractController {
     @FXML
     private VBox searchResults;
     @FXML
+    private Label optionsMenuButton;
+    @FXML
     private VBox directions;
     @FXML
     private VBox directionsContainer;
@@ -217,6 +219,10 @@ public class DrawerController extends AbstractController {
 
     public Label getDrawerClose() {
         return drawerClose;
+    }
+
+    public Label getOptionsMenuButton() {
+        return optionsMenuButton;
     }
 
     @Override

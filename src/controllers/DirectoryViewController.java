@@ -3,13 +3,16 @@ package controllers;
 import controllers.mapView.MapViewController;
 import core.KioskMain;
 import core.Utils;
+import core.exception.FloorNotReachableException;
 import core.exception.NearestNotFoundException;
+import core.exception.PathNotFoundException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import models.dir.Location;
 import models.dir.LocationType;
 import models.path.Node;
+import models.path.Path;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -97,7 +100,27 @@ public class DirectoryViewController extends AbstractDirectoryViewController {
             updateNearestButton();
         } else {
             endNode = selectedLocation.getNode();
-            KioskMain.getUI().setScene(new DirectionsViewController(this.startNode, this.endNode));
+            try {
+                // find the shortest path
+                Path path = KioskMain.getPath().findPath(startNode, endNode);
+                KioskMain.getUI().setScene(new DirectionsViewController(path));
+            }
+            catch (PathNotFoundException e) {
+                // Path not found
+                // should only happen if an admin adds a dead end/unconnected node
+                String body = "There is no known way to get from " + startNode.getRoomName() + " to " + endNode.getRoomName() + "!\nThis is most likely caused by an issue with the database. Please contact a hospital administrator to fix this problem!";
+                Utils.showAlert(getRoot(),"Path Not Found!", body);
+            }
+            catch (NearestNotFoundException e) {
+                // this should only happen if there is no elevator on the current floor
+                String body = "There is no elevator on the " + Utils.strForNum(startNode.getFloor()) + " Floor!\nThis is most likely caused by an issue with the database. Please contact a hospital administrator to fix this problem!";
+                Utils.showAlert(getRoot(), "Elevator Not Found!", body);
+            }
+            catch (FloorNotReachableException e) {
+                // this should only happen if the admin messes with the elevators
+                String body = "There is no known way to reach the " + Utils.strForNum(endNode.getFloor()) + " Floor from the " + Utils.strForNum(startNode.getFloor()) + " Floor!\nThis is most likely caused by an issue with the database. Please contact a hospital administrator to fix this problem!";
+                Utils.showAlert(getRoot(), "Floor Not Reachable!", body);
+            }
         }
     }
 
@@ -138,8 +161,8 @@ public class DirectoryViewController extends AbstractDirectoryViewController {
             getDirections();
         }
         catch (NearestNotFoundException e) {
-            String body = "There are no " + lt.name() + " on the " + Utils.strForNum(startNode.getFloor()) + " Floor!";
-            Utils.showError("Nearest Not Found!", body);
+            String body = "There is no " + lt.friendlyName().toLowerCase() + " on the " + Utils.strForNum(startNode.getFloor()) + " Floor!";
+            Utils.showAlert(getRoot(), "Nearest Not Found!", body);
         }
     }
 

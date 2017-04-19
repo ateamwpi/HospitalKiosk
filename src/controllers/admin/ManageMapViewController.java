@@ -1,10 +1,14 @@
 package controllers.admin;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextField;
 import controllers.AbstractController;
 import controllers.IController;
 import controllers.map.DraggableNode;
 import controllers.map.MapController;
 import core.KioskMain;
+import core.Utils;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -39,30 +43,30 @@ public class ManageMapViewController extends AbstractController {
 
     private ArrayList<String> floorList;
 
+//    @FXML
+//    private JFXComboBox<String> floors;
     @FXML
-    private ChoiceBox<String> floors;
+    private JFXTextField x;
     @FXML
-    private TextField x;
+    private JFXTextField y;
     @FXML
-    private TextField y;
-    @FXML
-    private TextField room;
+    private JFXTextField room;
     @FXML
     private AnchorPane mapContainer;
     @FXML
-    private Button nodeAction;
+    private JFXButton nodeAction;
     @FXML
-    private Button saveNode;
+    private JFXButton saveNode;
     @FXML
     private TableView<Node> tableNeighbors;
     @FXML
     private TableColumn<Node, Integer> idColumn;
     @FXML
-    private Button deleteNeighbor;
+    private JFXButton deleteNeighbor;
     @FXML
-    private Button addNeighbor;
+    private JFXButton addNeighbor;
     @FXML
-    private TextField newNeighbor;
+    private JFXTextField newNeighbor;
     @FXML
     private Label id;
 
@@ -88,19 +92,23 @@ public class ManageMapViewController extends AbstractController {
         // add the map to the container
         mapContainer.getChildren().add(adminMapController.getRoot());
 
-        floors.getItems().addAll(floorList);
-        floors.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
-            if (floors.getSelectionModel().getSelectedItem() != null) {
-                if (adminMapController.attemptUnselectNode()) {
-                    String fl = floors.getSelectionModel().getSelectedItem();
-                    System.out.println("The current selected floor is " + fl);
-                    setFloor(fl);
-                } else {
-                }
+        for(JFXButton b: adminMapController.getMapController().getFloorButtons()) {
+            b.setOnAction(event -> setFloor(b.getText()));
+        }
 
-            }
-        });
-        floors.getSelectionModel().selectFirst();
+//        floors.getItems().addAll(floorList);
+//        floors.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
+//            if (floors.getSelectionModel().getSelectedItem() != null) {
+//                if (adminMapController.attemptUnselectNode()) {
+//                    String fl = floors.getSelectionModel().getSelectedItem();
+//                    System.out.println("The current selected floor is " + fl);
+//                    setFloor(fl);
+//                } else {
+//                }
+//
+//            }
+//        });
+//        floors.getSelectionModel().selectFirst();
         // init input text properties
         xTextProperty = x.textProperty();
         yTextProperty = y.textProperty();
@@ -142,7 +150,7 @@ public class ManageMapViewController extends AbstractController {
         Bindings.bindBidirectional(yTextProperty, selectedNode.previewYProperty(), converter);
         Bindings.bindBidirectional(roomNameProperty, selectedNode.previewRoomNameProperty());
         // update node id
-        id.setText(Integer.toString(node.getID()));
+        id.setText("ID: " + Integer.toString(node.getID()));
         // show save button
         saveNode.setVisible(true);
         // enable add connection button
@@ -163,7 +171,7 @@ public class ManageMapViewController extends AbstractController {
         // unset selected node
         selectedNode = null;
         // update edit view
-        id.setText(null);
+        id.setText("");
         x.setText("");
         y.setText("");
         room.setText("");
@@ -219,12 +227,7 @@ public class ManageMapViewController extends AbstractController {
     }
 
     private void alertAddConnectionError() {
-        System.out.print("Error: Trying to add node connection to itself.");
-        Alert nodeUsed = new Alert(Alert.AlertType.ERROR);
-        nodeUsed.setHeaderText("Node Connection Failure");
-        nodeUsed.setContentText("This node cannot be connected to itself.");
-        nodeUsed.setTitle("Node Connection Error");
-        nodeUsed.showAndWait();
+        Utils.showAlert(getRoot(), "Invalid Node Connection!", "This node cannot be connected to itself!");
     }
 
     private void setTableNeighbors(Collection<Node> nodes) {
@@ -301,7 +304,7 @@ public class ManageMapViewController extends AbstractController {
     private void refreshScene() {
         int floor = adminMapController.getMapController().getFloor();
         ManageMapViewController con = new ManageMapViewController();
-        con.floors.getSelectionModel().select(floor - 1);
+        //con.floors.getSelectionModel().select(floor - 1);
         KioskMain.getUI().setScene(con);
     }
 

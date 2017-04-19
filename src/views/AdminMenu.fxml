@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.72" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <GridPane layoutX="-4.0" layoutY="-3.0" prefHeight="407.0" prefWidth="609.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
@@ -17,31 +20,88 @@
         </columnConstraints>
         <rowConstraints>
           <RowConstraints maxHeight="99.0" minHeight="10.0" prefHeight="99.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="136.0" minHeight="7.0" prefHeight="67.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="252.0" minHeight="0.0" prefHeight="70.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="359.0" minHeight="10.0" prefHeight="75.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="252.0" minHeight="10.0" prefHeight="101.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="169.0" minHeight="7.0" prefHeight="147.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="252.0" minHeight="0.0" prefHeight="150.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="359.0" minHeight="10.0" prefHeight="149.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="359.0" minHeight="10.0" prefHeight="140.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="252.0" minHeight="10.0" prefHeight="115.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label text="Admin Main Menu" GridPane.halignment="CENTER">
-               <font>
-                  <Font name="System Bold" size="37.0" />
-               </font>
-            </Label>
-            <Button fx:id="manageDirectoryBtn" mnemonicParsing="false" onAction="#clickManageDirectory" text="Manage Directory" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS" />
-            <Button fx:id="manageMapBtn" mnemonicParsing="false" onAction="#clickManageMap" text="Manage Map" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS" />
-            <Button fx:id="kioskButton" mnemonicParsing="false" onAction="#pressedKiosk" text="Manage Kiosk Location" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-            <Button fx:id="logoutBtn" mnemonicParsing="false" onAction="#clickLogout" prefHeight="25.0" prefWidth="85.0" text="Logout" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
-               <GridPane.margin>
-                  <Insets right="20.0" />
-               </GridPane.margin>
+            <HBox alignment="CENTER" styleClass="title" stylesheets="@style.css" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+               <children>
+                  <HBox prefHeight="99.0" prefWidth="1284.0" styleClass="banner" stylesheets="@style.css" HBox.hgrow="ALWAYS">
+                     <children>
+                        <JFXButton fx:id="logoutBtn" alignment="CENTER" buttonType="RAISED" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clickLogout" styleClass="navigation-button" stylesheets="@style.css" text="Logout">
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="25.0" right="10.0" top="25.0" />
+                           </HBox.margin>
+                        </JFXButton>
+                         <Label fx:id="title" styleClass="title-text" stylesheets="@style.css" text="Admin Main Menu">
+                           <font>
+                              <Font name="System Bold" size="37.0" />
+                           </font>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                           <HBox.margin>
+                              <Insets top="15.0" />
+                           </HBox.margin>
+                        </Label>
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+            <JFXButton fx:id="manageDirectoryBtn" buttonType="RAISED" mnemonicParsing="false" onAction="#clickManageDirectory" styleClass="content-button" stylesheets="@style.css" text="Manage Directory" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
                <opaqueInsets>
-                  <Insets right="20.0" />
+                  <Insets />
                </opaqueInsets>
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Button>
+               <padding>
+                  <Insets left="16.0" right="16.0" />
+               </padding>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin></JFXButton>
+            <JFXButton fx:id="manageMapBtn" buttonType="RAISED" mnemonicParsing="false" onAction="#clickManageMap" prefHeight="36.0" styleClass="content-button" stylesheets="@style.css" text="Manage Map" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS" />
+            <VBox alignment="CENTER_RIGHT" prefHeight="101.0" prefWidth="1309.0" stylesheets="@style.css" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="144.0" prefWidth="493.0" GridPane.rowIndex="4">
+               <children>
+                  <Label text="Kiosk Location">
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font size="27.0" />
+                     </font>
+                  </Label>
+                  <JFXComboBox fx:id="kioskLocations" />
+               </children>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="144.0" prefWidth="493.0" GridPane.rowIndex="3">
+               <children>
+                  <Label text="Pathfinding Algorithm">
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font size="27.0" />
+                     </font>
+                  </Label>
+                  <JFXComboBox fx:id="pathAlgos" />
+               </children>
+            </VBox>
          </children>
       </GridPane>
    </children>

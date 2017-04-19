@@ -1,0 +1,78 @@
+/*logout and back buttons on pages*/
+.navigation-button{
+    -fx-font-size: 14px;
+    -fx-background-color: #0097A7;
+    -fx-text-fill: white;
+    -fx-valignment: center;
+    -fx-margin: 25, 10, 0, 10;
+    -fx-padding: 5, 5, 5, 5;
+}
+
+/*option buttons on pages*/
+.content-button{
+    -fx-font-size: 14px;
+    -fx-background-color: #0277BD;
+    -fx-padding: 11, 16, 11, 16;
+    -fx-text-fill: white;
+}
+
+/*main background color*/
+.background {
+    -fx-background-color: #FAFAFA;
+}
+
+/*title banner*/
+.title {
+    -fx-background-color: #004C8C;
+    -fx-text-fill: white;
+}
+
+.bottom {
+    -fx-background-color: #58a5f0;
+}
+
+
+/* For Alerts and other small popups like Admin Login */
+.alert-title {
+    -fx-text-fill: black;
+    -fx-alignment: center_left;
+    -fx-font: bold 21px sansserif;
+}
+
+.title-text {
+    /*-fx-alignment: center-left;*/
+    -fx-text-fill: black;
+    -fx-font: bold 26px sannserif;
+}
+
+.banner {
+    -fx-background-color: #004C8C;
+
+}
+
+.alert-body {
+    -fx-text-fill: black;
+    -fx-font: 15px system;
+}
+
+.alert-vbox {
+    -fx-spacing: 20;
+    -fx-alignment: top_left;
+    -fx-padding: 24, 24, 24, 24;
+    -fx-background-color: #FAFAFA;
+}
+
+.alert-action-hbox {
+    -fx-spacing: 8;
+    -fx-alignmnet: bottom_right;
+    -fx-padding: 12, 24, 12, 24;
+
+}
+
+.alert-button {
+    -fx-font: bold 15px system;
+    -fx-text-fill: #2196f3;
+    -fx-alignment: center;
+    -jfx-button-type: flat;
+}
+
