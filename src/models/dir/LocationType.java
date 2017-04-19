@@ -51,8 +51,7 @@ public enum LocationType {
         if(names.containsKey(s.toUpperCase()))
             return names.get(s.toUpperCase());
         else
-            return Unknown;
-    }
+            return Unknown;    }
 
     public String friendlyName() {
         if(this.equals(PointOfInterest)) return "Point of Interest";
