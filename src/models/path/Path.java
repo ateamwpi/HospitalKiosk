@@ -51,7 +51,10 @@ public class Path {
 
     public String textPath() {
         this.steps = new ArrayList<>();
-        if(this.path.size() < 2) return "You are already at your destination!";
+        if(this.path.size() < 2) {
+            steps.add(new DirectionStep(DirectionIcon.STRAIGHT, "You are already at your destination!"));
+            return "You are already at your destination!";
+        }
         // Calculate the cardinal starting direction
         String str = "1. Start by leaving " + this.path.getFirst().getRoomName() + ".\n";
         steps.add(new DirectionStep(DirectionIcon.STRAIGHT, "Leave " + this.path.getFirst().getRoomName()));

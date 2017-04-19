@@ -11,7 +11,7 @@ import models.path.Direction;
  */
 public class DirectionStep extends AbstractController {
 
-    public static enum DirectionIcon{
+    public static enum DirectionIcon {
         LEFT("turn-left-icon"),
         RIGHT("turn-right-icon"),
         STRAIGHT("go-straight-icon");
