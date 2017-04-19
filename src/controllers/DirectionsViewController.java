@@ -1,6 +1,7 @@
 package controllers;
 
 import controllers.map.MapController;
+import controllers.mapView.MapViewController;
 import core.KioskMain;
 import core.Utils;
 import core.exception.FloorNotReachableException;
@@ -112,7 +113,7 @@ public class DirectionsViewController extends AbstractController {
 
     @FXML
     private void clickDone(ActionEvent event) {
-        KioskMain.getUI().setScene(new MainMenuController());
+        KioskMain.getUI().setScene(new MapViewController());
     }
 
     @Override

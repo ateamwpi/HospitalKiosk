@@ -1,14 +1,7 @@
 package core;
 
-import controllers.IController;
-import controllers.MainMenuController;
+import controllers.mapView.MapViewController;
 import javafx.application.Application;
-import javafx.beans.binding.Bindings;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.Scene;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import models.db.DatabaseManager;
 import models.dir.Directory;
@@ -22,7 +15,6 @@ import models.ui.UIManager;
 
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.Scanner;
 
 public class KioskMain extends Application {
 
@@ -38,7 +30,7 @@ public class KioskMain extends Application {
     public void start(Stage stage) {
         initUIMg(stage);
         // load the main menu
-        getUI().setScene(new MainMenuController());
+        getUI().setScene(new MapViewController());
     }
 
     public static void main(String[] args) {

@@ -62,6 +62,6 @@ public class MapViewController extends AbstractController {
 
     @FXML
     private void clickBack(ActionEvent event) {
-        KioskMain.getUI().setScene(new MainMenuController());
+        KioskMain.getUI().setScene(new controllers.mapView.MapViewController());
     }
 }

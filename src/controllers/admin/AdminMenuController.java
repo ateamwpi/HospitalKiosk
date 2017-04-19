@@ -1,7 +1,7 @@
 package controllers.admin;
 
 import controllers.AbstractController;
-import controllers.MainMenuController;
+import controllers.mapView.MapViewController;
 import core.KioskMain;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,7 +22,7 @@ public class AdminMenuController extends AbstractController {
 
     @FXML
     private void clickLogout(ActionEvent event) {
-        KioskMain.getUI().setScene(new MainMenuController());
+        KioskMain.getUI().setScene(new MapViewController());
     }
 
     @FXML

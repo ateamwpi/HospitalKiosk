@@ -1,25 +1,15 @@
 package controllers.admin;
 
 import controllers.AbstractController;
-import controllers.MainMenuController;
+import controllers.mapView.MapViewController;
 import core.KioskMain;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.stage.Stage;
-
-import java.io.IOException;
 
 /**
  * Created by mattm on 3/29/2017.
@@ -35,7 +25,7 @@ public class AdminLoginController extends AbstractController {
 
     @FXML
     private void clickBack(ActionEvent event) {
-        KioskMain.getUI().setScene(new MainMenuController());
+        KioskMain.getUI().setScene(new MapViewController());
     }
 
     @FXML

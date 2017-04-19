@@ -1,10 +1,12 @@
 package models.path;
 
 
+import controllers.mapView.DirectionStep;
 import core.Utils;
 import models.dir.LocationType;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -142,5 +144,9 @@ public class Path {
             if(this.path.get(i).getID() != p.path.get(i).getID()) return false;
         }
         return true;
+    }
+
+    public Collection<DirectionStep> getDirections() {
+        return null;
     }
 }

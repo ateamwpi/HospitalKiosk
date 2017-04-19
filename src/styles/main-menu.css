@@ -45,11 +45,30 @@
 }
 .search {
     -fx-text-fill: #e7effe;
-
     -jfx-unfocus-color: rgba(255,255,255,0.87);
     -jfx-focus-color: rgba(255,255,255,0);
 }
 .location-border {
     -fx-border-color: #e6e6e6;
     -fx-border-style: solid none none none;
+}
+/* direction icon dimensions 38x35 */
+.turn-left-icon {
+    -fx-background-image: url("../resources/icons/turn-left.png");
+    -fx-background-size: 30px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+.turn-right-icon {
+    -fx-background-image: url("../resources/icons/turn-right.png");
+    -fx-background-size: 30px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+.go-straight-icon {
+    -fx-background-image: url("../resources/icons/go-straight.png");
+    /*TODO */
+    -fx-background-size: 30px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
 }
