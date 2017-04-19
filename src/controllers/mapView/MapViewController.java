@@ -49,7 +49,7 @@ public class MapViewController extends AbstractController {
             drawerOpen.setVisible(true);
         });
 
-        OptionsMenuController menuController = new OptionsMenuController();
+        OptionsMenuController menuController = new OptionsMenuController(getRoot());
         optionsMenu.setSidePane(menuController.getRoot());
         //optionsMenu.open();
         drawerController.getOptionsMenuButton().setOnMouseClicked(event -> {

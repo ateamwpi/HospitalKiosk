@@ -4,7 +4,6 @@ import com.jfoenix.controls.JFXButton;
 import controllers.AbstractController;
 import controllers.AbstractDirectoryViewController;
 import controllers.DirectionsViewController;
-import controllers.MainMenuController;
 import core.KioskMain;
 import core.exception.RoomNotFoundException;
 import javafx.event.ActionEvent;
