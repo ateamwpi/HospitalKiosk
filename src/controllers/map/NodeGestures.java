@@ -37,11 +37,32 @@ public class NodeGestures {
             // get the node clicked on
             DraggableNode node = (DraggableNode) event.getSource();
             // update node drag context
+            System.out.println(adminMapController.getOverlay().getTranslateX());
             nodeDragContext.mouseAnchorX = event.getSceneX();
             nodeDragContext.mouseAnchorY = event.getSceneY();
-            nodeDragContext.translateAnchorX = node.getPreviewX();
-            nodeDragContext.translateAnchorY = node.getPreviewY();
+            double scale = adminMapController.getOverlay().getScaleX();
+            //1->0
+            //1.5->1/6
+            //2->1/2
+            //2.5->0.9?
+            //3
 
+            //(s-1)/s
+            //(s-1)(s-1)/(2s)
+            //0/1->0
+            //1/3->1/6
+            //2/4->1/2
+            //3/5->9/10
+            //4/6->
+
+            nodeDragContext.translateAnchorX = (adminMapController.getOverlay().getBoundsInParent().getWidth()/2) +
+                                                            (node.getPreviewX() - adminMapController.getOverlay().getBoundsInParent().getWidth()/2) * scale
+                                                    + adminMapController.getOverlay().getTranslateX()
+                                                    + (scale-1)*(scale-1)/(scale) * adminMapController.getMapController().getOverlay().getBoundsInParent().getWidth()*0.5;
+            nodeDragContext.translateAnchorY = (adminMapController.getOverlay().getBoundsInParent().getHeight()/2) +
+                                                            (node.getPreviewY() - adminMapController.getOverlay().getBoundsInParent().getHeight()/2) * scale
+                                                    + adminMapController.getOverlay().getTranslateY()
+                                                    + (scale-1)*(scale-1)/(scale) * adminMapController.getMapController().getOverlay().getBoundsInParent().getHeight()*0.5;
             // cancel event bubbling
             event.consume();
             // select node if not already selected
