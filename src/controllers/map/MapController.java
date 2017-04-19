@@ -1,7 +1,9 @@
 package controllers.map;
 
+import com.jfoenix.controls.JFXButton;
 import controllers.AbstractController;
 import controllers.IClickableController;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
@@ -16,6 +18,8 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import models.path.Path;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 /**
@@ -37,6 +41,17 @@ public class MapController extends AbstractController implements IClickableContr
     private Group overlay;
     private int overlayIndex;
 
+    @FXML
+    private VBox floorVBox;
+
+    public ArrayList<JFXButton> getFloorButtons() {
+        return floorButtons;
+    }
+
+    private ArrayList<JFXButton> floorButtons;
+    private JFXButton zoomIn;
+    private JFXButton zoomOut;
+
     public int getFloor() {
         return floor;
     }
@@ -48,6 +63,8 @@ public class MapController extends AbstractController implements IClickableContr
     private AnchorPane root;
     @FXML
     private ImageView mapView;
+
+    private SceneGestures sceneGestures;
 
     //// Public API ////
 
@@ -83,6 +100,17 @@ public class MapController extends AbstractController implements IClickableContr
         overlay.getChildren().add(canvas);
     }
 
+    public void enableButtons(ArrayList<String> floors) {
+        floorVBox.getChildren().clear();
+        for(JFXButton b : this.floorButtons) {
+            if(floors.contains(b.getText())) {
+                floorVBox.getChildren().add(b);
+            }
+        }
+        floorVBox.getChildren().add(zoomIn);
+        floorVBox.getChildren().add(zoomOut);
+    }
+
     public void drawPath(Path p) {
         if(p.getStart().getFloor() == this.floor) drawNode(p.getStart(), Color.BLUE);
         for (int i = 1; i < p.getPath().size(); i++) {
@@ -113,6 +141,7 @@ public class MapController extends AbstractController implements IClickableContr
 
     @FXML
     private void initialize() {
+        floorButtons = new ArrayList<>();
         // create overlay
         overlay = new Group();
         root.getChildren().add(overlay);
@@ -130,8 +159,9 @@ public class MapController extends AbstractController implements IClickableContr
         canvas.getChildren().add(mapView);
         // set base overlay index
         overlayIndex = overlay.getChildren().size();
+        addFloorButtons();
         // create the scene gestures for zooming and panning
-        SceneGestures sceneGestures = new SceneGestures(canvas, this);
+        sceneGestures = new SceneGestures(canvas, this);
         // register handlers zooming and panning
         canvas.addEventHandler(MouseEvent.ANY, new ClickDragHandler(sceneGestures.getOnMouseClickedEventHandler(), sceneGestures.getOnMouseDraggedEventHandler()));
         canvas.addEventHandler(MouseEvent.MOUSE_PRESSED, sceneGestures.getOnMousePressedEventHandler());
@@ -165,5 +195,36 @@ public class MapController extends AbstractController implements IClickableContr
             drawNode(n);
 
         }
+    }
+
+    private void addFloorButtons() {
+        ArrayList<String> floorList = new ArrayList<String>(Arrays.asList("1st Floor", "2nd Floor","3rd Floor", "4th Floor", "5th Floor", "6th Floor", "7th Floor"));
+
+        for(String s : floorList) {
+            JFXButton floor = new JFXButton();
+            floor.setText(s);
+            floor.setOnAction(event -> setFloor(floorList.indexOf(s) + 1));
+            floor.setPrefWidth(115);
+            floor.getStylesheets().add("@../../views/style.css");
+            floor.getStyleClass().add("content-button");
+            floorVBox.getChildren().add(floor);
+            floorButtons.add(floor);
+        }
+
+        this.zoomIn = new JFXButton();
+        zoomIn.setText("+");
+        zoomIn.setOnAction(event -> sceneGestures.zoomIn());
+        zoomIn.getStylesheets().add("@../../views/style.css");
+        zoomIn.getStyleClass().add("content-button");
+        floorVBox.getChildren().add(zoomIn);
+
+        this.zoomOut = new JFXButton();
+        zoomOut.setText("-");
+        zoomOut.setOnAction(event -> sceneGestures.zoomOut());
+        zoomOut.getStylesheets().add("@../../views/style.css");
+        zoomOut.getStyleClass().add("content-button");
+        floorVBox.getChildren().add(zoomOut);
+
+        floorVBox.toFront();
     }
 }
