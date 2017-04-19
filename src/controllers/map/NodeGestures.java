@@ -41,19 +41,6 @@ public class NodeGestures {
             nodeDragContext.mouseAnchorX = event.getSceneX();
             nodeDragContext.mouseAnchorY = event.getSceneY();
             double scale = adminMapController.getOverlay().getScaleX();
-            //1->0
-            //1.5->1/6
-            //2->1/2
-            //2.5->0.9?
-            //3
-
-            //(s-1)/s
-            //(s-1)(s-1)/(2s)
-            //0/1->0
-            //1/3->1/6
-            //2/4->1/2
-            //3/5->9/10
-            //4/6->
 
             nodeDragContext.translateAnchorX = (adminMapController.getOverlay().getBoundsInParent().getWidth()/2) +
                                                             (node.getPreviewX() - adminMapController.getOverlay().getBoundsInParent().getWidth()/2) * scale
