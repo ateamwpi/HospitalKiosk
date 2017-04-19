@@ -39,7 +39,7 @@ public class MapViewController extends AbstractController {
         mapController.setFloor(KioskMain.getDir().getTheKiosk().getNode().getFloor());
         mapContainer.getChildren().add(mapController.getRoot());
         // setup drawer
-        DrawerController drawerController = new DrawerController(this::drawPath, mapContainer);
+        DrawerController drawerController = new DrawerController(this::drawPath, mapController);
         drawer.setSidePane(drawerController.getRoot());
         drawer.open();
         drawerOpen.setOnMouseClicked(event -> {

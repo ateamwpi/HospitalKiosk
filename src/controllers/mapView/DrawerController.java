@@ -3,6 +3,7 @@ package controllers.mapView;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.controls.JFXTextField;
 import controllers.AbstractController;
+import controllers.map.MapController;
 import core.KioskMain;
 import core.exception.FloorNotReachableException;
 import core.exception.NearestNotFoundException;
@@ -68,16 +69,16 @@ public class DrawerController extends AbstractController {
     private Location endLocation;
     private Consumer<Path> drawPath;
     private Path path;
-    private StackPane mapContainer;
+    private MapController mapController;
 
-    public DrawerController(Consumer<Path> drawPath, StackPane mapContainer) {
-        super(drawPath, mapContainer);
+    public DrawerController(Consumer<Path> drawPath, MapController mapController) {
+        super(drawPath, mapController);
     }
 
     @Override
     public void initData(Object... data) {
         drawPath = (Consumer<Path>) data[0];
-        mapContainer = (StackPane) data[1];
+        mapController = (MapController) data[1];
     }
 
     @FXML
@@ -110,11 +111,13 @@ public class DrawerController extends AbstractController {
             boolean success = false;
             job.printPage(first);
             for (String s : path.getFloorsSpanning()) {
-                double scaleX = pageLayout.getPrintableWidth() / mapContainer.getBoundsInParent().getWidth();
+                mapController.hideButtons();
+                double scaleX = pageLayout.getPrintableWidth() / mapController.getRoot().getBoundsInParent().getWidth();
                 Scale scale = new Scale(scaleX, scaleX);
-                mapContainer.getTransforms().add(scale);
-                success = job.printPage(mapContainer);
-                mapContainer.getTransforms().remove(scale);
+                mapController.getRoot().getTransforms().add(scale);
+                success = job.printPage(mapController.getRoot());
+                mapController.getRoot().getTransforms().remove(scale);
+                mapController.showButtons();
             }
             if (success) {
                 job.endJob();
