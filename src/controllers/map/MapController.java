@@ -1,7 +1,12 @@
 package controllers.map;
 
+import com.jfoenix.controls.JFXButton;
 import controllers.AbstractController;
 import controllers.IClickableController;
+import core.KioskMain;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
@@ -16,6 +21,8 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import models.path.Path;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 /**
@@ -36,6 +43,9 @@ public class MapController extends AbstractController implements IClickableContr
     private Image map;
     private Group overlay;
     private int overlayIndex;
+
+    @FXML
+    private VBox floorButtons;
 
     public int getFloor() {
         return floor;
@@ -130,6 +140,7 @@ public class MapController extends AbstractController implements IClickableContr
         canvas.getChildren().add(mapView);
         // set base overlay index
         overlayIndex = overlay.getChildren().size();
+        addFloorButtons();
         // create the scene gestures for zooming and panning
         SceneGestures sceneGestures = new SceneGestures(canvas, this);
         // register handlers zooming and panning
@@ -165,5 +176,20 @@ public class MapController extends AbstractController implements IClickableContr
             drawNode(n);
 
         }
+    }
+
+    private void addFloorButtons() {
+        ArrayList<String> floorList = new ArrayList<String>(Arrays.asList("1st Floor", "2nd Floor","3rd Floor", "4th Floor", "5th Floor", "6th Floor", "7th Floor"));
+
+        for(String s : floorList) {
+            JFXButton floor = new JFXButton();
+            floor.setText(s);
+            floor.setOnAction(event -> setFloor(floorList.indexOf(s) + 1));
+            floor.setPrefWidth(115);
+            floor.getStylesheets().add("@../../views/style.css");
+            floor.getStyleClass().add("content-button");
+            floorButtons.getChildren().add(floor);
+        }
+        floorButtons.toFront();
     }
 }
