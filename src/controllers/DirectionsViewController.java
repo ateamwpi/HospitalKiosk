@@ -2,6 +2,7 @@ package controllers;
 
 import com.jfoenix.controls.JFXButton;
 import controllers.map.MapController;
+import controllers.mapView.MapViewController;
 import core.KioskMain;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -110,7 +111,7 @@ public class DirectionsViewController extends AbstractController {
 
     @FXML
     private void clickDone(ActionEvent event) {
-        KioskMain.getUI().setScene(new MainMenuController());
+        KioskMain.getUI().setScene(new MapViewController());
     }
 
     @Override

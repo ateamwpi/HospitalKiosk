@@ -1,5 +1,6 @@
 package controllers;
 
+import controllers.mapView.MapViewController;
 import core.KioskMain;
 import javafx.fxml.FXML;
 
@@ -15,7 +16,7 @@ public class AboutPageController extends AbstractController {
 
     @FXML
     private void clickBack() {
-        KioskMain.getUI().setScene(new MainMenuController());
+        KioskMain.getUI().setScene(new MapViewController());
     }
 
 

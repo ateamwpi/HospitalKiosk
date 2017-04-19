@@ -1,5 +1,6 @@
 package controllers;
 
+import controllers.mapView.MapViewController;
 import core.KioskMain;
 import core.Utils;
 import core.exception.FloorNotReachableException;
@@ -81,7 +82,7 @@ public class DirectoryViewController extends AbstractDirectoryViewController {
 
     @FXML  //when user clicks "back" button, they will return to main menu
     private void clickBack(ActionEvent event) {
-        KioskMain.getUI().setScene(new MainMenuController());
+        KioskMain.getUI().setScene(new MapViewController());
     }
 
     @FXML  //when user clicks -> button, they will be brought to new page and asked to pick final destination

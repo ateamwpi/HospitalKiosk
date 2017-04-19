@@ -14,7 +14,7 @@ import java.util.Arrays;
 /**
  * Created by mattm on 3/29/2017.
  */
-public class MapViewController extends AbstractController {
+public class MapViewControllerOLD extends AbstractController {
     @FXML
     private ChoiceBox<String> floors;
     @FXML
@@ -62,6 +62,6 @@ public class MapViewController extends AbstractController {
 
     @FXML
     private void clickBack(ActionEvent event) {
-        KioskMain.getUI().setScene(new MainMenuController());
+        KioskMain.getUI().setScene(new controllers.mapView.MapViewController());
     }
 }

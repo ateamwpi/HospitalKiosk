@@ -1,5 +1,6 @@
 package controllers;
 
+import controllers.mapView.MapViewController;
 import core.KioskMain;
 import javafx.fxml.FXML;
 
@@ -14,6 +15,6 @@ public class WelcomeScreenController extends AbstractController {
 
     @FXML
     private void clickGo(){
-        KioskMain.getUI().setScene(new MainMenuController());
+        KioskMain.getUI().setScene(new MapViewController());
     }
 }

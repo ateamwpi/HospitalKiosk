@@ -26,6 +26,8 @@ import java.util.Map;
  *      meaning all object attributes used in initialize() must be initialized in initData().
  * NOTE:
  *      The root parent node is assumed to have an id of root. To change this, override getRoot().
+ * NOTE:
+ *      Data needed in initialize() must be passed to super() in the constructor and assigned to attributes in initData()
  *
  */
 public abstract class AbstractController implements IController {

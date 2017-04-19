@@ -30,8 +30,7 @@ public class UIManager {
     }
 
     public void setScene(IController controller) {
-        this.root = controller.getRoot();
-        scene = new Scene(this.root);
+        scene = new Scene(controller.getRoot());
 //        fontSize.bind(scene.widthProperty().add(scene.heightProperty()).divide(100));
 //        Screen screen = Screen.getPrimary();
 //        Rectangle2D bounds = screen.getVisualBounds();
@@ -43,7 +42,7 @@ public class UIManager {
 //        stage.setY(bounds.getMinY());
 //        stage.setWidth(bounds.getWidth());
 //        stage.setHeight(bounds.getHeight());
-        stage.setTitle("Brigham and Women's Faulkner Hospital Kiosk");
+
         stage.setScene(scene);
     }
 
@@ -52,7 +51,7 @@ public class UIManager {
     }
 
     public Scene getScene() {
-        return scene;
+        return this.scene;
     }
 
     public Stage getStage() {

@@ -227,4 +227,20 @@ public class MapController extends AbstractController implements IClickableContr
 
         floorVBox.toFront();
     }
+
+    public void hideButtons() {
+        for(JFXButton b : floorButtons) {
+            b.setVisible(false);
+        }
+        zoomIn.setVisible(false);
+        zoomOut.setVisible(false);
+    }
+
+    public void showButtons() {
+        for(JFXButton b : floorButtons) {
+            b.setVisible(true);
+        }
+        zoomIn.setVisible(true);
+        zoomOut.setVisible(true);
+    }
 }
