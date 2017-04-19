@@ -111,15 +111,22 @@ public class DrawerController extends AbstractController {
         if (job != null && job.showPrintDialog(null)) {
             boolean success = false;
             job.printPage(first);
+            int oldFloor = mapController.getFloor();
             for (String s : path.getFloorsSpanning()) {
+                mapController.clearOverlay();
+                mapController.setFloor(Integer.parseInt(s.substring(0,1)));
+                mapController.drawPath(path);
                 mapController.hideButtons();
                 double scaleX = pageLayout.getPrintableWidth() / mapController.getRoot().getBoundsInParent().getWidth();
                 Scale scale = new Scale(scaleX, scaleX);
                 mapController.getRoot().getTransforms().add(scale);
-                success = job.printPage(mapController.getRoot());
+                success = job.printPage(pageLayout, mapController.getRoot());
                 mapController.getRoot().getTransforms().remove(scale);
                 mapController.showButtons();
             }
+            mapController.clearOverlay();
+            mapController.setFloor(oldFloor);
+            mapController.drawPath(path);
             if (success) {
                 job.endJob();
             }

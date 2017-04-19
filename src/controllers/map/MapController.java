@@ -167,6 +167,7 @@ public class MapController extends AbstractController implements IClickableContr
         addFloorButtons();
         // create the scene gestures for zooming and panning
         sceneGestures = new SceneGestures(canvas, this);
+        sceneGestures.zoomIn();
         // register handlers zooming and panning
         canvas.addEventHandler(MouseEvent.ANY, new ClickDragHandler(sceneGestures.getOnMouseClickedEventHandler(), sceneGestures.getOnMouseDraggedEventHandler()));
         canvas.addEventHandler(MouseEvent.MOUSE_PRESSED, sceneGestures.getOnMousePressedEventHandler());

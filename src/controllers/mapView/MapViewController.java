@@ -69,8 +69,8 @@ public class MapViewController extends AbstractController {
     }
 
     private void drawPath(Path path) {
-        mapController.drawPath(path);
-        mapController.setFloor(path.getStart().getFloor());
+        //mapController.drawPath(path);
+        //mapController.setFloor(path.getStart().getFloor());
     }
 
 }
