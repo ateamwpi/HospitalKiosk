@@ -122,8 +122,20 @@ public class AdminMapController extends AbstractController implements IClickable
 
     void addNode(double x, double y, String room) {
         System.out.println("add node");
+        //Update without weird offset
+        double scale = getOverlay().getScaleX();
+        x = (x / scale
+                - getOverlay().getTranslateX()/scale
+                +(scale-1)/(scale*scale)*getOverlay().getBoundsInParent().getWidth()*0.5
+        );
+        y = (y / scale
+                - getOverlay().getTranslateY()/scale
+                +(scale-1)/(scale*scale)*getOverlay().getBoundsInParent().getHeight()*0.5
+        );
+
         // create new node
-        Node node = new Node((int) x, (int) y, mapController.getFloor(), room);
+        Node node = new Node(   (int) x,
+                                (int) y, mapController.getFloor(), room);
         // create new visual node with gestures
         DraggableNode draggableNode = getDraggableNode(node);
         // draw node with gestures
