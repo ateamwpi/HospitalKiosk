@@ -9,34 +9,46 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
-    <SplitPane fx:id="splitPane" dividerPositions="0.5" orientation="VERTICAL" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-      <HBox fx:id="mapContainer" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-        <AnchorPane maxHeight="-Infinity" SplitPane.resizableWithParent="false">
-            <GridPane maxHeight="-Infinity" minHeight="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="10.0">
-                <columnConstraints>
-                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                </columnConstraints>
-                <rowConstraints>
-                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                </rowConstraints>
-                <Button fx:id="viewMapBtn" alignment="CENTER" mnemonicParsing="false" onAction="#clickViewMap" text="View Map" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
-               <GridPane.margin>
-                  <Insets bottom="20.0" top="20.0" />
-               </GridPane.margin></Button>
-                <Button fx:id="viewDirectoryBtn" mnemonicParsing="false" onAction="#clickViewDirectory" text="Get Directions" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
-               <GridPane.margin>
-                  <Insets bottom="20.0" top="20.0" />
-               </GridPane.margin></Button>
-                <Button fx:id="adminBtn" mnemonicParsing="false" onAction="#clickAdmin" text="Admin" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
-               <GridPane.margin>
-                  <Insets bottom="20.0" top="20.0" />
-               </GridPane.margin></Button>
-            </GridPane>
-        </AnchorPane>
-    </SplitPane>
+<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+       <SplitPane fx:id="splitPane" dividerPositions="0.5" orientation="VERTICAL" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+          <items>
+            <HBox fx:id="mapContainer" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+              <AnchorPane maxHeight="-Infinity" SplitPane.resizableWithParent="false">
+                 <children>
+                     <GridPane maxHeight="-Infinity" minHeight="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="10.0">
+                         <columnConstraints>
+                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                         </columnConstraints>
+                         <rowConstraints>
+                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                         </rowConstraints>
+                        <children>
+                            <Button fx:id="viewMapBtn" alignment="CENTER" mnemonicParsing="false" onAction="#clickViewMap" text="View Map" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                           <GridPane.margin>
+                              <Insets bottom="20.0" top="20.0" />
+                           </GridPane.margin>
+                        </Button>
+                            <Button fx:id="viewDirectoryBtn" mnemonicParsing="false" onAction="#clickViewDirectory" text="Get Directions" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                           <GridPane.margin>
+                              <Insets bottom="20.0" top="20.0" />
+                           </GridPane.margin>
+                        </Button>
+                            <Button fx:id="adminBtn" mnemonicParsing="false" onAction="#clickAdmin" text="Admin" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                           <GridPane.margin>
+                              <Insets bottom="20.0" top="20.0" />
+                           </GridPane.margin>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#clickAbout" text="About" GridPane.halignment="CENTER" />
+                        </children>
+                     </GridPane>
+                 </children>
+              </AnchorPane>
+          </items>
+       </SplitPane>
+   </children>
 </AnchorPane>

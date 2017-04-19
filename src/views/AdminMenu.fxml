@@ -29,22 +29,32 @@
          <children>
             <HBox alignment="CENTER" styleClass="title" stylesheets="@style.css" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
                <children>
-                  <JFXButton fx:id="logoutBtn" alignment="CENTER" buttonType="RAISED" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clickLogout" styleClass="navigation-button" stylesheets="@style.css" text="Logout">
-                     <opaqueInsets>
-                        <Insets right="20.0" />
-                     </opaqueInsets>
-                     <HBox.margin>
-                        <Insets left="20.0" />
-                     </HBox.margin>
-                  </JFXButton>
-                   <Label fx:id="title" prefHeight="96.0" prefWidth="1135.0" styleClass="title" stylesheets="@style.css" text="Admin Main Menu">
-                     <font>
-                        <Font name="System Bold" size="37.0" />
-                     </font>
-                     <padding>
-                        <Insets left="20.0" />
-                     </padding>
-                  </Label>
+                  <HBox prefHeight="99.0" prefWidth="1284.0" styleClass="banner" stylesheets="@style.css" HBox.hgrow="ALWAYS">
+                     <children>
+                        <JFXButton fx:id="logoutBtn" alignment="CENTER" buttonType="RAISED" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clickLogout" styleClass="navigation-button" stylesheets="@style.css" text="Logout">
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="25.0" right="10.0" top="25.0" />
+                           </HBox.margin>
+                        </JFXButton>
+                         <Label fx:id="title" styleClass="title-text" stylesheets="@style.css" text="Admin Main Menu">
+                           <font>
+                              <Font name="System Bold" size="37.0" />
+                           </font>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                           <HBox.margin>
+                              <Insets top="15.0" />
+                           </HBox.margin>
+                        </Label>
+                     </children>
+                  </HBox>
                </children>
             </HBox>
             <JFXButton fx:id="manageDirectoryBtn" buttonType="RAISED" mnemonicParsing="false" onAction="#clickManageDirectory" styleClass="content-button" stylesheets="@style.css" text="Manage Directory" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">

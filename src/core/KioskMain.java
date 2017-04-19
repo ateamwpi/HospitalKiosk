@@ -2,6 +2,7 @@ package core;
 
 import controllers.IController;
 import controllers.MainMenuController;
+import controllers.WelcomeScreenController;
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
@@ -40,7 +41,7 @@ public class KioskMain extends Application {
     public void start(Stage stage) {
         initUIMg(stage);
         // load the main menu
-        getUI().setScene(new MainMenuController());
+        getUI().setScene(new WelcomeScreenController());
     }
 
     public static void main(String[] args) {

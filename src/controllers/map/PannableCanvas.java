@@ -17,7 +17,7 @@ public class PannableCanvas extends Pane {
         this.mapController = mapController;
 
         // add scale transform
-        scaleXProperty().bind(myScale);
+         scaleXProperty().bind(myScale);
         scaleYProperty().bind(myScale);
 
         // logging
@@ -35,6 +35,8 @@ public class PannableCanvas extends Pane {
      */
     public void setScale( double scale) {
         myScale.set(scale);
+        setTranslateX(getTranslateX()*scale);
+        setTranslateY(getTranslateY()*scale);
     }
 
     /**

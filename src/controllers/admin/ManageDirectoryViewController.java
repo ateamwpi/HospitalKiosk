@@ -122,7 +122,7 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
         JFXButton fulldir = new JFXButton();
         fulldir.setText("Full Directory");
         fulldir.setOnAction(event -> setFullDirectory());
-        fulldir.setPrefWidth(120);
+        fulldir.setPrefWidth(150);
         fulldir.getStylesheets().add("@../../views/style.css");
         fulldir.getStyleClass().add("content-button");
         locationTypes.getChildren().add(fulldir);
@@ -131,7 +131,7 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
             JFXButton loc = new JFXButton();
             loc.setText(locType.friendlyName());
             loc.setOnAction(event -> selectDirectory(locType));
-            loc.setPrefWidth(120);
+            loc.setPrefWidth(150);
             loc.getStylesheets().add("@../../views/style.css");
             loc.getStyleClass().add("content-button");
             locationTypes.getChildren().add(loc);
