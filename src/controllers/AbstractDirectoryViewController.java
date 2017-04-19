@@ -1,5 +1,6 @@
 package controllers;
 
+import com.jfoenix.controls.JFXTextField;
 import core.KioskMain;
 import core.exception.RoomNotFoundException;
 import javafx.beans.value.ChangeListener;
@@ -41,7 +42,7 @@ public abstract class AbstractDirectoryViewController extends AbstractController
     @FXML
     private TableColumn<Location, LocationType> typeCol;
     @FXML
-    private TextField searchBox;
+    private JFXTextField searchBox;
     @FXML
     protected ComboBox<String> locationDropdown;
 

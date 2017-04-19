@@ -24,6 +24,7 @@ public class DepthFirst extends AbstractPathfindingAlgorithm {
         s = start;
         dfs(s);
 
+        if(!hasPathTo(goal)) throw new PathNotFoundException(start, goal);
         return constructPath(edgeTo, goal);
     }
 
@@ -40,5 +41,9 @@ public class DepthFirst extends AbstractPathfindingAlgorithm {
                 dfs(w);
             }
         }
+    }
+
+    private boolean hasPathTo(Node v) {
+        return marked.containsKey(v) && marked.get(v);
     }
 }

@@ -48,8 +48,10 @@ public enum LocationType {
     }
 
     public static LocationType getType(String s) {
-        return names.get(s.toUpperCase());
-    }
+        if(names.containsKey(s.toUpperCase()))
+            return names.get(s.toUpperCase());
+        else
+            return Unknown;    }
 
     public String friendlyName() {
         if(this.equals(PointOfInterest)) return "Point of Interest";

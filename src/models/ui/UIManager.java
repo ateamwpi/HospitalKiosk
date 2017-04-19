@@ -43,7 +43,7 @@ public class UIManager {
 //        stage.setY(bounds.getMinY());
 //        stage.setWidth(bounds.getWidth());
 //        stage.setHeight(bounds.getHeight());
-
+        stage.setTitle("Brigham and Women's Faulkner Hospital Kiosk");
         stage.setScene(scene);
     }
 
