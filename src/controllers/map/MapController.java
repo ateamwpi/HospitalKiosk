@@ -197,6 +197,21 @@ public class MapController extends AbstractController implements IClickableContr
             floorVBox.getChildren().add(floor);
             floorButtons.add(floor);
         }
+
+        JFXButton zoomIn = new JFXButton();
+        zoomIn.setText("+");
+        zoomIn.setOnAction(event -> sceneGestures.zoomIn());
+        zoomIn.getStylesheets().add("@../../views/style.css");
+        zoomIn.getStyleClass().add("content-button");
+        floorVBox.getChildren().add(zoomIn);
+
+        JFXButton zoomOut = new JFXButton();
+        zoomOut.setText("-");
+        zoomOut.setOnAction(event -> sceneGestures.zoomOut());
+        zoomOut.getStylesheets().add("@../../views/style.css");
+        zoomOut.getStyleClass().add("content-button");
+        floorVBox.getChildren().add(zoomOut);
+
         floorVBox.toFront();
     }
 }
