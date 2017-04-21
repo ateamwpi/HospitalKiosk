@@ -3,6 +3,7 @@ package controllers.map;
 import com.jfoenix.controls.JFXButton;
 import controllers.AbstractController;
 import controllers.IClickableController;
+import controllers.ImageProxy;
 import core.Utils;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -38,7 +39,9 @@ public class MapController extends AbstractController implements IClickableContr
             "resources/floor7.png"
     };
 
-    private Image map;
+    private ArrayList<ImageProxy> maps;
+
+    private ImageProxy map;
     private Group overlay;
     private int overlayIndex;
 
@@ -137,8 +140,8 @@ public class MapController extends AbstractController implements IClickableContr
 
     public void setFloor(int floor){
         this.floor = floor;
-        map = new Image(getClass().getClassLoader().getResourceAsStream(MAP_URLS[this.floor - 1]));
-        mapView.setImage(map);
+        map = this.maps.get(this.floor-1);
+        mapView.setImage(map.getImage());
         mapView.setPreserveRatio(true);
     }
 
@@ -155,10 +158,18 @@ public class MapController extends AbstractController implements IClickableContr
         // add the canvas to overlay
         overlay.getChildren().add(canvas);
 
-        floor = 4;
+        floor = 1;
+        this.maps = new ArrayList<>();
+
+        // create the Proxies for all of the map images
+        for(String url : MAP_URLS) {
+            System.out.println(this.maps);
+            this.maps.add(new ImageProxy(url));
+        }
+
         // load the map into the map view
-        map = new Image(getClass().getClassLoader().getResourceAsStream(MAP_URLS[floor -1] ));
-        mapView.setImage(map);
+        map = this.maps.get(0);
+        mapView.setImage(map.getImage());
         mapView.setPreserveRatio(true);
         // add the map to the canvas
         canvas.getChildren().add(mapView);
@@ -193,7 +204,7 @@ public class MapController extends AbstractController implements IClickableContr
         root.getChildren().add(overlay);
         // add the canvas to overlay
         overlay.getChildren().add(canvas);
-        mapView.setImage(map);
+        mapView.setImage(map.getImage());
         mapView.setPreserveRatio(true);
         // set base overlay index
         overlayIndex = overlay.getChildren().size();
