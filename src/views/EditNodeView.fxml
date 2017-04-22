@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
-
-
 <AnchorPane fx:id="root" prefHeight="200.0" prefWidth="150.0" xmlns="http://javafx.com/javafx/8.0.111"
             xmlns:fx="http://javafx.com/fxml/1">
     <TextField layoutX="77.0" layoutY="14.0" prefHeight="27.0" prefWidth="59.0" fx:id="x"/>

@@ -3,9 +3,7 @@ package models.dir;
 import core.KioskMain;
 import core.exception.NearestNotFoundException;
 
-import java.awt.*;
 import java.util.*;
-import java.util.List;
 
 /**
  * Created by mattm on 3/29/2017.

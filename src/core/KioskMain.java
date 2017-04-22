@@ -1,28 +1,20 @@
 package core;
 
-import controllers.IController;
 import controllers.WelcomeScreenController;
 import javafx.application.Application;
-import javafx.beans.binding.Bindings;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.Scene;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import models.db.DatabaseManager;
 import models.dir.Directory;
 import models.dir.DirectoryManager;
 import models.dir.Location;
 import models.dir.LocationType;
-import models.path.PathfindingManager;
 import models.path.Node;
+import models.path.PathfindingManager;
 import models.tts.TTSManager;
 import models.ui.UIManager;
 
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.Scanner;
 
 public class KioskMain extends Application {
 
