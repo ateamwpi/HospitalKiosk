@@ -19,6 +19,8 @@ import models.path.Path;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by mattm on 3/29/2017.
@@ -28,6 +30,8 @@ public class DirectionsViewController extends AbstractController {
     private Path path;
 
     private MapController mapController;
+
+    private TimerTask task;
 
     @FXML
     private Button backBtn;
@@ -64,6 +68,19 @@ public class DirectionsViewController extends AbstractController {
 
         // show the text directions
         directionsText.setText("Directions:\n" + path.textPath());
+
+        Timer timer = new Timer();
+
+        TimerTask task = new TimerTask()
+        {
+            public void run()
+            {
+                KioskMain.getUI().setScene(new WelcomeScreenController());
+            }
+
+        };
+
+        timer.schedule(task,5000);
     }
 
     @FXML
