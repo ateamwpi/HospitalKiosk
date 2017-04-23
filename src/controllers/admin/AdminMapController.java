@@ -2,33 +2,24 @@ package controllers.admin;
 
 import controllers.AbstractController;
 import controllers.IClickableController;
-import controllers.OptionAlertController;
 import controllers.map.*;
 import core.KioskMain;
 import core.Utils;
 import core.exception.NodeInUseException;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Line;
 import javafx.util.Pair;
 import models.path.Node;
 
-import javax.rmi.CORBA.Util;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Function;
-import java.util.function.Predicate;
 
 /**
  * Created by dylan on 4/8/17.

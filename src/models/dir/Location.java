@@ -1,10 +1,7 @@
 package models.dir;
 
 import core.KioskMain;
-import javafx.beans.InvalidationListener;
-import javafx.beans.property.ReadOnlyProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ChangeListener;
 import models.path.Node;
 
 /**

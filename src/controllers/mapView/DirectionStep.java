@@ -3,8 +3,6 @@ package controllers.mapView;
 import controllers.AbstractController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import models.dir.Directory;
-import models.path.Direction;
 
 /**
  * Created by dylan on 4/18/17.

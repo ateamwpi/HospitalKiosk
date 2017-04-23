@@ -9,10 +9,9 @@ import core.exception.RoomNotFoundException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import models.path.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import models.path.Node;
 
 /**
  * Created by mattm on 3/29/2017.

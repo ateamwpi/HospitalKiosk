@@ -9,8 +9,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 
-import javax.swing.*;
-
 /**
  * Created by mattm on 3/29/2017.
  */

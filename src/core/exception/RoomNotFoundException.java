@@ -1,7 +1,5 @@
 package core.exception;
 
-import models.path.Node;
-
 /**
  * Created by mattm on 4/1/2017.
  */
