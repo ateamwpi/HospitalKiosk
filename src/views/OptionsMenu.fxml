@@ -39,12 +39,11 @@
             </padding>
          </HBox>
         </VBox>
-        <VBox fx:id="directions" style="-fx-background-color: #FAFAFA;">
-            <VBox fx:id="directionsHeader" alignment="CENTER" visible="false">
-                <padding>
-                    <Insets bottom="12.0" top="12.0" />
-                </padding>
-            </VBox>
+        <VBox fx:id="directions" alignment="CENTER_LEFT" style="-fx-background-color: #FAFAFA;">
+         <Label fx:id="accountText" styleClass="alert-body" stylesheets="@../styles/style.css" text="Welcome, " />
+         <padding>
+            <Insets left="24.0" />
+         </padding>
         </VBox>
       <VBox fx:id="menuItems" spacing="24.0">
          <padding>

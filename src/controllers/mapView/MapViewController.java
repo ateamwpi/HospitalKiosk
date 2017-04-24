@@ -63,6 +63,9 @@ public class MapViewController extends AbstractController {
         menuController.getScrim().setOnMouseClicked(event -> {
             optionsMenu.close();
         });
+//        menuController.getMenuItems().setOnMouseClicked(event -> {
+//            optionsMenu.close();
+//        });
 
         menuController.getScrim().prefWidthProperty().bind(KioskMain.getUI().getStage().widthProperty().add(100));
         menuController.getScrim().prefHeightProperty().bind(KioskMain.getUI().getStage().heightProperty());

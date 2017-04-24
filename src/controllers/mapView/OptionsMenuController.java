@@ -2,21 +2,25 @@ package controllers.mapView;
 
 import controllers.AbstractController;
 import controllers.mapView.MenuItem.EnumMenuItem;
+import core.KioskMain;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import models.login.ILoginObserver;
 
 /**
  * Created by dylan on 4/16/17.
  */
-public class OptionsMenuController extends AbstractController {
+public class OptionsMenuController extends AbstractController implements ILoginObserver {
 
     @FXML
     private Label drawerClose;
     @FXML
     private Pane scrim;
+    @FXML
+    private Label accountText;
     @FXML
     private VBox menuItems;
 
@@ -33,8 +37,8 @@ public class OptionsMenuController extends AbstractController {
 
     @FXML
     private void initialize() {
-        menuItems.getChildren().add(new MenuItem(EnumMenuItem.About, mainRoot).getRoot());
-        menuItems.getChildren().add(new MenuItem(EnumMenuItem.Login, mainRoot).getRoot());;
+        KioskMain.getLogin().attachObserver(this);
+        this.onAccountChanged();
     }
 
     public Label getDrawerClose() {
@@ -48,5 +52,22 @@ public class OptionsMenuController extends AbstractController {
     @Override
     public String getURL() {
         return "views/OptionsMenu.fxml";
+    }
+
+    private void setMenuItems() {
+        this.menuItems.getChildren().clear();
+        for (EnumMenuItem e : KioskMain.getLogin().getState().getAvailableOptions()) {
+            this.menuItems.getChildren().add(new MenuItem(e, mainRoot).getRoot());
+        }
+    }
+
+    @Override
+    public void onAccountChanged() {
+        this.accountText.setText(KioskMain.getLogin().getState().getWelcomeMessage());
+        this.setMenuItems();
+    }
+
+    public VBox getMenuItems() {
+        return menuItems;
     }
 }

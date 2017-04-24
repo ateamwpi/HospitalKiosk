@@ -1,5 +1,9 @@
 package models.login;
 
+import controllers.mapView.MenuItem;
+
+import java.util.Collection;
+
 /**
  * Created by mattm on 4/21/2017
  */
@@ -20,6 +24,10 @@ public abstract class AbstractUserType implements Comparable<AbstractUserType> {
     }
 
     public abstract String toString();
+
+    public abstract Collection<MenuItem.EnumMenuItem> getAvailableOptions();
+
+    public abstract String getWelcomeMessage();
 
     @Override
     public int compareTo(AbstractUserType o) {

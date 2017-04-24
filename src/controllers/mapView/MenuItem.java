@@ -19,7 +19,8 @@ public class MenuItem extends AbstractController {
 
     public enum EnumMenuItem {
         About("About This Application", "info", EnumMenuItem::aboutPressed),
-        Login("Administrator Login", "login", EnumMenuItem::loginPressed);
+        Login("Administrator Login", "login", EnumMenuItem::loginPressed),
+        Logout("Log Out", "logout", EnumMenuItem::logoutPressed);
 
         String path;
         String text;
@@ -38,6 +39,10 @@ public class MenuItem extends AbstractController {
         private static void loginPressed(MouseEvent e, Parent mainRoot) {
             LoginController login = new LoginController(mainRoot);
             login.showCentered();
+        }
+
+        private static void logoutPressed(MouseEvent e, Parent mainRoot) {
+            KioskMain.getLogin().logout();
         }
     }
 

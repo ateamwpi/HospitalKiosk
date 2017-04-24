@@ -48,17 +48,12 @@ public class LoginController extends AbstractPopupController {
 
     private void checkPassword() {
         if(KioskMain.getLogin().tryLogin(username.getText(), password.getText())) {
-            Utils.hidePopup();
+            this.getInstance().hide();
+            Utils.showAlert(this.getParent(), "Success!", "Welcome, " + KioskMain.getLogin().getState() + "!");
         }
         else {
-            Utils.showAlert(this.getParent(), "Access Denied!", "The password was incorrect!\nPlease try again!\n");
+            Utils.showAlert(this.getParent(), "Access Denied!", "The password was incorrect!\nPlease try again!");
         }
-        /*if (password.getText().equals("admin")) {
-            this.getInstance().hide();
-            KioskMain.getUI().setScene(new AdminMenuController());
-        } else {
-            Utils.showAlert(this.getParent(), "Access Denied!", "The password was incorrect!\nPlease try again!\n");
-        }*/
     }
 
     @Override
