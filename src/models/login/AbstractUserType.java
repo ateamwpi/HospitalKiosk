@@ -25,4 +25,11 @@ public abstract class AbstractUserType implements Comparable<AbstractUserType> {
     public int compareTo(AbstractUserType o) {
         return o.permission - this.permission;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o == null) return false;
+        AbstractUserType u = (AbstractUserType)o;
+        return u.permission == this.permission && u.username == this.username;
+    }
 }

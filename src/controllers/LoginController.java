@@ -1,8 +1,10 @@
-package controllers.admin;
+package controllers;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
-import controllers.AbstractPopupController;
+import com.jfoenix.controls.JFXTextArea;
+import com.jfoenix.controls.JFXTextField;
+import controllers.admin.AdminMenuController;
 import core.KioskMain;
 import core.Utils;
 import javafx.event.ActionEvent;
@@ -14,14 +16,16 @@ import javafx.scene.input.KeyEvent;
 /**
  * Created by mattm on 3/29/2017.
  */
-public class AdminLoginController extends AbstractPopupController {
+public class LoginController extends AbstractPopupController {
 
     @FXML
     private JFXButton loginBtn;
     @FXML
     private JFXPasswordField password;
+    @FXML
+    private JFXTextField username;
 
-    public AdminLoginController(Parent parent) {
+    public LoginController(Parent parent) {
         super(parent);
     }
 
@@ -43,16 +47,22 @@ public class AdminLoginController extends AbstractPopupController {
     }
 
     private void checkPassword() {
-        if (password.getText().equals("admin")) {
+        if(KioskMain.getLogin().tryLogin(username.getText(), password.getText())) {
+            Utils.hidePopup();
+        }
+        else {
+            Utils.showAlert(this.getParent(), "Access Denied!", "The password was incorrect!\nPlease try again!\n");
+        }
+        /*if (password.getText().equals("admin")) {
             this.getInstance().hide();
             KioskMain.getUI().setScene(new AdminMenuController());
         } else {
             Utils.showAlert(this.getParent(), "Access Denied!", "The password was incorrect!\nPlease try again!\n");
-        }
+        }*/
     }
 
     @Override
     public String getURL() {
-        return "views/AdminLogin.fxml";
+        return "views/Login.fxml";
     }
 }

@@ -8,26 +8,28 @@ import java.util.Collections;
  */
 public class LoginManager {
 
-    private ArrayList<AbstractUserType> states = new ArrayList<>();
+    private ArrayList<AbstractUserType> accounts = new ArrayList<>();
+    private AbstractUserType defaultAccount;
     private AbstractUserType currentState;
 
     public LoginManager() {
-        this.addUserType(new UserTypeGuest());
+        this.defaultAccount = new UserTypeGuest();
         this.addUserType(new UserTypeProfessional());
         this.addUserType(new UserTypeAdministrator());
         this.tryLogin("", "");
-        System.out.println("Loaded UserTypes: " + this.states);
+        System.out.println("Loaded UserTypes: " + this.accounts);
         System.out.println("Selected UserType: " + this.currentState);
     }
 
     private void addUserType(AbstractUserType u) {
-        this.states.add(u);
-        Collections.sort(this.states);
+        this.accounts.add(u);
+        Collections.sort(this.accounts);
     }
 
     public boolean tryLogin(String username, String password) {
-        for(AbstractUserType userType : this.states) {
-            if(userType.tryLogin(username, password)) {
+        for(AbstractUserType userType : this.accounts) {
+            if(!userType.equals(this.currentState) && userType.tryLogin(username, password)) {
+                System.out.println("accepted " + userType);
                 this.currentState = userType;
                 return true;
             }

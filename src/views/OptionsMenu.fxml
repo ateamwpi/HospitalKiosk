@@ -46,38 +46,7 @@
                 </padding>
             </VBox>
         </VBox>
-      <VBox spacing="24.0">
-         <children>
-            <HBox fx:id="aboutButton" alignment="CENTER_LEFT">
-               <children>
-                  <Label fx:id="drawerClose1" prefHeight="24.0" prefWidth="24.0" styleClass="info" stylesheets="@../styles/main-menu.css" />
-                  <Label styleClass="alert-body" stylesheets="@../styles/style.css" text="About This Application">
-                     <padding>
-                        <Insets left="32.0" />
-                     </padding>
-                  </Label>
-               </children>
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-               <padding>
-                  <Insets left="16.0" />
-               </padding>
-            </HBox>
-            <HBox fx:id="adminButton" alignment="CENTER_LEFT">
-               <children>
-                  <Label fx:id="drawerClose2" prefHeight="24.0" prefWidth="24.0" styleClass="login" stylesheets="@../styles/main-menu.css" />
-                  <Label styleClass="alert-body" stylesheets="@../styles/style.css" text="Administrator Login">
-                     <padding>
-                        <Insets left="32.0" />
-                     </padding>
-                  </Label>
-               </children>
-               <padding>
-                  <Insets left="16.0" />
-               </padding>
-            </HBox>
-         </children>
+      <VBox fx:id="menuItems" spacing="24.0">
          <padding>
             <Insets bottom="12.0" top="12.0" />
          </padding>
