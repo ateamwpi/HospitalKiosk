@@ -1,7 +1,9 @@
 package models.ui;
 
+import controllers.AboutPageController;
 import controllers.AbstractPopupController;
 import controllers.IController;
+import core.KioskMain;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -11,6 +13,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by dylan on 4/11/17.
@@ -23,6 +28,17 @@ public class UIManager {
 
     private AbstractPopupController popup;
     private static DoubleProperty fontSize = new SimpleDoubleProperty(15);
+
+    Timer timer = new Timer();
+
+    TimerTask task = new TimerTask()
+    {
+        public void run()
+        {
+            KioskMain.getUI().setScene(new AboutPageController());
+        }
+
+    };
 
     public UIManager(Stage stage) {
         this.stage = stage;
@@ -44,6 +60,8 @@ public class UIManager {
 //        stage.setHeight(bounds.getHeight());
 
         stage.setScene(scene);
+
+        timer.schedule(task, 1);
     }
 
     public Node lookup(String query) {
