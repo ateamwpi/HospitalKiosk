@@ -198,21 +198,6 @@ public class MapController extends AbstractController implements IClickableContr
         drawNode(node, Color.BLACK);
     }
 
-    private void replaceAllNodes(Collection<Node> nodes){
-        overlay = new Group();
-        root.getChildren().add(overlay);
-        // add the canvas to overlay
-        overlay.getChildren().add(canvas);
-        mapView.setImage(map.getImage());
-        mapView.setPreserveRatio(true);
-        // set base overlay index
-        overlayIndex = overlay.getChildren().size();
-        for(Node n: nodes){
-            drawNode(n);
-
-        }
-    }
-
     private void addFloorButtons() {
         ArrayList<String> floorList = new ArrayList<String>(Arrays.asList("1", "2","3", "4", "5", "6", "7"));
         int wid = 36;
