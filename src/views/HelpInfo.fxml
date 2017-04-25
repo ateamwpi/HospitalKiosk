@@ -2,32 +2,46 @@
 
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="235.0" prefWidth="280.0" styleClass="background" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="235.0" prefWidth="306.0" styleClass="background" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox layoutX="8.0" layoutY="1.0" prefHeight="235.0" prefWidth="251.0">
+      <VBox layoutX="1.0" layoutY="1.0" prefHeight="235.0" prefWidth="306.0">
          <children>
-            <Label layoutX="5.0" prefHeight="25.0" prefWidth="109.0" text="Info Guide">
+            <Label alignment="CENTER" layoutX="5.0" prefHeight="47.0" prefWidth="306.0" styleClass="title" text="Info Guide" textAlignment="CENTER">
                <font>
                   <Font name="SansSerif Bold" size="21.0" />
                </font></Label>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="1. Enter starting location, location is set to kiosk by default." textAlignment="JUSTIFY" wrappingWidth="263.6708984375">
-               <font>
-                  <Font size="15.0" />
-               </font></Text>
-            <Text layoutX="10.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2. Enter starting destination, suggested locations listed below." textAlignment="JUSTIFY" wrappingWidth="263.6708984375">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Text>
-            <Text layoutX="10.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3. Path will be shown on the right." textAlignment="JUSTIFY" wrappingWidth="263.6708984375">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Text>
+            <HBox prefHeight="53.0" prefWidth="306.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="1. Enter a starting location, by defualt kiosk is starting point." textAlignment="JUSTIFY" wrappingWidth="303.6708984375">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Text>
+               </children>
+            </HBox>
+            <HBox fx:id="finish" prefHeight="51.0" prefWidth="306.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="2. Enter a starting destination, suggested locations listed below." textAlignment="JUSTIFY" wrappingWidth="304.6708984375">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Text>
+               </children>
+            </HBox>
+            <HBox prefHeight="39.0" prefWidth="264.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="3. Path will be shown on the right. Can zoom in with scroll wheel or plus button on right. Pan around map with right click and drag." textAlignment="JUSTIFY" wrappingWidth="305.6708984375">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Text>
+               </children>
+            </HBox>
          </children>
       </VBox>
    </children>
