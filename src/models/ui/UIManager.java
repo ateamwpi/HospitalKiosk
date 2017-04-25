@@ -30,7 +30,12 @@ public class UIManager {
     }
 
     public void setScene(IController controller) {
-        scene = new Scene(controller.getRoot());
+        if (scene == null){
+            scene = new Scene(controller.getRoot());
+        } else {
+            scene = new Scene(controller.getRoot(), scene.getWidth(), scene.getHeight());
+        }
+
 //        fontSize.bind(scene.widthProperty().add(scene.heightProperty()).divide(100));
 //        Screen screen = Screen.getPrimary();
 //        Rectangle2D bounds = screen.getVisualBounds();
