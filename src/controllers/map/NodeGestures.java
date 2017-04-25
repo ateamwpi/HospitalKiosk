@@ -83,7 +83,7 @@ public class NodeGestures {
 
     //functions for node connection gestures
     //Based on those in Manage Map View Controller
-    private void addNeighbor(MouseEvent event, DraggableNode other) {
+    public void addNeighbor(MouseEvent event, DraggableNode other) {
         // get the node
         Node node = other.getNode();
         // check if node exists and is not itself
@@ -93,7 +93,6 @@ public class NodeGestures {
         }
         // add the preview connection
         adminMapController.getSelectedNode().previewConnection(node);
-        //refreshScene();
         //Connect the two nodes if they are on the same floor
         try {
             adminMapController.getSelectedNode().getNode().addConnection(node);

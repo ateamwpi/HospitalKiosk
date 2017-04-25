@@ -1,11 +1,13 @@
 package controllers.admin;
 
+import com.sun.javafx.scene.control.behavior.OptionalBoolean;
 import controllers.AbstractController;
 import controllers.IClickableController;
 import controllers.map.*;
 import core.KioskMain;
 import core.Utils;
 import core.exception.NodeInUseException;
+import core.exception.WrongFloorException;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
@@ -18,6 +20,7 @@ import models.path.Node;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -89,8 +92,8 @@ public class AdminMapController extends AbstractController implements IClickable
     }
 
     public void handleMouseClick(MouseEvent e) {
-        //Don't switch selections when connecting/disconnecting nodes
-        if(!e.isShiftDown()) {
+        //Don't switch selections when connecting/disconnecting nodes, nor when adding chained nodes
+        if(!e.isShiftDown() && !e.isControlDown()) {
             // unselect if already selecting node
             if (nodeIsSelected()) {
                 attemptUnselectNode();
@@ -101,6 +104,25 @@ public class AdminMapController extends AbstractController implements IClickable
                 addNode(p.getX(), p.getY(), "NONE");
                 // pass along mouse press to the node
                 selectedNode.fireEvent(e);
+            }
+        }
+
+        if(nodeIsSelected() && e.isControlDown()){
+            //Save the current node
+            DraggableNode curnode = selectedNode;
+
+            // convert the mouse coordinates to map coordinates
+            Point2D p = new Point2D(e.getX(), e.getY());
+            addNode(p.getX(), p.getY(), "NONE", true);
+
+            // add the preview connection
+            curnode.previewConnection(selectedNode.getNode());
+            //Connect the two nodes if they are on the same floor
+            try {
+                curnode.getNode().addConnection(selectedNode.getNode());
+            }
+            catch(WrongFloorException wfe){
+                Utils.showAlert(getManageMapViewController().getRoot(), "Invalid Node Connection!", "Cannot add connected node on a different floor!");
             }
         }
     }
@@ -114,7 +136,12 @@ public class AdminMapController extends AbstractController implements IClickable
         return nodeGestures;
     }
 
-    void addNode(double x, double y, String room) {
+    void addNode(double x, double y, String room){
+        addNode(x, y, room, false);
+    }
+
+    //Check whether to skip safe deselection
+    private void addNode(double x, double y, String room, boolean skipCheckUnsaved) {
         System.out.println("add node");
         //Update without weird offset
         double scale = getOverlay().getScaleX();
@@ -135,7 +162,14 @@ public class AdminMapController extends AbstractController implements IClickable
         // draw node with gestures
         drawDraggableNode(draggableNode);
         // select the node
-        selectNode(draggableNode);
+        if(skipCheckUnsaved) {//Skip the dialogue box
+            unselectNode();
+
+            selectedNode = draggableNode;
+            selectedNode.select();
+            manageMapViewController.selectNode(selectedNode);
+        } else
+            selectNode(draggableNode);
         // add node to path manager
         KioskMain.getPath().addNode(node);
     }
