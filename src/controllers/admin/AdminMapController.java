@@ -18,10 +18,7 @@ import javafx.scene.shape.Line;
 import javafx.util.Pair;
 import models.path.Node;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 
 /**
@@ -214,6 +211,7 @@ public class AdminMapController extends AbstractController implements IClickable
             KioskMain.getPath().removeNode(nodeToDelete.getNode());
             // remove the visual node from the overlay
             mapController.removeOverlay(nodeToDelete);
+
             // unselect the node
             unselectNode();
         } catch (NodeInUseException e) {
@@ -315,6 +313,11 @@ public class AdminMapController extends AbstractController implements IClickable
         Line line = draggableNodeConnections.get(getNodePair(nodeA, nodeB));
         // remove the line from the overlay
         mapController.removeOverlay(line);
+        //Also remove the other way
+        line = draggableNodeConnections.get(getNodePair(nodeB, nodeA));//TODO: Still not working
+        // remove the line from the overlay
+        mapController.removeOverlay(line);
+
     }
 
     //// Private API ////
