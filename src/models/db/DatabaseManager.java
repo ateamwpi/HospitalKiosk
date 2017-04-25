@@ -135,6 +135,7 @@ public class DatabaseManager {
         }
 
         int x, y, floor, id = 0;
+        boolean restricted;
         String roomName;
 
         try {
@@ -145,7 +146,8 @@ public class DatabaseManager {
                 y = rset.getInt("Y");
                 floor = rset.getInt("FLOOR");
                 roomName = rset.getString("ROOMNAME");
-                allNodes.put(id, new Node(id, x, y, floor, roomName));
+                restricted = rset.getBoolean("RESTRICTED");
+                allNodes.put(id, new Node(id, x, y, floor, restricted, roomName));
             }
 
             // Run SQL query to get all EDGES from the database
@@ -181,13 +183,14 @@ public class DatabaseManager {
 
     public void addNode(Node n) {
         try {
-            String str = "INSERT INTO NODE VALUES (?, ?, ?, ?, ?)";
+            String str = "INSERT INTO NODE VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement stmt = conn.prepareStatement(str);
             stmt.setInt(1, n.getID());
             stmt.setInt(2, n.getX());
             stmt.setInt(3, n.getY());
             stmt.setString(4, n.getRoomName());
             stmt.setInt(5, n.getFloor());
+            stmt.setBoolean(6, n.isRestricted());
             stmt.execute();
         }
         catch (SQLException e) {
@@ -221,13 +224,14 @@ public class DatabaseManager {
 
     public void updateNode(Node n) {
         try {
-            String str = "UPDATE NODE SET X=?, Y=?, FLOOR=?, ROOMNAME=? WHERE ID=?";
+            String str = "UPDATE NODE SET X=?, Y=?, FLOOR=?, ROOMNAME=?, RESTRICTED=? WHERE ID=?";
             PreparedStatement stmt = conn.prepareStatement(str);
             stmt.setInt(1, n.getX());
             stmt.setInt(2, n.getY());
             stmt.setInt(3, n.getFloor());
             stmt.setString(4, n.getRoomName());
-            stmt.setInt(5, n.getID());
+            stmt.setBoolean(5, n.isRestricted());
+            stmt.setInt(6, n.getID());
             stmt.execute();
         }
         catch (SQLException e) {
