@@ -1,4 +1,4 @@
-package controllers.Map;
+package controllers.MapView.Map;
 
 import core.Utils;
 import core.exception.NameInUseException;

@@ -11,7 +11,7 @@ import javafx.fxml.FXML;
 public class WelcomeViewController extends AbstractController {
     @Override
     public String getURL() {
-        return "resources/views/WelcomeScreen.fxml";
+        return "resources/views/WelcomeView/WelcomeScreen.fxml";
     }
 
     @FXML

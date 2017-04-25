@@ -44,7 +44,7 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
 
     @Override
     public String getURL() {
-        return "resources/views/ManageDirectoryView.fxml";
+        return "resources/views/DirectoryView/ManageDirectoryView/ManageDirectoryView.fxml";
     }
 
     @FXML
@@ -111,7 +111,7 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
         fulldir.setText("Full Directory");
         fulldir.setOnAction(event -> setFullDirectory());
         fulldir.setPrefWidth(150);
-        fulldir.getStylesheets().add(getClass().getClassLoader().getResource("resources/views/style.css").toExternalForm());
+        fulldir.getStylesheets().add(getClass().getClassLoader().getResource("resources/styles/Main.css").toExternalForm());
         fulldir.getStyleClass().add("content-button");
         locationTypes.getChildren().add(fulldir);
 
@@ -120,7 +120,7 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
             loc.setText(locType.friendlyName());
             loc.setOnAction(event -> selectDirectory(locType));
             loc.setPrefWidth(150);
-            loc.getStylesheets().add(getClass().getClassLoader().getResource("resources/views/style.css").toExternalForm());
+            loc.getStylesheets().add(getClass().getClassLoader().getResource("resources/styles/Main.css").toExternalForm());
             loc.getStyleClass().add("content-button");
             locationTypes.getChildren().add(loc);
         }

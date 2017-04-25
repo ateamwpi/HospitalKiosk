@@ -1,4 +1,4 @@
-package controllers.Map;
+package controllers.MapView.Map;
 
 /**
  * Mouse drag context used for scene and nodes.

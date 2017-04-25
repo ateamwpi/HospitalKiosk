@@ -6,7 +6,7 @@
 <Pane fx:id="root" layoutX="6.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <VBox>
       <children>
-         <Pane fx:id="scrim" styleClass="scrim" stylesheets="@/resources/styles/main-menu.css" />
+         <Pane fx:id="scrim" styleClass="scrim" stylesheets="@/resources/styles/MapView.css" />
       </children>
       <padding>
          <Insets left="250.0" />
@@ -19,7 +19,7 @@
             </padding>
          <HBox alignment="CENTER_LEFT" spacing="100.0">
             <children>
-               <Label styleClass="title-text" stylesheets="@/resources/styles/style.css" text="Kiosk">
+               <Label styleClass="title-text" stylesheets="@/resources/styles/NavigationDrawer.css" text="Kiosk">
                   <padding>
                      <Insets top="8.0" />
                   </padding>
@@ -28,7 +28,7 @@
                       <padding>
                           <Insets bottom="10.0" left="20.0" top="20.0" />
                       </padding>
-                      <Label fx:id="drawerClose" prefHeight="20.0" prefWidth="20.0" styleClass="minimize-menu" stylesheets="@/resources/styles/main-menu.css" />
+                      <Label fx:id="drawerClose" prefHeight="20.0" prefWidth="20.0" styleClass="minimize-menu" stylesheets="@/resources/styles/MapView.css" />
                   </VBox>
             </children>
             <padding>
@@ -37,7 +37,7 @@
          </HBox>
         </VBox>
         <VBox fx:id="directions" alignment="CENTER_LEFT" style="-fx-background-color: #FAFAFA;">
-         <Label fx:id="accountText" styleClass="alert-body" stylesheets="@/resources/styles/style.css" text="Welcome, " />
+         <Label fx:id="accountText" styleClass="alert-body" stylesheets="@/resources/styles/NavigationDrawer.css" text="Welcome, " />
          <padding>
             <Insets left="24.0" />
          </padding>

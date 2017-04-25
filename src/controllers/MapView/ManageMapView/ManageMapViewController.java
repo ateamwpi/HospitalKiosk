@@ -4,8 +4,8 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXTextField;
 import controllers.AbstractController;
-import controllers.Map.ManageMapController;
-import controllers.Map.DraggableNode;
+import controllers.MapView.Map.ManageMapController;
+import controllers.MapView.Map.DraggableNode;
 import controllers.MapView.MapView.MapViewController;
 import core.KioskMain;
 import core.Utils;
@@ -75,7 +75,7 @@ public class ManageMapViewController extends AbstractController {
 
     @Override
     public String getURL() {
-        return "resources/views/ManageMapView.fxml";
+        return "resources/views/MapView/ManageMapView/ManageMapView.fxml";
     }
 
     @Override

@@ -38,9 +38,9 @@
                   <Insets left="5.0" />
               </padding>
           </Label>
-      <HBox prefHeight="99.0" prefWidth="1284.0" styleClass="banner" stylesheets="@style.css" GridPane.columnSpan="2147483647">
+      <HBox prefHeight="99.0" prefWidth="1284.0" styleClass="banner" stylesheets="@../style.css" GridPane.columnSpan="2147483647">
          <children>
-            <JFXButton onAction="#clickBack" styleClass="navigation-button" stylesheets="@style.css" text="Back">
+            <JFXButton onAction="#clickBack" styleClass="navigation-button" stylesheets="@../style.css" text="Back">
                <HBox.margin>
                   <Insets left="25.0" right="10.0" top="25.0" />
                </HBox.margin>
@@ -51,7 +51,7 @@
                   <Insets />
                </opaqueInsets>
             </JFXButton>
-                <Label fx:id="title" alignment="CENTER" styleClass="title-text" stylesheets="@style.css" text="Manage Directory">
+                <Label fx:id="title" alignment="CENTER" styleClass="title-text" stylesheets="@../style.css" text="Manage Directory">
                     <font>
                         <Font name="SansSerif Bold" size="37.0" />
                     </font>
@@ -63,12 +63,12 @@
                </HBox.margin>
                 </Label>
             <Region prefHeight="82.0" prefWidth="680.0" />
-            <JFXButton fx:id="addEntry" onAction="#clickAdd" styleClass="content-button" stylesheets="@style.css" text="Add">
+            <JFXButton fx:id="addEntry" onAction="#clickAdd" styleClass="content-button" stylesheets="@../style.css" text="Add">
                <HBox.margin>
                   <Insets right="30.0" top="25.0" />
                </HBox.margin>
             </JFXButton>
-            <JFXButton fx:id="removeEntry" contentDisplay="CENTER" onAction="#clickRemove" styleClass="content-button" stylesheets="@style.css" text="Remove">
+            <JFXButton fx:id="removeEntry" contentDisplay="CENTER" onAction="#clickRemove" styleClass="content-button" stylesheets="@../style.css" text="Remove">
                <HBox.margin>
                   <Insets top="25.0" />
                </HBox.margin>

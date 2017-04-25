@@ -3,7 +3,7 @@ package controllers.MapView.MapView;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import controllers.AbstractController;
-import controllers.Map.MapController;
+import controllers.MapView.Map.MapController;
 import core.KioskMain;
 import core.exception.FloorNotReachableException;
 import core.exception.NearestNotFoundException;
@@ -280,6 +280,6 @@ public class DirectionsDrawerController extends AbstractController {
 
     @Override
     public String getURL() {
-        return "resources/views/Drawer.fxml";
+        return "resources/views/MapView/MapView/DirectionsDrawer.fxml";
     }
 }

@@ -43,6 +43,6 @@ public class SearchResult extends AbstractController {
 
     @Override
     public String getURL() {
-        return "resources/views/searchResult.fxml";
+        return "resources/views/MapView/MapView/SearchResult.fxml";
     }
 }

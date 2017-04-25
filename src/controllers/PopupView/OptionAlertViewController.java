@@ -48,6 +48,6 @@ public class OptionAlertViewController extends AbstractPopupViewController {
 
     @Override
     public String getURL() {
-        return "resources/views/OptionAlert.fxml";
+        return "resources/views/PopupView/OptionAlert.fxml";
     }
 }

@@ -1,4 +1,4 @@
-package controllers.Map;
+package controllers.MapView.Map;
 
 import controllers.AbstractController;
 import controllers.IClickableController;
@@ -63,7 +63,7 @@ public class ManageMapController extends AbstractController implements IClickabl
 
     @Override
     public String getURL() {
-        return "resources/views/AdminMap.fxml";
+        return "resources/views/MapView/Map/ManageMap.fxml";
     }
 
     @Override

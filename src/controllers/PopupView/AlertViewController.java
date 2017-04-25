@@ -41,6 +41,6 @@ public class AlertViewController extends AbstractPopupViewController {
 
     @Override
     public String getURL() {
-        return "resources/views/Alert.fxml";
+        return "resources/views/PopupView/Alert.fxml";
     }
 }

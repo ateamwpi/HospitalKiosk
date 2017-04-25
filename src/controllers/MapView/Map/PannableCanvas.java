@@ -1,4 +1,4 @@
-package controllers.Map;
+package controllers.MapView.Map;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;

@@ -60,6 +60,6 @@ public class DirectionStep extends AbstractController {
 
     @Override
     public String getURL() {
-        return "resources/views/directionStep.fxml";
+        return "resources/views/MapView/MapView/DirectionStep.fxml";
     }
 }

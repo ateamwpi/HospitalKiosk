@@ -1,4 +1,4 @@
-package controllers.Map;
+package controllers.MapView.Map;
 
 import com.jfoenix.controls.JFXButton;
 import controllers.AbstractController;
@@ -75,7 +75,7 @@ public class MapController extends AbstractController implements IClickableContr
 
     @Override
     public String getURL() {
-        return "resources/views/Map.fxml";
+        return "resources/views/MapView/Map/Map.fxml";
     }
 
     public Group getOverlay() {
@@ -222,7 +222,7 @@ public class MapController extends AbstractController implements IClickableContr
             floor.setText(s);
             floor.setOnAction(event -> setFloor(floorList.indexOf(s) + 1));
             floor.setPrefWidth(wid);
-            floor.getStylesheets().add(getClass().getClassLoader().getResource("resources/views/style.css").toExternalForm());
+            floor.getStylesheets().add(getClass().getClassLoader().getResource("resources/styles/Main.css").toExternalForm());
             floor.getStyleClass().add("floor-button");
             floorVBox.getChildren().add(floor);
             floorButtons.add(floor);
@@ -232,7 +232,7 @@ public class MapController extends AbstractController implements IClickableContr
         zoomIn.setText("+");
         zoomIn.setOnAction(event -> sceneGestures.zoomIn());
         zoomIn.setMinWidth(wid);
-        zoomIn.getStylesheets().add(getClass().getClassLoader().getResource("resources/views/style.css").toExternalForm());
+        zoomIn.getStylesheets().add(getClass().getClassLoader().getResource("resources/styles/Main.css").toExternalForm());
         zoomIn.getStyleClass().add("floor-button");
         floorVBox.getChildren().add(zoomIn);
         floorVBox.toFront();
@@ -241,7 +241,7 @@ public class MapController extends AbstractController implements IClickableContr
         zoomOut.setText("-");
         zoomOut.setOnAction(event -> sceneGestures.zoomOut());
         zoomOut.setPrefWidth(wid);
-        zoomOut.getStylesheets().add(getClass().getClassLoader().getResource("resources/views/style.css").toExternalForm());
+        zoomOut.getStylesheets().add(getClass().getClassLoader().getResource("resources/styles/Main.css").toExternalForm());
         zoomOut.getStyleClass().add("floor-button");
         floorVBox.getChildren().add(zoomOut);
     }

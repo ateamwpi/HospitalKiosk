@@ -8,10 +8,10 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-<AnchorPane fx:id="root" styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
-   <VBox prefHeight="208.0" prefWidth="275.0" spacing="20.0" styleClass="alert-vbox" stylesheets="@style.css">
+<AnchorPane fx:id="root" styleClass="background" stylesheets="@../../styles/Main.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+   <VBox spacing="20.0" styleClass="alert-vbox" stylesheets="@../../styles/Main.css">
       <children>
-           <Label fx:id="alertTitle" prefHeight="45.0" prefWidth="231.0" styleClass="alert-title" stylesheets="@style.css" text="Alert Title">
+           <Label fx:id="alertTitle" prefHeight="45.0" prefWidth="231.0" styleClass="alert-title" stylesheets="@../../styles/Main.css" text="Alert Title">
             <font>
                <Font name="SansSerif Bold" size="21.0" />
             </font>
@@ -24,9 +24,10 @@
                <Font size="15.0" />
             </font>
          </Text>
-         <HBox alignment="BOTTOM_RIGHT" prefHeight="100.0" prefWidth="200.0" styleClass="alert-action-hbox" stylesheets="@style.css">
+         <HBox alignment="BOTTOM_RIGHT" styleClass="alert-action-hbox" stylesheets="@../../styles/Main.css">
             <children>
-               <JFXButton fx:id="okButton" alignment="CENTER_RIGHT" contentDisplay="CENTER" maxHeight="36.0" minHeight="36.0" onAction="#clickOk" ripplerFill="BLACK" styleClass="alert-button" stylesheets="@style.css" text="OK" textAlignment="CENTER" textFill="#2196f3">
+               <JFXButton fx:id="button1" maxHeight="36.0" minHeight="36.0" prefHeight="36.0" styleClass="alert-button" stylesheets="@../../styles/Main.css" text="button1" textAlignment="CENTER" />
+               <JFXButton fx:id="button2" alignment="CENTER_RIGHT" contentDisplay="CENTER" maxHeight="36.0" minHeight="36.0" prefHeight="36.0" ripplerFill="BLACK" styleClass="alert-button" stylesheets="@../../styles/Main.css" text="button2" textAlignment="CENTER" textFill="#2196f3">
                   <font>
                      <Font name="System Bold" size="15.0" />
                   </font>

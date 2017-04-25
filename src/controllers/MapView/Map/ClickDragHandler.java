@@ -1,4 +1,4 @@
-package controllers.Map;
+package controllers.MapView.Map;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;

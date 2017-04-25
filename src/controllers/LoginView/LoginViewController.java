@@ -57,6 +57,6 @@ public class LoginViewController extends AbstractPopupViewController {
 
     @Override
     public String getURL() {
-        return "resources/views/Login.fxml";
+        return "resources/views/LoginView/Login.fxml";
     }
 }

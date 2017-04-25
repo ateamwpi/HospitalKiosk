@@ -20,11 +20,11 @@
           <RowConstraints maxHeight="252.0" minHeight="10.0" prefHeight="115.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <HBox alignment="CENTER" styleClass="title" stylesheets="@style.css" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+            <HBox alignment="CENTER" styleClass="title" stylesheets="@../../styles/Main.css" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
                <children>
-                  <HBox prefHeight="99.0" prefWidth="1284.0" styleClass="banner" stylesheets="@style.css" HBox.hgrow="ALWAYS">
+                  <HBox prefHeight="99.0" prefWidth="1284.0" styleClass="banner" stylesheets="@../../styles/Main.css" HBox.hgrow="ALWAYS">
                      <children>
-                        <JFXButton fx:id="logoutBtn" alignment="CENTER" buttonType="RAISED" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clickLogout" styleClass="navigation-button" stylesheets="@style.css" text="Logout">
+                        <JFXButton fx:id="logoutBtn" alignment="CENTER" buttonType="RAISED" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clickLogout" styleClass="navigation-button" stylesheets="@../../styles/Main.css" text="Logout">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
@@ -35,7 +35,7 @@
                               <Insets left="25.0" right="10.0" top="25.0" />
                            </HBox.margin>
                         </JFXButton>
-                         <Label fx:id="title" styleClass="title-text" stylesheets="@style.css" text="Admin Main Menu">
+                         <Label fx:id="title" styleClass="title-text" stylesheets="@../../styles/Main.css" text="Admin Main Menu">
                            <font>
                               <Font name="System Bold" size="37.0" />
                            </font>
@@ -50,7 +50,7 @@
                   </HBox>
                </children>
             </HBox>
-            <JFXButton fx:id="manageDirectoryBtn" buttonType="RAISED" mnemonicParsing="false" onAction="#clickManageDirectory" styleClass="content-button" stylesheets="@style.css" text="Manage Directory" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+            <JFXButton fx:id="manageDirectoryBtn" buttonType="RAISED" mnemonicParsing="false" onAction="#clickManageDirectory" styleClass="content-button" stylesheets="@../../styles/Main.css" text="Manage Directory" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -60,8 +60,8 @@
                <GridPane.margin>
                   <Insets />
                </GridPane.margin></JFXButton>
-            <JFXButton fx:id="manageMapBtn" buttonType="RAISED" mnemonicParsing="false" onAction="#clickManageMap" prefHeight="36.0" styleClass="content-button" stylesheets="@style.css" text="Manage Map" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS" />
-            <VBox alignment="CENTER_RIGHT" prefHeight="101.0" prefWidth="1309.0" stylesheets="@style.css" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
+            <JFXButton fx:id="manageMapBtn" buttonType="RAISED" mnemonicParsing="false" onAction="#clickManageMap" prefHeight="36.0" styleClass="content-button" stylesheets="@../../styles/Main.css" text="Manage Map" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS" />
+            <VBox alignment="CENTER_RIGHT" prefHeight="101.0" prefWidth="1309.0" stylesheets="@../../styles/Main.css" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin>

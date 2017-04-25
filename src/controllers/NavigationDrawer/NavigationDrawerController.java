@@ -52,7 +52,7 @@ public class NavigationDrawerController extends AbstractController implements IL
 
     @Override
     public String getURL() {
-        return "resources/views/OptionsMenu.fxml";
+        return "resources/views/NavigatinDrawer/NavigationDrawer.fxml";
     }
 
     private void setMenuItems() {

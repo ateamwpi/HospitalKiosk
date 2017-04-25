@@ -51,6 +51,6 @@ public class DropdownAlertViewController extends AbstractPopupViewController {
 
     @Override
     public String getURL() {
-        return "resources/views/DropdownAlert.fxml";
+        return "resources/views/PopupView/DropdownAlert.fxml";
     }
 }

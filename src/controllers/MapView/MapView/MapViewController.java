@@ -2,7 +2,7 @@ package controllers.MapView.MapView;
 
 import com.jfoenix.controls.JFXDrawer;
 import controllers.AbstractController;
-import controllers.Map.MapController;
+import controllers.MapView.Map.MapController;
 import controllers.NavigationDrawer.NavigationDrawerController;
 import core.KioskMain;
 import javafx.fxml.FXML;
@@ -26,7 +26,7 @@ public class MapViewController extends AbstractController {
 
     @Override
     public String getURL() {
-        return "resources/views/MainMenu.fxml";
+        return "resources/views/MapView/MapView/MapView.fxml";
     }
 
     @FXML

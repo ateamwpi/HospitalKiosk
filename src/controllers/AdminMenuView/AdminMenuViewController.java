@@ -77,7 +77,7 @@ public class AdminMenuViewController extends AbstractController {
 
     @Override
     public String getURL() {
-        return "resources/views/AdminMenu.fxml";
+        return "resources/views/AdminMenuView/AdminMenuView.fxml";
     }
 
 

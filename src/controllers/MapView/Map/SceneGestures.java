@@ -1,4 +1,4 @@
-package controllers.Map;
+package controllers.MapView.Map;
 
 import controllers.IClickableController;
 import javafx.event.EventHandler;

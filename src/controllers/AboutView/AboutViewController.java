@@ -12,7 +12,7 @@ public class AboutViewController extends AbstractController {
 
     @Override
     public String getURL() {
-        return "resources/views/AboutPage.fxml";
+        return "resources/views/AboutView/AboutPage.fxml";
     }
 
     @FXML
