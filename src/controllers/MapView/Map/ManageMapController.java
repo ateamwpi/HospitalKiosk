@@ -77,7 +77,7 @@ public class ManageMapController extends AbstractController implements IClickabl
         drawAllNodes();
     }
 
-    public void removeNodesAndLines() {
+    private void removeNodesAndLines() {
         for(DraggableNode n : draggableNodes.values()) {
             mapController.removeOverlay(n);
         }
@@ -167,7 +167,7 @@ public class ManageMapController extends AbstractController implements IClickabl
                 }));
     }
 
-    public void deleteSelectedNode() {
+    private void deleteSelectedNode() {
         // try to delete the node
         try {
             System.out.println("delete node");
@@ -291,7 +291,7 @@ public class ManageMapController extends AbstractController implements IClickabl
         // get the map canvas
         PannableCanvas canvas = mapController.getCanvas();
         // create the node gesture for dragging
-        nodeGestures = new NodeGestures(canvas, this);
+        nodeGestures = new NodeGestures(this);
         // create the scene gestures for zooming and panning
         SceneGestures sceneGestures = new SceneGestures(canvas, this);
         // register handlers zooming and panning

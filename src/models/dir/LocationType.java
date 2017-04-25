@@ -22,7 +22,7 @@ public enum LocationType {
     Unknown(Color.GRAY);
 
     private Color nodeColor;
-    private static HashMap<String, LocationType> names = new HashMap<>();
+    private static final HashMap<String, LocationType> names = new HashMap<>();
 
     LocationType(Color nodeColor) {
         this.nodeColor = nodeColor;
@@ -48,11 +48,7 @@ public enum LocationType {
     }
 
     public static LocationType getType(String s) {
-        if (names.containsKey(s.toUpperCase())) {
-            return names.get(s.toUpperCase());
-        } else {
-            return Unknown;
-        }
+        return names.getOrDefault(s.toUpperCase(), Unknown);
     }
 
     public String friendlyName() {

@@ -33,7 +33,7 @@ public abstract class AbstractDirectoryViewController extends AbstractController
     protected TableView<Location> locationsTable; //table to hold all locations
     protected Location selectedLocation;
     @FXML
-    protected TableColumn<Location, String> nameCol; //column that holds names of locations
+    private TableColumn<Location, String> nameCol; //column that holds names of locations
     @FXML
     private TableColumn<Location, String> roomCol; //column that holds room names
     @FXML
@@ -41,7 +41,7 @@ public abstract class AbstractDirectoryViewController extends AbstractController
     @FXML
     private JFXTextField searchBox;
     @FXML
-    protected ComboBox<String> locationDropdown;
+    private ComboBox<String> locationDropdown;
 
     protected LocationType dirType;
 
@@ -133,7 +133,7 @@ public abstract class AbstractDirectoryViewController extends AbstractController
      * Selects the directory based upon a given string.
      * @param s Location type string
      */
-    protected void selectDirectory(String s) {
+    private void selectDirectory(String s) {
         if (s.equalsIgnoreCase("Full Directory")) {
             setFullDirectory();
         } else {
@@ -195,9 +195,7 @@ public abstract class AbstractDirectoryViewController extends AbstractController
         });
 
         typeCol.setCellFactory(ComboBoxTableCell.forTableColumn(LocationType.userValues()));
-        typeCol.setOnEditCommit((TableColumn.CellEditEvent<Location, LocationType> t) -> {
-            t.getRowValue().setLocType(t.getNewValue());
-        });
+        typeCol.setOnEditCommit((TableColumn.CellEditEvent<Location, LocationType> t) -> t.getRowValue().setLocType(t.getNewValue()));
 
     }
 

@@ -153,7 +153,7 @@ public class MapController extends AbstractController implements IClickableContr
         overlay = new Group();
         root.getChildren().add(overlay);
         // create canvas
-        canvas = new PannableCanvas(this);
+        canvas = new PannableCanvas();
         // add the canvas to overlay
         overlay.getChildren().add(canvas);
 
@@ -189,12 +189,12 @@ public class MapController extends AbstractController implements IClickableContr
         addOverlay(0, line);
     }
 
-    public void drawNode(Node node, Color c) {
+    private void drawNode(Node node, Color c) {
         Circle circle = new Circle(node.getX(), node.getY(), 5, c);
         addOverlay(circle);
     }
 
-    public void drawNode(Node node) {
+    private void drawNode(Node node) {
         drawNode(node, Color.BLACK);
     }
 
@@ -214,7 +214,7 @@ public class MapController extends AbstractController implements IClickableContr
     }
 
     private void addFloorButtons() {
-        ArrayList<String> floorList = new ArrayList<String>(Arrays.asList("1", "2","3", "4", "5", "6", "7"));
+        ArrayList<String> floorList = new ArrayList<>(Arrays.asList("1", "2", "3", "4", "5", "6", "7"));
         int wid = 36;
 
         for(String s : floorList) {
@@ -222,7 +222,7 @@ public class MapController extends AbstractController implements IClickableContr
             floor.setText(s);
             floor.setOnAction(event -> setFloor(floorList.indexOf(s) + 1));
             floor.setPrefWidth(wid);
-            floor.getStylesheets().add(getClass().getClassLoader().getResource("resources/styles/Main.css").toExternalForm());
+            floor.getStylesheets().add(Utils.getResourceAsExternal("resources/styles/Main.css"));
             floor.getStyleClass().add("floor-button");
             floorVBox.getChildren().add(floor);
             floorButtons.add(floor);
@@ -232,7 +232,7 @@ public class MapController extends AbstractController implements IClickableContr
         zoomIn.setText("+");
         zoomIn.setOnAction(event -> sceneGestures.zoomIn());
         zoomIn.setMinWidth(wid);
-        zoomIn.getStylesheets().add(getClass().getClassLoader().getResource("resources/styles/Main.css").toExternalForm());
+        zoomIn.getStylesheets().add(Utils.getResourceAsExternal("resources/styles/Main.css"));
         zoomIn.getStyleClass().add("floor-button");
         floorVBox.getChildren().add(zoomIn);
         floorVBox.toFront();
@@ -241,7 +241,7 @@ public class MapController extends AbstractController implements IClickableContr
         zoomOut.setText("-");
         zoomOut.setOnAction(event -> sceneGestures.zoomOut());
         zoomOut.setPrefWidth(wid);
-        zoomOut.getStylesheets().add(getClass().getClassLoader().getResource("resources/styles/Main.css").toExternalForm());
+        zoomOut.getStylesheets().add(Utils.getResourceAsExternal("resources/styles/Main.css"));
         zoomOut.getStyleClass().add("floor-button");
         floorVBox.getChildren().add(zoomOut);
     }

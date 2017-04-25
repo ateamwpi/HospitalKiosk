@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import controllers.DirectoryView.AbstractDirectoryViewController;
 import controllers.MapView.MapView.MapViewController;
 import core.KioskMain;
+import core.Utils;
 import core.exception.RoomNotFoundException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,8 +14,6 @@ import javafx.scene.layout.VBox;
 import models.dir.Location;
 import models.dir.LocationType;
 import models.path.Node;
-
-import java.io.IOException;
 
 /**
  * Created by dylan on 4/9/17.
@@ -80,24 +79,25 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
     }
 
     @FXML
-    private void clickAdd(ActionEvent event) throws IOException {
+    private void clickAdd(ActionEvent event) {
         String defaultRoomName = KioskMain.getPath().getRoomNames().iterator().next();
         Node defaultNode = null;
         try {
             defaultNode = KioskMain.getPath().getRoom(defaultRoomName);
         } catch (RoomNotFoundException e) {
+            // TODO
         }
         LocationType newType = LocationType.userValues()[0];
         if(dirType != null) {
             newType = dirType;
         }
-        Location newLoc = new Location("", newType, defaultNode);
+        Location newLoc = new Location(newType, defaultNode);
         locationsTable.getItems().add(0, newLoc);
         KioskMain.getDir().addLocation(newLoc);
     }
 
     @FXML
-    private void clickRemove(ActionEvent event)throws IOException {
+    private void clickRemove(ActionEvent event) {
         if (selectedLocation != null) {
             KioskMain.getDir().removeLocation(selectedLocation);
             KioskMain.getUI().setScene(new ManageDirectoryViewController());
@@ -111,7 +111,7 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
         fulldir.setText("Full Directory");
         fulldir.setOnAction(event -> setFullDirectory());
         fulldir.setPrefWidth(150);
-        fulldir.getStylesheets().add(getClass().getClassLoader().getResource("resources/styles/Main.css").toExternalForm());
+        fulldir.getStylesheets().add(Utils.getResourceAsExternal("resources/styles/Main.css"));
         fulldir.getStyleClass().add("content-button");
         locationTypes.getChildren().add(fulldir);
 
@@ -120,7 +120,7 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
             loc.setText(locType.friendlyName());
             loc.setOnAction(event -> selectDirectory(locType));
             loc.setPrefWidth(150);
-            loc.getStylesheets().add(getClass().getClassLoader().getResource("resources/styles/Main.css").toExternalForm());
+            loc.getStylesheets().add(Utils.getResourceAsExternal("resources/styles/Main.css"));
             loc.getStyleClass().add("content-button");
             locationTypes.getChildren().add(loc);
         }

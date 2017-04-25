@@ -28,11 +28,11 @@ public class AlertViewController extends AbstractPopupViewController {
         this.alertBody.setText(body);
     }
 
-    @FXML
-    private void initialize() {
-        //int lines = alertBody.getText().length() / 29;
-        //this.root.setPrefHeight(24+45+20+(15*lines)+20+12+36+24);
-    }
+//    @FXML
+//    private void initialize() {
+//        int lines = alertBody.getText().length() / 29;
+//        this.root.setPrefHeight(24+45+20+(15*lines)+20+12+36+24);
+//    }
 
     @FXML
     private void clickOk(ActionEvent event) {

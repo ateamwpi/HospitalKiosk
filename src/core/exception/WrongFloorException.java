@@ -6,8 +6,8 @@ import models.path.Node;
  * Created by mattm on 4/8/2017.
  */
 public class WrongFloorException extends Exception{
-    private Node n;
-    private Node n2;
+    private final Node n;
+    private final Node n2;
 
     public WrongFloorException(Node n, Node n2) {
         this.n2 = n2;

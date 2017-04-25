@@ -10,10 +10,10 @@ import java.util.*;
  */
 public class DirectoryManager {
 
-    private HashMap<LocationType, Directory> directories;
-    private Location theKiosk;
-    private Location mainEntr;
-    private Location belkinEntr;
+    private final HashMap<LocationType, Directory> directories;
+    private final Location theKiosk;
+    private final Location mainEntr;
+    private final Location belkinEntr;
 
     public DirectoryManager(HashMap<LocationType, Directory> allLocations, Location theKiosk, Location mainEntr, Location belkinEntr) {
         this.directories = allLocations;
@@ -99,10 +99,12 @@ public class DirectoryManager {
             nearPOI = KioskMain.getPath().getNearest(LocationType.PointOfInterest, theKiosk.getNode());
 
         } catch (NearestNotFoundException e) {
+            // TODO
         }
         try {
             nearRest = KioskMain.getPath().getNearest(LocationType.Restroom, theKiosk.getNode());
         } catch (NearestNotFoundException e) {
+            // TODO
         }
 
         if(nearPOI == null && nearRest == null) return new ArrayList<>();

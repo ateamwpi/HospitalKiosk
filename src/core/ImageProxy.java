@@ -8,7 +8,7 @@ import javafx.scene.image.Image;
 public class ImageProxy {
 
     private Image theImage;
-    private String url;
+    private final String url;
 
     public ImageProxy(String url) {
         this.url = url;
@@ -16,12 +16,12 @@ public class ImageProxy {
 
     public Image getImage() {
         if(theImage == null) {
-            theImage = new Image(getClass().getClassLoader().getResourceAsStream(url));
+            theImage = new Image(Utils.getResourceAsStream(url));
         }
         return theImage;
     }
 
-    public String getURL() {
+    private String getURL() {
         return url;
     }
 

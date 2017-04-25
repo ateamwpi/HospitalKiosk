@@ -62,7 +62,7 @@ public class Utils {
         return getResource(resource).toExternalForm();
     }
 
-    public static URL getResource(String resource) {
+    private static URL getResource(String resource) {
         String stripped = resource.startsWith("/")?resource.substring(1):resource;
         URL path = null;
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();

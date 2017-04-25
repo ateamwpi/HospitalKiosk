@@ -1,7 +1,6 @@
 package controllers;
 
 import core.KioskMain;
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.Event;

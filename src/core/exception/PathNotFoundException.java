@@ -6,8 +6,8 @@ import models.path.Node;
  * Created by mattm on 4/13/2017.
  */
 public class PathNotFoundException extends Exception {
-    private Node start;
-    private Node end;
+    private final Node start;
+    private final Node end;
 
     public PathNotFoundException(Node start, Node end) {
         this.start = start;

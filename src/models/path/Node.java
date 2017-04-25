@@ -16,16 +16,16 @@ import java.util.*;
 public class Node {
     private static int nextNodeID;
 
-    private IntegerProperty xProperty = new SimpleIntegerProperty();
-    private IntegerProperty yProperty = new SimpleIntegerProperty();
-    private IntegerProperty idProperty = new SimpleIntegerProperty();
-    private IntegerProperty floorProperty = new SimpleIntegerProperty();
-    private StringProperty roomNameProperty = new SimpleStringProperty();
-    private BooleanProperty restrictedProperty = new SimpleBooleanProperty();
+    private final IntegerProperty xProperty = new SimpleIntegerProperty();
+    private final IntegerProperty yProperty = new SimpleIntegerProperty();
+    private final IntegerProperty idProperty = new SimpleIntegerProperty();
+    private final IntegerProperty floorProperty = new SimpleIntegerProperty();
+    private final StringProperty roomNameProperty = new SimpleStringProperty();
+    private final BooleanProperty restrictedProperty = new SimpleBooleanProperty();
     private String previousRoomName = "";
-    private ArrayList<Node> connections;
-    private HashMap<Integer, Location> locations;
-    private HashMap<LocationType, Integer> counts;
+    private final ArrayList<Node> connections;
+    private final HashMap<Integer, Location> locations;
+    private final HashMap<LocationType, Integer> counts;
     private final boolean isNew;
     private boolean isBelkin;
     private boolean isMain;
@@ -41,9 +41,9 @@ public class Node {
         floorProperty.set(floor);
         roomNameProperty.set(roomName);
         restrictedProperty.set(restricted);
-        connections = new ArrayList<Node>();
-        locations = new HashMap<Integer, Location>();
-        counts = new HashMap<LocationType, Integer>();
+        connections = new ArrayList<>();
+        locations = new HashMap<>();
+        counts = new HashMap<>();
         isNew = false;
         isDone = false;
         updateBuilding();
@@ -56,9 +56,9 @@ public class Node {
         floorProperty.set(floor);
         roomNameProperty.set(roomName);
         restrictedProperty.set(restricted);
-        connections = new ArrayList<Node>();
-        locations = new HashMap<Integer, Location>();
-        counts = new HashMap<LocationType, Integer>();
+        connections = new ArrayList<>();
+        locations = new HashMap<>();
+        counts = new HashMap<>();
         isNew = true;
         isDone = true;
         updateBuilding();
@@ -71,9 +71,9 @@ public class Node {
         floorProperty.set(floor);
         roomNameProperty.set("NONE");
         restrictedProperty.set(restricted);
-        connections = new ArrayList<Node>();
-        locations = new HashMap<Integer, Location>();
-        counts = new HashMap<LocationType, Integer>();
+        connections = new ArrayList<>();
+        locations = new HashMap<>();
+        counts = new HashMap<>();
         isNew = true;
         isDone = true;
         updateBuilding();
@@ -107,7 +107,7 @@ public class Node {
         return getPrimaryLocType().getNodeColor();
     }
 
-    public void removeConnection(Node other) {
+    private void removeConnection(Node other) {
         if(connections.contains(other)) {
             connections.remove(other);
             KioskMain.getDB().removeConnection(this, other);
@@ -115,7 +115,7 @@ public class Node {
         }
     }
 
-    public void updateBuilding() {
+    private void updateBuilding() {
         isBelkin = getX() >= 30 && getX() <= 220 && getY() >= 10 && getY() <= 210;
         isMain = getX() >= 110 && getX() <= 910 && getY() >= 230 && getY() <= 680;
     }
@@ -147,7 +147,7 @@ public class Node {
         }
 
         // Remove anything old
-        ArrayList<Node> toRemove = new ArrayList<Node>();
+        ArrayList<Node> toRemove = new ArrayList<>();
         for (Node n : connections) {
             if(!conns.contains(n)) {
                 toRemove.add(n);
@@ -234,11 +234,11 @@ public class Node {
     }
 
     public String toString() {
-        String str= "Node: ID=" + getID() + ", X=" + getX() + ", Y=" + getY() + ", FLOOR=" + getFloor() + ", NAME=" + getRoomName() + "\n";
+        StringBuilder str= new StringBuilder("Node: ID=" + getID() + ", X=" + getX() + ", Y=" + getY() + ", FLOOR=" + getFloor() + ", NAME=" + getRoomName() + "\n");
         for (Node n : connections) {
-            str += "Connected to Node ID=" + n.getID() + "\n";
+            str.append("Connected to Node ID=").append(n.getID()).append("\n");
         }
-        return str;
+        return str.toString();
     }
 
 //    public boolean equals(Object o) {

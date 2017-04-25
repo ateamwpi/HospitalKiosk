@@ -3,22 +3,22 @@ package controllers.MapView.Map;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
+import java.util.Objects;
+
 /**
  * Listeners for making the nodes draggable via left mouse button. Considers if parent is zoomed.
  */
-public class NodeGestures {
+class NodeGestures {
 
-    private DragContext nodeDragContext = new DragContext();
+    private final DragContext nodeDragContext = new DragContext();
 
-    private PannableCanvas canvas;
-    private ManageMapController manageMapController;
+    private final ManageMapController manageMapController;
 
-    public NodeGestures(PannableCanvas canvas, ManageMapController manageMapController) {
-        this.canvas = canvas;
+    NodeGestures(ManageMapController manageMapController) {
         this.manageMapController = manageMapController;
     }
 
-    public EventHandler<MouseEvent> getOnMouseClickedEventHandler() {
+    EventHandler<MouseEvent> getOnMouseClickedEventHandler() {
         return onMouseClickedEventHandler;
     }
 
@@ -26,10 +26,10 @@ public class NodeGestures {
         return onMouseDraggedEventHandler;
     }
 
-    private EventHandler<MouseEvent> onMouseClickedEventHandler = new EventHandler<MouseEvent>() {
+    private final EventHandler<MouseEvent> onMouseClickedEventHandler = new EventHandler<MouseEvent>() {
         public void handle(MouseEvent event) {
             // right mouse button => panning
-            if (event.getButton().name() != "PRIMARY") {// !event.isPrimaryButtonDown())
+            if (!Objects.equals(event.getButton().name(), "PRIMARY")) {// !event.isPrimaryButtonDown())
                 return;
             }
             System.out.println("node clicked");
@@ -59,10 +59,10 @@ public class NodeGestures {
         }
     };
 
-    private EventHandler<MouseEvent> onMouseDraggedEventHandler = new EventHandler<MouseEvent>() {
+    private final EventHandler<MouseEvent> onMouseDraggedEventHandler = new EventHandler<MouseEvent>() {
         public void handle(MouseEvent event) {
             // right mouse button => panning
-            if (event.getButton().name() != "PRIMARY")// !event.isPrimaryButtonDown())
+            if (!Objects.equals(event.getButton().name(), "PRIMARY"))// !event.isPrimaryButtonDown())
                 return;
             // get the map zoom scale
             double scale = manageMapController.getOverlay().getScaleX();//Should be same as scaleY

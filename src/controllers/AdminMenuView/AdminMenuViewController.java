@@ -42,9 +42,7 @@ public class AdminMenuViewController extends AbstractController {
 
         pathAlgos.getItems().addAll(KioskMain.getPath().getAlgorithms());
         pathAlgos.getSelectionModel().select(KioskMain.getPath().getSelectedAlgorithm().getName());
-        pathAlgos.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
-            KioskMain.getPath().selectAlgorithm(newValue);
-        }));
+        pathAlgos.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> KioskMain.getPath().selectAlgorithm(newValue)));
 
 
         kioskLocations.getItems().addAll(KioskMain.getPath().getRoomNames());

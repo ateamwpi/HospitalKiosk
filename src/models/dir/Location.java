@@ -29,9 +29,9 @@ public class Location {
         this.isNew = false;
     }
 
-    public Location(String name, LocationType locType, Node node) {
+    public Location(LocationType locType, Node node) {
         this.id = getNextLocID();
-        this.name = name;
+        this.name = "";
         this.locType = locType;
         this.node = node;
         this.node.addLocation(this);
@@ -85,7 +85,7 @@ public class Location {
         nextLocID = i;
     }
 
-    public static int getNextLocID() {
+    private static int getNextLocID() {
         int val = nextLocID;
         nextLocID ++;
         return val;

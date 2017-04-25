@@ -1,16 +1,15 @@
 package models.login;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * Created by mattm on 4/21/2017
  */
 public class LoginManager {
 
-    private ArrayList<AbstractUserType> accounts = new ArrayList<>();
-    private ArrayList<ILoginObserver> observers = new ArrayList<>();
-    private AbstractUserType defaultAccount;
+    private final ArrayList<AbstractUserType> accounts = new ArrayList<>();
+    private final ArrayList<ILoginObserver> observers = new ArrayList<>();
+    private final AbstractUserType defaultAccount;
     private AbstractUserType currentState;
 
     public LoginManager() {
@@ -26,7 +25,7 @@ public class LoginManager {
         observers.add(o);
     }
 
-    public void notifyObservers() {
+    private void notifyObservers() {
         for(ILoginObserver l : observers) {
             l.onAccountChanged();
         }

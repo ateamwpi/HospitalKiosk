@@ -14,21 +14,21 @@ import javafx.scene.layout.Region;
 public abstract class AbstractPopupViewController extends AbstractController {
 
     @FXML
-    protected AnchorPane root;
+    private AnchorPane root;
 
-    private JFXPopup instance;
-    protected Parent parent;
+    private final JFXPopup instance;
+    private Parent parent;
 
-    public AbstractPopupViewController(Parent parent) {
+    protected AbstractPopupViewController(Parent parent) {
         this.parent = parent;
         instance = new JFXPopup(getRegion());
     }
 
-    public JFXPopup getInstance() {
+    protected JFXPopup getInstance() {
         return instance;
     }
 
-    public Region getRegion() {
+    private Region getRegion() {
         return root;
     }
 
@@ -36,7 +36,7 @@ public abstract class AbstractPopupViewController extends AbstractController {
         this.parent = parent;
     }
 
-    public void show(double x, double y) {
+    private void show(double x, double y) {
         KioskMain.getUI().setPopup(this);
         instance.show(parent, JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.LEFT, x, y);
     }
@@ -50,7 +50,7 @@ public abstract class AbstractPopupViewController extends AbstractController {
         instance.hide();
     }
 
-    public Parent getParent() {
+    protected Parent getParent() {
         return parent;
     }
 }

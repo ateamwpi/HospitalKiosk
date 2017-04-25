@@ -14,7 +14,7 @@ import javafx.stage.Stage;
  */
 public class UIManager {
 
-    private Stage stage;
+    private final Stage stage;
     private Parent root;
     private Scene scene;
 

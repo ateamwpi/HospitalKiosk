@@ -31,6 +31,8 @@
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
 }
+
+/*noinspection ALL*/
 .place-icon {
     -fx-background-image: url("/resources/icons/place.png");
     -fx-background-size: 30px;
@@ -49,6 +51,8 @@
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
 }
+
+/*noinspection ALL*/
 .info {
     -fx-background-image: url("/resources/icons/info.png");
     -fx-background-size: 24px;
@@ -61,6 +65,8 @@
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
 }
+
+/*noinspection ALL*/
 .logout {
     -fx-background-image: url("/resources/icons/logout.png");
     -fx-background-size: 24px;
@@ -79,6 +85,8 @@
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
 }
+
+/*noinspection ALL*/
 .settings {
     -fx-background-image: url("/resources/icons/settings.png");
     -fx-background-size: 24px;
@@ -98,18 +106,24 @@
     -fx-border-color: #e6e6e6;
     -fx-border-style: solid none none none;
 }
+
+/*noinspection ALL*/
 .turn-left-icon {
     -fx-background-image: url("/resources/icons/turn-left.png");
     -fx-background-size: 30px;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
 }
+
+/*noinspection ALL*/
 .turn-right-icon {
     -fx-background-image: url("/resources/icons/turn-right.png");
     -fx-background-size: 30px;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
 }
+
+/*noinspection ALL*/
 .go-straight-icon {
     -fx-background-image: url("/resources/icons/go-straight.png");
     -fx-background-size: 20px;

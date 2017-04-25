@@ -6,7 +6,7 @@ import javafx.scene.input.MouseEvent;
 /**
  * Created by dylan on 4/6/17.
  */
-public class ClickDragHandler implements EventHandler<MouseEvent> {
+class ClickDragHandler implements EventHandler<MouseEvent> {
 
     private final EventHandler<MouseEvent> onDraggedEventHandler;
 

@@ -85,7 +85,7 @@ public class ManageMapViewController extends AbstractController {
         restrictedProperty = new SimpleBooleanProperty();
         roomNameProperty = new SimpleStringProperty();
         converter = new NumberStringConverter();
-        floorList = new ArrayList<String>(Arrays.asList("1st Floor", "2nd Floor","3rd Floor", "4th Floor", "5th Floor", "6th Floor", "7th Floor"));
+        floorList = new ArrayList<>(Arrays.asList("1st Floor", "2nd Floor", "3rd Floor", "4th Floor", "5th Floor", "6th Floor", "7th Floor"));
     }
 
     @FXML
@@ -302,12 +302,12 @@ public class ManageMapViewController extends AbstractController {
         return true;
     }
 
-    public void setFloor(String fl) {
+    private void setFloor(String fl) {
         int floor = floorList.indexOf(fl) + 1;
         setFloor(floor);
     }
 
-    public void setFloor(int floor) {
+    private void setFloor(int floor) {
         System.out.println("We found the floor to be: " + floor);
         manageMapController.setFloor(floor);
     }

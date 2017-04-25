@@ -5,18 +5,20 @@ import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 
+import java.util.Objects;
+
 /**
  * Listeners for making the scene's canvas draggable and zoomable
  */
-public class SceneGestures {
+class SceneGestures {
     //Minimum and maximum zoom levels
     private static final double MAX_SCALE = 5.0d;
     private static final double MIN_SCALE = 1.0d;
 
-    private DragContext sceneDragContext = new DragContext();
+    private final DragContext sceneDragContext = new DragContext();
 
-    PannableCanvas canvas;
-    IClickableController mapController;
+    private final PannableCanvas canvas;
+    private final IClickableController mapController;
 
     public SceneGestures(PannableCanvas canvas, IClickableController mapController) {
         this.canvas = canvas;
@@ -43,10 +45,10 @@ public class SceneGestures {
         return onScrollEventHandler;
     }
 
-    private EventHandler<MouseEvent> onMousePressedEventHandler = new EventHandler<MouseEvent>() {
+    private final EventHandler<MouseEvent> onMousePressedEventHandler = new EventHandler<MouseEvent>() {
         public void handle(MouseEvent event) {
             // right mouse button => panning
-            if (event.getButton().name() != "SECONDARY")//if( !event.isSecondaryButtonDown())
+            if (!Objects.equals(event.getButton().name(), "SECONDARY"))//if( !event.isSecondaryButtonDown())
                 return;
             System.out.println("scene press");
             // update scene drag context
@@ -60,12 +62,12 @@ public class SceneGestures {
 
     };
 
-    private EventHandler<MouseEvent> onMouseClickedEventHandler = new EventHandler<MouseEvent>() {
+    private final EventHandler<MouseEvent> onMouseClickedEventHandler = new EventHandler<MouseEvent>() {
         public void handle(MouseEvent event) {
             if(event.getButton().name().equals("PRIMARY"))
                 mapController.handleMouseClick(event);// unselect the current node
             // right mouse button => panning
-            if (event.getButton().name() != "SECONDARY")//if( !event.isSecondaryButtonDown())
+            if (!Objects.equals(event.getButton().name(), "SECONDARY"))//if( !event.isSecondaryButtonDown())
                 return;
             System.out.println("scene click");
             // update scene drag context
@@ -77,7 +79,7 @@ public class SceneGestures {
 
     };
 
-    private EventHandler<MouseEvent> onMouseDraggedEventHandler = new EventHandler<MouseEvent>() {
+    private final EventHandler<MouseEvent> onMouseDraggedEventHandler = new EventHandler<MouseEvent>() {
         public void handle(MouseEvent event) {
             // right mouse button => panning
             if(!event.isSecondaryButtonDown())
@@ -109,7 +111,7 @@ public class SceneGestures {
     /**
      * Mouse wheel handler: zoom on center of view
      */
-    private EventHandler<ScrollEvent> onScrollEventHandler = new EventHandler<ScrollEvent>() {
+    private final EventHandler<ScrollEvent> onScrollEventHandler = new EventHandler<ScrollEvent>() {
 
         @Override
         public void handle(ScrollEvent event) {
@@ -155,7 +157,7 @@ public class SceneGestures {
     };
 
 
-    public static double clamp( double value, double min, double max) {
+    private static double clamp(double value, double min, double max) {
 
         if( Double.compare(value, min) < 0)
             return min;
@@ -166,7 +168,7 @@ public class SceneGestures {
         return value;
     }
 
-    public void zoomToScale(double scale){
+    private void zoomToScale(double scale){
         scale = clamp( scale, MIN_SCALE, MAX_SCALE);
         double oldScale = mapController.getOverlay().getScaleX();
 

@@ -24,11 +24,11 @@ public class DropdownAlertViewController extends AbstractPopupViewController {
     @FXML
     private Text alertBody;
     @FXML
-    private JFXComboBox alertBox;
+    private JFXComboBox<String> alertBox;
     @FXML
     private AnchorPane root;
 
-    private Consumer<String> onSelect;
+    private final Consumer<String> onSelect;
 
     public DropdownAlertViewController(Parent parent, String title, String body, Collection<String> options, String def, Consumer<String> onSelect) {
         super(parent);
@@ -39,9 +39,9 @@ public class DropdownAlertViewController extends AbstractPopupViewController {
         this.onSelect = onSelect;
     }
 
-    @FXML
-    private void initialize() {
-    }
+//    @FXML
+//    private void initialize() {
+//    }
 
     @FXML
     private void clickOk(ActionEvent event) {

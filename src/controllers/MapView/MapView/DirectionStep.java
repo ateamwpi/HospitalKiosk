@@ -14,7 +14,7 @@ public class DirectionStep extends AbstractController {
         RIGHT("turn-right-icon"),
         STRAIGHT("go-straight-icon");
 
-        public String path;
+        public final String path;
 
         DirectionIcon(String path) {
             this.path = path;

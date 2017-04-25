@@ -12,14 +12,12 @@ import java.util.HashMap;
 public class DepthFirst extends AbstractPathfindingAlgorithm {
     private HashMap<Node, Boolean> marked;
     private HashMap<Node, Node> edgeTo;
-    private Node s;
 
     @Override
     public Path findPath(Node start, Node goal) throws PathNotFoundException {
         marked = new HashMap<>();
         edgeTo = new HashMap<>();
-        s = start;
-        dfs(s);
+        dfs(start);
 
         if(!hasPathTo(goal)) throw new PathNotFoundException(start, goal);
         return constructPath(edgeTo, goal);

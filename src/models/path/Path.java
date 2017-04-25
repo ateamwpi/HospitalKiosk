@@ -16,7 +16,7 @@ import static controllers.MapView.MapView.DirectionStep.DirectionIcon;
  * Created by mattm on 3/29/2017.
  */
 public class Path {
-    private LinkedList<Node> path;
+    private final LinkedList<Node> path;
     private ArrayList<DirectionStep> steps;
 
     public Path(){
@@ -56,12 +56,12 @@ public class Path {
             return "You are already at your destination!";
         }
         // Calculate the cardinal starting direction
-        String str = "1. Start by leaving " + path.getFirst().getRoomName() + ".\n";
+        StringBuilder str = new StringBuilder("1. Start by leaving " + path.getFirst().getRoomName() + ".\n");
         steps.add(new DirectionStep(DirectionIcon.STRAIGHT, "Leave " + path.getFirst().getRoomName()));
         Direction cur = Direction.dirFor(getStep(0), getStep(1));
 
         // Initialize the array that keeps track of attempts for each turn
-        HashMap<String, Integer> attempts = new HashMap<String, Integer>();
+        HashMap<String, Integer> attempts = new HashMap<>();
         attempts.put("left", 0); attempts.put("right", 0); attempts.put("straight", 0); attempts.put("back", 0);
         int stepNum = 2;
         boolean waiting = false;
@@ -70,21 +70,21 @@ public class Path {
 
             if(getStep(i-1).isBelkin() && !getStep(i).isBelkin()) {
                 // leaving belkin
-                str += stepNum + ". Leave the Belkin House and walk across the parking lot.\n";
+                str.append(stepNum).append(". Leave the Belkin House and walk across the parking lot.\n");
                 steps.add(new DirectionStep(DirectionIcon.STRAIGHT, "Leave the Belkin House"));
                 stepNum ++;
                 waiting = true;
             }
             else if(getStep(i-1).isMain() && !getStep(i).isMain()) {
                 // leaving main
-                str += stepNum + ". Leave the main building and walk across the parking lot.\n";
+                str.append(stepNum).append(". Leave the main building and walk across the parking lot.\n");
                 steps.add(new DirectionStep(DirectionIcon.STRAIGHT, "Leave the main building"));
                 stepNum ++;
                 waiting = true;
             }
             else if(!getStep(i-1).isBelkin() && getStep(i).isBelkin()) {
                 // entering belkin
-                str += stepNum + ". Enter the Belkin House.\n";
+                str.append(stepNum).append(". Enter the Belkin House.\n");
                 steps.add(new DirectionStep(DirectionIcon.STRAIGHT, "Enter the Belkin House"));
                 stepNum ++;
                 waiting = false;
@@ -92,7 +92,7 @@ public class Path {
             }
             else if(!getStep(i-1).isMain() && getStep(i).isMain()) {
                 // entering main
-                str += stepNum + ". Enter the main building.\n";
+                str.append(stepNum).append(". Enter the main building.\n");
                 steps.add(new DirectionStep(DirectionIcon.STRAIGHT, "Enter the main building"));
                 stepNum ++;
                 waiting = false;
@@ -102,7 +102,7 @@ public class Path {
             if(waiting) continue;
 
             if(getStep(i).getPrimaryLocType().equals(LocationType.Elevator) && getStep(i-1).getPrimaryLocType().equals(LocationType.Elevator)) {
-                str += stepNum + ". Ride the elevator to the " + Utils.strForNum(getStep(i).getFloor()) + " floor and exit.\n";
+                str.append(stepNum).append(". Ride the elevator to the ").append(Utils.strForNum(getStep(i).getFloor())).append(" floor and exit.\n");
                 steps.add(new DirectionStep(DirectionIcon.STRAIGHT, "Ride the elevator to the " + Utils.strForNum(getStep(i).getFloor()) + " floor"));
                 stepNum ++;
             }
@@ -110,6 +110,7 @@ public class Path {
             Direction next = Direction.dirFor(getStep(i-1), getStep(i));
 
             // Turn the new direction into a relative direction (left, right, or straight)
+            assert cur != null;
             String result = cur.turnFor(next);
             if(result.equals("straight")) {
                 // If just continuing straight, record any possible turns that weren't taken.
@@ -124,7 +125,7 @@ public class Path {
                     }
                 }
                 if(hallways > 2) {
-                    str += stepNum + ". Go " + result + " through the intersection.\n";
+                    str.append(stepNum).append(". Go ").append(result).append(" through the intersection.\n");
                     steps.add(new DirectionStep(DirectionIcon.forString(result), "Go " + result + " through the intersection."));
                     stepNum ++;
                 }
@@ -132,16 +133,16 @@ public class Path {
             else {
                 // If actually making a turn, add a message about it to the directions
                 if(i+1 == path.size()) {
-                    str += stepNum + ". Your destination (" + getEnd().getRoomName() + ") will be on your " + result + ".\n";
+                    str.append(stepNum).append(". Your destination (").append(getEnd().getRoomName()).append(") will be on your ").append(result).append(".\n");
                     steps.add(new DirectionStep(DirectionIcon.forString(result), "Your destination will be on your " + result));
                     stepNum ++;
                 }
                 else {
                     if(!getStep(i-1).getPrimaryLocType().equals(LocationType.Elevator)) {
-                        str += stepNum + ". Make a " + result;
+                        str.append(stepNum).append(". Make a ").append(result);
                         if (getStep(i).getPrimaryLocType().equals(LocationType.Elevator))
-                            str += " into the " + getStep(i).getRoomName() + ".\n";
-                        else str += ".\n";
+                            str.append(" into the ").append(getStep(i).getRoomName()).append(".\n");
+                        else str.append(".\n");
                         stepNum ++;
                         steps.add(new DirectionStep(DirectionIcon.forString(result), "Make a " + result + ((getStep(i).getPrimaryLocType().equals(LocationType.Elevator)) ? (" into the " + getStep(i).getRoomName()) : "")));
                     }
@@ -154,16 +155,16 @@ public class Path {
             cur = next;
         }
 
-        return str;
+        return str.toString();
     }
 
     public String toString() {
         //System.out.println(textPath());
-        String str = "Path: ";
+        StringBuilder str = new StringBuilder("Path: ");
         for (Node n : path) {
-            str += n.getID() + ", ";
+            str.append(n.getID()).append(", ");
         }
-        return str;
+        return str.toString();
     }
 
     public Node getStart() {
@@ -187,12 +188,20 @@ public class Path {
 
     @Override
     public boolean equals(Object o) {
-        Path p = (Path)o;
-        if(path.size() != p.path.size()) return false;
-        for (int i = 0; i < path.size(); i++) {
-            if(path.get(i).getID() != p.path.get(i).getID()) return false;
+        if (o instanceof Path) {
+            Path other = (Path) o;
+            if(path.size() != other.path.size()) {
+                return false;
+            }
+            for (int i = 0; i < path.size(); i++) {
+                if(path.get(i).getID() != other.path.get(i).getID()) {
+                    return false;
+                }
+            }
+            return true;
+        } else {
+            return false;
         }
-        return true;
     }
 
     public Collection<DirectionStep> getDirections() {

@@ -31,9 +31,9 @@ public class MenuItem extends AbstractController {
         SelectAlgo("Select Path Algorithm", "settings", EnumMenuItem::selectAlgoPressed),
         SelectKiosk("Select Kiosk Location", "settings", EnumMenuItem::selectKioskPressed);
 
-        String path;
-        String text;
-        BiConsumer<MouseEvent, Parent> onClick;
+        final String path;
+        final String text;
+        final BiConsumer<MouseEvent, Parent> onClick;
 
         EnumMenuItem(String text, String path, BiConsumer<MouseEvent, Parent> onClick) {
             this.text = text;
@@ -75,7 +75,9 @@ public class MenuItem extends AbstractController {
                         Node n = null;
                         try {
                             n = KioskMain.getPath().getRoom(s);
-                        } catch (RoomNotFoundException e1) {}
+                        } catch (RoomNotFoundException e1) {
+                            // TODO
+                        }
                         KioskMain.getDir().getTheKiosk().setNode(n);
                     });
         }

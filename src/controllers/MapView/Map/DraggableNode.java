@@ -22,14 +22,14 @@ public class DraggableNode extends Circle {
     //private static final Color UNSELECTED_COLOR = Color.BLACK;
     private static final Color SELECTED_COLOR = Color.RED;
 
-    private Node node;
-    private IntegerProperty previewXProperty = new SimpleIntegerProperty();
-    private IntegerProperty previewYProperty = new SimpleIntegerProperty();
-    private StringProperty previewRoomNameProperty = new SimpleStringProperty();
-    private BooleanProperty previewRestrictedProperty = new SimpleBooleanProperty();
+    private final Node node;
+    private final IntegerProperty previewXProperty = new SimpleIntegerProperty();
+    private final IntegerProperty previewYProperty = new SimpleIntegerProperty();
+    private final StringProperty previewRoomNameProperty = new SimpleStringProperty();
+    private final BooleanProperty previewRestrictedProperty = new SimpleBooleanProperty();
     private Collection<Node> previewConnections = new ArrayList<>();
 
-    private ManageMapController manageMapController;
+    private final ManageMapController manageMapController;
 
     public DraggableNode(Node node, NodeGestures nodeGestures, ManageMapController manageMapController) {
         super(node.getX(), node.getY(), UNSELECTED_RADIUS, node.getColor());
@@ -51,15 +51,15 @@ public class DraggableNode extends Circle {
         previewYProperty.set(y);
     }
 
-    public void previewRoomName(String roomName) {
+    private void previewRoomName(String roomName) {
         previewRoomNameProperty.set(roomName);
     }
 
-    public void previewRestricted(boolean value) {
+    private void previewRestricted(boolean value) {
         previewRestrictedProperty.set(value);
     }
 
-    public void previewConnections(Collection<Node> nodes) {
+    private void previewConnections(Collection<Node> nodes) {
         // redraw connections
 
         // Add anything new
@@ -69,7 +69,7 @@ public class DraggableNode extends Circle {
             }
         }
         // Remove anything old
-         ArrayList<Node> toRemove = new ArrayList<Node>();
+         ArrayList<Node> toRemove = new ArrayList<>();
         for (Node n : previewConnections) {
             if(!nodes.contains(n)) {
                 toRemove.add(n);
@@ -107,11 +107,11 @@ public class DraggableNode extends Circle {
         return previewYProperty.get();
     }
 
-    public final String getPreviewRoomName() {
+    private String getPreviewRoomName() {
         return previewRoomNameProperty.get();
     }
 
-    public final boolean getPreviewRestricted() {
+    private boolean getPreviewRestricted() {
         return previewRestrictedProperty.get();
     }
 
@@ -131,7 +131,7 @@ public class DraggableNode extends Circle {
         return previewRestrictedProperty;
     }
 
-    public void cancelPreview() {
+    private void cancelPreview() {
         System.out.println("cancel");
         previewConnections(node.getConnections());
         setDefaultPreview();

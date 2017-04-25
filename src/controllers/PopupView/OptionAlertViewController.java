@@ -35,11 +35,11 @@ public class OptionAlertViewController extends AbstractPopupViewController {
         button2.setOnAction(btn2);
     }
 
-    @FXML
-    private void initialize() {
-        //int lines = alertBody.getText().length() / 29;
-        //root.setPrefHeight(24+45+20+(15*lines)+20+12+36+24);
-    }
+//    @FXML
+//    private void initialize() {
+//        //int lines = alertBody.getText().length() / 29;
+//        //root.setPrefHeight(24+45+20+(15*lines)+20+12+36+24);
+//    }
 
     @FXML
     private void clickOk(ActionEvent event) {

@@ -33,10 +33,10 @@ public class LoginViewController extends AbstractPopupViewController {
         checkPassword();
     }
 
-    @FXML
-    private void initialize() {
+//    @FXML
+//    private void initialize() {
 //        loginBtn.getStyleClass().add("button-raised");
-    }
+//    }
 
     @FXML
     private void keyPressed(KeyEvent event) {

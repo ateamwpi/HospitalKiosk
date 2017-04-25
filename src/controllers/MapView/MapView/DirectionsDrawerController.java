@@ -108,8 +108,9 @@ public class DirectionsDrawerController extends AbstractController {
                 mapController.setFloor(Integer.parseInt(s.substring(0,1)));
                 mapController.drawPath(path);
                 mapController.hideButtons();
-                double scaleX = pageLayout.getPrintableWidth() / mapController.getRoot().getBoundsInParent().getWidth();
-                Scale scale = new Scale(scaleX, scaleX);
+                double width = pageLayout.getPrintableWidth() / mapController.getRoot().getBoundsInParent().getWidth();
+                //noinspection SuspiciousNameCombination
+                Scale scale = new Scale(width, width);
                 mapController.getRoot().getTransforms().add(scale);
                 success = job.printPage(pageLayout, mapController.getRoot());
                 mapController.getRoot().getTransforms().remove(scale);

@@ -22,8 +22,6 @@ public class MapViewController extends AbstractController {
     @FXML
     private StackPane mapContainer;
 
-    private MapController mapController;
-
     @Override
     public String getURL() {
         return "resources/views/MapView/MapView/MapView.fxml";
@@ -32,7 +30,7 @@ public class MapViewController extends AbstractController {
     @FXML
     private void initialize() {
         // load the map controller
-        mapController = new MapController();
+        MapController mapController = new MapController();
         // add the map to the container
         mapController.setFloor(KioskMain.getDir().getTheKiosk().getNode().getFloor());
         mapContainer.getChildren().add(mapController.getRoot());
@@ -52,15 +50,9 @@ public class MapViewController extends AbstractController {
         NavigationDrawerController navigationDrawerController = new NavigationDrawerController(getRoot());
         optionsMenu.setSidePane(navigationDrawerController.getRoot());
         //optionsMenu.open();
-        directionsDrawerController.getOptionsMenuButton().setOnMouseClicked(event -> {
-            optionsMenu.open();
-        });
-        navigationDrawerController.getDrawerClose().setOnMouseClicked(event -> {
-            optionsMenu.close();
-        });
-        navigationDrawerController.getScrim().setOnMouseClicked(event -> {
-            optionsMenu.close();
-        });
+        directionsDrawerController.getOptionsMenuButton().setOnMouseClicked(event -> optionsMenu.open());
+        navigationDrawerController.getDrawerClose().setOnMouseClicked(event -> optionsMenu.close());
+        navigationDrawerController.getScrim().setOnMouseClicked(event -> optionsMenu.close());
 //        navigationDrawerController.getMenuItems().setOnMouseClicked(event -> {
 //            optionsMenu.close();
 //        });

@@ -16,14 +16,14 @@ import java.util.*;
  */
 public class PathfindingManager {
 
-    private HashMap<Integer, Node> graph;
-    private HashMap<String, Integer> ids;
-    private ArrayList<AbstractPathfindingAlgorithm> algorithms = new ArrayList<AbstractPathfindingAlgorithm>();
+    private final HashMap<Integer, Node> graph;
+    private final HashMap<String, Integer> ids;
+    private final ArrayList<AbstractPathfindingAlgorithm> algorithms = new ArrayList<>();
     private AbstractPathfindingAlgorithm cur;
 
     public PathfindingManager(HashMap<Integer, Node> allNodes) {
         graph = allNodes;
-        ids = new HashMap<String, Integer>();
+        ids = new HashMap<>();
         for (Node n : graph.values()) {
             if(n.getRoomName() != null && !n.getRoomName().equals("NONE")) ids.put(n.getRoomName(), n.getID());
         }
@@ -103,7 +103,7 @@ public class PathfindingManager {
     }
 
     public HashMap<Location, Double> getNearest(LocationType loc, Node start) throws NearestNotFoundException {
-        HashMap<Location, Double> nearests = new HashMap<Location, Double>();
+        HashMap<Location, Double> nearests = new HashMap<>();
         Collection<Location> locations = KioskMain.getDir().getDirectory(loc).getLocations().values();
 
         for(Location l : locations){
@@ -132,9 +132,7 @@ public class PathfindingManager {
         double distX = endX - startX;
         double distY = endY - startY;
 
-        double distance = Math.sqrt(Math.pow(distX, 2) + Math.pow(distY, 2));
-
-        return distance;
+        return Math.sqrt(Math.pow(distX, 2) + Math.pow(distY, 2));
     }
 
     public Node getRoom(String roomName) throws RoomNotFoundException {
@@ -182,7 +180,7 @@ public class PathfindingManager {
             Location min;
             do {
                 try {
-                    min = Collections.min(nearests.entrySet(), (entry1, entry2) -> (int) entry1.getValue().doubleValue() - (int) entry2.getValue().doubleValue()).getKey();
+                    min = Collections.min(nearests.entrySet(), Comparator.comparingInt(entry -> (int) entry.getValue().doubleValue())).getKey();
                 } catch (NoSuchElementException e) {
                     throw new FloorNotReachableException(start, end.getFloor());
                 }
@@ -200,7 +198,7 @@ public class PathfindingManager {
     }
 
     public Collection<String> getRoomNames() {
-        ArrayList<String> roomNames = new ArrayList<String>(ids.keySet());
+        ArrayList<String> roomNames = new ArrayList<>(ids.keySet());
         Collections.sort(roomNames);
         return roomNames;
     }
