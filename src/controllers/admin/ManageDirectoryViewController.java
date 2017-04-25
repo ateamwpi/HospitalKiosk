@@ -68,7 +68,7 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
         setTableEdit();
         removeEntry.setDisable(true);
         title.setText("Manage Directory");
-        directions.setText("");
+//        directions.setText("");
         addLocationBtns();
 
     }
