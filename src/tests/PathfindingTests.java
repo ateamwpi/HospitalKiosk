@@ -3,7 +3,6 @@ package tests;
 import core.exception.FloorNotReachableException;
 import core.exception.NearestNotFoundException;
 import core.exception.PathNotFoundException;
-import models.dir.LocationType;
 import models.path.Node;
 import models.path.Path;
 import models.path.PathfindingManager;
@@ -12,10 +11,6 @@ import org.junit.Test;
 
 import java.util.HashMap;
 
-import static java.awt.Color.MAGENTA;
-import static models.dir.LocationType.Elevator;
-import static models.dir.LocationType.PointOfInterest;
-import static models.dir.LocationType.Restroom;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 

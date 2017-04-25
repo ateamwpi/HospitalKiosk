@@ -3,20 +3,20 @@ package controllers.map;
 import com.jfoenix.controls.JFXButton;
 import controllers.AbstractController;
 import controllers.IClickableController;
+import controllers.ImageProxy;
 import core.Utils;
+import javafx.fxml.FXML;
+import javafx.scene.Group;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import models.path.Node;
-import javafx.fxml.FXML;
-import javafx.scene.Group;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ScrollEvent;
-import javafx.scene.layout.AnchorPane;
 import models.path.Path;
 
 import java.util.ArrayList;
@@ -38,7 +38,9 @@ public class MapController extends AbstractController implements IClickableContr
             "resources/floor7.png"
     };
 
-    private Image map;
+    private ArrayList<ImageProxy> maps;
+
+    private ImageProxy map;
     private Group overlay;
     private int overlayIndex;
 
@@ -137,8 +139,8 @@ public class MapController extends AbstractController implements IClickableContr
 
     public void setFloor(int floor){
         this.floor = floor;
-        map = new Image(getClass().getClassLoader().getResourceAsStream(MAP_URLS[this.floor - 1]));
-        mapView.setImage(map);
+        map = this.maps.get(this.floor-1);
+        mapView.setImage(map.getImage());
         mapView.setPreserveRatio(true);
     }
 
@@ -155,10 +157,18 @@ public class MapController extends AbstractController implements IClickableContr
         // add the canvas to overlay
         overlay.getChildren().add(canvas);
 
-        floor = 4;
+        floor = 1;
+        this.maps = new ArrayList<>();
+
+        // create the Proxies for all of the map images
+        for(String url : MAP_URLS) {
+            System.out.println(this.maps);
+            this.maps.add(new ImageProxy(url));
+        }
+
         // load the map into the map view
-        map = new Image(getClass().getClassLoader().getResourceAsStream(MAP_URLS[floor -1] ));
-        mapView.setImage(map);
+        map = this.maps.get(0);
+        mapView.setImage(map.getImage());
         mapView.setPreserveRatio(true);
         // add the map to the canvas
         canvas.getChildren().add(mapView);
@@ -167,6 +177,7 @@ public class MapController extends AbstractController implements IClickableContr
         addFloorButtons();
         // create the scene gestures for zooming and panning
         sceneGestures = new SceneGestures(canvas, this);
+        sceneGestures.zoomIn();
         // register handlers zooming and panning
         canvas.addEventHandler(MouseEvent.ANY, new ClickDragHandler(sceneGestures.getOnMouseClickedEventHandler(), sceneGestures.getOnMouseDraggedEventHandler()));
         canvas.addEventHandler(MouseEvent.MOUSE_PRESSED, sceneGestures.getOnMousePressedEventHandler());
@@ -192,7 +203,7 @@ public class MapController extends AbstractController implements IClickableContr
         root.getChildren().add(overlay);
         // add the canvas to overlay
         overlay.getChildren().add(canvas);
-        mapView.setImage(map);
+        mapView.setImage(map.getImage());
         mapView.setPreserveRatio(true);
         // set base overlay index
         overlayIndex = overlay.getChildren().size();
@@ -205,14 +216,6 @@ public class MapController extends AbstractController implements IClickableContr
     private void addFloorButtons() {
         ArrayList<String> floorList = new ArrayList<String>(Arrays.asList("1", "2","3", "4", "5", "6", "7"));
         int wid = 36;
-
-        this.zoomOut = new JFXButton();
-        zoomOut.setText("-");
-        zoomOut.setOnAction(event -> sceneGestures.zoomOut());
-        zoomOut.setPrefWidth(wid);
-        zoomOut.getStylesheets().add(getClass().getClassLoader().getResource("views/style.css").toExternalForm());
-        zoomOut.getStyleClass().add("floor-button");
-        floorVBox.getChildren().add(zoomOut);
 
         for(String s : floorList) {
             JFXButton floor = new JFXButton();
@@ -233,6 +236,14 @@ public class MapController extends AbstractController implements IClickableContr
         zoomIn.getStyleClass().add("floor-button");
         floorVBox.getChildren().add(zoomIn);
         floorVBox.toFront();
+
+        this.zoomOut = new JFXButton();
+        zoomOut.setText("-");
+        zoomOut.setOnAction(event -> sceneGestures.zoomOut());
+        zoomOut.setPrefWidth(wid);
+        zoomOut.getStylesheets().add(getClass().getClassLoader().getResource("views/style.css").toExternalForm());
+        zoomOut.getStyleClass().add("floor-button");
+        floorVBox.getChildren().add(zoomOut);
     }
 
     public void hideButtons() {

@@ -1,9 +1,7 @@
 package models.path;
 
 
-import com.jfoenix.controls.JFXPopup;
 import controllers.mapView.DirectionStep;
-import core.KioskMain;
 import core.Utils;
 import models.dir.LocationType;
 
@@ -72,18 +70,21 @@ public class Path {
             if(this.getStep(i-1).isBelkin() && !this.getStep(i).isBelkin()) {
                 // leaving belkin
                 str += stepNum + ". Leave the Belkin House and walk across the parking lot.\n";
+                steps.add(new DirectionStep(DirectionIcon.STRAIGHT, "Leave the Belkin House"));
                 stepNum ++;
                 waiting = true;
             }
             else if(this.getStep(i-1).isMain() && !this.getStep(i).isMain()) {
                 // leaving main
                 str += stepNum + ". Leave the main building and walk across the parking lot.\n";
+                steps.add(new DirectionStep(DirectionIcon.STRAIGHT, "Leave the main building"));
                 stepNum ++;
                 waiting = true;
             }
             else if(!this.getStep(i-1).isBelkin() && this.getStep(i).isBelkin()) {
                 // entering belkin
                 str += stepNum + ". Enter the Belkin House.\n";
+                steps.add(new DirectionStep(DirectionIcon.STRAIGHT, "Enter the Belkin House"));
                 stepNum ++;
                 waiting = false;
                 continue;
@@ -91,6 +92,7 @@ public class Path {
             else if(!this.getStep(i-1).isMain() && this.getStep(i).isMain()) {
                 // entering main
                 str += stepNum + ". Enter the main building.\n";
+                steps.add(new DirectionStep(DirectionIcon.STRAIGHT, "Enter the main building"));
                 stepNum ++;
                 waiting = false;
                 continue;

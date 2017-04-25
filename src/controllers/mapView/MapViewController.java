@@ -3,13 +3,11 @@ package controllers.mapView;
 import com.jfoenix.controls.JFXDrawer;
 import controllers.AbstractController;
 import controllers.map.MapController;
-import controllers.mapView.DrawerController;
 import core.KioskMain;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.layout.*;
+import javafx.scene.layout.StackPane;
 import models.path.Path;
-import models.ui.UIManager;
 
 public class MapViewController extends AbstractController {
 
@@ -69,8 +67,8 @@ public class MapViewController extends AbstractController {
     }
 
     private void drawPath(Path path) {
-        mapController.drawPath(path);
-        mapController.setFloor(path.getStart().getFloor());
+        //mapController.drawPath(path);
+        //mapController.setFloor(path.getStart().getFloor());
     }
 
 }

@@ -1,27 +1,14 @@
 package controllers.mapView;
 
-import com.jfoenix.controls.JFXTextField;
 import controllers.AboutPageController;
 import controllers.AbstractController;
-import controllers.OptionAlertController;
 import controllers.admin.AdminLoginController;
 import core.KioskMain;
-import core.exception.FloorNotReachableException;
-import core.exception.NearestNotFoundException;
-import core.exception.PathNotFoundException;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
-import models.dir.Location;
-import models.path.Path;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.function.Consumer;
 
 /**
  * Created by dylan on 4/16/17.

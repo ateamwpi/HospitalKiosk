@@ -3,9 +3,7 @@ package models.dir;
 import core.KioskMain;
 import core.exception.NearestNotFoundException;
 
-import java.awt.*;
 import java.util.*;
-import java.util.List;
 
 /**
  * Created by mattm on 3/29/2017.
@@ -67,7 +65,7 @@ public class DirectoryManager {
         query = query.toLowerCase();
         List<Location> locations = new ArrayList<>();
         for (Location loc : getAllLocations()) {
-            if (loc.getName().toLowerCase().contains(query) || loc.getNode().getRoomName().toLowerCase().equals(query)) {
+            if (loc.getName().toLowerCase().contains(query) || loc.getNode().getRoomName().toLowerCase().contains(query)) {
                 locations.add(loc);
             }
         }
