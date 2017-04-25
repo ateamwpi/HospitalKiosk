@@ -1,19 +1,14 @@
 package controllers.admin;
 
 import com.jfoenix.controls.JFXButton;
-import controllers.AbstractController;
 import controllers.AbstractDirectoryViewController;
-import controllers.DirectionsViewController;
 import controllers.mapView.MapViewController;
 import core.KioskMain;
 import core.exception.RoomNotFoundException;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.VBox;
 import models.dir.Location;
 import models.dir.LocationType;
@@ -82,13 +77,6 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
     @FXML  //when user clicks "back" button, they will return to main menu
     private void clickBack(ActionEvent event) {
         KioskMain.getUI().setScene(new MapViewController());
-    }
-
-    @FXML
-    private void clickModify(ActionEvent event) throws IOException {
-        if (selectedLocation != null) {
-            KioskMain.getUI().setScene(new AdminModifyLocationController(selectedLocation));
-        }
     }
 
     @FXML

@@ -1,11 +1,8 @@
 package controllers.mapView;
 
 import controllers.AbstractController;
-import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
 import models.dir.Location;
 
 import java.util.function.Consumer;

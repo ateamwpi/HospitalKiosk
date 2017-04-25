@@ -1,11 +1,13 @@
 package controllers.mapView;
 
+import controllers.AboutPageController;
 import controllers.AbstractController;
 import controllers.mapView.MenuItem.EnumMenuItem;
 import core.KioskMain;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import models.login.ILoginObserver;
