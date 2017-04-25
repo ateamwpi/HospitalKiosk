@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXTextField;
 import controllers.AbstractController;
 import controllers.map.MapController;
 import core.KioskMain;
+import core.Utils;
 import core.exception.FloorNotReachableException;
 import core.exception.NearestNotFoundException;
 import core.exception.PathNotFoundException;
@@ -96,32 +97,38 @@ public class DrawerController extends AbstractController {
     }
 
     private void print(Node first) {
-        Printer printer = Printer.getDefaultPrinter();
-        PageLayout pageLayout = printer.createPageLayout(Paper.NA_LETTER, PageOrientation.PORTRAIT, Printer.MarginType.DEFAULT);
-        PrinterJob job = PrinterJob.createPrinterJob();
-        if (job != null && job.showPrintDialog(null)) {
-            boolean success = false;
-            job.printPage(first);
-            int oldFloor = mapController.getFloor();
-            for (String s : path.getFloorsSpanning()) {
+        try {
+            Printer printer = Printer.getDefaultPrinter();
+            PageLayout pageLayout = printer.createPageLayout(Paper.NA_LETTER, PageOrientation.PORTRAIT, Printer.MarginType.DEFAULT);
+            PrinterJob job = PrinterJob.createPrinterJob();
+            if (job != null && job.showPrintDialog(null)) {
+                boolean success = false;
+                job.printPage(first);
+                int oldFloor = mapController.getFloor();
+                for (String s : path.getFloorsSpanning()) {
+                    mapController.clearOverlay();
+                    mapController.setFloor(Integer.parseInt(s.substring(0,1)));
+                    mapController.drawPath(path);
+                    mapController.hideButtons();
+                    double scaleX = pageLayout.getPrintableWidth() / mapController.getRoot().getBoundsInParent().getWidth();
+                    Scale scale = new Scale(scaleX, scaleX);
+                    mapController.getRoot().getTransforms().add(scale);
+                    success = job.printPage(pageLayout, mapController.getRoot());
+                    mapController.getRoot().getTransforms().remove(scale);
+                    mapController.showButtons();
+                }
                 mapController.clearOverlay();
-                mapController.setFloor(Integer.parseInt(s.substring(0,1)));
+                mapController.setFloor(oldFloor);
                 mapController.drawPath(path);
-                mapController.hideButtons();
-                double scaleX = pageLayout.getPrintableWidth() / mapController.getRoot().getBoundsInParent().getWidth();
-                Scale scale = new Scale(scaleX, scaleX);
-                mapController.getRoot().getTransforms().add(scale);
-                success = job.printPage(pageLayout, mapController.getRoot());
-                mapController.getRoot().getTransforms().remove(scale);
-                mapController.showButtons();
+                if (success) {
+                    job.endJob();
+                }
             }
-            mapController.clearOverlay();
-            mapController.setFloor(oldFloor);
-            mapController.drawPath(path);
-            if (success) {
-                job.endJob();
-            }
+        } catch (NullPointerException e) {
+            Utils.showAlert(root, "Error While Printing!", "There was an error when attempting to print the " +
+                            "directions. Ensure you have a printer installed!");
         }
+
     }
 
     @FXML
