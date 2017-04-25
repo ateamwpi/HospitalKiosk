@@ -28,11 +28,11 @@
             <Insets />
          </GridPane.margin>
           </VBox>
-          <TableView fx:id="locationsTable" minHeight="-Infinity" minWidth="-Infinity" prefHeight="307.0" prefWidth="159.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+          <TableView fx:id="locationsTable" minHeight="-Infinity" minWidth="-Infinity" prefHeight="307.0" prefWidth="159.0" styleClass="tree-table-view" stylesheets="@../styles/tableview.css" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
               <columns>
-                  <TableColumn fx:id="nameCol" minWidth="0.0" prefWidth="202.66668701171875" text="Name" />
-                  <TableColumn id="roomCol" fx:id="roomCol" maxWidth="407.33331298828125" minWidth="40.00006103515625" prefWidth="154.33331298828125" text="Room" />
-                  <TableColumn fx:id="typeCol" maxWidth="665.9999389648438" minWidth="114.3333740234375" prefWidth="134.3333740234375" text="Type" />
+                  <TableColumn fx:id="nameCol" minWidth="0.0" prefWidth="192.3333740234375" text="Name" />
+                  <TableColumn id="roomCol" fx:id="roomCol" maxWidth="407.33331298828125" minWidth="40.00006103515625" prefWidth="134.0" text="Room" />
+                  <TableColumn fx:id="typeCol" maxWidth="665.9999389648438" minWidth="85.6666259765625" prefWidth="136.3333740234375" text="Type" />
               </columns>
          <GridPane.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" />
