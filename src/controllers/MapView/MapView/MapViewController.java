@@ -1,4 +1,4 @@
-package controllers.MapView;
+package controllers.MapView.MapView;
 
 import com.jfoenix.controls.JFXDrawer;
 import controllers.AbstractController;

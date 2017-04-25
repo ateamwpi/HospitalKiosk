@@ -1,6 +1,6 @@
 package models.login;
 
-import controllers.MapView.MenuItem;
+import controllers.MapView.MapView.MenuItem;
 
 import java.util.Arrays;
 import java.util.Collection;

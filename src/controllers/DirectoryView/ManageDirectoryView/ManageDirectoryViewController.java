@@ -2,7 +2,7 @@ package controllers.DirectoryView.ManageDirectoryView;
 
 import com.jfoenix.controls.JFXButton;
 import controllers.DirectoryView.AbstractDirectoryViewController;
-import controllers.MapView.MapViewController;
+import controllers.MapView.MapView.MapViewController;
 import core.KioskMain;
 import core.exception.RoomNotFoundException;
 import javafx.event.ActionEvent;

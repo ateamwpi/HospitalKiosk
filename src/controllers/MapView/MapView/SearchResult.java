@@ -1,4 +1,4 @@
-package controllers.MapView;
+package controllers.MapView.MapView;
 
 import controllers.AbstractController;
 import javafx.fxml.FXML;

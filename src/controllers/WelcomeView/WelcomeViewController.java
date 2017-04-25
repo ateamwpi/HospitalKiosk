@@ -1,7 +1,7 @@
 package controllers.WelcomeView;
 
 import controllers.AbstractController;
-import controllers.MapView.MapViewController;
+import controllers.MapView.MapView.MapViewController;
 import core.KioskMain;
 import javafx.fxml.FXML;
 

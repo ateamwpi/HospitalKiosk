@@ -1,10 +1,10 @@
-package controllers.MapView;
+package controllers.MapView.MapView;
 
 import controllers.AboutView.AboutViewController;
 import controllers.AbstractController;
 import controllers.LoginView.LoginViewController;
 import controllers.DirectoryView.ManageDirectoryView.ManageDirectoryViewController;
-import controllers.ManageMapView.ManageMapViewController;
+import controllers.MapView.ManageMapView.ManageMapViewController;
 import core.KioskMain;
 import core.Utils;
 import core.exception.RoomNotFoundException;

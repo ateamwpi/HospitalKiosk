@@ -1,8 +1,8 @@
 package controllers.NavigationDrawer;
 
 import controllers.AbstractController;
-import controllers.MapView.MenuItem;
-import controllers.MapView.MenuItem.EnumMenuItem;
+import controllers.MapView.MapView.MenuItem;
+import controllers.MapView.MapView.MenuItem.EnumMenuItem;
 import core.KioskMain;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;

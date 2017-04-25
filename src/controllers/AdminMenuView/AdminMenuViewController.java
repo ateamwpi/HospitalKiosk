@@ -1,11 +1,11 @@
-package controllers.Admin;
+package controllers.AdminMenuView;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import controllers.AbstractController;
 import controllers.DirectoryView.ManageDirectoryView.ManageDirectoryViewController;
-import controllers.ManageMapView.ManageMapViewController;
-import controllers.MapView.MapViewController;
+import controllers.MapView.ManageMapView.ManageMapViewController;
+import controllers.MapView.MapView.MapViewController;
 import core.KioskMain;
 import core.exception.RoomNotFoundException;
 import javafx.event.ActionEvent;
@@ -18,7 +18,7 @@ import models.path.Node;
 /**
  * Created by mattm on 3/29/2017.
  */
-public class AdminMenuController extends AbstractController {
+public class AdminMenuViewController extends AbstractController {
     @FXML
     private Button logoutBtn;
     @FXML

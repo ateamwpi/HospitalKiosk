@@ -1,4 +1,4 @@
-package controllers.ManageMapView;
+package controllers.MapView.ManageMapView;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
@@ -6,7 +6,7 @@ import com.jfoenix.controls.JFXTextField;
 import controllers.AbstractController;
 import controllers.Map.ManageMapController;
 import controllers.Map.DraggableNode;
-import controllers.MapView.MapViewController;
+import controllers.MapView.MapView.MapViewController;
 import core.KioskMain;
 import core.Utils;
 import javafx.beans.binding.Bindings;

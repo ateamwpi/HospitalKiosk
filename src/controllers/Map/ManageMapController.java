@@ -2,8 +2,7 @@ package controllers.Map;
 
 import controllers.AbstractController;
 import controllers.IClickableController;
-import controllers.ManageMapView.ManageMapViewController;
-import controllers.Map.*;
+import controllers.MapView.ManageMapView.ManageMapViewController;
 import core.KioskMain;
 import core.Utils;
 import core.exception.NodeInUseException;
