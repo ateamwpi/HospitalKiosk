@@ -41,7 +41,7 @@ public class LoginController extends AbstractPopupController {
 
     @FXML
     private void keyPressed(KeyEvent event) {
-        if (event.getCode().equals(KeyCode.ENTER)) {
+        if (event.getCode().equals(KeyCode.ENTER) && this.hasFocus()) {
             checkPassword();
         }
     }

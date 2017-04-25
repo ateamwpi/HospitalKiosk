@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXPopup;
 import core.KioskMain;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 
@@ -47,6 +48,10 @@ public abstract class AbstractPopupController extends AbstractController {
     public void hide() {
         KioskMain.getUI().setPopup(null);
         this.instance.hide();
+    }
+
+    public boolean hasFocus() {
+        return KioskMain.getUI().getPopup().getClass().equals(this.getClass());
     }
 
     public Parent getParent() {
