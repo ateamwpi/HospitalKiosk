@@ -39,7 +39,12 @@ public interface IPopup {
     }
 
     default void showCentered() {
-        this.show(KioskMain.getUI().getScene().getWidth()/2-130, KioskMain.getUI().getScene().getHeight()/2-105);
+        // please nobody read this ever this is so gross I hate myself for writing it -matt
+        this.show(0, 0);
+        double xOffset = getRegion().getBoundsInParent().getWidth()/2;
+        double yOffset = getRegion().getBoundsInParent().getHeight()/2;
+        this.hide();
+        this.show(KioskMain.getUI().getScene().getWidth()/2-xOffset, KioskMain.getUI().getScene().getHeight()/2-yOffset);
     }
 
     default void hide() {

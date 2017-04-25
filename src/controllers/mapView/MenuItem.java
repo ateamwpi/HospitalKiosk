@@ -85,7 +85,7 @@ public class MenuItem extends AbstractController {
             DirectionsDirectoryController dir = new DirectionsDirectoryController(mainRoot, (location -> {
                 System.out.println("you clicked " + location);
             }));
-            dir.show(100, 100);
+            dir.showCentered();
         }
     }
 

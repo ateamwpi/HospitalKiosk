@@ -51,7 +51,6 @@ public class DirectionsDirectoryController extends AbstractDirectoryViewControll
 
     private void selectLocation(Location loc) {
         this.onSelect.accept(loc);
-        this.instance.hide();
     }
 
     @Override
@@ -59,6 +58,7 @@ public class DirectionsDirectoryController extends AbstractDirectoryViewControll
         return this.instance;
     }
 
+    @Override
     public Region getRegion() {
         return (Region) this.getRoot();
     }
