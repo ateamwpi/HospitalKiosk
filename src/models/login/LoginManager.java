@@ -34,13 +34,11 @@ public class LoginManager {
 
     private void addUserType(AbstractUserType u) {
         this.accounts.add(u);
-        Collections.sort(this.accounts);
     }
 
     public boolean tryLogin(String username, String password) {
         for(AbstractUserType userType : this.accounts) {
             if(!userType.equals(this.currentState) && userType.tryLogin(username, password)) {
-                System.out.println("accepted " + userType);
                 this.currentState = userType;
                 this.notifyObservers();
                 return true;

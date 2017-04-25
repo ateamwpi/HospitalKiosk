@@ -67,6 +67,24 @@
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
 }
+.map {
+    -fx-background-image: url("../resources/icons/map.png");
+    -fx-background-size: 24px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+.dir {
+    -fx-background-image: url("../resources/icons/directory.png");
+    -fx-background-size: 24px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+.settings {
+    -fx-background-image: url("../resources/icons/settings.png");
+    -fx-background-size: 24px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
 .scrim {
     -fx-background-color: rgba(0,0,0,0.3);
 }

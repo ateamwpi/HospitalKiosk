@@ -2,15 +2,22 @@ package controllers.mapView;
 
 import controllers.AboutPageController;
 import controllers.AbstractController;
+import controllers.DropdownAlertController;
 import controllers.LoginController;
+import controllers.admin.ManageDirectoryViewController;
+import controllers.admin.ManageMapViewController;
 import core.KioskMain;
+import core.Utils;
+import core.exception.RoomNotFoundException;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import models.path.Node;
 
-import java.util.function.*;
+import java.util.function.BiConsumer;
 
 /**
  * Created by mattm on 4/24/2017
@@ -19,8 +26,12 @@ public class MenuItem extends AbstractController {
 
     public enum EnumMenuItem {
         About("About This Application", "info", EnumMenuItem::aboutPressed),
-        Login("Administrator Login", "login", EnumMenuItem::loginPressed),
-        Logout("Log Out", "logout", EnumMenuItem::logoutPressed);
+        Login("Login", "login", EnumMenuItem::loginPressed),
+        Logout("Log Out", "logout", EnumMenuItem::logoutPressed),
+        ManageMap("Manage Map", "map", EnumMenuItem::manageMapPressed),
+        ManageDir("Manage Directory", "dir", EnumMenuItem::manageDirPressed),
+        SelectAlgo("Select Path Algorithm", "settings", EnumMenuItem::selectAlgoPressed),
+        SelectKiosk("Select Kiosk Location", "settings", EnumMenuItem::selectKioskPressed);
 
         String path;
         String text;
@@ -43,6 +54,32 @@ public class MenuItem extends AbstractController {
 
         private static void logoutPressed(MouseEvent e, Parent mainRoot) {
             KioskMain.getLogin().logout();
+        }
+
+        private static void manageMapPressed(MouseEvent e, Parent mainRoot) {
+            KioskMain.getUI().setScene(new ManageMapViewController());
+        }
+
+        private static void manageDirPressed(MouseEvent e, Parent mainRoot) {
+            KioskMain.getUI().setScene(new ManageDirectoryViewController());
+        }
+
+        private static void selectAlgoPressed(MouseEvent e, Parent mainRoot) {
+            Utils.showDropdown(mainRoot, "Select Algorithm", "Choose which pathfinding algorithm the application should use.",
+                    KioskMain.getPath().getAlgorithms(), KioskMain.getPath().getSelectedAlgorithm().getName(),
+                    (s) -> KioskMain.getPath().selectAlgorithm(s));
+        }
+
+        private static void selectKioskPressed(MouseEvent e, Parent mainRoot) {
+            Utils.showDropdown(mainRoot, "Select Kiosk Location", "Choose the location that the Kiosk is currently at.",
+                    KioskMain.getPath().getRoomNames(), KioskMain.getDir().getTheKiosk().getNode().getRoomName(),
+                    (s) -> {
+                        Node n = null;
+                        try {
+                            n = KioskMain.getPath().getRoom(s);
+                        } catch (RoomNotFoundException e1) {}
+                        KioskMain.getDir().getTheKiosk().setNode(n);
+                    });
         }
     }
 
@@ -69,8 +106,13 @@ public class MenuItem extends AbstractController {
     @FXML
     private void initialize() {
         menuLabel.setText(item.text);
-        // add direction icon
         menuIcon.getStyleClass().add(this.item.path);
+
+//        menuLabel.styleProperty().bind(
+//            Bindings.when(root.hoverProperty())
+//                    .then("-fx-text-fill: royalblue;")
+//                    .otherwise("-fx-text-fill: black;")
+//        );
     }
 
     @FXML

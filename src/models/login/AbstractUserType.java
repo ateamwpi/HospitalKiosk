@@ -7,14 +7,12 @@ import java.util.Collection;
 /**
  * Created by mattm on 4/21/2017
  */
-public abstract class AbstractUserType implements Comparable<AbstractUserType> {
+public abstract class AbstractUserType {
 
-    private final int permission;
     private final String username;
     private final String password;
 
-    public AbstractUserType(int permission, String username, String password) {
-        this.permission = permission;
+    public AbstractUserType(String username, String password) {
         this.username = username;
         this.password = password;
     }
@@ -30,14 +28,9 @@ public abstract class AbstractUserType implements Comparable<AbstractUserType> {
     public abstract String getWelcomeMessage();
 
     @Override
-    public int compareTo(AbstractUserType o) {
-        return o.permission - this.permission;
-    }
-
-    @Override
     public boolean equals(Object o) {
         if(o == null) return false;
         AbstractUserType u = (AbstractUserType)o;
-        return u.permission == this.permission && u.username == this.username;
+        return u.username == this.username;
     }
 }

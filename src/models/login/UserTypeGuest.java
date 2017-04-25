@@ -12,7 +12,7 @@ import java.util.Collection;
 public class UserTypeGuest extends AbstractUserType {
 
     public UserTypeGuest() {
-        super(0, "", "");
+        super("", "");
     }
 
     @Override

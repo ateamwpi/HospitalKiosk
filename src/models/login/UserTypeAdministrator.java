@@ -11,7 +11,7 @@ import java.util.Collection;
 public class UserTypeAdministrator extends AbstractUserType {
 
     public UserTypeAdministrator() {
-        super(2, "admin", "jade");
+        super("admin", "jade");
     }
 
     @Override
@@ -21,7 +21,7 @@ public class UserTypeAdministrator extends AbstractUserType {
 
     @Override
     public Collection<MenuItem.EnumMenuItem> getAvailableOptions() {
-        return Arrays.asList(MenuItem.EnumMenuItem.About, MenuItem.EnumMenuItem.Logout);
+        return Arrays.asList(MenuItem.EnumMenuItem.About, MenuItem.EnumMenuItem.Logout, MenuItem.EnumMenuItem.ManageDir, MenuItem.EnumMenuItem.ManageMap, MenuItem.EnumMenuItem.SelectAlgo, MenuItem.EnumMenuItem.SelectKiosk);
     }
 
     @Override

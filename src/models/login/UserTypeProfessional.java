@@ -11,7 +11,7 @@ import java.util.Collection;
 public class UserTypeProfessional extends AbstractUserType {
 
     public UserTypeProfessional() {
-        super(1, "professional", "faulkner");
+        super("professional", "faulkner");
     }
 
     @Override

@@ -7,6 +7,7 @@ import controllers.AbstractController;
 import controllers.IController;
 import controllers.map.DraggableNode;
 import controllers.map.MapController;
+import controllers.mapView.MapViewController;
 import core.KioskMain;
 import core.Utils;
 import javafx.beans.binding.Bindings;
@@ -202,7 +203,7 @@ public class ManageMapViewController extends AbstractController {
     @FXML
     private void clickBack(ActionEvent event) {
         if (adminMapController.attemptUnselectNode()) {
-            KioskMain.getUI().setScene(new AdminMenuController());
+            KioskMain.getUI().setScene(new MapViewController());
         }
     }
 
