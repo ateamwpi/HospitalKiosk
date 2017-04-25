@@ -1,0 +1,115 @@
+.chevron-left {
+    -fx-background-image: url("../resources/icons/chevron-left.png");
+    -fx-background-size: 20px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+.chevron-right {
+    -fx-background-image: url("../resources/icons/chevron-right.png");
+    -fx-background-size: 20px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+.drawer-toggle {
+    -fx-background-color: rgba(255, 255, 255, 0.9);
+}
+.start-icon {
+    -fx-background-image: url("../resources/icons/start.png");
+    -fx-background-size: 20px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+.end-icon {
+    -fx-background-image: url("../resources/icons/end.png");
+    -fx-background-size: 20px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+.ellipsis-icon {
+    -fx-background-image: url("../resources/icons/ellipsis.png");
+    -fx-background-size: 15px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+.place-icon {
+    -fx-background-image: url("../resources/icons/place.png");
+    -fx-background-size: 30px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+.hamburger-icon {
+    -fx-background-image: url("../resources/icons/hamburger.png");
+    -fx-background-size: 30px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+.minimize-menu {
+    -fx-background-image: url("../resources/icons/minimize-menu.png");
+    -fx-background-size: 30px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+.info {
+    -fx-background-image: url("../resources/icons/info.png");
+    -fx-background-size: 24px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+.login {
+    -fx-background-image: url("../resources/icons/login.png");
+    -fx-background-size: 24px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+.scrim {
+    -fx-background-color: rgba(0,0,0,0.3);
+}
+.search {
+    -fx-text-fill: #e7effe;
+    -jfx-unfocus-color: rgba(255,255,255,0.87);
+    -jfx-focus-color: rgba(255,255,255,0);
+    -fx-accent: rgba(255,255,255,0.2);
+}
+.list-border {
+    -fx-border-color: #e6e6e6;
+    -fx-border-style: solid none none none;
+}
+.turn-left-icon {
+    -fx-background-image: url("../resources/icons/turn-left.png");
+    -fx-background-size: 30px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+.turn-right-icon {
+    -fx-background-image: url("../resources/icons/turn-right.png");
+    -fx-background-size: 30px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+.go-straight-icon {
+    -fx-background-image: url("../resources/icons/go-straight.png");
+    -fx-background-size: 20px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+.back-icon {
+    -fx-background-image: url("../resources/icons/back.png");
+    -fx-background-size: 30px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+.header {
+    -fx-background-color:  #4285f4;
+}
+.volume-icon {
+    -fx-background-image: url("../resources/icons/volume.png");
+    -fx-background-size: 30px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+.printer-icon {
+    -fx-background-image: url("../resources/icons/printer.png");
+    -fx-background-size: 30px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
