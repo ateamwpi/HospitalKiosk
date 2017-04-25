@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<Pane fx:id="root" layoutX="6.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<Pane fx:id="root" layoutX="6.0" prefHeight="259.0" prefWidth="250.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
    <VBox>
       <children>
          <Pane fx:id="scrim" styleClass="scrim" stylesheets="@../styles/main-menu.css" />
@@ -68,6 +68,19 @@
                <children>
                   <Label fx:id="drawerClose2" prefHeight="24.0" prefWidth="24.0" styleClass="login" stylesheets="@../styles/main-menu.css" />
                   <Label styleClass="alert-body" stylesheets="@../styles/style.css" text="Administrator Login">
+                     <padding>
+                        <Insets left="32.0" />
+                     </padding>
+                  </Label>
+               </children>
+               <padding>
+                  <Insets left="16.0" />
+               </padding>
+            </HBox>
+            <HBox fx:id="helpButton" alignment="CENTER_LEFT" layoutX="10.0" layoutY="70.0">
+               <children>
+                  <Label fx:id="drawerClose3" prefHeight="24.0" prefWidth="24.0" styleClass="help-icon" stylesheets="@../styles/main-menu.css" />
+                  <Label styleClass="alert-body" stylesheets="@../styles/style.css" text="Info">
                      <padding>
                         <Insets left="32.0" />
                      </padding>

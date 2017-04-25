@@ -61,6 +61,12 @@
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
 }
+.help-icon {
+    -fx-background-image: url("../resources/icons/help-icon.png");
+    -fx-background-size: 24px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
 .scrim {
     -fx-background-color: rgba(0,0,0,0.3);
 }
