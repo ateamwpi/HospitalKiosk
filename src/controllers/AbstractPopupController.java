@@ -35,10 +35,6 @@ public abstract class AbstractPopupController extends AbstractController {
         this.parent = parent;
     }
 
-    public void showAndWait() {
-        this.showCentered();
-    }
-
     public void show(double x, double y) {
         KioskMain.getUI().setPopup(this);
         this.instance.show(parent, JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.LEFT, x, y);

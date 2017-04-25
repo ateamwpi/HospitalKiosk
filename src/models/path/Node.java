@@ -3,10 +3,7 @@ package models.path;
 import core.KioskMain;
 import core.exception.NameInUseException;
 import core.exception.WrongFloorException;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 import javafx.scene.paint.Color;
 import models.dir.Location;
 import models.dir.LocationType;
@@ -24,6 +21,7 @@ public class Node {
     private IntegerProperty idProperty = new SimpleIntegerProperty();
     private IntegerProperty floorProperty = new SimpleIntegerProperty();
     private StringProperty roomNameProperty = new SimpleStringProperty();
+    private BooleanProperty restrictedProperty = new SimpleBooleanProperty();
     private String previousRoomName = "";
     private ArrayList<Node> connections;
     private HashMap<Integer, Location> locations;
@@ -36,12 +34,13 @@ public class Node {
     /** This constructor should _ONLY_ be used when loading from the database. For any
      *  new nodes created, use Node(x, y) and a unique ID will automatically be generated.
      */
-    public Node(int id, int x, int y, int floor, String roomName) {
+    public Node(int id, int x, int y, int floor, boolean restricted, String roomName) {
         idProperty.set(id);
         xProperty.set(x);
         yProperty.set(y);
         floorProperty.set(floor);
         roomNameProperty.set(roomName);
+        restrictedProperty.set(restricted);
         this.connections = new ArrayList<Node>();
         this.locations = new HashMap<Integer, Location>();
         this.counts = new HashMap<LocationType, Integer>();
@@ -50,12 +49,13 @@ public class Node {
         this.updateBuilding();
     }
 
-    public Node(int x, int y, int floor, String roomName) {
+    public Node(int x, int y, int floor, boolean restricted, String roomName) {
         idProperty.set(getNextNodeID());
         xProperty.set(x);
         yProperty.set(y);
         floorProperty.set(floor);
         roomNameProperty.set(roomName);
+        restrictedProperty.set(restricted);
         this.connections = new ArrayList<Node>();
         this.locations = new HashMap<Integer, Location>();
         this.counts = new HashMap<LocationType, Integer>();
@@ -64,12 +64,13 @@ public class Node {
         this.updateBuilding();
     }
 
-    public Node(int x, int y, int floor) {
+    public Node(int x, int y, int floor, boolean restricted) {
         idProperty.set(getNextNodeID());
         xProperty.set(x);
         yProperty.set(y);
         floorProperty.set(floor);
         roomNameProperty.set("NONE");
+        restrictedProperty.set(restricted);
         this.connections = new ArrayList<Node>();
         this.locations = new HashMap<Integer, Location>();
         this.counts = new HashMap<LocationType, Integer>();
@@ -259,6 +260,10 @@ public class Node {
         this.isDone = true;
     }
 
+    public boolean isRestricted() { return this.restrictedProperty.get(); }
+
+    public void setRestricted(boolean value) { this.restrictedProperty.set(value); }
+
 
     public static void setNextNodeID(int i) {
         nextNodeID = i;
@@ -269,6 +274,8 @@ public class Node {
         nextNodeID ++;
         return val;
     }
+
+
 
     public IntegerProperty idProperty() {
         return idProperty;
