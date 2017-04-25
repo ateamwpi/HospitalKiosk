@@ -20,23 +20,12 @@ import java.io.IOException;
  */
 public class ManageDirectoryViewController extends AbstractDirectoryViewController {
 
-    private Node startNode; // The selected starting node for pathfinding
-    private Node endNode;
-
-    @FXML
-    private Label title;
-    @FXML
-    private Button goToFinalSel; //button user will press to get path to selected
     @FXML
     private Label directions; //label to give user instructions
     @FXML
     private JFXButton addEntry;
     @FXML
     private JFXButton removeEntry;
-    @FXML
-    private Button kiosk;
-    @FXML
-    private VBox locationTypes;
 
 
     ManageDirectoryViewController() {}
@@ -67,10 +56,8 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
     private void adminMode() {
         setTableEdit();
         removeEntry.setDisable(true);
-        title.setText("Manage Directory");
         directions.setText("");
         addLocationBtns();
-
     }
 
     @FXML  //when user clicks "back" button, they will return to main menu
@@ -101,29 +88,6 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
             KioskMain.getDir().removeLocation(selectedLocation);
             KioskMain.getUI().setScene(new ManageDirectoryViewController());
         }
-    }
-
-    @FXML
-    private void addLocationBtns() {
-
-        JFXButton fulldir = new JFXButton();
-        fulldir.setText("Full Directory");
-        fulldir.setOnAction(event -> setFullDirectory());
-        fulldir.setPrefWidth(150);
-        fulldir.getStylesheets().add(getClass().getClassLoader().getResource("views/style.css").toExternalForm());
-        fulldir.getStyleClass().add("content-button");
-        locationTypes.getChildren().add(fulldir);
-
-        for (LocationType locType : LocationType.userValues()) {
-            JFXButton loc = new JFXButton();
-            loc.setText(locType.friendlyName());
-            loc.setOnAction(event -> selectDirectory(locType));
-            loc.setPrefWidth(150);
-            loc.getStylesheets().add(getClass().getClassLoader().getResource("views/style.css").toExternalForm());
-            loc.getStyleClass().add("content-button");
-            locationTypes.getChildren().add(loc);
-        }
-
     }
 
 
