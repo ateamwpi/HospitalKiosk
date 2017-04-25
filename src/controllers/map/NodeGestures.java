@@ -48,7 +48,7 @@ public class NodeGestures {
                 //toggle connection
 
                 //If already connected
-                if(adminMapController.getSelectedNode().getNode().getConnections().contains(node)){
+                if(adminMapController.getSelectedNode().getNode().getConnections().contains(node.getNode())){
                     //Disconnect
                     deleteNeighbor(event, node);
                 } else {
