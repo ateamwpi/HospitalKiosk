@@ -1,5 +1,6 @@
 package core;
 
+import controllers.AboutPageController;
 import controllers.IController;
 import controllers.WelcomeScreenController;
 import javafx.application.Application;
@@ -23,6 +24,8 @@ import models.ui.UIManager;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class KioskMain extends Application {
 
@@ -35,6 +38,7 @@ public class KioskMain extends Application {
     private static final boolean DEBUG = true;
     private static final String MAIN_ENTR_NAME = "Main Entrance";
     private static final String BELKIN_ENTR_NAME = "Belkin Entrance";
+
 
     @Override
     public void start(Stage stage) {
