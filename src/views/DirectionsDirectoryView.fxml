@@ -3,7 +3,6 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -13,39 +12,33 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
       <GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
           <columnConstraints>
-              <ColumnConstraints fillWidth="false" hgrow="ALWAYS" maxWidth="412.33331298828125" minWidth="72.33334350585938" prefWidth="239.0" />
-              <ColumnConstraints hgrow="ALWAYS" maxWidth="1142.0000305175781" minWidth="10.0" prefWidth="1041.0" />
+              <ColumnConstraints fillWidth="false" hgrow="ALWAYS" maxWidth="412.33331298828125" minWidth="72.33334350585938" prefWidth="161.0" />
+              <ColumnConstraints hgrow="ALWAYS" maxWidth="1142.0000305175781" minWidth="10.0" prefWidth="479.0" />
           </columnConstraints>
           <rowConstraints>
-              <RowConstraints maxHeight="99.0" minHeight="10.0" prefHeight="65.99998474121094" vgrow="SOMETIMES" />
-              <RowConstraints maxHeight="687.6666717529297" minHeight="10.0" prefHeight="656.0000152587891" vgrow="SOMETIMES" />
-              <RowConstraints maxHeight="94.0" minHeight="3.0" prefHeight="78.0" vgrow="SOMETIMES" />
+              <RowConstraints maxHeight="99.0" minHeight="10.0" vgrow="SOMETIMES" />
+              <RowConstraints maxHeight="687.6666717529297" minHeight="10.0" prefHeight="423.3333435058594" vgrow="SOMETIMES" />
           </rowConstraints>
-          <VBox fx:id="locationTypes" prefHeight="623.0" prefWidth="178.0" spacing="10.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+          <VBox fx:id="locationTypes" prefHeight="439.0" prefWidth="141.0" spacing="10.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
          <JFXTextField fx:id="searchBox" promptText="Search" />
          <GridPane.margin>
             <Insets />
          </GridPane.margin>
           </VBox>
-          <TableView fx:id="locationsTable" minHeight="-Infinity" minWidth="-Infinity" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+          <TableView fx:id="locationsTable" minHeight="-Infinity" minWidth="-Infinity" prefHeight="307.0" prefWidth="159.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
               <columns>
-                  <TableColumn fx:id="nameCol" minWidth="0.0" prefWidth="249.0" text="Name" />
-                  <TableColumn id="roomCol" fx:id="roomCol" maxWidth="-Infinity" minWidth="300.0" prefWidth="-1.0" text="Room" />
-                  <TableColumn fx:id="typeCol" maxWidth="-Infinity" minWidth="300.0" prefWidth="-1.0" text="Type" />
+                  <TableColumn fx:id="nameCol" minWidth="0.0" prefWidth="202.66668701171875" text="Name" />
+                  <TableColumn id="roomCol" fx:id="roomCol" maxWidth="407.33331298828125" minWidth="40.00006103515625" prefWidth="154.33331298828125" text="Room" />
+                  <TableColumn fx:id="typeCol" maxWidth="665.9999389648438" minWidth="114.3333740234375" prefWidth="134.3333740234375" text="Type" />
               </columns>
          <GridPane.margin>
-            <Insets left="5.0" right="5.0" />
+            <Insets bottom="5.0" left="5.0" right="5.0" />
          </GridPane.margin>
           </TableView>
-          <Label fx:id="directions" text="Label" wrapText="true" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS">
-              <padding>
-                  <Insets left="5.0" />
-              </padding>
-          </Label>
-      <JFXButton onAction="#clickBack" styleClass="navigation-button" stylesheets="@style.css" text="Back" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+      <JFXButton onAction="#clickBack" styleClass="alert-button" stylesheets="@style.css" text="x" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
          <font>
             <Font size="16.0" />
          </font>
@@ -53,7 +46,7 @@
             <Insets />
          </opaqueInsets>
          <GridPane.margin>
-            <Insets right="5.0" />
+            <Insets bottom="5.0" right="5.0" top="5.0" />
          </GridPane.margin>
       </JFXButton>
       </GridPane>

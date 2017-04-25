@@ -34,11 +34,11 @@ public class DirectionsDirectoryController extends AbstractDirectoryViewControll
         initializeTable();
         initializeFilter();
         setFullDirectory();
+        addLocationBtns("alert-button", 150);
 
         // listen to location table selection event
         locationsTable.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
             if (locationsTable.getSelectionModel().getSelectedItem() != null) {
-                locationsTable.getItems().remove(newValue);
                 selectLocation(newValue);
             }
         });
@@ -51,6 +51,7 @@ public class DirectionsDirectoryController extends AbstractDirectoryViewControll
 
     private void selectLocation(Location loc) {
         this.onSelect.accept(loc);
+        this.instance.hide();
     }
 
     @Override

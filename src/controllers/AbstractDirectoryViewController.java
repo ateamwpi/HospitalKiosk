@@ -197,26 +197,27 @@ public abstract class AbstractDirectoryViewController extends AbstractController
         invalidRoom.showAndWait();
     }
 
-    @FXML
-    protected void addLocationBtns() {
-
+    protected void addLocationBtns(String cssClass, int prefWidth) {
         JFXButton fulldir = new JFXButton();
         fulldir.setText("Full Directory");
         fulldir.setOnAction(event -> setFullDirectory());
-        fulldir.setPrefWidth(150);
+        fulldir.setPrefWidth(prefWidth);
         fulldir.getStylesheets().add(getClass().getClassLoader().getResource("views/style.css").toExternalForm());
-        fulldir.getStyleClass().add("content-button");
+        fulldir.getStyleClass().add(cssClass);
         locationTypes.getChildren().add(fulldir);
 
         for (LocationType locType : LocationType.userValues()) {
             JFXButton loc = new JFXButton();
             loc.setText(locType.friendlyName());
             loc.setOnAction(event -> selectDirectory(locType));
-            loc.setPrefWidth(150);
+            loc.setPrefWidth(prefWidth);
             loc.getStylesheets().add(getClass().getClassLoader().getResource("views/style.css").toExternalForm());
-            loc.getStyleClass().add("content-button");
+            loc.getStyleClass().add(cssClass);
             locationTypes.getChildren().add(loc);
         }
+    }
 
+    protected void addLocationBtns() {
+        addLocationBtns("content-button", 150);
     }
 }
