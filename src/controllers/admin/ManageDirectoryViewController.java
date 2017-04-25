@@ -2,6 +2,7 @@ package controllers.admin;
 
 import com.jfoenix.controls.JFXButton;
 import controllers.AbstractDirectoryViewController;
+import controllers.mapView.MapViewController;
 import core.KioskMain;
 import core.exception.RoomNotFoundException;
 import javafx.event.ActionEvent;
@@ -28,7 +29,7 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
     private JFXButton removeEntry;
 
 
-    ManageDirectoryViewController() {}
+    public ManageDirectoryViewController() {}
 
     @Override
     public String getURL() {
@@ -62,7 +63,7 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
 
     @FXML  //when user clicks "back" button, they will return to main menu
     private void clickBack(ActionEvent event) {
-        KioskMain.getUI().setScene(new AdminMenuController());
+        KioskMain.getUI().setScene(new MapViewController());
     }
 
     @FXML

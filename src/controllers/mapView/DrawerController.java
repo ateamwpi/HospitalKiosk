@@ -61,18 +61,16 @@ public class DrawerController extends AbstractController {
     private Pane root;
     private Location startLocation;
     private Location endLocation;
-    private Consumer<Path> drawPath;
     private Path path;
     private MapController mapController;
 
-    public DrawerController(Consumer<Path> drawPath, MapController mapController) {
-        super(drawPath, mapController);
+    public DrawerController(MapController mapController) {
+        super(mapController);
     }
 
     @Override
     public void initData(Object... data) {
-        drawPath = (Consumer<Path>) data[0];
-        mapController = (MapController) data[1];
+        mapController = (MapController) data[0];
     }
 
     @FXML
@@ -202,7 +200,7 @@ public class DrawerController extends AbstractController {
                 // attempt to find the path
                 path = KioskMain.getPath().findPath(startLocation.getNode(), endLocation.getNode());
                 // draw the path on the map
-                drawPath.accept(path);
+                //drawPath.accept(path);
                 // show the directions
                 showDirections(path.getDirections());
                 mapController.setFloor(path.getStart().getFloor());

@@ -126,7 +126,7 @@ public class AdminMapController extends AbstractController implements IClickable
 
         // create new node
         Node node = new Node(   (int) x,
-                                (int) y, mapController.getFloor(), room);
+                                (int) y, mapController.getFloor(), false, room);
         // create new visual node with gestures
         DraggableNode draggableNode = getDraggableNode(node);
         // draw node with gestures

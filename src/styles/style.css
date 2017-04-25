@@ -55,6 +55,15 @@
     -fx-font: 15px system;
 }
 
+.button-body {
+    -fx-text-fill: black;
+    -fx-font: 15px system;
+}
+.button-body:hover {
+    -fx-text-fill: royalblue;
+    -fx-font: 15px system;
+}
+
 .alert-vbox {
     -fx-spacing: 20;
     -fx-alignment: top_left;

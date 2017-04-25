@@ -8,10 +8,12 @@ import models.dir.Directory;
 import models.dir.DirectoryManager;
 import models.dir.Location;
 import models.dir.LocationType;
+import models.login.LoginManager;
 import models.path.Node;
 import models.path.PathfindingManager;
 import models.tts.TTSManager;
 import models.ui.UIManager;
+import sun.rmi.runtime.Log;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -23,8 +25,9 @@ public class KioskMain extends Application {
     private static DatabaseManager theDBManager;
     private static TTSManager theTTSManager;
     private static UIManager theUIManager;
+    private static LoginManager theLoginManager;
 
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
     private static final String MAIN_ENTR_NAME = "Main Entrance";
     private static final String BELKIN_ENTR_NAME = "Belkin Entrance";
 
@@ -57,11 +60,14 @@ public class KioskMain extends Application {
 
     public static UIManager getUI() { return theUIManager; }
 
+    public static LoginManager getLogin() { return theLoginManager; };
+
     private static void initManagers() {
         initDBMg();
         initPathMg();
         initDirMg();
         initTTSMg();
+        initLoginMg();
     }
 
     private static void initDBMg() {
@@ -141,6 +147,10 @@ public class KioskMain extends Application {
 
     private static void initTTSMg() {
         theTTSManager = new TTSManager();
+    }
+
+    private static void initLoginMg() {
+        theLoginManager = new LoginManager();
     }
 
     private static void initUIMg(Stage stage) {
