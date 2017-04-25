@@ -38,6 +38,11 @@ public class AdminMenuViewController extends AbstractController {
 
     @FXML
     private void initialize(){
+        // bind event handlers
+        logoutBtn.setOnAction(this::clickLogout);
+        manageDirectoryBtn.setOnAction(this::clickManageDirectory);
+        manageMapBtn.setOnAction(this::clickManageMap);
+
         title.prefWidthProperty().bind(root.widthProperty());
 
         pathAlgos.getItems().addAll(KioskMain.getPath().getAlgorithms());

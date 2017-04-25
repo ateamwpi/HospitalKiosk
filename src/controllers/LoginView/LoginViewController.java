@@ -29,23 +29,14 @@ public class LoginViewController extends AbstractPopupViewController {
     }
 
     @FXML
-    private void clickLogin(ActionEvent event) {
-        checkPassword();
-    }
-
-//    @FXML
-//    private void initialize() {
+    private void initialize() {
+        // bind event handlers
+        password.setOnAction(this::checkPassword);
+        loginBtn.setOnAction(this::checkPassword);
 //        loginBtn.getStyleClass().add("button-raised");
-//    }
-
-    @FXML
-    private void keyPressed(KeyEvent event) {
-        if (event.getCode().equals(KeyCode.ENTER)) {
-            checkPassword();
-        }
     }
 
-    private void checkPassword() {
+    private void checkPassword(ActionEvent event) {
         if(KioskMain.getLogin().tryLogin(username.getText(), password.getText())) {
             getInstance().hide();
             Utils.showAlert(getParent(), "Success!", "Welcome, " + KioskMain.getLogin().getState() + "!");

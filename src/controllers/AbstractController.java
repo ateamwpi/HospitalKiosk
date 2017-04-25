@@ -1,8 +1,10 @@
 package controllers;
 
 import core.KioskMain;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -44,8 +46,6 @@ public abstract class AbstractController implements IController {
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
-        // bind the handlers to events in the scene
-        bindAllHandlers();
     }
 
     @Override
@@ -54,32 +54,6 @@ public abstract class AbstractController implements IController {
     @Override
     public Parent getRoot() {
         return root;
-    }
-
-    @Override
-    public Map<String, Map<String, EventHandler<Event>>> getHandlers() {
-        return new HashMap<>();
-    }
-
-    private void bindAllHandlers() {
-        getHandlers().forEach(this::bindNodeHandlers);
-    }
-
-    private void bindNodeHandlers(String query, Map<String, EventHandler<Event>> handlers) {
-        Node node = KioskMain.getUI().lookup(query);
-        handlers.forEach((e, h) -> bindNodeHandler(node, e, h));
-
-    }
-
-    private void bindNodeHandler(Node node, String event, EventHandler<Event> handler) {
-        Property eventProperty = (Property) node.getProperties().get(event);
-        //noinspection unchecked
-        eventProperty.bind(new SimpleObjectProperty<EventHandler<Event>>() {
-            @Override
-            public EventHandler<Event> get() {
-                return handler;
-            }
-        });
     }
 
 }

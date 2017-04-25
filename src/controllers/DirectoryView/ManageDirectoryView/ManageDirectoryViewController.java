@@ -24,6 +24,8 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
     private Node endNode;
 
     @FXML
+    private Button backButton;
+    @FXML
     private Label title;
     @FXML
     private Button goToFinalSel; //button user will press to get path to selected
@@ -48,6 +50,11 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
 
     @FXML
     private void initialize() {
+        // bind event handlers
+        backButton.setOnAction(this::clickBack);
+        addEntry.setOnAction(this::clickAdd);
+        removeEntry.setOnAction(this::clickRemove);
+        // setup table and search
         initializeTable();
         initializeFilter();
         setFullDirectory();

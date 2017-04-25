@@ -11,6 +11,7 @@ import core.exception.PathNotFoundException;
 import javafx.fxml.FXML;
 import javafx.print.*;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -31,6 +32,13 @@ import java.util.function.Consumer;
  */
 public class DirectionsDrawerController extends AbstractController {
 
+
+    @FXML
+    private Button directionsBackButton;
+    @FXML
+    private Label printDirectionsIcon;
+    @FXML
+    private Label speakDirectionsIcon;
     @FXML
     private JFXTextField start;
     @FXML
@@ -59,6 +67,7 @@ public class DirectionsDrawerController extends AbstractController {
     private VBox toggleContainer;
     @FXML
     private Pane root;
+
     private Location startLocation;
     private Location endLocation;
     private Path path;
@@ -75,6 +84,10 @@ public class DirectionsDrawerController extends AbstractController {
 
     @FXML
     private void initialize() {
+        // bind event handlers
+        directionsBackButton.setOnAction(event -> showSearch());
+        printDirectionsIcon.setOnMouseClicked(event -> printDirections());
+        speakDirectionsIcon.setOnMouseClicked(event -> speakDirections());
         // listen to search input
         start.textProperty().addListener(observable -> handleKeyPressStart());
         end.textProperty().addListener(observable -> handleKeyPressEnd());

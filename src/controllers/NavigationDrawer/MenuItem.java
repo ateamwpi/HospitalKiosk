@@ -1,4 +1,4 @@
-package controllers.MapView.MapView;
+package controllers.NavigationDrawer;
 
 import controllers.AboutView.AboutViewController;
 import controllers.AbstractController;
@@ -105,6 +105,9 @@ public class MenuItem extends AbstractController {
 
     @FXML
     private void initialize() {
+        // bind event handlers
+        root.setOnMouseClicked(this::onPressed);
+
         menuLabel.setText(item.text);
         menuIcon.getStyleClass().add(item.path);
 

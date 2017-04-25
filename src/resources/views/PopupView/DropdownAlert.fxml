@@ -35,7 +35,7 @@
         <HBox alignment="BOTTOM_RIGHT" prefHeight="100.0" prefWidth="200.0" styleClass="alert-action-hbox"
               stylesheets="@../../styles/Main.css">
             <JFXButton fx:id="okButton" alignment="CENTER_RIGHT" contentDisplay="CENTER" maxHeight="36.0"
-                       minHeight="36.0" onAction="#clickOk" ripplerFill="BLACK" styleClass="alert-button"
+                       minHeight="36.0" ripplerFill="BLACK" styleClass="alert-button"
                        stylesheets="@../../styles/Main.css" text="OK" textAlignment="CENTER" textFill="#2196f3">
                 <font>
                     <Font name="System Bold" size="15.0"/>

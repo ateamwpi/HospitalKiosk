@@ -25,7 +25,7 @@
                     <Insets bottom="24.0" left="24.0" right="24.0" top="24.0"/>
                 </padding>
                 <HBox>
-                    <JFXButton fx:id="backBtn" mnemonicParsing="false" onAction="#clickBack"
+                    <JFXButton fx:id="backButton" mnemonicParsing="false"
                                styleClass="navigation-button" stylesheets="@../../../styles/Main.css"
                                text="Back"/>
                 </HBox>
@@ -42,10 +42,10 @@
                 <JFXTextField fx:id="y" labelFloat="true" promptText="Y-Coordinate"/>
                 <JFXTextField fx:id="room" labelFloat="true" promptText="Room Name"/>
                 <HBox spacing="38.0">
-                    <JFXButton fx:id="saveNode" mnemonicParsing="false" onAction="#clickSave"
+                    <JFXButton fx:id="saveNode" mnemonicParsing="false"
                                styleClass="content-button" stylesheets="@../../../styles/Main.css"
                                text="Save"/>
-                    <JFXButton fx:id="nodeAction" mnemonicParsing="false" onAction="#clickNodeAction"
+                    <JFXButton fx:id="nodeAction" mnemonicParsing="false"
                                styleClass="content-button" stylesheets="@../../../styles/Main.css"
                                text="Delete"/>
                 </HBox>
@@ -56,11 +56,11 @@
                                      resizable="false" text="Connection Node ID"/>
                     </columns>
                 </TableView>
-                <JFXButton fx:id="deleteNeighbor" mnemonicParsing="false" onAction="#clickDeleteNeighbor"
+                <JFXButton fx:id="deleteNeighbor" mnemonicParsing="false"
                            styleClass="content-button" stylesheets="@../../../styles/Main.css"
                            text="Delete Connection"/>
                 <JFXTextField fx:id="newNeighbor" labelFloat="true" promptText="New Neighbor ID"/>
-                <JFXButton fx:id="addNeighbor" mnemonicParsing="false" onAction="#clickAddNeighbor"
+                <JFXButton fx:id="addNeighbor" mnemonicParsing="false"
                            styleClass="content-button" stylesheets="@../../../styles/Main.css"
                            text="Add Connection"/>
             </VBox>

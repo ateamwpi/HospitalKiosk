@@ -16,10 +16,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextFormatter;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.StringConverter;
@@ -46,6 +43,8 @@ public class ManageMapViewController extends AbstractController {
 
 //    @FXML
 //    private JFXComboBox<String> floors;
+    @FXML
+    private Button backButton;
     @FXML
     private JFXTextField x;
     @FXML
@@ -90,7 +89,12 @@ public class ManageMapViewController extends AbstractController {
 
     @FXML
     private void initialize() {
-
+        // bind event handlers
+        backButton.setOnAction(this::clickBack);
+        saveNode.setOnAction(this::clickSave);
+        nodeAction.setOnAction(this::clickNodeAction);
+        deleteNeighbor.setOnAction(this::clickDeleteNeighbor);
+        addNeighbor.setOnAction(this::clickAddNeighbor);
         // load the admin map controller
         manageMapController = new ManageMapController(this);
         // add the map to the container

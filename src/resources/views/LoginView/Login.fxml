@@ -31,7 +31,7 @@
         </Text>
         <JFXTextField fx:id="username" labelFloat="true" promptText="Username"/>
         <JFXPasswordField fx:id="password" labelFloat="true" maxWidth="-Infinity" minWidth="-Infinity"
-                          onKeyPressed="#keyPressed" prefHeight="25.0" prefWidth="224.0" promptText="Password">
+                          prefHeight="25.0" prefWidth="224.0" promptText="Password">
            <VBox.margin>
                <Insets/>
            </VBox.margin>
@@ -41,7 +41,7 @@
                 <Insets top="12.0"/>
             </VBox.margin>
             <JFXButton fx:id="loginBtn" alignment="CENTER" contentDisplay="CENTER" maxHeight="36.0" minHeight="36.0"
-                       onAction="#clickLogin" ripplerFill="BLACK" styleClass="alert-button"
+                       ripplerFill="BLACK" styleClass="alert-button"
                        stylesheets="@../../styles/Main.css" text="LOGIN" textAlignment="CENTER" textFill="#2196f3">
                 <font>
                     <Font name="System Bold" size="15.0"/>

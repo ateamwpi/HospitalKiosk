@@ -39,13 +39,15 @@ public class DropdownAlertViewController extends AbstractPopupViewController {
         this.onSelect = onSelect;
     }
 
-//    @FXML
-//    private void initialize() {
-//    }
+    @FXML
+    private void initialize() {
+        // bind event handlers
+        okButton.setOnAction(this::clickOk);
+    }
 
     @FXML
     private void clickOk(ActionEvent event) {
-        onSelect.accept((String) alertBox.getSelectionModel().getSelectedItem());
+        onSelect.accept(alertBox.getSelectionModel().getSelectedItem());
         getInstance().hide();
     }
 
