@@ -256,10 +256,10 @@ public class DrawerController extends AbstractController {
 
     @FXML
     private void showSearch() {
+        setEnd(null);
         setStart(KioskMain.getDir().getTheKiosk());
         mapController.enableAllButtons();
         mapController.clearOverlay();
-        //setEnd(null);
         start.requestFocus();
         end.requestFocus();
         // render
