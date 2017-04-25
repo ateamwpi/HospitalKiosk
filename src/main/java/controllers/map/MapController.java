@@ -1,36 +1,27 @@
 package controllers.map;
 
+import com.jfoenix.controls.JFXButton;
 import controllers.AbstractController;
 import controllers.IClickableController;
-import controllers.admin.ManageMapViewController;
-import core.KioskMain;
-import core.NodeInUseException;
-import javafx.scene.control.Alert;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
-import javafx.util.Pair;
-import models.path.Node;
+import core.ImageProxy;
+import core.Utils;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Point2D;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
+import models.path.Node;
 import models.path.Path;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by dylan on 4/2/17.
@@ -47,9 +38,22 @@ public class MapController extends AbstractController implements IClickableContr
             "floor7.png"
     };
 
-    private Image map;
+    private ArrayList<ImageProxy> maps;
+
+    private ImageProxy map;
     private Group overlay;
     private int overlayIndex;
+
+    @FXML
+    private VBox floorVBox;
+
+    public ArrayList<JFXButton> getFloorButtons() {
+        return floorButtons;
+    }
+
+    private ArrayList<JFXButton> floorButtons;
+    private JFXButton zoomIn;
+    private JFXButton zoomOut;
 
     public int getFloor() {
         return floor;
@@ -62,6 +66,8 @@ public class MapController extends AbstractController implements IClickableContr
     private AnchorPane root;
     @FXML
     private ImageView mapView;
+
+    private SceneGestures sceneGestures;
 
     //// Public API ////
 
@@ -97,8 +103,23 @@ public class MapController extends AbstractController implements IClickableContr
         overlay.getChildren().add(canvas);
     }
 
+    public void enableAllButtons() {
+        enableButtons(new ArrayList<>(Arrays.asList("1st Floor", "2nd Floor", "3rd Floor", "4th Floor", "5th Floor", "6th Floor", "7th Floor")));
+    }
+
+    public void enableButtons(ArrayList<String> floors) {
+        floorVBox.getChildren().clear();
+        for(JFXButton b : this.floorButtons) {
+            if(floors.contains(Utils.strForNum(Integer.parseInt(b.getText())) + " Floor")) {
+                floorVBox.getChildren().add(b);
+            }
+        }
+        floorVBox.getChildren().add(zoomIn);
+        floorVBox.getChildren().add(zoomOut);
+    }
+
     public void drawPath(Path p) {
-        if(p.getStart().getFloor() == this.floor) drawNode(p.getStart());
+        if(p.getStart().getFloor() == this.floor) drawNode(p.getStart(), Color.BLUE);
         for (int i = 1; i < p.getPath().size(); i++) {
             if(p.getStep(i-1).getFloor() == this.floor && p.getStep(i).getFloor() == this.floor)
                 drawConnection(p.getStep(i - 1), p.getStep(i));
@@ -107,19 +128,19 @@ public class MapController extends AbstractController implements IClickableContr
             else if(p.getStep(i).getFloor() == this.floor && p.getStep(i-1).getFloor() != this.floor)
                 drawMidpoint(p.getStep(i));
         }
-        if(p.getEnd().getFloor() == this.floor) drawNode(p.getEnd());
+        if(p.getEnd().getFloor() == this.floor) drawNode(p.getEnd(), Color.RED);
     }
 
     private void drawMidpoint(Node n) {
         Rectangle r = new Rectangle(n.getX()-5, n.getY()-5, 10, 10);
-        r.setFill(Color.BLACK);
+        r.setFill(Color.GREEN);
         addOverlay(r);
     }
 
     public void setFloor(int floor){
         this.floor = floor;
-        map = new Image(getClass().getClassLoader().getResourceAsStream(MAP_URLS[this.floor - 1]));
-        mapView.setImage(map);
+        map = this.maps.get(this.floor-1);
+        mapView.setImage(map.getImage());
         mapView.setPreserveRatio(true);
     }
 
@@ -127,6 +148,7 @@ public class MapController extends AbstractController implements IClickableContr
 
     @FXML
     private void initialize() {
+        floorButtons = new ArrayList<>();
         // create overlay
         overlay = new Group();
         root.getChildren().add(overlay);
@@ -135,17 +157,27 @@ public class MapController extends AbstractController implements IClickableContr
         // add the canvas to overlay
         overlay.getChildren().add(canvas);
 
-        floor = 4;
+        floor = 1;
+        this.maps = new ArrayList<>();
+
+        // create the Proxies for all of the map images
+        for(String url : MAP_URLS) {
+            System.out.println(this.maps);
+            this.maps.add(new ImageProxy(url));
+        }
+
         // load the map into the map view
-        map = new Image(getResourceAsStream(MAP_URLS[floor -1] ));
-        mapView.setImage(map);
+        map = this.maps.get(0);
+        mapView.setImage(map.getImage());
         mapView.setPreserveRatio(true);
         // add the map to the canvas
         canvas.getChildren().add(mapView);
         // set base overlay index
         overlayIndex = overlay.getChildren().size();
+        addFloorButtons();
         // create the scene gestures for zooming and panning
-        SceneGestures sceneGestures = new SceneGestures(canvas, this);
+        sceneGestures = new SceneGestures(canvas, this);
+        sceneGestures.zoomIn();
         // register handlers zooming and panning
         canvas.addEventHandler(MouseEvent.ANY, new ClickDragHandler(sceneGestures.getOnMouseClickedEventHandler(), sceneGestures.getOnMouseDraggedEventHandler()));
         canvas.addEventHandler(MouseEvent.MOUSE_PRESSED, sceneGestures.getOnMousePressedEventHandler());
@@ -157,27 +189,76 @@ public class MapController extends AbstractController implements IClickableContr
         addOverlay(0, line);
     }
 
-    private void drawNode(Node node) {
-        Circle circle = new Circle(node.getX(), node.getY(), 5);
+    public void drawNode(Node node, Color c) {
+        Circle circle = new Circle(node.getX(), node.getY(), 5, c);
         addOverlay(circle);
     }
 
-    private static InputStream getResourceAsStream(String resource) {
-        String stripped = resource.startsWith("/")?resource.substring(1):resource;
-        InputStream stream = null;
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        if (classLoader != null) {
-            stream = classLoader.getResourceAsStream(stripped);
+    public void drawNode(Node node) {
+        drawNode(node, Color.BLACK);
+    }
+
+    private void replaceAllNodes(Collection<Node> nodes){
+        overlay = new Group();
+        root.getChildren().add(overlay);
+        // add the canvas to overlay
+        overlay.getChildren().add(canvas);
+        mapView.setImage(map.getImage());
+        mapView.setPreserveRatio(true);
+        // set base overlay index
+        overlayIndex = overlay.getChildren().size();
+        for(Node n: nodes){
+            drawNode(n);
+
         }
-        if (stream == null) {
-            stream = MapController.class.getResourceAsStream(resource);
+    }
+
+    private void addFloorButtons() {
+        ArrayList<String> floorList = new ArrayList<String>(Arrays.asList("1", "2","3", "4", "5", "6", "7"));
+        int wid = 36;
+
+        for(String s : floorList) {
+            JFXButton floor = new JFXButton();
+            floor.setText(s);
+            floor.setOnAction(event -> setFloor(floorList.indexOf(s) + 1));
+            floor.setPrefWidth(wid);
+            floor.getStylesheets().add(Utils.getResourceAsExternal("styles/Main.css"));
+            floor.getStyleClass().add("floor-button");
+            floorVBox.getChildren().add(floor);
+            floorButtons.add(floor);
         }
-        if (stream == null) {
-            stream = MapController.class.getClassLoader().getResourceAsStream(stripped);
+
+        this.zoomIn = new JFXButton();
+        zoomIn.setText("+");
+        zoomIn.setOnAction(event -> sceneGestures.zoomIn());
+        zoomIn.setMinWidth(wid);
+        zoomIn.getStylesheets().add(Utils.getResourceAsExternal("styles/Main.css"));
+        zoomIn.getStyleClass().add("floor-button");
+        floorVBox.getChildren().add(zoomIn);
+        floorVBox.toFront();
+
+        this.zoomOut = new JFXButton();
+        zoomOut.setText("-");
+        zoomOut.setOnAction(event -> sceneGestures.zoomOut());
+        zoomOut.setPrefWidth(wid);
+        zoomOut.getStylesheets().add(Utils.getResourceAsExternal("styles/Main.css"));
+        zoomOut.getStyleClass().add("floor-button");
+        floorVBox.getChildren().add(zoomOut);
+    }
+
+    public void hideButtons() {
+        for(JFXButton b : floorButtons) {
+            b.setVisible(false);
         }
-        if (stream == null) {
-            throw new RuntimeException("Resource not found: " + resource);
+        zoomIn.setVisible(false);
+        zoomOut.setVisible(false);
+    }
+
+    public void showButtons() {
+        for(JFXButton b : floorButtons) {
+            b.setVisible(true);
         }
-        return stream;
+        zoomIn.setVisible(true);
+        zoomOut.setVisible(true);
     }
 }

@@ -23,12 +23,16 @@ sourceSets {
 
 repositories {
     mavenCentral()
+    flatDir {
+        dirs 'lib'
+    }
 }
 
 dependencies {
     compile group: 'org.apache.derby', name: 'derby', version: '10.13.1.1'
-    // TODO use this -> compile group: 'org.mobicents.external.freetts', name: 'freetts', version: '1.0'
-    compile fileTree(dir: 'tts-lib', include: '*.jar')
+//    compile group: 'org.mobicents.external.freetts', name: 'freetts', version: '1.0'
+    compile name: 'jfoenix'
+    compile name: 'freetts'
     testCompile group: 'junit', name: 'junit', version: '4.12'
     testCompile group: "org.loadui", name: "testFx", version: "3.1.2"
 }

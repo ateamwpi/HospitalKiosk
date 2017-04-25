@@ -1,7 +1,8 @@
 package models.path;
 
 import core.KioskMain;
-import core.WrongFloorException;
+import core.exception.NameInUseException;
+import core.exception.WrongFloorException;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -28,6 +29,8 @@ public class Node {
     private HashMap<Integer, Location> locations;
     private HashMap<LocationType, Integer> counts;
     private final boolean isNew;
+    private boolean isBelkin;
+    private boolean isMain;
     private boolean isDone;
 
     /** This constructor should _ONLY_ be used when loading from the database. For any
@@ -39,11 +42,12 @@ public class Node {
         yProperty.set(y);
         floorProperty.set(floor);
         roomNameProperty.set(roomName);
-        this.connections = new ArrayList<>();
-        this.locations = new HashMap<>();
-        this.counts = new HashMap<>();
+        this.connections = new ArrayList<Node>();
+        this.locations = new HashMap<Integer, Location>();
+        this.counts = new HashMap<LocationType, Integer>();
         this.isNew = false;
         this.isDone = false;
+        this.updateBuilding();
     }
 
     public Node(int x, int y, int floor, String roomName) {
@@ -52,11 +56,12 @@ public class Node {
         yProperty.set(y);
         floorProperty.set(floor);
         roomNameProperty.set(roomName);
-        this.connections = new ArrayList<>();
-        this.locations = new HashMap<>();
-        this.counts = new HashMap<>();
+        this.connections = new ArrayList<Node>();
+        this.locations = new HashMap<Integer, Location>();
+        this.counts = new HashMap<LocationType, Integer>();
         this.isNew = true;
         this.isDone = true;
+        this.updateBuilding();
     }
 
     public Node(int x, int y, int floor) {
@@ -65,11 +70,12 @@ public class Node {
         yProperty.set(y);
         floorProperty.set(floor);
         roomNameProperty.set("NONE");
-        this.connections = new ArrayList<>();
-        this.locations = new HashMap<>();
-        this.counts = new HashMap<>();
+        this.connections = new ArrayList<Node>();
+        this.locations = new HashMap<Integer, Location>();
+        this.counts = new HashMap<LocationType, Integer>();
         this.isNew = true;
         this.isDone = true;
+        this.updateBuilding();
     }
 
     public void addLocation(Location l) {
@@ -100,7 +106,7 @@ public class Node {
         return this.getPrimaryLocType().getNodeColor();
     }
 
-    private void removeConnection(Node other) {
+    public void removeConnection(Node other) {
         if(this.connections.contains(other)) {
             this.connections.remove(other);
             KioskMain.getDB().removeConnection(this, other);
@@ -108,8 +114,20 @@ public class Node {
         }
     }
 
+    public void updateBuilding() {
+        if(this.getX() >= 30 && this.getX() <= 220 && this.getY() >= 10 && this.getY() <= 210)
+            this.isBelkin = true;
+        else
+            this.isBelkin = false;
+
+
+        if(this.getX() >= 110 && this.getX() <= 910 && this.getY() >= 230 && this.getY() <= 680)
+            this.isMain = true;
+        else
+            this.isMain = false;
+    }
+
     public void removeAllConnections() {
-        //noinspection unchecked
         Collection<Node> clone = (Collection<Node>) this.connections.clone();
         this.connections.clear();
         for (Node n : clone) {
@@ -117,7 +135,11 @@ public class Node {
         }
     }
 
-    public void setRoomName(String name) {
+    public void setRoomName(String name) throws NameInUseException {
+        if(name.equals(this.getRoomName())) return;
+        if(KioskMain.getPath().hasRoomName(name)) {
+            throw new NameInUseException(name);
+        }
         this.previousRoomName = this.getRoomName();
         roomNameProperty.setValue(name);
     }
@@ -131,7 +153,7 @@ public class Node {
         }
 
         // Remove anything old
-        ArrayList<Node> toRemove = new ArrayList<>();
+        ArrayList<Node> toRemove = new ArrayList<Node>();
         for (Node n : this.connections) {
             if(!conns.contains(n)) {
                 toRemove.add(n);
@@ -147,6 +169,14 @@ public class Node {
         return idProperty.get();
     }
 
+    public boolean isBelkin() {
+        return this.isBelkin;
+    }
+
+    public boolean isMain() {
+        return this.isMain;
+    }
+
     public final String getRoomName() {
         return roomNameProperty.get();
     }
@@ -160,7 +190,6 @@ public class Node {
     }
 
     public Collection<Node> getConnections() {
-        //noinspection unchecked
         return (Collection<Node>)this.connections.clone();
     }
 
@@ -168,7 +197,7 @@ public class Node {
         return floorProperty.get();
     }
 
-    public final void setFloor(int value){
+    public final void setFloor(int value) {
         floorProperty.set(value);
     }
 
@@ -178,6 +207,7 @@ public class Node {
 
     public final void setX(int value){
         xProperty.set(value);
+        this.updateBuilding();
     }
 
     public IntegerProperty xProperty() {
@@ -190,6 +220,7 @@ public class Node {
 
     public final void setY(int value){
         yProperty.set(value);
+        this.updateBuilding();
     }
 
     public final void save() {
@@ -203,17 +234,16 @@ public class Node {
     }
 
     public void removeLocation(Location l) {
-        System.out.println("hi");
         this.locations.remove(l.getID());
         this.counts.put(l.getLocType(), this.counts.get(l.getLocType())-1);
     }
 
     public String toString() {
-        StringBuilder str= new StringBuilder("Node: ID=" + getID() + ", X=" + getX() + ", Y=" + getY() + ", FLOOR=" + getFloor() + ", NAME=" + getRoomName() + "\n");
+        String str= "Node: ID=" + getID() + ", X=" + getX() + ", Y=" + getY() + ", FLOOR=" + getFloor() + ", NAME=" + getRoomName() + "\n";
         for (Node n : this.connections) {
-            str.append("Connected to Node ID=").append(n.getID()).append("\n");
+            str += "Connected to Node ID=" + n.getID() + "\n";
         }
-        return str.toString();
+        return str;
     }
 
 //    public boolean equals(Object o) {
@@ -234,7 +264,7 @@ public class Node {
         nextNodeID = i;
     }
 
-    private static int getNextNodeID() {
+    public static int getNextNodeID() {
         int val = nextNodeID;
         nextNodeID ++;
         return val;

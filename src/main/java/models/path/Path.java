@@ -1,16 +1,23 @@
 package models.path;
 
+
+import controllers.mapView.DirectionStep;
+import core.Utils;
 import models.dir.LocationType;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
+
+import static controllers.mapView.DirectionStep.DirectionIcon;
 
 /**
  * Created by mattm on 3/29/2017.
  */
 public class Path {
     private LinkedList<Node> path;
+    private ArrayList<DirectionStep> steps;
 
     public Path(){
         this.path = new LinkedList<>();
@@ -34,7 +41,6 @@ public class Path {
     }
 
     public LinkedList<Node> getPath() {
-        //noinspection unchecked
         return (LinkedList<Node>) this.path.clone();
     }
 
@@ -43,18 +49,60 @@ public class Path {
     }
 
     public String textPath() {
-        if(this.path.size() < 2) return "You are already at your destination!";
+        this.steps = new ArrayList<>();
+        if(this.path.size() < 2) {
+            steps.add(new DirectionStep(DirectionIcon.STRAIGHT, "You are already at your destination!"));
+            return "You are already at your destination!";
+        }
         // Calculate the cardinal starting direction
-        StringBuilder str = new StringBuilder("1. Start by leaving " + this.path.getFirst().getRoomName() + ".\n");
+        String str = "1. Start by leaving " + this.path.getFirst().getRoomName() + ".\n";
+        steps.add(new DirectionStep(DirectionIcon.STRAIGHT, "Leave " + this.path.getFirst().getRoomName()));
         Direction cur = Direction.dirFor(this.getStep(0), this.getStep(1));
 
         // Initialize the array that keeps track of attempts for each turn
-        HashMap<String, Integer> attempts = new HashMap<>();
+        HashMap<String, Integer> attempts = new HashMap<String, Integer>();
         attempts.put("left", 0); attempts.put("right", 0); attempts.put("straight", 0); attempts.put("back", 0);
         int stepNum = 2;
+        boolean waiting = false;
         for (int i = 2; i < this.path.size(); i++) {
+            if(this.getStep(i-1).equals(this.getStep(i))) continue;
+
+            if(this.getStep(i-1).isBelkin() && !this.getStep(i).isBelkin()) {
+                // leaving belkin
+                str += stepNum + ". Leave the Belkin House and walk across the parking lot.\n";
+                steps.add(new DirectionStep(DirectionIcon.STRAIGHT, "Leave the Belkin House"));
+                stepNum ++;
+                waiting = true;
+            }
+            else if(this.getStep(i-1).isMain() && !this.getStep(i).isMain()) {
+                // leaving main
+                str += stepNum + ". Leave the main building and walk across the parking lot.\n";
+                steps.add(new DirectionStep(DirectionIcon.STRAIGHT, "Leave the main building"));
+                stepNum ++;
+                waiting = true;
+            }
+            else if(!this.getStep(i-1).isBelkin() && this.getStep(i).isBelkin()) {
+                // entering belkin
+                str += stepNum + ". Enter the Belkin House.\n";
+                steps.add(new DirectionStep(DirectionIcon.STRAIGHT, "Enter the Belkin House"));
+                stepNum ++;
+                waiting = false;
+                continue;
+            }
+            else if(!this.getStep(i-1).isMain() && this.getStep(i).isMain()) {
+                // entering main
+                str += stepNum + ". Enter the main building.\n";
+                steps.add(new DirectionStep(DirectionIcon.STRAIGHT, "Enter the main building"));
+                stepNum ++;
+                waiting = false;
+                continue;
+            }
+
+            if(waiting) continue;
+
             if(this.getStep(i).getPrimaryLocType().equals(LocationType.Elevator) && this.getStep(i-1).getPrimaryLocType().equals(LocationType.Elevator)) {
-                str.append(stepNum).append(". Ride the elevator to the ").append(strForNum(this.getStep(i).getFloor())).append(" floor and exit.\n");
+                str += stepNum + ". Ride the elevator to the " + Utils.strForNum(this.getStep(i).getFloor()) + " floor and exit.\n";
+                steps.add(new DirectionStep(DirectionIcon.STRAIGHT, "Ride the elevator to the " + Utils.strForNum(this.getStep(i).getFloor()) + " floor"));
                 stepNum ++;
             }
             // Calculate the next cardinal turning direction
@@ -75,25 +123,28 @@ public class Path {
                     }
                 }
                 if(hallways > 2) {
-                    str.append(stepNum).append(". Go ").append(result).append(" through the intersection.\n");
+                    str += stepNum + ". Go " + result + " through the intersection.\n";
+                    steps.add(new DirectionStep(DirectionIcon.forString(result), "Go " + result + " through the intersection."));
                     stepNum ++;
                 }
             }
             else {
                 // If actually making a turn, add a message about it to the directions
                 if(i+1 == this.path.size()) {
-                    str.append(stepNum).append(". Your destination (").append(this.getEnd().getRoomName()).append(") will be on your ").append(result).append(".\n");
+                    str += stepNum + ". Your destination (" + this.getEnd().getRoomName() + ") will be on your " + result + ".\n";
+                    steps.add(new DirectionStep(DirectionIcon.forString(result), "Your destination will be on your " + result));
+                    stepNum ++;
                 }
                 else {
                     if(!this.getStep(i-1).getPrimaryLocType().equals(LocationType.Elevator)) {
-                        str.append(stepNum).append(". Make a ").append(result);
+                        str += stepNum + ". Make a " + result;
                         if (this.getStep(i).getPrimaryLocType().equals(LocationType.Elevator))
-                            str.append(" into the ").append(this.getStep(i).getRoomName()).append(".\n");
-                        else str.append(".\n");
+                            str += " into the " + this.getStep(i).getRoomName() + ".\n";
+                        else str += ".\n";
+                        stepNum ++;
+                        steps.add(new DirectionStep(DirectionIcon.forString(result), "Make a " + result + ((this.getStep(i).getPrimaryLocType().equals(LocationType.Elevator)) ? (" into the " + this.getStep(i).getRoomName()) : "")));
                     }
                 }
-                stepNum ++;
-
                 // Reset attempt counters every time a turn is made
                 attempts.put("left", 0); attempts.put("right", 0); attempts.put("straight", 0); attempts.put("back", 0);
             }
@@ -102,26 +153,16 @@ public class Path {
             cur = next;
         }
 
-        return str.toString();
-    }
-
-    private String strForNum(int i) {
-        // Assumes there will never be more than 20 turns options.
-        switch(i) {
-            case 1: return "1st";
-            case 2: return "2nd";
-            case 3: return "3rd";
-            default: return i + "th";
-        }
+        return str;
     }
 
     public String toString() {
         //System.out.println(this.textPath());
-        StringBuilder str = new StringBuilder("Path: ");
+        String str = "Path: ";
         for (Node n : this.path) {
-            str.append(n.getID()).append(", ");
+            str += n.getID() + ", ";
         }
-        return str.toString();
+        return str;
     }
 
     public Node getStart() {
@@ -136,7 +177,7 @@ public class Path {
         ArrayList<String> results = new ArrayList<>();
 
         for (Node n : this.path) {
-            String floor = strForNum(n.getFloor()) + " Floor";
+            String floor = Utils.strForNum(n.getFloor()) + " Floor";
             if(!results.contains(floor)) results.add(floor);
         }
 
@@ -145,18 +186,17 @@ public class Path {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Path)) {
-            return false;
-        }
-        Path p = (Path) o;
-        if(this.path.size() != p.path.size()) {
-            return false;
-        }
+        Path p = (Path)o;
+        if(this.path.size() != p.path.size()) return false;
         for (int i = 0; i < this.path.size(); i++) {
-            if(this.path.get(i).getID() != p.path.get(i).getID()) {
-                return false;
-            }
+            if(this.path.get(i).getID() != p.path.get(i).getID()) return false;
         }
         return true;
+    }
+
+    public Collection<DirectionStep> getDirections() {
+        if(this.steps == null) this.textPath();
+        System.out.println(this.steps);
+        return this.steps;
     }
 }

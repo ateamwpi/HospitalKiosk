@@ -1,14 +1,17 @@
 package controllers.admin;
 
-import controllers.AbstractController;
+import com.jfoenix.controls.JFXButton;
 import controllers.AbstractDirectoryViewController;
-import controllers.DirectionsViewController;
-import controllers.MainMenuController;
 import core.KioskMain;
+import core.Utils;
+import core.exception.RoomNotFoundException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
+import models.dir.Location;
+import models.dir.LocationType;
 import models.path.Node;
 
 import java.io.IOException;
@@ -28,13 +31,13 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
     @FXML
     private Label directions; //label to give user instructions
     @FXML
-    private Button modifyEntry;
+    private JFXButton addEntry;
     @FXML
-    private Button addEntry;
-    @FXML
-    private Button removeEntry;
+    private JFXButton removeEntry;
     @FXML
     private Button kiosk;
+    @FXML
+    private VBox locationTypes;
 
 
     ManageDirectoryViewController() {}
@@ -47,31 +50,28 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
     @FXML
     private void initialize() {
         initializeTable();
-        initializeDropdown();
         initializeFilter();
+        setFullDirectory();
         // choose admin mode
-            adminMode();
+        adminMode();
         // listen to location table selection event
         locationsTable.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
             if (locationsTable.getSelectionModel().getSelectedItem() != null) {
                 selectedLocation = newValue;
                 removeEntry.setDisable(false);
-                modifyEntry.setDisable(false);
             } else {
                 removeEntry.setDisable(true);
-                modifyEntry.setDisable(true);
             }
         });
     }
 
     private void adminMode() {
+        setTableEdit();
         removeEntry.setDisable(true);
-        modifyEntry.setDisable(true);
-        kiosk.setVisible(false);
-        goToFinalSel.setVisible(false);
         title.setText("Manage Directory");
-        directions.setText("Add a new Location with the 'New' Button. To edit or remove a location, select a Location" +
-                " from the table and press the corresponding button");
+        directions.setText("");
+        addLocationBtns();
+
     }
 
     @FXML  //when user clicks "back" button, they will return to main menu
@@ -80,23 +80,52 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
     }
 
     @FXML
-    private void clickModify(ActionEvent event) {
-        if (selectedLocation != null) {
-            KioskMain.getUI().setScene(new AdminModifyLocationController(selectedLocation));
+    private void clickAdd(ActionEvent event) throws IOException {
+        String defaultRoomName = KioskMain.getPath().getRoomNames().iterator().next();
+        Node defaultNode = null;
+        try {
+            defaultNode = KioskMain.getPath().getRoom(defaultRoomName);
+        } catch (RoomNotFoundException e) {
         }
+        LocationType newType = LocationType.userValues()[0];
+        if(dirType != null) {
+            newType = dirType;
+        }
+        Location newLoc = new Location("", newType, defaultNode);
+        locationsTable.getItems().add(0, newLoc);
+        KioskMain.getDir().addLocation(newLoc);
     }
 
     @FXML
-    private void clickAdd(ActionEvent event) {
-        KioskMain.getUI().setScene(new AdminAddLocationController());
-    }
-
-    @FXML
-    private void clickRemove(ActionEvent event) {
+    private void clickRemove(ActionEvent event)throws IOException {
         if (selectedLocation != null) {
             KioskMain.getDir().removeLocation(selectedLocation);
             KioskMain.getUI().setScene(new ManageDirectoryViewController());
         }
     }
+
+    @FXML
+    private void addLocationBtns() {
+
+        JFXButton fulldir = new JFXButton();
+        fulldir.setText("Full Directory");
+        fulldir.setOnAction(event -> setFullDirectory());
+        fulldir.setPrefWidth(150);
+        fulldir.getStylesheets().add(Utils.getResourceAsExternal("styles/Main.css"));
+        fulldir.getStyleClass().add("content-button");
+        locationTypes.getChildren().add(fulldir);
+
+        for (LocationType locType : LocationType.userValues()) {
+            JFXButton loc = new JFXButton();
+            loc.setText(locType.friendlyName());
+            loc.setOnAction(event -> selectDirectory(locType));
+            loc.setPrefWidth(150);
+            loc.getStylesheets().add(Utils.getResourceAsExternal("styles/Main.css"));
+            loc.getStyleClass().add("content-button");
+            locationTypes.getChildren().add(loc);
+        }
+
+    }
+
 
 }

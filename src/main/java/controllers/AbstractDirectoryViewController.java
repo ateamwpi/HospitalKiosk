@@ -1,17 +1,20 @@
 package controllers;
 
+import com.jfoenix.controls.JFXTextField;
 import core.KioskMain;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import core.exception.RoomNotFoundException;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import models.dir.Directory;
 import models.dir.Location;
 import models.dir.LocationType;
+import models.path.Node;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,19 +29,20 @@ public abstract class AbstractDirectoryViewController extends AbstractController
     private Collection<Location> selectedLocations; // all Locations of the current LocationType
     private Collection<Location> filteredLocations; // all Locations that match the searchBox
     @FXML
-    protected
-    TableView<Location> locationsTable; //table to hold all locations
+    protected TableView<Location> locationsTable; //table to hold all locations
     protected Location selectedLocation;
     @FXML
-    private TableColumn<Location, String> nameCol; //column that holds names of locations
+    protected TableColumn<Location, String> nameCol; //column that holds names of locations
     @FXML
     private TableColumn<Location, String> roomCol; //column that holds room names
     @FXML
-    private TableColumn<Location, String> typeCol;
+    private TableColumn<Location, LocationType> typeCol;
     @FXML
-    private TextField searchBox;
+    private JFXTextField searchBox;
     @FXML
-    ComboBox<String> locationDropdown;
+    protected ComboBox<String> locationDropdown;
+
+    protected LocationType dirType;
 
     protected AbstractDirectoryViewController(Object... data) {
         super(data);
@@ -71,7 +75,7 @@ public abstract class AbstractDirectoryViewController extends AbstractController
         locationDropdown.getItems().add("Full Directory");
         for (LocationType locType : LocationType.values()) {
             if (!locType.isInternal()) {
-                locationDropdown.getItems().add(locType.name());
+                locationDropdown.getItems().add(locType.friendlyName());
             }
 
         }
@@ -87,7 +91,8 @@ public abstract class AbstractDirectoryViewController extends AbstractController
         String filterString = searchBox.getText().toLowerCase(); // get the keyword
         // check which locations contain the keyword
         for (Location loc : selectedLocations) {
-            if (loc.getName().toLowerCase().contains(filterString)) {
+            if (loc.getName().toLowerCase().contains(filterString) ||
+                    loc.getNode().getRoomName().toLowerCase().contains(filterString)) {
                 filteredLocations.add(loc);
             }
         }
@@ -118,7 +123,8 @@ public abstract class AbstractDirectoryViewController extends AbstractController
      * Select the LocationType to use for the directory.
      * @param locType Location type of directory
      */
-    private void selectDirectory(LocationType locType) {
+    protected void selectDirectory(LocationType locType) {
+        dirType = locType;
         selectLocations(getLocationsOfType(locType));
     }
 
@@ -126,7 +132,7 @@ public abstract class AbstractDirectoryViewController extends AbstractController
      * Selects the directory based upon a given string.
      * @param s Location type string
      */
-    void selectDirectory(String s) {
+    protected void selectDirectory(String s) {
         if (s.equalsIgnoreCase("Full Directory")) {
             setFullDirectory();
         } else {
@@ -137,7 +143,8 @@ public abstract class AbstractDirectoryViewController extends AbstractController
     /**
      * Selects the locations based upon every location type.
      */
-    private void setFullDirectory() {
+    protected void setFullDirectory() {
+        dirType = null;
         Collection<Location> locations = new ArrayList<>();
         KioskMain.getDir().getDirectories().values();
         for(LocationType locType : LocationType.values()) {
@@ -161,5 +168,44 @@ public abstract class AbstractDirectoryViewController extends AbstractController
             return locations.values();
         }
         return new ArrayList<>(); //returns empty array list if there are no locations of given type
+    }
+
+    protected void setTableEdit() {
+        locationsTable.setEditable(true);
+
+        nameCol.setCellFactory(TextFieldTableCell.<Location>forTableColumn());
+        nameCol.setOnEditCommit((TableColumn.CellEditEvent<Location, String> t) -> {
+            Location editedLoc = t.getRowValue();
+            t.getRowValue().setName(t.getNewValue());
+            locationsTable.sort();
+            locationsTable.scrollTo(editedLoc);
+        });
+
+        Collection<String> roomNames = KioskMain.getPath().getRoomNames();
+        roomCol.setCellFactory(ComboBoxTableCell.forTableColumn(roomNames.toArray(new String[roomNames.size()])));
+        roomCol.setOnEditCommit((TableColumn.CellEditEvent<Location, String> t) -> {
+            try {
+                Node roomNode = KioskMain.getPath().getRoom(t.getNewValue());
+                t.getRowValue().setNode(roomNode);
+            } catch (RoomNotFoundException e) {
+                invalidRoomAlert();
+                t.getTableView().getItems().set(t.getTablePosition().getRow(), t.getRowValue());
+            }
+        });
+
+        typeCol.setCellFactory(ComboBoxTableCell.forTableColumn(LocationType.userValues()));
+        typeCol.setOnEditCommit((TableColumn.CellEditEvent<Location, LocationType> t) -> {
+            t.getRowValue().setLocType(t.getNewValue());
+        });
+
+    }
+
+
+    private void invalidRoomAlert() {
+        Alert invalidRoom = new Alert(Alert.AlertType.ERROR);
+        invalidRoom.setHeaderText("Invalid Room!");
+        invalidRoom.setTitle("Try Again!");
+        invalidRoom.setContentText("Please enter a room that is currently in the database!");
+        invalidRoom.showAndWait();
     }
 }

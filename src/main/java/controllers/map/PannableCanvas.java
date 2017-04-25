@@ -2,7 +2,6 @@ package controllers.map;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
 /**
@@ -17,7 +16,7 @@ public class PannableCanvas extends Pane {
         this.mapController = mapController;
 
         // add scale transform
-        scaleXProperty().bind(myScale);
+         scaleXProperty().bind(myScale);
         scaleYProperty().bind(myScale);
 
         // logging
@@ -31,16 +30,18 @@ public class PannableCanvas extends Pane {
 
     /**
      * Set x/y scale
-     * @param scale Scale
+     * @param scale
      */
     public void setScale( double scale) {
         myScale.set(scale);
+        setTranslateX(getTranslateX()*scale);
+        setTranslateY(getTranslateY()*scale);
     }
 
     /**
      * Set x/y pivot points
-     * @param x X
-     * @param y Y
+     * @param x
+     * @param y
      */
     public void setPivot( double x, double y) {
         setTranslateX(getTranslateX()-x);

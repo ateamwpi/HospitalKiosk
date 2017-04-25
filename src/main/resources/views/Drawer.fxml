@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.TextFlow?>
+<Pane fx:id="root" layoutX="6.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+    <VBox fx:id="toggleContainer">
+        <padding>
+            <Insets left="310.0" top="10.0" />
+        </padding>
+        <Pane styleClass="drawer-toggle" stylesheets="@../styles/MapView.css">
+            <Label fx:id="drawerClose" prefHeight="48.0" prefWidth="23.0" styleClass="chevron-left" stylesheets="@../styles/MapView.css" />
+        </Pane>
+    </VBox>
+   <VBox fx:id="searchContainer" prefWidth="310.0">
+      <children>
+           <VBox fx:id="searchHeader" styleClass="header" stylesheets="@../styles/MapView.css">
+               <padding>
+                   <Insets bottom="20.0" />
+               </padding>
+               <VBox>
+                   <padding>
+                       <Insets bottom="10.0" left="20.0" top="20.0" />
+                   </padding>
+                   <Label fx:id="optionsMenuButton" prefHeight="20.0" prefWidth="20.0" styleClass="hamburger-icon" stylesheets="@../styles/MapView.css" />
+               </VBox>
+               <HBox>
+                   <VBox>
+                       <padding>
+                           <Insets left="20.0" right="10.0" top="12.0" />
+                       </padding>
+                       <Label prefHeight="20.0" prefWidth="20.0" styleClass="start-icon" stylesheets="@../styles/MapView.css" />
+                       <Label prefHeight="20.0" prefWidth="20.0" styleClass="ellipsis-icon" stylesheets="@../styles/MapView.css">
+                           <padding>
+                               <Insets bottom="10.0" />
+                           </padding>
+                       </Label>
+                       <Label prefHeight="20.0" prefWidth="20.0" styleClass="end-icon" stylesheets="@../styles/MapView.css" />
+                   </VBox>
+                   <VBox spacing="15.0">
+                       <JFXTextField fx:id="start" prefWidth="220.0" promptText="Your location" styleClass="search" stylesheets="@../styles/MapView.css" />
+                       <JFXTextField fx:id="end" promptText="Choose destination..." styleClass="search" stylesheets="@../styles/MapView.css" />
+                       <padding>
+                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                       </padding>
+                   </VBox>
+               </HBox>
+           </VBox>
+           <VBox fx:id="searchResults">
+        </VBox>
+      </children>
+   </VBox>
+     <VBox fx:id="directionsContainer" prefWidth="310.0">
+      <HBox styleClass="header" stylesheets="@../styles/MapView.css">
+         <children>
+            <VBox>
+               <children>
+                  <Label onMouseClicked="#showSearch" prefHeight="20.0" prefWidth="20.0" styleClass="back-icon" stylesheets="@../styles/MapView.css" />
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="20.0" top="20.0" />
+               </padding>
+            </VBox>
+            <VBox spacing="10.0">
+               <children>
+                  <TextFlow fx:id="fromFlow" prefWidth="200.0" />
+                  <TextFlow fx:id="toFlow" prefWidth="200.0" />
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </VBox>
+         </children>
+      </HBox>
+      <HBox>
+         <children>
+            <HBox alignment="CENTER" prefWidth="155.0">
+               <children>
+                  <Label onMouseClicked="#printDirections" prefHeight="30.0" prefWidth="30.0" styleClass="printer-icon" stylesheets="@../styles/MapView.css" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefWidth="155.0">
+               <children>
+                  <Label onMouseClicked="#speakDirections" prefHeight="30.0" prefWidth="30.0" styleClass="volume-icon" stylesheets="@../styles/MapView.css" />
+               </children>
+            </HBox>
+         </children>
+         <padding>
+            <Insets bottom="10.0" top="10.0" />
+         </padding>
+      </HBox>
+      <VBox alignment="CENTER_LEFT">
+         <children>
+            <Label fx:id="startLabel" text="Start">
+               <font>
+                  <Font name="System Bold" size="17.0" />
+               </font></Label>
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </VBox>
+      <VBox fx:id="directions" />
+      <VBox alignment="CENTER_LEFT">
+         <children>
+            <Label fx:id="endLabel" text="End">
+               <font>
+                  <Font name="System Bold" size="17.0" />
+               </font>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding></Label>
+         </children>
+      </VBox>
+     </VBox>
+</Pane>

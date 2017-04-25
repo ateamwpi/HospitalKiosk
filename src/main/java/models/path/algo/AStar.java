@@ -1,33 +1,35 @@
 package models.path.algo;
 
+import core.exception.PathNotFoundException;
 import models.path.Node;
 import models.path.Path;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
 
 /**
  * Created by Jacob on 4/3/2017.
  */
-public class AStar implements IPathfindingAlgorithm {
+public class AStar extends AbstractPathfindingAlgorithm {
 
-    public Path findPath(Node start, Node goal){
+    public Path findPath(Node start, Node goal) throws PathNotFoundException {
         LinkedList<Node> closedSet;
         LinkedList<Node> openSet;
         HashMap<Node, Node> cameFrom;
         HashMap<Node, Double> gScore;
         HashMap<Node, Double> fScore;
 
-        closedSet = new LinkedList<>();
-        openSet = new LinkedList<>();
+        closedSet = new LinkedList<Node>();
+        openSet = new LinkedList<Node>();
         openSet.add(start);
 
-        fScore = new HashMap<>();
+        fScore = new HashMap<Node, Double>();
         fScore.put(start, this.heuristicCost(start, goal));
 
-        gScore = new HashMap<>();
+        gScore = new HashMap<Node, Double>();
         gScore.put(start, 0.0);
 
-        cameFrom = new HashMap<>();
+        cameFrom = new HashMap<Node, Node>();
 
 
         while(!openSet.isEmpty()){
@@ -55,20 +57,12 @@ public class AStar implements IPathfindingAlgorithm {
                 fScore.put(n, score + this.heuristicCost(n, goal));
             }
         }
-        return null;
+        throw new PathNotFoundException(start, goal);
     }
 
-    private Path constructPath(HashMap<Node, Node> cameFrom, Node end) {
-        Path p = new Path();
-        p.buildPath(end);
-        Node current = end;
-
-
-        while(cameFrom.keySet().contains(current)){
-            current = cameFrom.get(current);
-            p.buildPath(current);
-        }
-        return p;
+    @Override
+    public String getName() {
+        return "A* Search";
     }
 
     private double heuristicCost(Node start, Node goal){

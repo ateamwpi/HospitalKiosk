@@ -1,0 +1,6 @@
+
+.title-text {
+    /*-fx-alignment: center-left;*/
+    -fx-text-fill: black;
+    -fx-font: bold 26px sannserif;
+}

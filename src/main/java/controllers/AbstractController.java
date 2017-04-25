@@ -1,6 +1,7 @@
 package controllers;
 
 import core.KioskMain;
+import core.Utils;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleObjectProperty;
@@ -10,9 +11,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.input.ContextMenuEvent;
-import javafx.scene.input.MouseEvent;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -26,6 +24,8 @@ import java.util.Map;
  *      meaning all object attributes used in initialize() must be initialized in initData().
  * NOTE:
  *      The root parent node is assumed to have an id of root. To change this, override getRoot().
+ * NOTE:
+ *      Data needed in initialize() must be passed to super() in the constructor and assigned to attributes in initData()
  *
  */
 public abstract class AbstractController implements IController {
@@ -37,7 +37,7 @@ public abstract class AbstractController implements IController {
         // initialize data
         initData(data);
         // get the loader
-        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource(getURL()));
+        FXMLLoader loader = new FXMLLoader(Utils.getResource(getURL()));
         // set the controller
         loader.setController(this);
         // load the view
@@ -64,7 +64,7 @@ public abstract class AbstractController implements IController {
     }
 
     private void bindAllHandlers() {
-        getHandlers().forEach(this::bindNodeHandlers);
+        getHandlers().forEach((q, h) -> bindNodeHandlers(q, h));
     }
 
     private void bindNodeHandlers(String query, Map<String, EventHandler<Event>> handlers) {
@@ -81,7 +81,6 @@ public abstract class AbstractController implements IController {
                 return handler;
             }
         };
-        //noinspection unchecked
         eventProperty.bind(handlerProperty);
     }
 

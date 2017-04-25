@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Gradle: :freetts:">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/freetts.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

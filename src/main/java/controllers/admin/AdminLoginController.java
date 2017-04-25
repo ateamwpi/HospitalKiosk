@@ -1,46 +1,38 @@
 package controllers.admin;
 
-import controllers.AbstractController;
-import controllers.MainMenuController;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXPasswordField;
+import controllers.AbstractPopupController;
 import core.KioskMain;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import core.Utils;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.stage.Stage;
-
-import java.io.IOException;
 
 /**
  * Created by mattm on 3/29/2017.
  */
-public class AdminLoginController extends AbstractController {
+public class AdminLoginController extends AbstractPopupController {
 
     @FXML
-    private Button loginBtn;
+    private JFXButton loginBtn;
     @FXML
-    private Button backBtn;
-    @FXML
-    private PasswordField password;
+    private JFXPasswordField password;
 
-    @FXML
-    private void clickBack(ActionEvent event) {
-        KioskMain.getUI().setScene(new MainMenuController());
+    public AdminLoginController(Parent parent) {
+        super(parent);
     }
 
     @FXML
     private void clickLogin(ActionEvent event) {
         checkPassword();
+    }
+
+    @FXML
+    private void initialize() {
+//        loginBtn.getStyleClass().add("button-raised");
     }
 
     @FXML
@@ -52,14 +44,10 @@ public class AdminLoginController extends AbstractController {
 
     private void checkPassword() {
         if (password.getText().equals("admin")) {
+            this.getInstance().hide();
             KioskMain.getUI().setScene(new AdminMenuController());
         } else {
-            Alert wrongPassword = new Alert(Alert.AlertType.WARNING);
-            wrongPassword.setHeaderText("Wrong Password!");
-            wrongPassword.setTitle("Access Denied!");
-            wrongPassword.setContentText("Please enter the proper password...");
-            wrongPassword.showAndWait();
-            password.clear();
+            Utils.showAlert(this.getParent(), "Access Denied!", "The password was incorrect!\nPlease try again!\n");
         }
     }
 

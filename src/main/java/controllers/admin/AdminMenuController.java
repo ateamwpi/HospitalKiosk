@@ -1,11 +1,17 @@
 package controllers.admin;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
 import controllers.AbstractController;
-import controllers.MainMenuController;
+import controllers.mapView.MapViewController;
 import core.KioskMain;
+import core.exception.RoomNotFoundException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
+import models.path.Node;
 
 /**
  * Created by mattm on 3/29/2017.
@@ -18,11 +24,42 @@ public class AdminMenuController extends AbstractController {
     @FXML
     private Button manageMapBtn;
     @FXML
-    private Button kioskButton;
+    private JFXComboBox<String> kioskLocations;
+    @FXML
+    private JFXComboBox<String> pathAlgos;
+
+    private JFXButton kioskButton;
+    @FXML
+    private Label title;
+    @FXML
+    private AnchorPane root;
+
+    @FXML
+    private void initialize(){
+        title.prefWidthProperty().bind(root.widthProperty());
+
+        pathAlgos.getItems().addAll(KioskMain.getPath().getAlgorithms());
+        pathAlgos.getSelectionModel().select(KioskMain.getPath().getSelectedAlgorithm().getName());
+        pathAlgos.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
+            KioskMain.getPath().selectAlgorithm(newValue);
+        }));
+
+
+        kioskLocations.getItems().addAll(KioskMain.getPath().getRoomNames());
+        kioskLocations.getSelectionModel().select(KioskMain.getDir().getTheKiosk().getNode().getRoomName());
+        kioskLocations.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
+            try {
+                Node newNode = KioskMain.getPath().getRoom(newValue);
+                KioskMain.getDir().getTheKiosk().setNode(newNode);
+            } catch (RoomNotFoundException e) {
+                e.printStackTrace();
+            }
+        }));
+    }
 
     @FXML
     private void clickLogout(ActionEvent event) {
-        KioskMain.getUI().setScene(new MainMenuController());
+        KioskMain.getUI().setScene(new MapViewController());
     }
 
     @FXML
@@ -35,10 +72,6 @@ public class AdminMenuController extends AbstractController {
         KioskMain.getUI().setScene(new ManageMapViewController());
     }
 
-    @FXML
-    private void pressedKiosk(ActionEvent event) {
-        KioskMain.getUI().setScene(new ChangeKioskController());
-    }
 
     @Override
     public String getURL() {

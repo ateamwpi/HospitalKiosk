@@ -4,8 +4,6 @@ import controllers.admin.AdminMapController;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
-import java.util.Objects;
-
 /**
  * Listeners for making the nodes draggable via left mouse button. Considers if parent is zoomed.
  */
@@ -32,17 +30,26 @@ public class NodeGestures {
     private EventHandler<MouseEvent> onMouseClickedEventHandler = new EventHandler<MouseEvent>() {
         public void handle(MouseEvent event) {
             // right mouse button => panning
-            if (!Objects.equals(event.getButton().name(), "PRIMARY")) {// !event.isPrimaryButtonDown())
+            if (event.getButton().name() != "PRIMARY") {// !event.isPrimaryButtonDown())
                 return;
             }
             System.out.println("node clicked");
             // get the node clicked on
             DraggableNode node = (DraggableNode) event.getSource();
             // update node drag context
+            System.out.println(adminMapController.getOverlay().getTranslateX());
             nodeDragContext.mouseAnchorX = event.getSceneX();
             nodeDragContext.mouseAnchorY = event.getSceneY();
-            nodeDragContext.translateAnchorX = node.getPreviewX();
-            nodeDragContext.translateAnchorY = node.getPreviewY();
+            double scale = adminMapController.getOverlay().getScaleX();
+
+            nodeDragContext.translateAnchorX = (adminMapController.getOverlay().getBoundsInParent().getWidth()/2) +
+                                                            (node.getPreviewX() - adminMapController.getOverlay().getBoundsInParent().getWidth()/2) * scale
+                                                    + adminMapController.getOverlay().getTranslateX()
+                                                    + (scale-1)*(scale-1)/(scale) * adminMapController.getMapController().getOverlay().getBoundsInParent().getWidth()*0.5;
+            nodeDragContext.translateAnchorY = (adminMapController.getOverlay().getBoundsInParent().getHeight()/2) +
+                                                            (node.getPreviewY() - adminMapController.getOverlay().getBoundsInParent().getHeight()/2) * scale
+                                                    + adminMapController.getOverlay().getTranslateY()
+                                                    + (scale-1)*(scale-1)/(scale) * adminMapController.getMapController().getOverlay().getBoundsInParent().getHeight()*0.5;
             // cancel event bubbling
             event.consume();
             // select node if not already selected
@@ -56,7 +63,7 @@ public class NodeGestures {
     private EventHandler<MouseEvent> onMouseDraggedEventHandler = new EventHandler<MouseEvent>() {
         public void handle(MouseEvent event) {
             // right mouse button => panning
-            if (!Objects.equals(event.getButton().name(), "PRIMARY"))// !event.isPrimaryButtonDown())
+            if (event.getButton().name() != "PRIMARY")// !event.isPrimaryButtonDown())
                 return;
             // get the map zoom scale
             double scale = adminMapController.getOverlay().getScaleX();//Should be same as scaleY
@@ -65,8 +72,14 @@ public class NodeGestures {
             // drag the node only if selected
             if (node.equals(adminMapController.getSelectedNode())) {
                 // calculate the new coordinates
-                int newX = (int) ((nodeDragContext.translateAnchorX + event.getSceneX() - nodeDragContext.mouseAnchorX) / scale);
-                int newY = (int) ((nodeDragContext.translateAnchorY + event.getSceneY() - nodeDragContext.mouseAnchorY) / scale);
+                int newX = (int) ((nodeDragContext.translateAnchorX + event.getSceneX() - nodeDragContext.mouseAnchorX) / scale
+                - adminMapController.getMapController().getOverlay().getTranslateX()/scale
+                        +(scale-1)/(scale*scale)*adminMapController.getMapController().getOverlay().getBoundsInParent().getWidth()*0.5
+                );
+                int newY = (int) ((nodeDragContext.translateAnchorY + event.getSceneY() - nodeDragContext.mouseAnchorY) / scale
+                - adminMapController.getMapController().getOverlay().getTranslateY()/scale
+                        +(scale-1)/(scale*scale)*adminMapController.getMapController().getOverlay().getBoundsInParent().getHeight()*0.5
+                );
                 // preview the node coordinates
                 node.previewX(newX);
                 node.previewY(newY);

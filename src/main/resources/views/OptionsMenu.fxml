@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<Pane fx:id="root" layoutX="6.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+   <VBox>
+      <children>
+         <Pane fx:id="scrim" styleClass="scrim" stylesheets="@../styles/MapView.css" />
+      </children>
+      <padding>
+         <Insets left="250.0" />
+      </padding>
+   </VBox>
+    <VBox prefWidth="250.0">
+        <VBox>
+            <padding>
+                <Insets bottom="20.0" />
+            </padding>
+         <HBox alignment="CENTER_LEFT" spacing="100.0">
+            <children>
+               <Label styleClass="title-text" stylesheets="@/styles/OptionsMenu.css" text="Kiosk">
+                  <padding>
+                     <Insets top="8.0" />
+                  </padding>
+               </Label>
+                  <VBox>
+                      <padding>
+                          <Insets bottom="10.0" left="20.0" top="20.0" />
+                      </padding>
+                      <Label fx:id="drawerClose" prefHeight="20.0" prefWidth="20.0" styleClass="minimize-menu" stylesheets="@../styles/MapView.css" />
+                  </VBox>
+            </children>
+            <padding>
+               <Insets left="24.0" />
+            </padding>
+         </HBox>
+        </VBox>
+        <VBox fx:id="directions" style="-fx-background-color: #FAFAFA;">
+            <VBox fx:id="directionsHeader" alignment="CENTER" visible="false">
+                <padding>
+                    <Insets bottom="12.0" top="12.0" />
+                </padding>
+            </VBox>
+        </VBox>
+      <VBox spacing="24.0">
+         <children>
+            <HBox fx:id="aboutButton" alignment="CENTER_LEFT">
+               <children>
+                  <Label fx:id="drawerClose1" prefHeight="24.0" prefWidth="24.0" styleClass="info" stylesheets="@../styles/MapView.css" />
+                  <Label styleClass="alert-body" stylesheets="@/styles/Main.css" text="About This Application">
+                     <padding>
+                        <Insets left="32.0" />
+                     </padding>
+                  </Label>
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets left="16.0" />
+               </padding>
+            </HBox>
+            <HBox fx:id="adminButton" alignment="CENTER_LEFT">
+               <children>
+                  <Label fx:id="drawerClose2" prefHeight="24.0" prefWidth="24.0" styleClass="login" stylesheets="@../styles/MapView.css" />
+                  <Label styleClass="alert-body" stylesheets="@../styles/Main.css" text="Administrator Login">
+                     <padding>
+                        <Insets left="32.0" />
+                     </padding>
+                  </Label>
+               </children>
+               <padding>
+                  <Insets left="16.0" />
+               </padding>
+            </HBox>
+         </children>
+         <padding>
+            <Insets bottom="12.0" top="12.0" />
+         </padding>
+      </VBox>
+    </VBox>
+</Pane>

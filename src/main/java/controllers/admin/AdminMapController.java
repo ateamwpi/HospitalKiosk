@@ -4,14 +4,12 @@ import controllers.AbstractController;
 import controllers.IClickableController;
 import controllers.map.*;
 import core.KioskMain;
-import core.NodeInUseException;
+import core.Utils;
+import core.exception.NodeInUseException;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Line;
@@ -21,7 +19,7 @@ import models.path.Node;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
+import java.util.function.Function;
 
 /**
  * Created by dylan on 4/8/17.
@@ -29,6 +27,7 @@ import java.util.Optional;
 public class AdminMapController extends AbstractController implements IClickableController {
 
     private Collection<Node> nodes;
+
     private ManageMapViewController manageMapViewController;
     private DraggableNode selectedNode;
     private Map<Node, DraggableNode> draggableNodes;
@@ -78,7 +77,7 @@ public class AdminMapController extends AbstractController implements IClickable
         drawAllNodes();
     }
 
-    private void removeNodesAndLines() {
+    public void removeNodesAndLines() {
         for(DraggableNode n : draggableNodes.values()) {
             mapController.removeOverlay(n);
         }
@@ -114,8 +113,20 @@ public class AdminMapController extends AbstractController implements IClickable
 
     void addNode(double x, double y, String room) {
         System.out.println("add node");
+        //Update without weird offset
+        double scale = getOverlay().getScaleX();
+        x = (x / scale
+                - getOverlay().getTranslateX()/scale
+                +(scale-1)/(scale*scale)*getOverlay().getBoundsInParent().getWidth()*0.5
+        );
+        y = (y / scale
+                - getOverlay().getTranslateY()/scale
+                +(scale-1)/(scale*scale)*getOverlay().getBoundsInParent().getHeight()*0.5
+        );
+
         // create new node
-        Node node = new Node((int) x, (int) y, mapController.getFloor(), room);
+        Node node = new Node(   (int) x,
+                                (int) y, mapController.getFloor(), room);
         // create new visual node with gestures
         DraggableNode draggableNode = getDraggableNode(node);
         // draw node with gestures
@@ -130,26 +141,33 @@ public class AdminMapController extends AbstractController implements IClickable
         if (selectedNode == null) {
             return false;
         }
-        if (warnDeleteNode()) {
-            deleteSelectedNode();
-            return true;
-        }
+        warnDeleteNode((result) -> {
+            if(result) {
+                deleteSelectedNode();
+                return true;
+            }
+            else {
+                return false;
+            }
+        });
         return false;
     }
 
-    private Boolean warnDeleteNode() {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Delete node");
-        alert.setHeaderText("This node will be deleted.");
-        alert.setContentText("Are you sure you want to continue?");
-        ButtonType delete = new ButtonType("Delete");
-        ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
-        alert.getButtonTypes().setAll(delete, cancel);
-        Optional<ButtonType> result = alert.showAndWait();
-        return result.get() == delete;
+    private void warnDeleteNode(Function<Boolean, Boolean> cps) {
+        Utils.showOption(getManageMapViewController().getRoot(), "Delete Node", "Are you sure you want to delete? This cannot be undone!",
+                "Cancel",
+                (event -> {
+                    Utils.hidePopup();
+                    cps.apply(false);
+                }),
+                "Delete",
+                (event -> {
+                    Utils.hidePopup();
+                    cps.apply(true);
+                }));
     }
 
-    private void deleteSelectedNode() {
+    public void deleteSelectedNode() {
         // try to delete the node
         try {
             System.out.println("delete node");
@@ -174,6 +192,10 @@ public class AdminMapController extends AbstractController implements IClickable
         }
     }
 
+    public ManageMapViewController getManageMapViewController() {
+        return manageMapViewController;
+    }
+
     private Boolean nodeIsSelected() {
         return selectedNode != null;
     }
@@ -184,10 +206,15 @@ public class AdminMapController extends AbstractController implements IClickable
             return true;
         }
         if (selectedNode.hasUnsavedChanges()) {
-            if (warnDiscardChanges()) {
-                unselectNode();
-                return true;
-            }
+            warnDiscardChanges((result) -> {
+                if(result) {
+                    unselectNode();
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            });
         } else {
             unselectNode();
             return true;
@@ -195,17 +222,20 @@ public class AdminMapController extends AbstractController implements IClickable
         return false;
     }
 
+
     // returns true if admin chooses to discard changes
-    private Boolean warnDiscardChanges() {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Unsaved changes");
-        alert.setHeaderText("All unsaved changes will be lost.");
-        alert.setContentText("Are you sure you want to continue?");
-        ButtonType discard = new ButtonType("Discard changes");
-        ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
-        alert.getButtonTypes().setAll(discard, cancel);
-        Optional<ButtonType> result = alert.showAndWait();
-        return result.get() == discard;
+    private void warnDiscardChanges(Function<Boolean, Boolean> cps) {
+        Utils.showOption(getManageMapViewController().getRoot(), "Unsaved Changes", "All unsaved changed will be lost. Are you sure you want to continue?",
+                "Cancel",
+                event -> {
+                    Utils.hidePopup();
+                    cps.apply(false);
+                },
+                "Discard Changes",
+                event -> {
+                    Utils.hidePopup();
+                    cps.apply(true);
+                });
     }
 
     private void unselectNode() {
@@ -300,11 +330,7 @@ public class AdminMapController extends AbstractController implements IClickable
     }
 
     private void showNodeInUseAlert() {
-        Alert nodeUsed = new Alert(Alert.AlertType.ERROR);
-        nodeUsed.setHeaderText("This Node is in Use");
-        nodeUsed.setContentText("A location in the directory currently refers to this node.");
-        nodeUsed.setTitle("Node In Use");
-        nodeUsed.showAndWait();
+        Utils.showAlert(getManageMapViewController().getRoot(), "Node In Use", "A location in the directory currently refers to this node.");
     }
 
     private void drawDraggableNode(DraggableNode draggableNode) {

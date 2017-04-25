@@ -1,12 +1,13 @@
 package controllers.map;
 
 import controllers.admin.AdminMapController;
-import core.WrongFloorException;
+import core.Utils;
+import core.exception.NameInUseException;
+import core.exception.WrongFloorException;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.scene.control.Alert;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -53,11 +54,11 @@ public class DraggableNode extends Circle {
         previewYProperty.set(y);
     }
 
-    private void previewRoomName(String roomName) {
+    public void previewRoomName(String roomName) {
         previewRoomNameProperty.set(roomName);
     }
 
-    private void previewConnections(Collection<Node> nodes) {
+    public void previewConnections(Collection<Node> nodes) {
         // redraw connections
 
         // Add anything new
@@ -67,7 +68,7 @@ public class DraggableNode extends Circle {
             }
         }
         // Remove anything old
-        ArrayList<Node> toRemove = new ArrayList<>();
+         ArrayList<Node> toRemove = new ArrayList<Node>();
         for (Node n : previewConnections) {
             if(!nodes.contains(n)) {
                 toRemove.add(n);
@@ -84,11 +85,7 @@ public class DraggableNode extends Circle {
             adminMapController.drawDraggableConnection(this, adminMapController.getDraggableNode(node));
         }
         else {
-            Alert invalidConnection = new Alert(Alert.AlertType.ERROR);
-            invalidConnection.setHeaderText("Invalid Node Connection");
-            invalidConnection.setContentText("You cannot add this connection as the node is on a different floor.");
-            invalidConnection.setTitle("Invalid Node Connection");
-            invalidConnection.showAndWait();
+            Utils.showAlert(adminMapController.getManageMapViewController().getRoot(), "Invalid Node Connection!", "You cannot add this connection as the nodes are on different floors!");
         }
     }
 
@@ -109,7 +106,7 @@ public class DraggableNode extends Circle {
         return previewYProperty.get();
     }
 
-    private String getPreviewRoomName() {
+    public final String getPreviewRoomName() {
         return previewRoomNameProperty.get();
     }
 
@@ -125,7 +122,7 @@ public class DraggableNode extends Circle {
         return previewRoomNameProperty;
     }
 
-    private void cancelPreview() {
+    public void cancelPreview() {
         System.out.println("cancel");
         previewConnections(node.getConnections());
         setDefaultPreview();
@@ -133,9 +130,16 @@ public class DraggableNode extends Circle {
 
     public void save() {
         // update the node
+        try {
+            node.setRoomName(getPreviewRoomName());
+        }
+        catch(NameInUseException e) {
+            Utils.showAlert(adminMapController.getManageMapViewController().getRoot(), "Room Name in Use!", "The room name " + getPreviewRoomName() + " is already in use on a different node! Please choose a new name.");
+            return;
+        }
+
         node.setX(getPreviewX());
         node.setY(getPreviewY());
-        node.setRoomName(getPreviewRoomName());
         try {
             node.setConnections(previewConnections);
         }
