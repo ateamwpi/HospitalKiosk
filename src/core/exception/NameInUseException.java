@@ -12,7 +12,7 @@ public class NameInUseException extends Exception {
     }
 
     public void printStackTrace() {
-        System.out.println("The name " + this.name + " is already in use!");
+        System.out.println("The name " + name + " is already in use!");
         super.printStackTrace();
     }
 }

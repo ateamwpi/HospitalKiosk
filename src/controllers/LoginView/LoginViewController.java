@@ -47,11 +47,11 @@ public class LoginViewController extends AbstractPopupViewController {
 
     private void checkPassword() {
         if(KioskMain.getLogin().tryLogin(username.getText(), password.getText())) {
-            this.getInstance().hide();
-            Utils.showAlert(this.getParent(), "Success!", "Welcome, " + KioskMain.getLogin().getState() + "!");
+            getInstance().hide();
+            Utils.showAlert(getParent(), "Success!", "Welcome, " + KioskMain.getLogin().getState() + "!");
         }
         else {
-            Utils.showAlert(this.getParent(), "Access Denied!", "The password was incorrect!\nPlease try again!");
+            Utils.showAlert(getParent(), "Access Denied!", "The password was incorrect!\nPlease try again!");
         }
     }
 

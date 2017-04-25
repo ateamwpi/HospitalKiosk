@@ -59,7 +59,7 @@ public class KioskMain extends Application {
 
     public static UIManager getUI() { return theUIManager; }
 
-    public static LoginManager getLogin() { return theLoginManager; };
+    public static LoginManager getLogin() { return theLoginManager; }
 
     private static void initManagers() {
         initDBMg();

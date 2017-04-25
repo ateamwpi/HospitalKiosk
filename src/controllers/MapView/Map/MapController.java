@@ -79,7 +79,7 @@ public class MapController extends AbstractController implements IClickableContr
     }
 
     public Group getOverlay() {
-        return this.overlay;
+        return overlay;
     }
 
     public PannableCanvas getCanvas() {
@@ -109,7 +109,7 @@ public class MapController extends AbstractController implements IClickableContr
 
     public void enableButtons(ArrayList<String> floors) {
         floorVBox.getChildren().clear();
-        for(JFXButton b : this.floorButtons) {
+        for(JFXButton b : floorButtons) {
             if(floors.contains(Utils.strForNum(Integer.parseInt(b.getText())) + " Floor")) {
                 floorVBox.getChildren().add(b);
             }
@@ -119,16 +119,16 @@ public class MapController extends AbstractController implements IClickableContr
     }
 
     public void drawPath(Path p) {
-        if(p.getStart().getFloor() == this.floor) drawNode(p.getStart(), Color.BLUE);
+        if(p.getStart().getFloor() == floor) drawNode(p.getStart(), Color.BLUE);
         for (int i = 1; i < p.getPath().size(); i++) {
-            if(p.getStep(i-1).getFloor() == this.floor && p.getStep(i).getFloor() == this.floor)
+            if(p.getStep(i-1).getFloor() == floor && p.getStep(i).getFloor() == floor)
                 drawConnection(p.getStep(i - 1), p.getStep(i));
-            else if(p.getStep(i-1).getFloor() == this.floor && p.getStep(i).getFloor() != this.floor)
+            else if(p.getStep(i-1).getFloor() == floor && p.getStep(i).getFloor() != floor)
                 drawMidpoint(p.getStep(i-1));
-            else if(p.getStep(i).getFloor() == this.floor && p.getStep(i-1).getFloor() != this.floor)
+            else if(p.getStep(i).getFloor() == floor && p.getStep(i-1).getFloor() != floor)
                 drawMidpoint(p.getStep(i));
         }
-        if(p.getEnd().getFloor() == this.floor) drawNode(p.getEnd(), Color.RED);
+        if(p.getEnd().getFloor() == floor) drawNode(p.getEnd(), Color.RED);
     }
 
     private void drawMidpoint(Node n) {
@@ -139,7 +139,7 @@ public class MapController extends AbstractController implements IClickableContr
 
     public void setFloor(int floor){
         this.floor = floor;
-        map = this.maps.get(this.floor-1);
+        map = maps.get(floor-1);
         mapView.setImage(map.getImage());
         mapView.setPreserveRatio(true);
     }
@@ -158,16 +158,16 @@ public class MapController extends AbstractController implements IClickableContr
         overlay.getChildren().add(canvas);
 
         floor = 1;
-        this.maps = new ArrayList<>();
+        maps = new ArrayList<>();
 
         // create the Proxies for all of the map images
         for(String url : MAP_URLS) {
-            System.out.println(this.maps);
-            this.maps.add(new ImageProxy(url));
+            System.out.println(maps);
+            maps.add(new ImageProxy(url));
         }
 
         // load the map into the map view
-        map = this.maps.get(0);
+        map = maps.get(0);
         mapView.setImage(map.getImage());
         mapView.setPreserveRatio(true);
         // add the map to the canvas
@@ -228,7 +228,7 @@ public class MapController extends AbstractController implements IClickableContr
             floorButtons.add(floor);
         }
 
-        this.zoomIn = new JFXButton();
+        zoomIn = new JFXButton();
         zoomIn.setText("+");
         zoomIn.setOnAction(event -> sceneGestures.zoomIn());
         zoomIn.setMinWidth(wid);
@@ -237,7 +237,7 @@ public class MapController extends AbstractController implements IClickableContr
         floorVBox.getChildren().add(zoomIn);
         floorVBox.toFront();
 
-        this.zoomOut = new JFXButton();
+        zoomOut = new JFXButton();
         zoomOut.setText("-");
         zoomOut.setOnAction(event -> sceneGestures.zoomOut());
         zoomOut.setPrefWidth(wid);

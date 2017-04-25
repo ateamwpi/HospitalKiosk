@@ -41,12 +41,12 @@ public class Node {
         floorProperty.set(floor);
         roomNameProperty.set(roomName);
         restrictedProperty.set(restricted);
-        this.connections = new ArrayList<Node>();
-        this.locations = new HashMap<Integer, Location>();
-        this.counts = new HashMap<LocationType, Integer>();
-        this.isNew = false;
-        this.isDone = false;
-        this.updateBuilding();
+        connections = new ArrayList<Node>();
+        locations = new HashMap<Integer, Location>();
+        counts = new HashMap<LocationType, Integer>();
+        isNew = false;
+        isDone = false;
+        updateBuilding();
     }
 
     public Node(int x, int y, int floor, boolean restricted, String roomName) {
@@ -56,12 +56,12 @@ public class Node {
         floorProperty.set(floor);
         roomNameProperty.set(roomName);
         restrictedProperty.set(restricted);
-        this.connections = new ArrayList<Node>();
-        this.locations = new HashMap<Integer, Location>();
-        this.counts = new HashMap<LocationType, Integer>();
-        this.isNew = true;
-        this.isDone = true;
-        this.updateBuilding();
+        connections = new ArrayList<Node>();
+        locations = new HashMap<Integer, Location>();
+        counts = new HashMap<LocationType, Integer>();
+        isNew = true;
+        isDone = true;
+        updateBuilding();
     }
 
     public Node(int x, int y, int floor, boolean restricted) {
@@ -71,27 +71,27 @@ public class Node {
         floorProperty.set(floor);
         roomNameProperty.set("NONE");
         restrictedProperty.set(restricted);
-        this.connections = new ArrayList<Node>();
-        this.locations = new HashMap<Integer, Location>();
-        this.counts = new HashMap<LocationType, Integer>();
-        this.isNew = true;
-        this.isDone = true;
-        this.updateBuilding();
+        connections = new ArrayList<Node>();
+        locations = new HashMap<Integer, Location>();
+        counts = new HashMap<LocationType, Integer>();
+        isNew = true;
+        isDone = true;
+        updateBuilding();
     }
 
     public void addLocation(Location l) {
-        this.locations.put(l.getID(), l);
-        if(!this.counts.containsKey(l.getLocType())) this.counts.put(l.getLocType(), 1);
-        else this.counts.put(l.getLocType(), this.counts.get(l.getLocType()) + 1);
+        locations.put(l.getID(), l);
+        if(!counts.containsKey(l.getLocType())) counts.put(l.getLocType(), 1);
+        else counts.put(l.getLocType(), counts.get(l.getLocType()) + 1);
     }
 
     public void addConnection(Node other) throws WrongFloorException {
-        if(this.getFloor() != other.getFloor()) {
+        if(getFloor() != other.getFloor()) {
             throw new WrongFloorException(this, other);
         }
-        if(!this.connections.contains(other)) {
-            this.connections.add(other);
-            if(this.isDone && !other.connections.contains(this)) {
+        if(!connections.contains(other)) {
+            connections.add(other);
+            if(isDone && !other.connections.contains(this)) {
                 KioskMain.getDB().addConnection(this, other);
             }
             other.addConnection(this);
@@ -99,70 +99,63 @@ public class Node {
     }
 
     public LocationType getPrimaryLocType() {
-        if(this.counts.isEmpty()) return LocationType.Unknown;
-        return Collections.max(this.counts.entrySet(), Map.Entry.comparingByValue()).getKey();
+        if(counts.isEmpty()) return LocationType.Unknown;
+        return Collections.max(counts.entrySet(), Map.Entry.comparingByValue()).getKey();
     }
 
     public Color getColor() {
-        return this.getPrimaryLocType().getNodeColor();
+        return getPrimaryLocType().getNodeColor();
     }
 
     public void removeConnection(Node other) {
-        if(this.connections.contains(other)) {
-            this.connections.remove(other);
+        if(connections.contains(other)) {
+            connections.remove(other);
             KioskMain.getDB().removeConnection(this, other);
             other.removeConnection(this);
         }
     }
 
     public void updateBuilding() {
-        if(this.getX() >= 30 && this.getX() <= 220 && this.getY() >= 10 && this.getY() <= 210)
-            this.isBelkin = true;
-        else
-            this.isBelkin = false;
-
-
-        if(this.getX() >= 110 && this.getX() <= 910 && this.getY() >= 230 && this.getY() <= 680)
-            this.isMain = true;
-        else
-            this.isMain = false;
+        isBelkin = getX() >= 30 && getX() <= 220 && getY() >= 10 && getY() <= 210;
+        isMain = getX() >= 110 && getX() <= 910 && getY() >= 230 && getY() <= 680;
     }
 
     public void removeAllConnections() {
-        Collection<Node> clone = (Collection<Node>) this.connections.clone();
-        this.connections.clear();
+        //noinspection unchecked
+        Collection<Node> clone = (Collection<Node>) connections.clone();
+        connections.clear();
         for (Node n : clone) {
             n.removeConnection(this);
         }
     }
 
     public void setRoomName(String name) throws NameInUseException {
-        if(name.equals(this.getRoomName())) return;
+        if(name.equals(getRoomName())) return;
         if(KioskMain.getPath().hasRoomName(name)) {
             throw new NameInUseException(name);
         }
-        this.previousRoomName = this.getRoomName();
+        previousRoomName = getRoomName();
         roomNameProperty.setValue(name);
     }
 
     public void setConnections(Collection<Node> conns) throws WrongFloorException {
         // Add anything new
         for (Node n : conns) {
-            if(!this.connections.contains(n)) {
-                this.addConnection(n);
+            if(!connections.contains(n)) {
+                addConnection(n);
             }
         }
 
         // Remove anything old
         ArrayList<Node> toRemove = new ArrayList<Node>();
-        for (Node n : this.connections) {
+        for (Node n : connections) {
             if(!conns.contains(n)) {
                 toRemove.add(n);
             }
         }
 
         for (Node n : toRemove) {
-            this.removeConnection(n);
+            removeConnection(n);
         }
     }
 
@@ -171,11 +164,11 @@ public class Node {
     }
 
     public boolean isBelkin() {
-        return this.isBelkin;
+        return isBelkin;
     }
 
     public boolean isMain() {
-        return this.isMain;
+        return isMain;
     }
 
     public final String getRoomName() {
@@ -187,11 +180,12 @@ public class Node {
     }
 
     public Collection<Location> getLocations() {
-        return this.locations.values();
+        return locations.values();
     }
 
     public Collection<Node> getConnections() {
-        return (Collection<Node>)this.connections.clone();
+        //noinspection unchecked
+        return (Collection<Node>) connections.clone();
     }
 
     public final int getFloor(){
@@ -208,7 +202,7 @@ public class Node {
 
     public final void setX(int value){
         xProperty.set(value);
-        this.updateBuilding();
+        updateBuilding();
     }
 
     public IntegerProperty xProperty() {
@@ -221,12 +215,12 @@ public class Node {
 
     public final void setY(int value){
         yProperty.set(value);
-        this.updateBuilding();
+        updateBuilding();
     }
 
     public final void save() {
         // TODO check if node in db first
-        KioskMain.getPath().updateRoomName(this, this.previousRoomName);
+        KioskMain.getPath().updateRoomName(this, previousRoomName);
         KioskMain.getDB().updateNode(this);
     }
 
@@ -235,13 +229,13 @@ public class Node {
     }
 
     public void removeLocation(Location l) {
-        this.locations.remove(l.getID());
-        this.counts.put(l.getLocType(), this.counts.get(l.getLocType())-1);
+        locations.remove(l.getID());
+        counts.put(l.getLocType(), counts.get(l.getLocType())-1);
     }
 
     public String toString() {
         String str= "Node: ID=" + getID() + ", X=" + getX() + ", Y=" + getY() + ", FLOOR=" + getFloor() + ", NAME=" + getRoomName() + "\n";
-        for (Node n : this.connections) {
+        for (Node n : connections) {
             str += "Connected to Node ID=" + n.getID() + "\n";
         }
         return str;
@@ -249,33 +243,31 @@ public class Node {
 
 //    public boolean equals(Object o) {
 //        Node n = (Node) o;
-//        return n.getID() == this.getID();
+//        return n.getID() == getID();
 //    }
 
     public boolean isNew() {
-        return this.isNew;
+        return isNew;
     }
 
     public void setDone() {
-        this.isDone = true;
+        isDone = true;
     }
 
-    public boolean isRestricted() { return this.restrictedProperty.get(); }
+    public boolean isRestricted() { return restrictedProperty.get(); }
 
-    public void setRestricted(boolean value) { this.restrictedProperty.set(value); }
+    public void setRestricted(boolean value) { restrictedProperty.set(value); }
 
 
     public static void setNextNodeID(int i) {
         nextNodeID = i;
     }
 
-    public static int getNextNodeID() {
+    private static int getNextNodeID() {
         int val = nextNodeID;
         nextNodeID ++;
         return val;
     }
-
-
 
     public IntegerProperty idProperty() {
         return idProperty;

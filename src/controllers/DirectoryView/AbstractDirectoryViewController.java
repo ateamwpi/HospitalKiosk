@@ -174,7 +174,7 @@ public abstract class AbstractDirectoryViewController extends AbstractController
     protected void setTableEdit() {
         locationsTable.setEditable(true);
 
-        nameCol.setCellFactory(TextFieldTableCell.<Location>forTableColumn());
+        nameCol.setCellFactory(TextFieldTableCell.forTableColumn());
         nameCol.setOnEditCommit((TableColumn.CellEditEvent<Location, String> t) -> {
             Location editedLoc = t.getRowValue();
             t.getRowValue().setName(t.getNewValue());

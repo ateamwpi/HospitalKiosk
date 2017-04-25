@@ -27,16 +27,16 @@ public class Directory {
         entries.put(l.getID(), l);
     }
 
-    public LocationType getType() {
-        return LocationType.getType(this.name);
+    private LocationType getType() {
+        return LocationType.getType(name);
     }
 
     void moveLocation(Location l, LocationType newType) {
-        if(newType.equals(this.getType())) {
-            this.entries.put(l.getID(), l);
+        if(newType.equals(getType())) {
+            entries.put(l.getID(), l);
         }
         else {
-            this.entries.remove(l.getID());
+            entries.remove(l.getID());
         }
     }
 

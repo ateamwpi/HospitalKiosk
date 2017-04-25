@@ -15,18 +15,18 @@ public class ImageProxy {
     }
 
     public Image getImage() {
-        if(this.theImage == null) {
-            this.theImage = new Image(getClass().getClassLoader().getResourceAsStream(this.url));
+        if(theImage == null) {
+            theImage = new Image(getClass().getClassLoader().getResourceAsStream(url));
         }
-        return this.theImage;
+        return theImage;
     }
 
     public String getURL() {
-        return this.url;
+        return url;
     }
 
     public String toString() {
-        return "ImageProxy for " + this.getURL();
+        return "ImageProxy for " + getURL();
     }
 
 }

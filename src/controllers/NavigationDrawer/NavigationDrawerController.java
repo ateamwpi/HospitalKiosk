@@ -33,13 +33,13 @@ public class NavigationDrawerController extends AbstractController implements IL
 
     @Override
     public void initData(Object... data) {
-        this.mainRoot = (Parent)data[0];
+        mainRoot = (Parent)data[0];
     }
 
     @FXML
     private void initialize() {
         KioskMain.getLogin().attachObserver(this);
-        this.onAccountChanged();
+        onAccountChanged();
     }
 
     public Label getDrawerClose() {
@@ -47,7 +47,7 @@ public class NavigationDrawerController extends AbstractController implements IL
     }
 
     public Pane getScrim() {
-        return this.scrim;
+        return scrim;
     }
 
     @Override
@@ -56,16 +56,16 @@ public class NavigationDrawerController extends AbstractController implements IL
     }
 
     private void setMenuItems() {
-        this.menuItems.getChildren().clear();
+        menuItems.getChildren().clear();
         for (EnumMenuItem e : KioskMain.getLogin().getState().getAvailableOptions()) {
-            this.menuItems.getChildren().add(new MenuItem(e, mainRoot).getRoot());
+            menuItems.getChildren().add(new MenuItem(e, mainRoot).getRoot());
         }
     }
 
     @Override
     public void onAccountChanged() {
-        this.accountText.setText(KioskMain.getLogin().getState().getWelcomeMessage());
-        this.setMenuItems();
+        accountText.setText(KioskMain.getLogin().getState().getWelcomeMessage());
+        setMenuItems();
     }
 
     public VBox getMenuItems() {

@@ -21,15 +21,15 @@ public abstract class AbstractPopupViewController extends AbstractController {
 
     public AbstractPopupViewController(Parent parent) {
         this.parent = parent;
-        this.instance = new JFXPopup(this.getRegion());
+        instance = new JFXPopup(getRegion());
     }
 
     public JFXPopup getInstance() {
-        return this.instance;
+        return instance;
     }
 
     public Region getRegion() {
-        return this.root;
+        return root;
     }
 
     public void setParent(Parent parent) {
@@ -38,16 +38,16 @@ public abstract class AbstractPopupViewController extends AbstractController {
 
     public void show(double x, double y) {
         KioskMain.getUI().setPopup(this);
-        this.instance.show(parent, JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.LEFT, x, y);
+        instance.show(parent, JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.LEFT, x, y);
     }
 
     public void showCentered() {
-        this.show(KioskMain.getUI().getScene().getWidth()/2-130, KioskMain.getUI().getScene().getHeight()/2-105);
+        show(KioskMain.getUI().getScene().getWidth()/2-130, KioskMain.getUI().getScene().getHeight()/2-105);
     }
 
     public void hide() {
         KioskMain.getUI().setPopup(null);
-        this.instance.hide();
+        instance.hide();
     }
 
     public Parent getParent() {

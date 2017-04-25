@@ -97,14 +97,14 @@ public class MenuItem extends AbstractController {
 
     @Override
     public void initData(Object... data) {
-        this.item = (EnumMenuItem) data[0];
-        this.mainRoot = (Parent) data[1];
+        item = (EnumMenuItem) data[0];
+        mainRoot = (Parent) data[1];
     }
 
     @FXML
     private void initialize() {
         menuLabel.setText(item.text);
-        menuIcon.getStyleClass().add(this.item.path);
+        menuIcon.getStyleClass().add(item.path);
 
 //        menuLabel.styleProperty().bind(
 //            Bindings.when(root.hoverProperty())
@@ -115,7 +115,7 @@ public class MenuItem extends AbstractController {
 
     @FXML
     private void onPressed(MouseEvent e) {
-        this.item.onClick.accept(e, mainRoot);
+        item.onClick.accept(e, mainRoot);
     }
 
     public String getURL() {

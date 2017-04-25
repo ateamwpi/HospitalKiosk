@@ -48,7 +48,7 @@ public class UIManager {
     }
 
     public Scene getScene() {
-        return this.scene;
+        return scene;
     }
 
     public Stage getStage() {

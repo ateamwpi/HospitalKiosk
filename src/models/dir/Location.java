@@ -39,11 +39,11 @@ public class Location {
     }
 
     public int getID() {
-        return this.id;
+        return id;
     }
 
     public boolean isNew() {
-        return this.isNew;
+        return isNew;
     }
 
     public void setName(String name) {
@@ -57,26 +57,25 @@ public class Location {
         KioskMain.getDB().updateLocation(this);
     }
 
-    public void setNode(Node n) {
-        this.node = n;
+    public void setNode(Node node) {
+        this.node = node;
         KioskMain.getDB().updateLocation(this);
     }
 
     public String getName() {
-        return this.name;
+        return name;
     }
 
     public LocationType getLocType() {
-        return this.locType;
+        return locType;
     }
 
     public Node getNode() {
-        return this.node;
+        return node;
     }
 
     public String toString() {
-        String str = "Location " + name + ", ID=" + id + ", locType=" + locType + ", nodeID=" + node.getID();
-        return str;
+        return "Location " + name + ", ID=" + id + ", locType=" + locType + ", nodeID=" + node.getID();
     }
 
 

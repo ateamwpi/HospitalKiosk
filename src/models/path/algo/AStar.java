@@ -24,7 +24,7 @@ public class AStar extends AbstractPathfindingAlgorithm {
         openSet.add(start);
 
         fScore = new HashMap<Node, Double>();
-        fScore.put(start, this.heuristicCost(start, goal));
+        fScore.put(start, heuristicCost(start, goal));
 
         gScore = new HashMap<Node, Double>();
         gScore.put(start, 0.0);
@@ -41,20 +41,20 @@ public class AStar extends AbstractPathfindingAlgorithm {
             }
 
             if(current.equals(goal)){
-                return this.constructPath(cameFrom, current);
+                return constructPath(cameFrom, current);
             }
             openSet.remove(current);
             closedSet.add(current);
 
             for(Node n: current.getConnections()){
                 if(closedSet.contains(n)) continue;
-                double score = gScore.get(current) + this.heuristicCost(current, n);
+                double score = gScore.get(current) + heuristicCost(current, n);
                 if(!openSet.contains(n)) openSet.add(n);
                 else if(score >= gScore.get(n)) continue;
 
                 cameFrom.put(n, current);
                 gScore.put(n, score);
-                fScore.put(n, score + this.heuristicCost(n, goal));
+                fScore.put(n, score + heuristicCost(n, goal));
             }
         }
         throw new PathNotFoundException(start, goal);

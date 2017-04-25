@@ -27,15 +27,15 @@ public class DirectoryManager {
     }
 
     public Location getTheKiosk() {
-        return this.theKiosk;
+        return theKiosk;
     }
 
     public Location getMainEntr() {
-        return this.mainEntr;
+        return mainEntr;
     }
 
     public Location getBelkinEntr() {
-        return this.belkinEntr;
+        return belkinEntr;
     }
 
     public void removeLocation(Location l) {
@@ -50,9 +50,9 @@ public class DirectoryManager {
         return directories.get(locType);
     }
 
-    public void updateLocationType(Location location, LocationType newLocType) {
-        this.getDirectory(location.getLocType()).moveLocation(location, newLocType);
-        this.getDirectory(newLocType).moveLocation(location, newLocType);
+    void updateLocationType(Location location, LocationType newLocType) {
+        getDirectory(location.getLocType()).moveLocation(location, newLocType);
+        getDirectory(newLocType).moveLocation(location, newLocType);
     }
 
     public List<Location> search(String query, Integer maxResults) {
@@ -106,7 +106,7 @@ public class DirectoryManager {
         }
 
         if(nearPOI == null && nearRest == null) return new ArrayList<>();
-        List<Location> ret = new ArrayList();
+        List<Location> ret = new ArrayList<>();
 
         while (nearPOI != null && !nearPOI.isEmpty()) {
             Location l = Collections.min(nearPOI.entrySet(), Comparator.comparingInt(entry -> (int) entry.getValue().doubleValue())).getKey();

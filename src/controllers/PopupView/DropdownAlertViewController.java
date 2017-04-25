@@ -32,10 +32,10 @@ public class DropdownAlertViewController extends AbstractPopupViewController {
 
     public DropdownAlertViewController(Parent parent, String title, String body, Collection<String> options, String def, Consumer<String> onSelect) {
         super(parent);
-        this.alertTitle.setText(title);
-        this.alertBody.setText(body);
-        this.alertBox.getItems().setAll(options);
-        this.alertBox.getSelectionModel().select(def);
+        alertTitle.setText(title);
+        alertBody.setText(body);
+        alertBox.getItems().setAll(options);
+        alertBox.getSelectionModel().select(def);
         this.onSelect = onSelect;
     }
 
@@ -45,8 +45,8 @@ public class DropdownAlertViewController extends AbstractPopupViewController {
 
     @FXML
     private void clickOk(ActionEvent event) {
-        this.onSelect.accept((String)this.alertBox.getSelectionModel().getSelectedItem());
-        this.getInstance().hide();
+        onSelect.accept((String) alertBox.getSelectionModel().getSelectedItem());
+        getInstance().hide();
     }
 
     @Override

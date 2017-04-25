@@ -29,6 +29,7 @@ public class SearchResult extends AbstractController {
     @Override
     public void initData(Object... data) {
         location = (Location) data[0];
+        //noinspection unchecked
         selectLocation = (Consumer<Location>) data[1];
     }
 

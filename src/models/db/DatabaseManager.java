@@ -22,7 +22,7 @@ public class DatabaseManager {
     public void connect() throws SQLException, ClassNotFoundException {
         Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
         System.out.println("Successfully located database drivers.");
-        this.conn = DriverManager.getConnection("jdbc:derby:hospitalDB;create=false");
+        conn = DriverManager.getConnection("jdbc:derby:hospitalDB;create=false");
         System.out.println("Successfully connected to database.");
     }
 

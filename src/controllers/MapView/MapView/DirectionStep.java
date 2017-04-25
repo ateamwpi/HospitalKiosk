@@ -9,7 +9,7 @@ import javafx.scene.control.Label;
  */
 public class DirectionStep extends AbstractController {
 
-    public static enum DirectionIcon {
+    public enum DirectionIcon {
         LEFT("turn-left-icon"),
         RIGHT("turn-right-icon"),
         STRAIGHT("go-straight-icon");
@@ -51,11 +51,11 @@ public class DirectionStep extends AbstractController {
     private void initialize() {
         directionLabel.setText(message);
         // add direction icon
-        directionIcon.getStyleClass().add(this.direction.path);
+        directionIcon.getStyleClass().add(direction.path);
     }
 
     public String toString() {
-        return this.direction.name() + " " + this.message;
+        return direction.name() + " " + message;
     }
 
     @Override

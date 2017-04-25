@@ -63,7 +63,7 @@ public abstract class AbstractController implements IController {
     }
 
     private void bindAllHandlers() {
-        getHandlers().forEach((q, h) -> bindNodeHandlers(q, h));
+        getHandlers().forEach(this::bindNodeHandlers);
     }
 
     private void bindNodeHandlers(String query, Map<String, EventHandler<Event>> handlers) {
@@ -74,13 +74,13 @@ public abstract class AbstractController implements IController {
 
     private void bindNodeHandler(Node node, String event, EventHandler<Event> handler) {
         Property eventProperty = (Property) node.getProperties().get(event);
-        ObjectProperty<EventHandler<Event>> handlerProperty = new SimpleObjectProperty<EventHandler<Event>>() {
+        //noinspection unchecked
+        eventProperty.bind(new SimpleObjectProperty<EventHandler<Event>>() {
             @Override
             public EventHandler<Event> get() {
                 return handler;
             }
-        };
-        eventProperty.bind(handlerProperty);
+        });
     }
 
 }
