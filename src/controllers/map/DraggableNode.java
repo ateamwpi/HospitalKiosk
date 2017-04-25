@@ -1,13 +1,11 @@
 package controllers.map;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import controllers.admin.AdminMapController;
 import core.Utils;
 import core.exception.NameInUseException;
 import core.exception.WrongFloorException;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -30,6 +28,7 @@ public class DraggableNode extends Circle {
     private IntegerProperty previewXProperty = new SimpleIntegerProperty();
     private IntegerProperty previewYProperty = new SimpleIntegerProperty();
     private StringProperty previewRoomNameProperty = new SimpleStringProperty();
+    private BooleanProperty previewRestrictedProperty = new SimpleBooleanProperty();
     private Collection<Node> previewConnections = new ArrayList<>();
 
     private AdminMapController adminMapController;
@@ -56,6 +55,10 @@ public class DraggableNode extends Circle {
 
     public void previewRoomName(String roomName) {
         previewRoomNameProperty.set(roomName);
+    }
+
+    public void previewRestricted(boolean value) {
+        previewRestrictedProperty.set(value);
     }
 
     public void previewConnections(Collection<Node> nodes) {
@@ -110,6 +113,10 @@ public class DraggableNode extends Circle {
         return previewRoomNameProperty.get();
     }
 
+    public final boolean getPreviewRestricted() {
+        return previewRestrictedProperty.get();
+    }
+
     public IntegerProperty previewXProperty() {
         return previewXProperty;
     }
@@ -120,6 +127,10 @@ public class DraggableNode extends Circle {
 
     public StringProperty previewRoomNameProperty() {
         return previewRoomNameProperty;
+    }
+
+    public BooleanProperty previewRestrictedProperty() {
+        return previewRestrictedProperty;
     }
 
     public void cancelPreview() {
@@ -140,6 +151,7 @@ public class DraggableNode extends Circle {
 
         node.setX(getPreviewX());
         node.setY(getPreviewY());
+        node.setRestricted(getPreviewRestricted());
         try {
             node.setConnections(previewConnections);
         }
@@ -176,12 +188,14 @@ public class DraggableNode extends Circle {
         previewY(node.getY());
         previewRoomName(node.getRoomName());
         previewConnections = node.getConnections();
+        previewRestricted(node.isRestricted());
     }
 
     public Boolean hasUnsavedChanges() {
         return getPreviewX() != node.getX()
                 || getPreviewY() != node.getY()
                 || !getPreviewRoomName().equals(node.getRoomName())
-                || !getPreviewConnections().equals(node.getConnections());
+                || !getPreviewConnections().equals(node.getConnections())
+                || getPreviewRestricted() != node.isRestricted();
     }
 }
