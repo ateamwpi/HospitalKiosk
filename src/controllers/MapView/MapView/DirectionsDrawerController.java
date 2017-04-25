@@ -34,7 +34,7 @@ public class DirectionsDrawerController extends AbstractController {
 
 
     @FXML
-    private Button directionsBackButton;
+    private Label directionsBackButton;
     @FXML
     private Label printDirectionsIcon;
     @FXML
@@ -85,7 +85,7 @@ public class DirectionsDrawerController extends AbstractController {
     @FXML
     private void initialize() {
         // bind event handlers
-        directionsBackButton.setOnAction(event -> showSearch());
+        directionsBackButton.setOnMouseClicked(event -> showSearch());
         printDirectionsIcon.setOnMouseClicked(event -> printDirections());
         speakDirectionsIcon.setOnMouseClicked(event -> speakDirections());
         // listen to search input
