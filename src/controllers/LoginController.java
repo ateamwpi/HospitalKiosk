@@ -8,6 +8,7 @@ import controllers.admin.AdminMenuController;
 import core.KioskMain;
 import core.Utils;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.input.KeyCode;
@@ -52,8 +53,14 @@ public class LoginController extends AbstractPopupController {
             Utils.showAlert(this.getParent(), "Success!", "Welcome, " + KioskMain.getLogin().getState() + "!");
         }
         else {
-            Utils.showAlert(this.getParent(), "Access Denied!", "The password was incorrect!\nPlease try again!");
+            this.loginBtn.requestFocus();
+            Utils.showAlert(this.getParent(), "Access Denied!", "The password was incorrect!\nPlease try again!", this::regainFocus);
         }
+    }
+
+    private void regainFocus(Event e) {
+        this.password.requestFocus();
+        KioskMain.getUI().setPopup(this);
     }
 
     @Override

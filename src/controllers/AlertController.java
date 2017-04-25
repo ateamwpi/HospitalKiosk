@@ -2,12 +2,15 @@ package controllers;
 
 import com.jfoenix.controls.JFXButton;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
+
+import java.util.function.Consumer;
 
 /**
  * Created by mattm on 3/29/2017.
@@ -23,14 +26,22 @@ public class AlertController extends AbstractPopupController {
     @FXML
     private AnchorPane root;
 
+    private Consumer<Event> onClose;
+
     public AlertController(Parent parent, String title, String body) {
+        this(parent, title, body, null);
+    }
+
+    public AlertController(Parent parent, String title, String body, Consumer<Event> onClose) {
         super(parent);
         this.alertTitle.setText(title);
         this.alertBody.setText(body);
+        this.onClose = onClose;
 
         this.root.setOnKeyPressed(event -> {
             System.out.println("ALERT PRESSED");
             if (event.getCode().equals(KeyCode.ENTER)) {
+                if(this.onClose != null) onClose.accept(event);
                 this.getInstance().hide();
             }
         });
@@ -44,6 +55,7 @@ public class AlertController extends AbstractPopupController {
 
     @FXML
     private void clickOk(ActionEvent event) {
+        if(this.onClose != null) onClose.accept(event);
         this.getInstance().hide();
     }
 
