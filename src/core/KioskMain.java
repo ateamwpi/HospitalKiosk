@@ -1,6 +1,6 @@
 package core;
 
-import controllers.WelcomeScreenController;
+import controllers.WelcomeView.WelcomeViewController;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import models.db.DatabaseManager;
@@ -13,7 +13,6 @@ import models.path.Node;
 import models.path.PathfindingManager;
 import models.tts.TTSManager;
 import models.ui.UIManager;
-import sun.rmi.runtime.Log;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -36,7 +35,7 @@ public class KioskMain extends Application {
         initUIMg(stage);
         // load the main menu
         //getUI().setScene(new MapViewControllerOLD());
-        getUI().setScene(new WelcomeScreenController());
+        getUI().setScene(new WelcomeViewController());
     }
 
     public static void main(String[] args) {

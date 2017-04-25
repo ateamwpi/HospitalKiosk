@@ -1,7 +1,7 @@
 package models.path;
 
 
-import controllers.mapView.DirectionStep;
+import controllers.MapView.DirectionStep;
 import core.Utils;
 import models.dir.LocationType;
 
@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import static controllers.mapView.DirectionStep.DirectionIcon;
+import static controllers.MapView.DirectionStep.DirectionIcon;
 
 /**
  * Created by mattm on 3/29/2017.

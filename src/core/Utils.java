@@ -1,8 +1,8 @@
 package core;
 
-import controllers.AlertController;
-import controllers.DropdownAlertController;
-import controllers.OptionAlertController;
+import controllers.PopupView.AlertViewController;
+import controllers.PopupView.DropdownAlertViewController;
+import controllers.PopupView.OptionAlertViewController;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
@@ -10,7 +10,6 @@ import javafx.scene.Parent;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.function.Consumer;
 
@@ -30,17 +29,17 @@ public class Utils {
     }
 
     public static void showAlert(Parent root, String title, String body) {
-        AlertController alert = new AlertController(root, title, body);
+        AlertViewController alert = new AlertViewController(root, title, body);
         alert.showCentered();
     }
 
     public static void showOption(Parent root, String title, String body, String btn1text, EventHandler<ActionEvent> btn1, String btn2text, EventHandler<ActionEvent> btn2) {
-        OptionAlertController option = new OptionAlertController(root, title, body, btn1text, btn1, btn2text, btn2);
+        OptionAlertViewController option = new OptionAlertViewController(root, title, body, btn1text, btn1, btn2text, btn2);
         option.showCentered();
     }
 
     public static void showDropdown(Parent root, String title, String body, Collection<String> items, String def, Consumer<String> fcn) {
-        DropdownAlertController drop = new DropdownAlertController(root, title, body, items, def, fcn);
+        DropdownAlertViewController drop = new DropdownAlertViewController(root, title, body, items, def, fcn);
         drop.showCentered();
     }
 
