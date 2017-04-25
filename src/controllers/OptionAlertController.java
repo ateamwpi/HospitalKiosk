@@ -1,18 +1,20 @@
 package controllers;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXPopup;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Region;
 import javafx.scene.text.Text;
 
 /**
  * Created by mattm on 3/29/2017.
  */
-public class OptionAlertController extends AbstractPopupController {
+public class OptionAlertController extends AbstractController implements IPopup {
 
     @FXML
     private JFXButton button1;
@@ -24,9 +26,12 @@ public class OptionAlertController extends AbstractPopupController {
     private Text alertBody;
     @FXML
     private AnchorPane root;
+    private Parent parent;
+    private JFXPopup instance;
 
     public OptionAlertController(Parent parent, String title, String body, String btn1text, EventHandler<ActionEvent> btn1, String btn2text, EventHandler<ActionEvent> btn2) {
-        super(parent);
+        this.parent = parent;
+        this.instance = new JFXPopup(this.getRegion());
         this.alertTitle.setText(title);
         this.alertBody.setText(body);
         this.button1.setText(btn1text.toUpperCase());
@@ -49,5 +54,20 @@ public class OptionAlertController extends AbstractPopupController {
     @Override
     public String getURL() {
         return "views/OptionAlert.fxml";
+    }
+
+    @Override
+    public JFXPopup getInstance() {
+        return this.instance;
+    }
+
+    @Override
+    public Region getRegion() {
+        return this.root;
+    }
+
+    @Override
+    public Parent getParent() {
+        return this.parent;
     }
 }
