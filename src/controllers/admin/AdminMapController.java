@@ -89,16 +89,19 @@ public class AdminMapController extends AbstractController implements IClickable
     }
 
     public void handleMouseClick(MouseEvent e) {
-        // unselect if already selecting node
-        if (nodeIsSelected()) {
-            attemptUnselectNode();
-            // add new node if not selecting node
-        } else {
-            // convert the mouse coordinates to map coordinates
-            Point2D p = new Point2D(e.getX(), e.getY());
-            addNode(p.getX(), p.getY(), "NONE");
-            // pass along mouse press to the node
-            selectedNode.fireEvent(e);
+        //Don't switch selections when connecting/disconnecting nodes
+        if(!e.isShiftDown()) {
+            // unselect if already selecting node
+            if (nodeIsSelected()) {
+                attemptUnselectNode();
+                // add new node if not selecting node
+            } else {
+                // convert the mouse coordinates to map coordinates
+                Point2D p = new Point2D(e.getX(), e.getY());
+                addNode(p.getX(), p.getY(), "NONE");
+                // pass along mouse press to the node
+                selectedNode.fireEvent(e);
+            }
         }
     }
 
