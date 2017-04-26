@@ -101,7 +101,7 @@ public class Path {
 
             if(waiting) continue;
 
-            if(getStep(i).getNodeType().equals(NodeType.Elevator) && getStep(i-1).getNodeType().equals(NodeType.Elevator)) {
+            if(!getStep(i).getNodeType().equals(NodeType.Elevator) && getStep(i-1).getNodeType().equals(NodeType.Elevator)) {
                 str.append(stepNum).append(". Ride the elevator to the ").append(Utils.strForNum(getStep(i).getFloor())).append(" floor and exit.\n");
                 steps.add(new DirectionStep(DirectionIcon.STRAIGHT, "Ride the elevator to the " + Utils.strForNum(getStep(i).getFloor()) + " floor"));
                 stepNum ++;
@@ -180,7 +180,7 @@ public class Path {
 
         for (Node n : path) {
             String floor = Utils.strForNum(n.getFloor()) + " Floor";
-            if(!results.contains(floor)) results.add(floor);
+            if(!n.getNodeType().equals(NodeType.Elevator) && !results.contains(floor)) results.add(floor);
         }
 
         return results;
