@@ -167,6 +167,33 @@ public class PathfindingManager {
         return distance;
     }
 
+    public int timeInSeconds(Node end, Node start) throws PathNotFoundException, NearestNotFoundException, FloorNotReachableException {
+
+        int timeTaken = 0;
+        Path path = findPath(start, end);
+        double distance = (double)totalDistance(end, start);
+        int count = 0;
+        int minimumElevatorTime = 20;
+        double averagePace = 4.54667;
+        int floorDifference = 0;
+        int elevatorTime = 14;
+        for(Node n: path.getPath()){
+            if(n.getPrimaryLocType().equals(LocationType.Elevator)){
+                count++;
+            }
+        }
+
+        for(int i = 0; i <= path.getPath().size(); i++){
+            if(path.getPath().get(i+1).getFloor() != path.getPath().get(i).getFloor(){
+                floorDifference += Math.abs(path.getPath().get(i+1).getFloor() - path.getPath().get(i).getFloor());
+            }
+        }
+
+        timeTaken = (int)((distance/averagePace)+ ((count/2)*minimumElevatorTime)+ (floorDifference*elevatorTime));
+
+        return timeTaken;
+    }
+
     public Node getRoom(String roomName) throws RoomNotFoundException {
         if(!this.ids.containsKey(roomName)) {
             throw new RoomNotFoundException(roomName);
