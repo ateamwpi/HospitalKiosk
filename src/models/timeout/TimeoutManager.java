@@ -1,6 +1,7 @@
-package core;
+package models.timeout;
 
 import controllers.WelcomeScreenController;
+import core.KioskMain;
 import javafx.application.Platform;
 
 import java.util.Timer;
@@ -9,8 +10,9 @@ import java.util.TimerTask;
 /**
  * Created by zack on 4/24/2017.
  */
-public class Timeout {
-    private Timer timer = new Timer();
+public class TimeoutManager {
+
+    private Timer timer;
 
     private TimerTask task = new TimerTask() {
         @Override
@@ -25,7 +27,9 @@ public class Timeout {
         }
     };
 
-    public Timeout(){}
+    public TimeoutManager(){
+        timer = new Timer();
+    }
 
     public void startTimer() {
         System.out.println("Starting timer!");

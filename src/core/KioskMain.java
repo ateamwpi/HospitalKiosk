@@ -11,8 +11,10 @@ import models.dir.LocationType;
 import models.login.LoginManager;
 import models.path.Node;
 import models.path.PathfindingManager;
+import models.timeout.TimeoutManager;
 import models.tts.TTSManager;
 import models.ui.UIManager;
+import org.junit.rules.Timeout;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -25,6 +27,10 @@ public class KioskMain extends Application {
     private static TTSManager theTTSManager;
     private static UIManager theUIManager;
     private static LoginManager theLoginManager;
+
+
+
+    private static TimeoutManager theTimeoutManager;
 
     private static final boolean DEBUG = false;
     private static final String MAIN_ENTR_NAME = "Main Entrance";
@@ -60,7 +66,9 @@ public class KioskMain extends Application {
 
     public static UIManager getUI() { return theUIManager; }
 
-    public static LoginManager getLogin() { return theLoginManager; };
+    public static LoginManager getLogin() { return theLoginManager; }
+
+    public static TimeoutManager getTimeout() { return theTimeoutManager; }
 
     private static void initManagers() {
         initDBMg();
@@ -68,6 +76,7 @@ public class KioskMain extends Application {
         initDirMg();
         initTTSMg();
         initLoginMg();
+        initTimeoutMg();
     }
 
     private static void initDBMg() {
@@ -155,5 +164,9 @@ public class KioskMain extends Application {
 
     private static void initUIMg(Stage stage) {
         theUIManager = new UIManager(stage);
+    }
+
+    private static void initTimeoutMg() {
+        theTimeoutManager = new TimeoutManager();
     }
 }
