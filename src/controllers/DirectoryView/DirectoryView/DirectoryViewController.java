@@ -1,7 +1,8 @@
-package controllers.DirectoryView;
+package controllers.DirectoryView.DirectoryView;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPopup;
+import controllers.DirectoryView.AbstractDirectoryViewController;
 import controllers.PopupView.IPopup;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,7 +17,7 @@ import java.util.function.Consumer;
 /**
  * Created by Kevin O'Brien on 4/24/2017.
  */
-public class DirectionsDirectoryController extends AbstractDirectoryViewController implements IPopup {
+public class DirectoryViewController extends AbstractDirectoryViewController implements IPopup {
 
     private Parent parent;
     private JFXPopup instance;
@@ -27,7 +28,7 @@ public class DirectionsDirectoryController extends AbstractDirectoryViewControll
     @FXML
     private JFXButton backButton;
 
-    public DirectionsDirectoryController(Parent parent, Consumer<Location> onSelect, boolean needsAccept) {
+    public DirectoryViewController(Parent parent, Consumer<Location> onSelect, boolean needsAccept) {
         this.parent = parent;
         this.onSelect = onSelect;
         if(!needsAccept) {
@@ -51,7 +52,7 @@ public class DirectionsDirectoryController extends AbstractDirectoryViewControll
 
     @Override
     public String getURL() {
-        return "resources/views/DirectoryView/DirectionsDirectoryView.fxml";
+        return "resources/views/DirectoryView/DirectoryView/DirectoryView.fxml";
     }
 
     @FXML

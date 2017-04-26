@@ -7,7 +7,7 @@ import controllers.AbstractController;
 import controllers.LoginView.LoginViewController;
 import controllers.DirectoryView.ManageDirectoryView.ManageDirectoryViewController;
 import controllers.MapView.ManageMapView.ManageMapViewController;
-import controllers.DirectoryView.DirectionsDirectoryController;
+import controllers.DirectoryView.DirectoryView.DirectoryViewController;
 import controllers.PopupView.TextboxAlertViewController;
 import core.KioskMain;
 import core.Utils;
@@ -91,7 +91,7 @@ public class MenuItem extends AbstractController {
         }
 
         private static void userDirPressed(MouseEvent e, Parent mainRoot) {
-            DirectionsDirectoryController dir = new DirectionsDirectoryController(mainRoot, (location -> {
+            DirectoryViewController dir = new DirectoryViewController(mainRoot, (location -> {
                 System.out.println("you clicked " + location);
             }), false);
             dir.showCentered();
