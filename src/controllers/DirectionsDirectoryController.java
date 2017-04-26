@@ -5,6 +5,8 @@ import com.jfoenix.controls.JFXPopup;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import models.dir.Location;
@@ -31,6 +33,18 @@ public class DirectionsDirectoryController extends AbstractDirectoryViewControll
             okButton.setDisable(true);
         }
         this.instance = new JFXPopup(this.getRegion());
+
+        this.getRoot().setOnKeyPressed(this::keySubmit);
+        this.locationsTable.setOnKeyPressed(this::keySubmit);
+    }
+
+    private void keySubmit(KeyEvent event) {
+        System.out.println("directory press");
+        if (event.getCode().equals(KeyCode.ENTER) && this.destination != null) {
+            selectLocation(destination);
+            getInstance().hide();
+            event.consume();
+        }
     }
 
     @Override

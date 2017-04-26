@@ -48,6 +48,7 @@ public class AlertController extends AbstractController implements IPopup {
             if (event.getCode().equals(KeyCode.ENTER)) {
                 if(this.onClose != null) onClose.accept(event);
                 this.getInstance().hide();
+                event.consume();
             }
         });
     }

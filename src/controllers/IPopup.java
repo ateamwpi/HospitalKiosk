@@ -51,4 +51,8 @@ public interface IPopup {
         KioskMain.getUI().setPopup(null);
         this.getInstance().hide();
     }
+
+    default boolean hasFocus() {
+        return KioskMain.getUI().getPopup().getClass().equals(this.getClass());
+    }
 }
