@@ -50,6 +50,8 @@ public class KioskMain extends Application {
         initManagers();
         // Launch the JavaFX application after initial setup
         launch(args);
+        // Stop the timer thread when the application closes
+        getTimeout().stopTimer();
     }
 
     public static DirectoryManager getDir() {
