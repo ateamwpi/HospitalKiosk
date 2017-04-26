@@ -173,28 +173,28 @@ public class PathfindingManager {
     }
 
     private Path findSameBuilding(Node start, Node end) throws PathNotFoundException, NearestNotFoundException, FloorNotReachableException {
-        if (start.getFloor() != end.getFloor()) {
-            HashMap<Location, Double> nearests = getNearest(LocationType.Elevator, start);
-            Node curr;
-            Node matching;
-            Location min;
-            do {
-                try {
-                    min = Collections.min(nearests.entrySet(), Comparator.comparingInt(entry -> (int) entry.getValue().doubleValue())).getKey();
-                } catch (NoSuchElementException e) {
-                    throw new FloorNotReachableException(start, end.getFloor());
-                }
-                curr = min.getNode();
-                matching = findMatching(curr, end.getFloor(), LocationType.Elevator);
-                nearests.remove(min);
-            } while (matching == null);
-            Path startFloor = cur.findPath(start, curr);
-            Path endFloor = cur.findPath(matching, end);
-            return startFloor.addSteps(endFloor);
-        }
-        else {
+//        if (start.getFloor() != end.getFloor()) {
+//            HashMap<Location, Double> nearests = getNearest(LocationType.Elevator, start);
+//            Node curr;
+//            Node matching;
+//            Location min;
+//            do {
+//                try {
+//                    min = Collections.min(nearests.entrySet(), Comparator.comparingInt(entry -> (int) entry.getValue().doubleValue())).getKey();
+//                } catch (NoSuchElementException e) {
+//                    throw new FloorNotReachableException(start, end.getFloor());
+//                }
+//                curr = min.getNode();
+//                matching = findMatching(curr, end.getFloor(), LocationType.Elevator);
+//                nearests.remove(min);
+//            } while (matching == null);
+//            Path startFloor = cur.findPath(start, curr);
+//            Path endFloor = cur.findPath(matching, end);
+//            return startFloor.addSteps(endFloor);
+//        }
+//        else {
             return cur.findPath(start, end);
-        }
+//        }
     }
 
     public Collection<String> getRoomNames() {

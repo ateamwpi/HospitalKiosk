@@ -8,17 +8,17 @@ import java.util.HashMap;
  * nice
  */
 public enum LocationType {
-    Room(),
-    Service(),
-    Physician(),
-    PointOfInterest(),
-    Restroom(),
-    Kiosk(),
-    Entrance(),
-    Staircase(),
-    Elevator(),
-    Hallway(),
-    Unknown();
+    Room,
+    Service,
+    Physician,
+    PointOfInterest,
+    Restroom,
+    Kiosk,
+    Entrance,
+    Staircase,
+    Elevator,
+    Hallway,
+    Unknown;
 
     private static final HashMap<String, LocationType> names = new HashMap<>();
 

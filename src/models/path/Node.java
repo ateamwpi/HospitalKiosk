@@ -87,7 +87,7 @@ public class Node {
     }
 
     public void addConnection(Node other) throws WrongFloorException {
-        if(getFloor() != other.getFloor()) {
+        if(getFloor() != other.getFloor() && !this.nodeType.equals(NodeType.Elevator)) {
             throw new WrongFloorException(this, other);
         }
         if(!connections.contains(other)) {
