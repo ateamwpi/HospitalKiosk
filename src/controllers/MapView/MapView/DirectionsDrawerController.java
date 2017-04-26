@@ -3,7 +3,7 @@ package controllers.MapView.MapView;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import controllers.AbstractController;
-import controllers.DirectoryView.DirectionsDirectoryController;
+import controllers.DirectoryView.DirectoryView.DirectoryViewController;
 import controllers.MapView.Map.MapController;
 import core.KioskMain;
 import core.Utils;
@@ -101,11 +101,11 @@ public class DirectionsDrawerController extends AbstractController {
         start.textProperty().addListener(observable -> handleKeyPressStart());
         end.textProperty().addListener(observable -> handleKeyPressEnd());
         startDir.setOnMouseClicked(event -> {
-            DirectionsDirectoryController dir = new DirectionsDirectoryController(mainRoot, this::setStart, true);
+            DirectoryViewController dir = new DirectoryViewController(mainRoot, this::setStart, true);
             dir.showCentered();
         });
         endDir.setOnMouseClicked(event -> {
-            DirectionsDirectoryController dir = new DirectionsDirectoryController(mainRoot, this::setEnd, true);
+            DirectoryViewController dir = new DirectoryViewController(mainRoot, this::setEnd, true);
             dir.showCentered();
         });
         // show search container
