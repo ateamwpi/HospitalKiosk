@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXTextField;
 import controllers.AbstractController;
 import controllers.map.MapController;
 import core.KioskMain;
+import core.Utils;
 import core.exception.FloorNotReachableException;
 import core.exception.NearestNotFoundException;
 import core.exception.PathNotFoundException;
@@ -215,8 +216,21 @@ public class DrawerController extends AbstractController {
                 mapController.drawPath(path);
                 mapController.enableButtons(path.getFloorsSpanning());
 
-            } catch (PathNotFoundException | NearestNotFoundException | FloorNotReachableException e) {
-                e.printStackTrace();
+            } catch (PathNotFoundException e) {
+                // Path not found
+                // should only happen if an admin adds a dead end/unconnected node
+                String body = "There is no known way to get from " + startLocation.getNode().getRoomName() + " to " + endLocation.getNode().getRoomName() + "!\nThis is most likely caused by an issue with the database. Please contact a hospital administrator to fix this problem!";
+                Utils.showAlert(getRoot(),"Path Not Found!", body);
+            }
+            catch (NearestNotFoundException e) {
+                // this should only happen if there is no elevator on the current floor
+                String body = "There is no elevator on the " + Utils.strForNum(startLocation.getNode().getFloor()) + " Floor!\nThis is most likely caused by an issue with the database. Please contact a hospital administrator to fix this problem!";
+                Utils.showAlert(getRoot(), "Elevator Not Found!", body);
+            }
+            catch (FloorNotReachableException e) {
+                // this should only happen if the admin messes with the elevators
+                String body = "There is no known way to reach the " + Utils.strForNum(endLocation.getNode().getFloor()) + " Floor from the " + Utils.strForNum(startLocation.getNode().getFloor()) + " Floor!\nThis is most likely caused by an issue with the database. Please contact a hospital administrator to fix this problem!";
+                Utils.showAlert(getRoot(), "Floor Not Reachable!", body);
             }
         }
     }
