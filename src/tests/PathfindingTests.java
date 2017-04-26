@@ -1,8 +1,10 @@
 package tests;
 
+import core.KioskMain;
 import core.exception.FloorNotReachableException;
 import core.exception.NearestNotFoundException;
 import core.exception.PathNotFoundException;
+import core.exception.RoomNotFoundException;
 import models.dir.LocationType;
 import models.path.Node;
 import models.path.Path;
@@ -24,7 +26,9 @@ import static org.junit.Assert.fail;
  */
 public class PathfindingTests {
 
-    public PathfindingTests() {}
+    public PathfindingTests() {
+        //KioskMain.initManagers();
+    }
 
     private PathfindingManager pm1;
     private PathfindingManager pm2;
@@ -207,9 +211,6 @@ public class PathfindingTests {
     }
 
 
-
-
-
     @Test
     public void testBFS1() throws PathNotFoundException, NearestNotFoundException, FloorNotReachableException  {
         pm1.selectAlgorithm("Breadth-First Search");
@@ -385,6 +386,19 @@ public class PathfindingTests {
 
         pm2.getNearest(Restroom, pm2.getNode(1));
     }
+
+
+    @Test(expected = RoomNotFoundException.class)
+    public void testNoRoom1() throws RoomNotFoundException{
+        pm1.getRoom("NonExistentRoom");
+    }
+
+
+    @Test(expected = RoomNotFoundException.class)
+    public void testNoRoom2() throws RoomNotFoundException{
+        pm1.getRoom("NonExistentRoom");
+    }
+
 
 
 }
