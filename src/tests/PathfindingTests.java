@@ -265,6 +265,8 @@ public class PathfindingTests {
         pm2.findPath(pm2.getNode(26), pm2.getNode(1));
     }
 
+
+
     @Test(expected = FloorNotReachableException.class)
     public void testBFS5() throws PathNotFoundException, NearestNotFoundException, FloorNotReachableException {
         pm1.selectAlgorithm("Breadth-First Search");
