@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="root" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
       <GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
           <columnConstraints>
               <ColumnConstraints fillWidth="false" hgrow="ALWAYS" maxWidth="412.33331298828125" minWidth="72.33334350585938" prefWidth="161.0" />
@@ -20,7 +20,8 @@
           </columnConstraints>
           <rowConstraints>
               <RowConstraints maxHeight="99.0" minHeight="10.0" vgrow="SOMETIMES" />
-              <RowConstraints maxHeight="687.6666717529297" minHeight="10.0" prefHeight="423.3333435058594" vgrow="SOMETIMES" />
+              <RowConstraints maxHeight="687.6666717529297" minHeight="10.0" prefHeight="403.0" vgrow="SOMETIMES" />
+         <RowConstraints maxHeight="687.6666717529297" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
           </rowConstraints>
           <VBox fx:id="locationTypes" prefHeight="439.0" prefWidth="141.0" spacing="10.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
          <JFXTextField fx:id="searchBox" promptText="Search" />
@@ -39,6 +40,17 @@
          </GridPane.margin>
           </TableView>
       <JFXButton onAction="#clickBack" styleClass="alert-button" stylesheets="@style.css" text="x" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
+         <font>
+            <Font size="16.0" />
+         </font>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <GridPane.margin>
+            <Insets bottom="5.0" right="5.0" top="5.0" />
+         </GridPane.margin>
+      </JFXButton>
+      <JFXButton fx:id="okButton" onAction="#clickOK" styleClass="alert-button" stylesheets="@style.css" text="OK" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
          <font>
             <Font size="16.0" />
          </font>

@@ -1,5 +1,6 @@
 package controllers;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPopup;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,6 +18,9 @@ public class DirectionsDirectoryController extends AbstractDirectoryViewControll
     private Parent parent;
     private JFXPopup instance;
     private Consumer<Location> onSelect;
+    private Location destination;
+    @FXML
+    private JFXButton okButton;
 
     public DirectionsDirectoryController(Parent parent, Consumer<Location> onSelect) {
         this.parent = parent;
@@ -35,11 +39,16 @@ public class DirectionsDirectoryController extends AbstractDirectoryViewControll
         initializeFilter();
         setFullDirectory();
         addLocationBtns("alert-button", 150);
+        okButton.setDisable(true);
+
 
         // listen to location table selection event
         locationsTable.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
             if (locationsTable.getSelectionModel().getSelectedItem() != null) {
-                selectLocation(newValue);
+                destination = newValue;
+                okButton.setDisable(false);
+            } else {
+                okButton.setDisable(true);
             }
         });
     }
@@ -47,6 +56,12 @@ public class DirectionsDirectoryController extends AbstractDirectoryViewControll
     @FXML
     private void clickBack(ActionEvent event) {
         this.instance.hide();
+    }
+
+    @FXML
+    private void clickOK(ActionEvent event) {
+        selectLocation(destination);
+        getInstance().hide();
     }
 
     private void selectLocation(Location loc) {
@@ -67,5 +82,6 @@ public class DirectionsDirectoryController extends AbstractDirectoryViewControll
     public Parent getParent() {
         return this.parent;
     }
+
 
 }
