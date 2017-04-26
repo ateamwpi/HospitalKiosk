@@ -23,6 +23,7 @@ import models.path.Node;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The abstract class that handles the Directory views.
@@ -155,7 +156,7 @@ public abstract class AbstractDirectoryViewController extends AbstractController
     private Collection<Location> getLocationsOfType(LocationType locType) {
         if (directories.containsKey(locType)) {
             Directory dir = directories.get(locType);
-            HashMap<Integer, Location> locations = dir.getLocations();
+            Map<Integer, Location> locations = dir.getLocations();
             return locations.values();
         }
         return new ArrayList<>(); //returns empty array list if there are no locations of given type

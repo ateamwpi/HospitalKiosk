@@ -3,6 +3,8 @@ package models.dir;
 import core.KioskMain;
 
 import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by mattm on 3/29/2017.
@@ -16,8 +18,13 @@ public class Directory {
         this.entries = new HashMap<>();
     }
 
-    public HashMap<Integer, Location> getLocations() {
-        return entries;
+    public Map<Integer, Location> getLocations() {
+        Map<Integer, Location> clone = (HashMap<Integer, Location>) entries.clone();
+
+        if(KioskMain.getLogin().getState().hasAccess())
+            return clone;
+        else
+            return clone.entrySet().stream().filter(e -> !e.getValue().isRestricted()).collect(Collectors.toMap(e->e.getKey(), e->e.getValue()));
     }
 
     public void addLocation(Location l) {

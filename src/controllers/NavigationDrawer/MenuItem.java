@@ -6,6 +6,7 @@ import controllers.LoginView.LoginViewController;
 import controllers.DirectoryView.ManageDirectoryView.ManageDirectoryViewController;
 import controllers.MapView.ManageMapView.ManageMapViewController;
 import controllers.DirectoryView.DirectionsDirectoryController;
+import controllers.PopupView.TextboxAlertViewController;
 import core.KioskMain;
 import core.Utils;
 import core.exception.RoomNotFoundException;
@@ -31,7 +32,8 @@ public class MenuItem extends AbstractController {
         ManageDir("Manage Directory", "dir", EnumMenuItem::manageDirPressed),
         SelectAlgo("Select Path Algorithm", "settings", EnumMenuItem::selectAlgoPressed),
         SelectKiosk("Select Kiosk Location", "settings", EnumMenuItem::selectKioskPressed),
-        UserDir("View Directory", "dir", EnumMenuItem::userDirPressed);
+        UserDir("View Directory", "dir", EnumMenuItem::userDirPressed),
+        SelectTimeout("Select Timeout Delay", "settings", EnumMenuItem::timeoutPressed);
 
         final String path;
         final String text;
@@ -89,6 +91,22 @@ public class MenuItem extends AbstractController {
                 System.out.println("you clicked " + location);
             }), false);
             dir.showCentered();
+        }
+
+        private static void timeoutPressed(MouseEvent e, Parent mainRoot) {
+            TextboxAlertViewController text = new TextboxAlertViewController(mainRoot, "Select Timeout Delay",
+                    "Choose how long (in ms) the application should wait before signing out and returning to the splash screen.",
+                    "9000", (t) -> {
+                System.out.println("got " + t);
+            }, (t) -> {
+                try {
+                    Integer.parseInt(t);
+                    return true;
+                } catch (NumberFormatException ex) {
+                    return false;
+                }
+            });
+            text.showCentered();
         }
     }
 
