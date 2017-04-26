@@ -1,6 +1,6 @@
 package models.timeout;
 
-import controllers.WelcomeScreenController;
+import controllers.WelcomeView.WelcomeViewController;
 import core.KioskMain;
 import javafx.application.Platform;
 
@@ -13,12 +13,22 @@ import java.util.TimerTask;
 public class TimeoutManager {
 
     private Timer timer;
+    private int delay;
 
-    public TimeoutManager(){}
+    public TimeoutManager() {
+        this.delay = 90000;
+    }
+
+    public synchronized void setDelay(int value) {
+        this.delay = value;
+        resetTimer();
+    }
+
+    public int getDelay() {
+        return this.delay;
+    }
 
     public synchronized void resetTimer() {
-        System.out.println("hi buddie");
-
         if (timer != null) {
             timer.cancel();
             timer.purge();
@@ -31,20 +41,19 @@ public class TimeoutManager {
             public void run() {
                 Platform.runLater(
                         () -> {
-                            KioskMain.getUI().setScene(new WelcomeScreenController());
+                            KioskMain.getUI().setScene(new WelcomeViewController());
+                            KioskMain.getLogin().logout();
                         });
             }
         };
 
-        timer.schedule(task, 90000);
+        timer.schedule(task, this.delay);
     }
 
     public synchronized void stopTimer() {
         if (timer != null) {
-            System.out.println("hellpo");
             timer.cancel();
             timer.purge();
-            System.out.println("goodby");
         }
     }
 }

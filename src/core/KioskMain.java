@@ -1,6 +1,6 @@
 package core;
 
-import controllers.WelcomeScreenController;
+import controllers.WelcomeView.WelcomeViewController;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import models.db.DatabaseManager;
@@ -18,6 +18,7 @@ import org.junit.rules.Timeout;
 
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Map;
 
 public class KioskMain extends Application {
 
@@ -27,9 +28,6 @@ public class KioskMain extends Application {
     private static TTSManager theTTSManager;
     private static UIManager theUIManager;
     private static LoginManager theLoginManager;
-
-
-
     private static TimeoutManager theTimeoutManager;
 
     private static final boolean DEBUG = false;
@@ -42,7 +40,7 @@ public class KioskMain extends Application {
         initUIMg(stage);
         // load the main menu
         //getUI().setScene(new MapViewControllerOLD());
-        getUI().setScene(new WelcomeScreenController());
+        getUI().setScene(new WelcomeViewController());
     }
 
     public static void main(String[] args) {
@@ -74,10 +72,10 @@ public class KioskMain extends Application {
 
     private static void initManagers() {
         initDBMg();
+        initLoginMg();
         initPathMg();
         initDirMg();
         initTTSMg();
-        initLoginMg();
         initTimeoutMg();
     }
 
@@ -112,7 +110,7 @@ public class KioskMain extends Application {
     private static void initDirMg() {
         // create the directory manager with directories from the db
         HashMap<LocationType, Directory> allDirectories = getDB().getAllDirectories();
-        HashMap<Integer, Location> kiosks = allDirectories.get(LocationType.Kiosk).getLocations();
+        Map<Integer, Location> kiosks = allDirectories.get(LocationType.Kiosk).getLocations();
 
         // Find the kiosk
         if(kiosks.size() > 1) {

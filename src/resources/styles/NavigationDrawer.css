@@ -1,0 +1,20 @@
+
+.title-text {
+    /*-fx-alignment: center-left;*/
+    -fx-text-fill: black;
+    -fx-font: bold 26px sannserif;
+}
+
+.alert-body {
+    -fx-text-fill: black;
+    -fx-font: 15px system;
+}
+
+.button-body {
+    -fx-text-fill: black;
+    -fx-font: 15px system;
+}
+.button-body:hover {
+    -fx-text-fill: royalblue;
+    -fx-font: 15px system;
+}

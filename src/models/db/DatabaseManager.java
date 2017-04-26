@@ -22,7 +22,7 @@ public class DatabaseManager {
     public void connect() throws SQLException, ClassNotFoundException {
         Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
         System.out.println("Successfully located database drivers.");
-        this.conn = DriverManager.getConnection("jdbc:derby:hospitalDB;create=false");
+        conn = DriverManager.getConnection("jdbc:derby:hospitalDB;create=false");
         System.out.println("Successfully connected to database.");
     }
 
@@ -30,8 +30,8 @@ public class DatabaseManager {
 
     public HashMap<LocationType, Directory> getAllDirectories() {
         // Run SQL query to get all LOCATIONS from the database
-        HashMap<LocationType, Directory> allDirectories = new HashMap<LocationType, Directory>();
-        Statement stmt = null;
+        HashMap<LocationType, Directory> allDirectories = new HashMap<>();
+        Statement stmt;
         ResultSet rset = null;
         try {
             stmt = conn.createStatement();
@@ -52,6 +52,7 @@ public class DatabaseManager {
 
         try {
             // Go through each entry and create a new Location object
+            assert rset != null;
             while (rset.next()) {
                 id = rset.getInt("ID");
                 nodeid = rset.getInt("NODEID");
@@ -123,7 +124,7 @@ public class DatabaseManager {
 
     public HashMap<Integer, Node> getAllNodes() {
         // Run SQL query to get all NODEs from the database
-        HashMap<Integer, Node> allNodes = new HashMap<Integer, Node>();
+        HashMap<Integer, Node> allNodes = new HashMap<>();
         Statement stmt = null;
         ResultSet rset = null;
         try {
@@ -138,8 +139,10 @@ public class DatabaseManager {
         boolean restricted;
         String roomName;
 
+        //noinspection TryWithIdenticalCatches
         try {
             // Go through each entry one at a time and make a new Node object
+            assert rset != null;
             while (rset.next()) {
                 id = rset.getInt("ID");
                 x = rset.getInt("X");

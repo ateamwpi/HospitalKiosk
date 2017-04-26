@@ -1,6 +1,6 @@
 package models.ui;
 
-import controllers.AbstractPopupController;
+import controllers.PopupView.IPopup;
 import controllers.IController;
 import core.KioskMain;
 import models.timeout.TimeoutManager;
@@ -19,11 +19,11 @@ import javafx.stage.Stage;
  */
 public class UIManager {
 
-    private Stage stage;
+    private final Stage stage;
     private Parent root;
     private Scene scene;
 
-    private AbstractPopupController popup;
+    private IPopup popup;
     private static DoubleProperty fontSize = new SimpleDoubleProperty(15);
 
     public UIManager(Stage stage) {
@@ -32,7 +32,11 @@ public class UIManager {
     }
 
     public void setScene(IController controller) {
-        scene = new Scene(controller.getRoot());
+        if (scene == null){
+            scene = new Scene(controller.getRoot());
+        } else {
+            scene = new Scene(controller.getRoot(), scene.getWidth(), scene.getHeight());
+        }
 
         scene.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
             @Override
@@ -63,8 +67,6 @@ public class UIManager {
 //        stage.setHeight(bounds.getHeight());
 
         stage.setScene(scene);
-
-
     }
 
     public Node lookup(String query) {
@@ -83,11 +85,11 @@ public class UIManager {
         return root;
     }
 
-    public AbstractPopupController getPopup() {
+    public IPopup getPopup() {
         return popup;
     }
 
-    public void setPopup(AbstractPopupController popup) {
+    public void setPopup(IPopup popup) {
         this.popup = popup;
     }
 }

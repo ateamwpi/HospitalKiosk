@@ -1,46 +1,45 @@
 package models.login;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * Created by mattm on 4/21/2017
  */
 public class LoginManager {
 
-    private ArrayList<AbstractUserType> accounts = new ArrayList<>();
-    private ArrayList<ILoginObserver> observers = new ArrayList<>();
-    private AbstractUserType defaultAccount;
+    private final ArrayList<AbstractUserType> accounts = new ArrayList<>();
+    private final ArrayList<ILoginObserver> observers = new ArrayList<>();
+    private final AbstractUserType defaultAccount;
     private AbstractUserType currentState;
 
     public LoginManager() {
-        this.defaultAccount = new UserTypeGuest();
-        this.addUserType(new UserTypeProfessional());
-        this.addUserType(new UserTypeAdministrator());
-        this.currentState = defaultAccount;
-        System.out.println("Loaded UserTypes: " + this.accounts);
-        System.out.println("Selected UserType: " + this.currentState);
+        defaultAccount = new UserTypeGuest();
+        addUserType(new UserTypeProfessional());
+        addUserType(new UserTypeAdministrator());
+        currentState = defaultAccount;
+        System.out.println("Loaded UserTypes: " + accounts);
+        System.out.println("Selected UserType: " + currentState);
     }
 
     public void attachObserver(ILoginObserver o) {
-        this.observers.add(o);
+        observers.add(o);
     }
 
-    public void notifyObservers() {
-        for(ILoginObserver l : this.observers) {
+    private void notifyObservers() {
+        for(ILoginObserver l : observers) {
             l.onAccountChanged();
         }
     }
 
     private void addUserType(AbstractUserType u) {
-        this.accounts.add(u);
+        accounts.add(u);
     }
 
     public boolean tryLogin(String username, String password) {
-        for(AbstractUserType userType : this.accounts) {
-            if(!userType.equals(this.currentState) && userType.tryLogin(username, password)) {
-                this.currentState = userType;
-                this.notifyObservers();
+        for(AbstractUserType userType : accounts) {
+            if(!userType.equals(currentState) && userType.tryLogin(username, password)) {
+                currentState = userType;
+                notifyObservers();
                 return true;
             }
         }
@@ -48,11 +47,11 @@ public class LoginManager {
     }
 
     public void logout() {
-        this.currentState = defaultAccount;
-        this.notifyObservers();
+        currentState = defaultAccount;
+        notifyObservers();
     }
 
     public AbstractUserType getState() {
-        return this.currentState;
+        return currentState;
     }
 }

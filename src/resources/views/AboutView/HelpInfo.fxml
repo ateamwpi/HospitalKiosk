@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXTabPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="root" styleClass="background" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox>
+         <children>
+            <HBox alignment="CENTER">
+               <children>
+                  <Label alignment="CENTER" styleClass="title" text="Info Guide" textAlignment="CENTER">
+                     <font>
+                        <Font name="SansSerif Bold" size="21.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <JFXTabPane prefHeight="425.0" prefWidth="337.0" tabMinWidth="160.0">
+               <tabs>
+                <Tab text="Directions Info">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0">
+                           <children>
+                              <VBox alignment="CENTER" layoutX="7.0" prefHeight="235.0" prefWidth="299.0">
+                                 <children>
+                                    <HBox alignment="CENTER" prefHeight="53.0" prefWidth="275.0">
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="1. Enter a starting location, by default kiosk is starting point." textAlignment="JUSTIFY" wrappingWidth="280.6708984375">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                          </Text>
+                                       </children>
+                                    </HBox>
+                                    <HBox fx:id="finish" alignment="CENTER" prefHeight="51.0" prefWidth="306.0">
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="2. Enter a starting destination, suggested locations listed below." textAlignment="JUSTIFY" wrappingWidth="281.6708984375">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                          </Text>
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER" prefHeight="80.0" prefWidth="278.0">
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="3. Path will be shown on the right. Can zoom in with scroll wheel or plus button on right. Pan around map with right click and drag." textAlignment="JUSTIFY" wrappingWidth="279.6708984375">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                          </Text>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+                <Tab text="Hours of Operation">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0">
+                           <children>
+                              <ScrollPane layoutY="1.0" prefHeight="390.0" prefWidth="339.0">
+                                <content>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0">
+                                       <children>
+                                          <VBox>
+                                             <children>
+                                                <HBox alignment="CENTER" prefHeight="73.0" prefWidth="306.0">
+                                                   <children>
+                                                      <VBox alignment="CENTER" prefHeight="122.0" prefWidth="293.0">
+                                                         <children>
+                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="General visiting hours " wrappingWidth="292.13671875">
+                                                               <font>
+                                                                  <Font name="System Bold" size="14.0" />
+                                                               </font>
+                                                            </Text>
+                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Between 1 p.m. and 9 p.m. All visiting children must be over the age of 12, with exception of patients children." wrappingWidth="271.6982421875">
+                                                               <font>
+                                                                  <Font size="14.0" />
+                                                               </font>
+                                                            </Text>
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER" prefHeight="50.0" prefWidth="273.0">
+                                                   <children>
+                                                      <VBox alignment="CENTER" prefHeight="48.0" prefWidth="290.0">
+                                                         <children>
+                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Urgent Care Center" wrappingWidth="289.13671875">
+                                                               <font>
+                                                                  <Font name="System Bold" size="14.0" />
+                                                               </font>
+                                                            </Text>
+                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Monday - Friday: 8am - 8pm                     Saturday and Sunday: 8am - 4pm" wrappingWidth="269.13671875">
+                                                               <font>
+                                                                  <Font size="14.0" />
+                                                               </font>
+                                                            </Text>
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER" prefHeight="36.0" prefWidth="306.0">
+                                                   <children>
+                                                      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                                                         <children>
+                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Mulit Specialty Clinic" wrappingWidth="287.13671875">
+                                                               <font>
+                                                                  <Font name="System Bold" size="14.0" />
+                                                               </font>
+                                                            </Text>
+                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Monday - Friday: 8am - 5pm" wrappingWidth="264.13671875">
+                                                               <font>
+                                                                  <Font size="14.0" />
+                                                               </font>
+                                                            </Text>
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER" prefHeight="37.0" prefWidth="306.0">
+                                                   <children>
+                                                      <VBox alignment="CENTER" prefHeight="69.0" prefWidth="292.0">
+                                                         <children>
+                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Radiology" wrappingWidth="288.13671875">
+                                                               <font>
+                                                                  <Font name="System Bold" size="14.0" />
+                                                               </font>
+                                                            </Text>
+                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Monday - Firday: 7:30am - 5pm" wrappingWidth="259.13671875">
+                                                               <font>
+                                                                  <Font size="14.0" />
+                                                               </font>
+                                                            </Text>
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER" prefHeight="51.0" prefWidth="269.0">
+                                                   <children>
+                                                      <VBox alignment="CENTER" prefHeight="51.0" prefWidth="271.0">
+                                                         <children>
+                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Laboratory/Phlebotomy" wrappingWidth="285.13671875">
+                                                               <font>
+                                                                  <Font name="System Bold" size="14.0" />
+                                                               </font>
+                                                            </Text>
+                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Monday - Fiday: 7:30am - 5:15pm" wrappingWidth="253.13671875">
+                                                               <font>
+                                                                  <Font size="14.0" />
+                                                               </font>
+                                                            </Text>
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER" prefHeight="29.0" prefWidth="306.0">
+                                                   <children>
+                                                      <VBox alignment="CENTER" prefHeight="55.0" prefWidth="310.0">
+                                                         <children>
+                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Primary Care" wrappingWidth="283.9521484375">
+                                                               <font>
+                                                                  <Font name="System Bold" size="14.0" />
+                                                               </font>
+                                                            </Text>
+                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Monday - Fiday: 7am - 5pm                   Except Thursday: 7am - 6pm" wrappingWidth="253.13671875">
+                                                               <font>
+                                                                  <Font size="14.0" />
+                                                               </font>
+                                                            </Text>
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER" prefHeight="8.0" prefWidth="306.0">
+                                                   <children>
+                                                      <VBox alignment="CENTER" prefHeight="63.0" prefWidth="291.0">
+                                                         <children>
+                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Orthopedics" wrappingWidth="283.13671875">
+                                                               <font>
+                                                                  <Font name="System Bold" size="14.0" />
+                                                               </font>
+                                                            </Text>
+                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Monday - Fiday: 8am - 5pm" wrappingWidth="247.13671875">
+                                                               <font>
+                                                                  <Font size="14.0" />
+                                                               </font>
+                                                            </Text>
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER" layoutX="10.0" layoutY="331.0" prefHeight="8.0" prefWidth="306.0">
+                                                   <children>
+                                                      <VBox alignment="CENTER" prefHeight="63.0" prefWidth="291.0">
+                                                         <children>
+                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Rehab" wrappingWidth="283.13671875">
+                                                               <font>
+                                                                  <Font name="System Bold" size="14.0" />
+                                                               </font>
+                                                            </Text>
+                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Monday - Thursday: 7am - 7pm             Friday: 7am-5pm" wrappingWidth="247.13671875">
+                                                               <font>
+                                                                  <Font size="14.0" />
+                                                               </font>
+                                                            </Text>
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER" layoutX="10.0" layoutY="364.0" prefHeight="8.0" prefWidth="306.0">
+                                                   <children>
+                                                      <VBox alignment="CENTER" prefHeight="63.0" prefWidth="291.0">
+                                                         <children>
+                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Day Surgery Unit" wrappingWidth="283.13671875">
+                                                               <font>
+                                                                  <Font name="System Bold" size="14.0" />
+                                                               </font>
+                                                            </Text>
+                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Monday - Friday: 6am - 6pm" wrappingWidth="247.13671875">
+                                                               <font>
+                                                                  <Font size="14.0" />
+                                                               </font>
+                                                            </Text>
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER" layoutX="10.0" layoutY="421.0" prefHeight="8.0" prefWidth="306.0">
+                                                   <children>
+                                                      <VBox alignment="CENTER" prefHeight="63.0" prefWidth="291.0">
+                                                         <children>
+                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Pharmacy (Health Care Center patients only)" wrappingWidth="283.13671875">
+                                                               <font>
+                                                                  <Font name="System Bold" size="14.0" />
+                                                               </font>
+                                                            </Text>
+                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Monday - Friday: 7am - 4:30pm" wrappingWidth="247.13671875">
+                                                               <font>
+                                                                  <Font size="14.0" />
+                                                               </font>
+                                                            </Text>
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER" layoutX="10.0" layoutY="462.0" prefHeight="8.0" prefWidth="306.0">
+                                                   <children>
+                                                      <VBox alignment="CENTER" prefHeight="63.0" prefWidth="291.0">
+                                                         <children>
+                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Cardiac Stress Lab" wrappingWidth="283.13671875">
+                                                               <font>
+                                                                  <Font name="System Bold" size="14.0" />
+                                                               </font>
+                                                            </Text>
+                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Monday/Wednesday/Friday: 8am - 4pm" wrappingWidth="247.13671875">
+                                                               <font>
+                                                                  <Font size="14.0" />
+                                                               </font>
+                                                            </Text>
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                </HBox>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </AnchorPane>
+                                </content>
+                              </ScrollPane>
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+               </tabs>
+            </JFXTabPane>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
