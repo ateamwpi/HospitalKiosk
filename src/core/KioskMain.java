@@ -35,7 +35,6 @@ public class KioskMain extends Application {
     private static DatabaseManager theDBManager;
     private static TTSManager theTTSManager;
     private static UIManager theUIManager;
-    private Timeout timeout = new Timeout();
 
     private static final boolean DEBUG = true;
     private static final String MAIN_ENTR_NAME = "Main Entrance";

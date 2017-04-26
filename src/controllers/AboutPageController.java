@@ -11,17 +11,6 @@ import java.util.TimerTask;
  * Created by Madeline on 4/18/2017.
  */
 public class AboutPageController extends AbstractController {
-    Timer timer = new Timer();
-
-    TimerTask task = new TimerTask()
-    {
-        public void run()
-        {
-            KioskMain.getUI().setScene(new AboutPageController());
-        }
-
-    };
-
     @Override
     public String getURL() { return "views/AboutPage.fxml"; }
 
