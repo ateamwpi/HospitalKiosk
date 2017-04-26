@@ -97,7 +97,12 @@ BNODEID</ColNames>
       <Position>5</Position>
       <DataType>INTEGER(10)|4</DataType>
     </column>
-    <key id="32" parent="15" name="PK_NODE">
+    <column id="32" parent="15" name="RESTRICTED">
+      <Position>6</Position>
+      <DataType>BOOLEAN(1)|16</DataType>
+      <DefaultExpression>FALSE</DefaultExpression>
+    </column>
+    <key id="33" parent="15" name="PK_NODE">
       <ColNames>ID</ColNames>
       <Primary>1</Primary>
     </key>

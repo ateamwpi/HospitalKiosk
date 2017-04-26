@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXCheckBox?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -28,7 +29,11 @@
                         <Line endX="100.0" startX="-100.0" />
                         <HBox>
                            <children>
-                              <Label fx:id="id" text="ID: Label" />
+                              <Label fx:id="id" text="ID: Label">
+                                 <HBox.margin>
+                                    <Insets right="18.0" />
+                                 </HBox.margin></Label>
+                              <JFXCheckBox fx:id="restrictedBox" text="Restricted" />
                            </children>
                         </HBox>
                         <JFXTextField labelFloat="true" promptText="X-Coordinate" fx:id="x" />

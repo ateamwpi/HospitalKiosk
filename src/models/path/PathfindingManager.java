@@ -5,8 +5,8 @@ import core.exception.*;
 import models.dir.Location;
 import models.dir.LocationType;
 import models.path.algo.AStar;
-import models.path.algo.BreadthFirst;
 import models.path.algo.AbstractPathfindingAlgorithm;
+import models.path.algo.BreadthFirst;
 import models.path.algo.DepthFirst;
 
 import java.util.*;

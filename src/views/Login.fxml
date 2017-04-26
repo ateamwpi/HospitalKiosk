@@ -2,17 +2,17 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="235.0" prefWidth="280.0" styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="285.0" prefWidth="280.0" styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <VBox prefHeight="208.0" prefWidth="275.0" spacing="20.0">
       <children>
-           <Label prefHeight="43.0" prefWidth="231.0" styleClass="alert-title" stylesheets="@style.css" text="Admin Login">
+           <Label prefHeight="43.0" prefWidth="231.0" styleClass="alert-title" stylesheets="@style.css" text="Login">
             <font>
                <Font name="SansSerif Bold" size="21.0" />
             </font>
@@ -20,11 +20,12 @@
                <Insets />
             </VBox.margin>
          </Label>
-         <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="alert-body" text="An administrator password is required." wrappingWidth="230.0">
+         <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="alert-body" text="Please enter the professional or admin account information." wrappingWidth="230.0">
             <font>
                <Font size="15.0" />
             </font>
          </Text>
+         <JFXTextField fx:id="username" labelFloat="true" promptText="Username" />
          <JFXPasswordField fx:id="password" labelFloat="true" maxWidth="-Infinity" minWidth="-Infinity" onKeyPressed="#keyPressed" prefHeight="25.0" prefWidth="224.0" promptText="Password">
             <VBox.margin>
                <Insets />

@@ -1,35 +1,35 @@
 package controllers.admin;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXTextField;
 import controllers.AbstractController;
-import controllers.IController;
 import controllers.map.DraggableNode;
 import controllers.map.MapController;
+import controllers.mapView.MapViewController;
 import core.KioskMain;
 import core.Utils;
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.util.StringConverter;
 import javafx.util.converter.IntegerStringConverter;
 import javafx.util.converter.NumberStringConverter;
 import models.path.Node;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.regex.Pattern;
 
 public class ManageMapViewController extends AbstractController {
@@ -39,6 +39,7 @@ public class ManageMapViewController extends AbstractController {
     private StringProperty xTextProperty;
     private StringProperty yTextProperty;
     private StringProperty roomNameProperty;
+    private BooleanProperty restrictedProperty;
     private StringConverter<Number> converter;
 
     private ArrayList<String> floorList;
@@ -68,6 +69,8 @@ public class ManageMapViewController extends AbstractController {
     @FXML
     private JFXTextField newNeighbor;
     @FXML
+    private JFXCheckBox restrictedBox;
+    @FXML
     private Label id;
 
     @Override
@@ -79,6 +82,7 @@ public class ManageMapViewController extends AbstractController {
     public void initData(Object... data) {
         xTextProperty = new SimpleStringProperty();
         yTextProperty = new SimpleStringProperty();
+        restrictedProperty = new SimpleBooleanProperty();
         roomNameProperty = new SimpleStringProperty();
         converter = new NumberStringConverter();
         floorList = new ArrayList<String>(Arrays.asList("1st Floor", "2nd Floor","3rd Floor", "4th Floor", "5th Floor", "6th Floor", "7th Floor"));
@@ -112,6 +116,7 @@ public class ManageMapViewController extends AbstractController {
         // init input text properties
         xTextProperty = x.textProperty();
         yTextProperty = y.textProperty();
+        restrictedProperty = restrictedBox.selectedProperty();
         roomNameProperty = room.textProperty();
         // format numeric text fields
         TextFormatter<Integer> numericX = new TextFormatter<>(
@@ -149,8 +154,11 @@ public class ManageMapViewController extends AbstractController {
         Bindings.bindBidirectional(xTextProperty, selectedNode.previewXProperty(), converter);
         Bindings.bindBidirectional(yTextProperty, selectedNode.previewYProperty(), converter);
         Bindings.bindBidirectional(roomNameProperty, selectedNode.previewRoomNameProperty());
+        Bindings.bindBidirectional(restrictedProperty, selectedNode.previewRestrictedProperty());
         // update node id
         id.setText("ID: " + Integer.toString(node.getID()));
+        restrictedBox.setVisible(true);
+        restrictedBox.setDisable(false);
         // show save button
         saveNode.setVisible(true);
         // enable add connection button
@@ -167,6 +175,7 @@ public class ManageMapViewController extends AbstractController {
             Bindings.unbindBidirectional(xTextProperty, selectedNode.previewXProperty());
             Bindings.unbindBidirectional(yTextProperty, selectedNode.previewYProperty());
             Bindings.unbindBidirectional(roomNameProperty, selectedNode.previewRoomNameProperty());
+            Bindings.unbindBidirectional(restrictedProperty, selectedNode.previewRestrictedProperty());
         }
         // unset selected node
         selectedNode = null;
@@ -175,6 +184,8 @@ public class ManageMapViewController extends AbstractController {
         x.setText("");
         y.setText("");
         room.setText("");
+        restrictedBox.setVisible(false);
+        restrictedBox.setDisable(true);
         // remove save button
         saveNode.setVisible(false);
         // disable add and delete connection buttons
@@ -202,7 +213,7 @@ public class ManageMapViewController extends AbstractController {
     @FXML
     private void clickBack(ActionEvent event) {
         if (adminMapController.attemptUnselectNode()) {
-            KioskMain.getUI().setScene(new AdminMenuController());
+            KioskMain.getUI().setScene(new MapViewController());
         }
     }
 

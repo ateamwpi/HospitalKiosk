@@ -1,41 +1,30 @@
 package controllers.mapView;
 
-import com.jfoenix.controls.JFXTextField;
 import controllers.AboutPageController;
 import controllers.AbstractController;
-import controllers.OptionAlertController;
-import controllers.admin.AdminLoginController;
+import controllers.mapView.MenuItem.EnumMenuItem;
 import core.KioskMain;
-import core.exception.FloorNotReachableException;
-import core.exception.NearestNotFoundException;
-import core.exception.PathNotFoundException;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import models.dir.Location;
-import models.path.Path;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.function.Consumer;
+import models.login.ILoginObserver;
 
 /**
  * Created by dylan on 4/16/17.
  */
-public class OptionsMenuController extends AbstractController {
+public class OptionsMenuController extends AbstractController implements ILoginObserver {
 
     @FXML
     private Label drawerClose;
     @FXML
     private Pane scrim;
     @FXML
-    private HBox adminButton;
+    private Label accountText;
     @FXML
-    private HBox aboutButton;
+    private VBox menuItems;
 
     private Parent mainRoot;
 
@@ -50,14 +39,8 @@ public class OptionsMenuController extends AbstractController {
 
     @FXML
     private void initialize() {
-        adminButton.setOnMouseClicked(event -> {
-            AdminLoginController login = new AdminLoginController(mainRoot);
-            login.showCentered();
-        });
-
-        aboutButton.setOnMouseClicked(event -> {
-            KioskMain.getUI().setScene(new AboutPageController());
-        });
+        KioskMain.getLogin().attachObserver(this);
+        this.onAccountChanged();
     }
 
     public Label getDrawerClose() {
@@ -71,5 +54,22 @@ public class OptionsMenuController extends AbstractController {
     @Override
     public String getURL() {
         return "views/OptionsMenu.fxml";
+    }
+
+    private void setMenuItems() {
+        this.menuItems.getChildren().clear();
+        for (EnumMenuItem e : KioskMain.getLogin().getState().getAvailableOptions()) {
+            this.menuItems.getChildren().add(new MenuItem(e, mainRoot).getRoot());
+        }
+    }
+
+    @Override
+    public void onAccountChanged() {
+        this.accountText.setText(KioskMain.getLogin().getState().getWelcomeMessage());
+        this.setMenuItems();
+    }
+
+    public VBox getMenuItems() {
+        return menuItems;
     }
 }

@@ -1,9 +1,7 @@
 package models.path;
 
 
-import com.jfoenix.controls.JFXPopup;
 import controllers.mapView.DirectionStep;
-import core.KioskMain;
 import core.Utils;
 import models.dir.LocationType;
 

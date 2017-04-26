@@ -1,6 +1,5 @@
 package models.ui;
 
-import controllers.AboutPageController;
 import controllers.AbstractPopupController;
 import controllers.IController;
 import controllers.WelcomeScreenController;
@@ -30,7 +29,6 @@ public class UIManager {
     private Stage stage;
     private Parent root;
     private Scene scene;
-
 
     private AbstractPopupController popup;
     private static DoubleProperty fontSize = new SimpleDoubleProperty(15);

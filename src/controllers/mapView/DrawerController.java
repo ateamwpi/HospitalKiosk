@@ -1,7 +1,6 @@
 package controllers.mapView;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.controls.JFXTextField;
 import controllers.AbstractController;
 import controllers.map.MapController;
@@ -10,26 +9,20 @@ import core.exception.FloorNotReachableException;
 import core.exception.NearestNotFoundException;
 import core.exception.PathNotFoundException;
 import javafx.fxml.FXML;
-import javafx.geometry.Point3D;
 import javafx.print.*;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.*;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.scene.transform.Scale;
 import models.dir.Location;
-import models.path.Direction;
 import models.path.Path;
-import sun.plugin.javascript.navig.Anchor;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -68,18 +61,16 @@ public class DrawerController extends AbstractController {
     private Pane root;
     private Location startLocation;
     private Location endLocation;
-    private Consumer<Path> drawPath;
     private Path path;
     private MapController mapController;
 
-    public DrawerController(Consumer<Path> drawPath, MapController mapController) {
-        super(drawPath, mapController);
+    public DrawerController(MapController mapController) {
+        super(mapController);
     }
 
     @Override
     public void initData(Object... data) {
-        drawPath = (Consumer<Path>) data[0];
-        mapController = (MapController) data[1];
+        mapController = (MapController) data[0];
     }
 
     @FXML
@@ -209,7 +200,7 @@ public class DrawerController extends AbstractController {
                 // attempt to find the path
                 path = KioskMain.getPath().findPath(startLocation.getNode(), endLocation.getNode());
                 // draw the path on the map
-                drawPath.accept(path);
+                //drawPath.accept(path);
                 // show the directions
                 showDirections(path.getDirections());
                 mapController.setFloor(path.getStart().getFloor());
