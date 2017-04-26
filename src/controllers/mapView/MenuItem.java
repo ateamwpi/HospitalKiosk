@@ -1,9 +1,7 @@
 package controllers.mapView;
 
-import controllers.AboutPageController;
-import controllers.AbstractController;
-import controllers.DropdownAlertController;
-import controllers.LoginController;
+import com.jfoenix.controls.JFXPopup;
+import controllers.*;
 import controllers.admin.ManageDirectoryViewController;
 import controllers.admin.ManageMapViewController;
 import core.KioskMain;
@@ -31,7 +29,8 @@ public class MenuItem extends AbstractController {
         ManageMap("Manage Map", "map", EnumMenuItem::manageMapPressed),
         ManageDir("Manage Directory", "dir", EnumMenuItem::manageDirPressed),
         SelectAlgo("Select Path Algorithm", "settings", EnumMenuItem::selectAlgoPressed),
-        SelectKiosk("Select Kiosk Location", "settings", EnumMenuItem::selectKioskPressed);
+        SelectKiosk("Select Kiosk Location", "settings", EnumMenuItem::selectKioskPressed),
+        UserDir("View Directory", "dir", EnumMenuItem::userDirPressed);
 
         String path;
         String text;
@@ -80,6 +79,13 @@ public class MenuItem extends AbstractController {
                         } catch (RoomNotFoundException e1) {}
                         KioskMain.getDir().getTheKiosk().setNode(n);
                     });
+        }
+
+        private static void userDirPressed(MouseEvent e, Parent mainRoot) {
+            DirectionsDirectoryController dir = new DirectionsDirectoryController(mainRoot, (location -> {
+                System.out.println("you clicked " + location);
+            }), false);
+            dir.showCentered();
         }
     }
 
