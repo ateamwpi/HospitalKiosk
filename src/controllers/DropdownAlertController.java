@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 import javafx.scene.text.Text;
@@ -42,6 +43,13 @@ public class DropdownAlertController extends AbstractController implements IPopu
         this.alertBox.getItems().setAll(options);
         this.alertBox.getSelectionModel().select(def);
         this.onSelect = onSelect;
+
+        this.root.setOnKeyPressed(event -> {
+            if (event.getCode().equals(KeyCode.ENTER)) {
+                this.onSelect.accept((String)this.alertBox.getSelectionModel().getSelectedItem());
+                this.getInstance().hide();
+            }
+        });
     }
 
     @FXML
