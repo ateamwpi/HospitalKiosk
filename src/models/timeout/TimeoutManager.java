@@ -14,15 +14,17 @@ public class TimeoutManager {
 
     private Timer timer;
 
-    private TimerTask task;
-
-    public TimeoutManager(){
-
-    }
+    public TimeoutManager(){}
 
     public synchronized void resetTimer() {
+        if (timer != null) {
+            timer.cancel();
+            timer.purge();
+        }
+
         timer = new Timer();
-        task = new TimerTask() {
+
+        TimerTask task = new TimerTask() {
             @Override
             public void run() {
                 Platform.runLater(
@@ -31,6 +33,7 @@ public class TimeoutManager {
                         });
             }
         };
+
         timer.schedule(task, 15000);
     }
 }
