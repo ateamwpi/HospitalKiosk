@@ -19,91 +19,105 @@
     <table id="13" parent="2" name="EDGE"/>
     <table id="14" parent="2" name="LOCATION"/>
     <table id="15" parent="2" name="NODE"/>
-    <column id="16" parent="13" name="ANODEID">
+    <table id="16" parent="2" name="VARS"/>
+    <column id="17" parent="13" name="ANODEID">
       <Position>1</Position>
       <DataType>INTEGER(10)|4</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="17" parent="13" name="BNODEID">
+    <column id="18" parent="13" name="BNODEID">
       <Position>2</Position>
       <DataType>INTEGER(10)|4</DataType>
       <NotNull>1</NotNull>
     </column>
-    <key id="18" parent="13" name="PK_EDGE">
+    <key id="19" parent="13" name="PK_EDGE">
       <ColNames>ANODEID
 BNODEID</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="19" parent="13" name="FK_EDGE1">
+    <foreign-key id="20" parent="13" name="FK_EDGE1">
       <ColNames>ANODEID</ColNames>
       <RefSchemaName>APP</RefSchemaName>
       <RefTableName>NODE</RefTableName>
       <RefKeyName>PK_NODE</RefKeyName>
       <RefColNames>ID</RefColNames>
     </foreign-key>
-    <foreign-key id="20" parent="13" name="FK_EDGE2">
+    <foreign-key id="21" parent="13" name="FK_EDGE2">
       <ColNames>BNODEID</ColNames>
       <RefSchemaName>APP</RefSchemaName>
       <RefTableName>NODE</RefTableName>
       <RefKeyName>PK_NODE</RefKeyName>
       <RefColNames>ID</RefColNames>
     </foreign-key>
-    <column id="21" parent="14" name="ID">
+    <column id="22" parent="14" name="ID">
       <Position>1</Position>
       <DataType>INTEGER(10)|4</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="22" parent="14" name="NAME">
+    <column id="23" parent="14" name="NAME">
       <Position>2</Position>
       <DataType>VARCHAR(50)|12</DataType>
     </column>
-    <column id="23" parent="14" name="LOCTYPE">
+    <column id="24" parent="14" name="LOCTYPE">
       <Position>3</Position>
       <DataType>VARCHAR(15)|12</DataType>
     </column>
-    <column id="24" parent="14" name="NODEID">
+    <column id="25" parent="14" name="NODEID">
       <Position>4</Position>
       <DataType>INTEGER(10)|4</DataType>
     </column>
-    <key id="25" parent="14" name="PK_LOCATION">
+    <key id="26" parent="14" name="PK_LOCATION">
       <ColNames>ID</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="26" parent="14" name="FK_LOCATION">
+    <foreign-key id="27" parent="14" name="FK_LOCATION">
       <ColNames>NODEID</ColNames>
       <RefSchemaName>APP</RefSchemaName>
       <RefTableName>NODE</RefTableName>
       <RefKeyName>PK_NODE</RefKeyName>
       <RefColNames>ID</RefColNames>
     </foreign-key>
-    <column id="27" parent="15" name="ID">
+    <column id="28" parent="15" name="ID">
       <Position>1</Position>
       <DataType>INTEGER(10)|4</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="28" parent="15" name="X">
+    <column id="29" parent="15" name="X">
       <Position>2</Position>
       <DataType>INTEGER(10)|4</DataType>
     </column>
-    <column id="29" parent="15" name="Y">
+    <column id="30" parent="15" name="Y">
       <Position>3</Position>
       <DataType>INTEGER(10)|4</DataType>
     </column>
-    <column id="30" parent="15" name="ROOMNAME">
+    <column id="31" parent="15" name="ROOMNAME">
       <Position>4</Position>
       <DataType>VARCHAR(50)|12</DataType>
     </column>
-    <column id="31" parent="15" name="FLOOR">
+    <column id="32" parent="15" name="FLOOR">
       <Position>5</Position>
       <DataType>INTEGER(10)|4</DataType>
     </column>
-    <column id="32" parent="15" name="RESTRICTED">
+    <column id="33" parent="15" name="RESTRICTED">
       <Position>6</Position>
       <DataType>BOOLEAN(1)|16</DataType>
       <DefaultExpression>FALSE</DefaultExpression>
     </column>
-    <key id="33" parent="15" name="PK_NODE">
+    <key id="34" parent="15" name="PK_NODE">
       <ColNames>ID</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="35" parent="16" name="NAME">
+      <Position>1</Position>
+      <DataType>VARCHAR(20)|12</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="36" parent="16" name="VALUE">
+      <Position>2</Position>
+      <DataType>VARCHAR(50)|12</DataType>
+    </column>
+    <key id="37" parent="16" name="PK_VARS">
+      <ColNames>NAME</ColNames>
       <Primary>1</Primary>
     </key>
   </database-model>

@@ -11,8 +11,10 @@ import models.dir.LocationType;
 import models.login.LoginManager;
 import models.path.Node;
 import models.path.PathfindingManager;
+import models.timeout.TimeoutManager;
 import models.tts.TTSManager;
 import models.ui.UIManager;
+import org.junit.rules.Timeout;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -26,10 +28,12 @@ public class KioskMain extends Application {
     private static TTSManager theTTSManager;
     private static UIManager theUIManager;
     private static LoginManager theLoginManager;
+    private static TimeoutManager theTimeoutManager;
 
     private static final boolean DEBUG = false;
     private static final String MAIN_ENTR_NAME = "Main Entrance";
     private static final String BELKIN_ENTR_NAME = "Belkin Entrance";
+
 
     @Override
     public void start(Stage stage) {
@@ -44,6 +48,8 @@ public class KioskMain extends Application {
         initManagers();
         // Launch the JavaFX application after initial setup
         launch(args);
+        // Stop the timer thread when the application closes
+        getTimeout().stopTimer();
     }
 
     public static DirectoryManager getDir() {
@@ -62,12 +68,15 @@ public class KioskMain extends Application {
 
     public static LoginManager getLogin() { return theLoginManager; }
 
+    public static TimeoutManager getTimeout() { return theTimeoutManager; }
+
     private static void initManagers() {
         initDBMg();
         initLoginMg();
         initPathMg();
         initDirMg();
         initTTSMg();
+        initTimeoutMg();
     }
 
     private static void initDBMg() {
@@ -155,5 +164,9 @@ public class KioskMain extends Application {
 
     private static void initUIMg(Stage stage) {
         theUIManager = new UIManager(stage);
+    }
+
+    private static void initTimeoutMg() {
+        theTimeoutManager = new TimeoutManager(Integer.parseInt(getDB().getVar(TimeoutManager.DELAY_VAR)));
     }
 }

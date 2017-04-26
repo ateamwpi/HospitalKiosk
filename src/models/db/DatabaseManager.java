@@ -280,4 +280,40 @@ public class DatabaseManager {
         }
     }
 
+    /* VARS */
+
+    public String getVar(String id) {
+        PreparedStatement stmt = null;
+        ResultSet rset = null;
+        String value = "";
+        try {
+            stmt = conn.prepareStatement("SELECT * FROM VARS WHERE NAME=?");
+            stmt.setString(1, id.toUpperCase());
+            rset = stmt.executeQuery();
+            rset.next();
+            value = rset.getString("VALUE");
+            rset.close();
+            stmt.close();
+        } catch (SQLException e) {
+            System.out.println("Failed to load information from the database!");
+            e.printStackTrace();
+        }
+
+        return value;
+    }
+
+    public void setVar(String id, String newValue) {
+        PreparedStatement stmt = null;
+        try {
+            stmt = conn.prepareStatement("UPDATE VARS SET VALUE=? WHERE NAME=?");
+            stmt.setString(1, newValue);
+            stmt.setString(2, id.toUpperCase());
+            stmt.execute();
+        }
+        catch (SQLException e) {
+            System.out.println("Failed to load information from the database!");
+            e.printStackTrace();
+        }
+    }
+
 }

@@ -2,11 +2,16 @@ package models.ui;
 
 import controllers.PopupView.IPopup;
 import controllers.IController;
+import core.KioskMain;
+import models.timeout.TimeoutManager;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 /**
@@ -32,6 +37,22 @@ public class UIManager {
         } else {
             scene = new Scene(controller.getRoot(), scene.getWidth(), scene.getHeight());
         }
+
+        scene.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                System.out.println("mouse click");
+                KioskMain.getTimeout().resetTimer();
+            }
+        });
+
+        scene.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                System.out.println("key pressed");
+                KioskMain.getTimeout().resetTimer();
+            }
+        });
 
 //        fontSize.bind(scene.widthProperty().add(scene.heightProperty()).divide(100));
 //        Screen screen = Screen.getPrimary();

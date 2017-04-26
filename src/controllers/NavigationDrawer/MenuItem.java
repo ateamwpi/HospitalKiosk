@@ -1,5 +1,6 @@
 package controllers.NavigationDrawer;
 
+import com.sun.org.apache.xalan.internal.xsltc.dom.KeyIndex;
 import controllers.AboutView.AboutViewController;
 import controllers.AboutView.HelpInfoController;
 import controllers.AbstractController;
@@ -17,6 +18,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import models.path.Node;
+import models.timeout.TimeoutManager;
 
 import java.util.function.BiConsumer;
 
@@ -98,8 +100,9 @@ public class MenuItem extends AbstractController {
         private static void timeoutPressed(MouseEvent e, Parent mainRoot) {
             TextboxAlertViewController text = new TextboxAlertViewController(mainRoot, "Select Timeout Delay",
                     "Choose how long (in ms) the application should wait before signing out and returning to the splash screen.",
-                    "9000", (t) -> {
-                System.out.println("got " + t);
+                    KioskMain.getTimeout().getDelay()+"", (t) -> {
+                KioskMain.getTimeout().setDelay(Integer.parseInt(t));
+                KioskMain.getDB().setVar(TimeoutManager.DELAY_VAR, t);
             }, (t) -> {
                 try {
                     Integer.parseInt(t);
