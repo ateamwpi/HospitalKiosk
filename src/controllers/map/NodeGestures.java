@@ -94,12 +94,12 @@ public class NodeGestures {
         // add the preview connection
         adminMapController.getSelectedNode().previewConnection(node);
         //Connect the two nodes if they are on the same floor
-        try {
-            adminMapController.getSelectedNode().getNode().addConnection(node);
-        }
-        catch(WrongFloorException wfe){
-            Utils.showAlert(adminMapController.getManageMapViewController().getRoot(), "Invalid Node Connection!", "Cannot connect nodes on multiple floors!");
-        }
+//        try {
+//            adminMapController.getSelectedNode().getNode().addConnection(node);
+//        }
+//        catch(WrongFloorException wfe){
+//            Utils.showAlert(adminMapController.getManageMapViewController().getRoot(), "Invalid Node Connection!", "Cannot connect nodes on multiple floors!");
+//        }
     }
 
     private void alertAddConnectionError() {
@@ -118,7 +118,7 @@ public class NodeGestures {
         // remove the preview connection
         adminMapController.getSelectedNode().removePreviewConnection(node);
         // update the table
-        adminMapController.getSelectedNode().getNode().removeConnection(node);
+        // adminMapController.getSelectedNode().getNode().removeConnection(node);
     }
 
     private EventHandler<MouseEvent> onMouseDraggedEventHandler = new EventHandler<MouseEvent>() {
