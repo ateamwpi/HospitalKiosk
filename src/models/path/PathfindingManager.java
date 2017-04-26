@@ -154,14 +154,15 @@ public class PathfindingManager {
 
         int distance = 0;
         Path path = findPath(start, end);
+        int i = 0;
 
-        for(int i = 0; i < path.getPath().size(); i++){
-            if (path.getPath().get(i++).equals(end)) {
-                distance = distance + distanceInFeet(path.getPath().get(i + 1), path.getPath().get(i));
+        while(true){
+            if (path.getPath().get(i).equals(end)) {
                 break;
             }else{
-                distance = distance + distanceInFeet(path.getPath().get(i + 1), path.getPath().get(i));
+                distance = distance + distanceInFeet(path.getPath().get(i+1), path.getPath().get(i));
             }
+            i++;
         }
         return distance;
     }
