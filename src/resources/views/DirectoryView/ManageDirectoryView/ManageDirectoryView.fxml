@@ -32,7 +32,7 @@
             <Insets top="10.0" />
          </GridPane.margin>
           </VBox>
-          <TableView fx:id="locationsTable" minHeight="-Infinity" minWidth="-Infinity" styleClass="tree-table-view" stylesheets="@../styles/tableview.css" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+          <TableView fx:id="locationsTable" minHeight="-Infinity" minWidth="-Infinity" styleClass="tree-table-view" stylesheets="@/resources/styles/TableView.css" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
               <columns>
                   <TableColumn fx:id="nameCol" minWidth="0.0" prefWidth="249.0" text="Name" />
                   <TableColumn id="roomCol" fx:id="roomCol" maxWidth="-Infinity" minWidth="300.0" prefWidth="-1.0" text="Room" />
@@ -47,42 +47,38 @@
                   <Insets left="5.0" />
               </padding>
           </Label>
-          <HBox prefHeight="99.0" prefWidth="1284.0" styleClass="banner" stylesheets="@/resources/styles/Main.css"
-                GridPane.columnSpan="2147483647">
+          <HBox styleClass="banner" stylesheets="@/resources/styles/Main.css" GridPane.columnSpan="2147483647">
               <JFXButton fx:id="backButton" styleClass="navigation-button" stylesheets="@/resources/styles/Main.css" text="Back">
                   <HBox.margin>
-                      <Insets left="25.0" right="10.0" top="25.0"/>
+                      <Insets left="25.0" right="10.0" top="25.0" />
                   </HBox.margin>
                   <font>
-                      <Font size="16.0"/>
+                      <Font size="16.0" />
                   </font>
                   <opaqueInsets>
-                      <Insets/>
+                      <Insets />
                   </opaqueInsets>
               </JFXButton>
-              <Label fx:id="title" alignment="CENTER" styleClass="title-text" stylesheets="@/resources/styles/Main.css"
-                     text="Manage Directory">
+              <Label fx:id="title" alignment="CENTER" styleClass="title-text" stylesheets="@/resources/styles/Main.css" text="Manage Directory">
                   <font>
-                      <Font name="SansSerif Bold" size="37.0"/>
+                      <Font name="SansSerif Bold" size="37.0" />
                   </font>
                   <padding>
-                      <Insets left="10.0"/>
+                      <Insets left="10.0" />
                   </padding>
                   <HBox.margin>
-                      <Insets top="15.0"/>
+                      <Insets top="15.0" />
                   </HBox.margin>
               </Label>
-              <Region prefHeight="82.0" prefWidth="680.0"/>
-              <JFXButton fx:id="addEntry" styleClass="content-button" stylesheets="@/resources/styles/Main.css"
-                         text="Add">
+              <Region prefHeight="82.0" prefWidth="680.0" />
+              <JFXButton fx:id="addEntry" styleClass="content-button" stylesheets="@/resources/styles/Main.css" text="Add">
                   <HBox.margin>
-                      <Insets right="30.0" top="25.0"/>
+                      <Insets right="30.0" top="25.0" />
                   </HBox.margin>
               </JFXButton>
-              <JFXButton fx:id="removeEntry" contentDisplay="CENTER" styleClass="content-button"
-                         stylesheets="@/resources/styles/Main.css" text="Remove">
+              <JFXButton fx:id="removeEntry" contentDisplay="CENTER" styleClass="content-button" stylesheets="@/resources/styles/Main.css" text="Remove">
                   <HBox.margin>
-                      <Insets top="25.0"/>
+                      <Insets top="25.0" />
                   </HBox.margin>
               </JFXButton>
           </HBox>
