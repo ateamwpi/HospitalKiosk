@@ -10,34 +10,33 @@ import java.util.TimerTask;
  * Created by zack on 4/24/2017.
  */
 public class Timeout {
-    private KioskMain main;
     private Timer timer = new Timer();
 
     private TimerTask task = new TimerTask() {
         @Override
         public void run() {
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    main.getUI().setScene(new WelcomeScreenController());
-                }
-            });
+            Platform.runLater(
+                    () -> {
+                        System.out.println("1");
+                        timer.cancel();
+                        KioskMain.getUI().setScene(new WelcomeScreenController());
+                        System.out.println("2");
+                    });
         }
     };
 
-    public Timeout(KioskMain main) {
-        this.main = main;
-    }
+    public Timeout(){}
 
     public void startTimer() {
         System.out.println("Starting timer!");
-        timer.schedule(task, 10);
+        timer.schedule(task, 15000);
         System.out.println("Task complete");
     }
 
     public void resetTimer() {
         System.out.println("Resetting timer!");
         timer.cancel();
-        timer.schedule(task, 10);
+        timer.purge();
+        timer.schedule(task, 30000);
     }
 }

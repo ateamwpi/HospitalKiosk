@@ -22,6 +22,7 @@ import models.tts.TTSManager;
 import models.ui.UIManager;
 
 import java.sql.SQLException;
+import java.sql.Time;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.Timer;
@@ -34,6 +35,7 @@ public class KioskMain extends Application {
     private static DatabaseManager theDBManager;
     private static TTSManager theTTSManager;
     private static UIManager theUIManager;
+    private Timeout timeout = new Timeout();
 
     private static final boolean DEBUG = true;
     private static final String MAIN_ENTR_NAME = "Main Entrance";

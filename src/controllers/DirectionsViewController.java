@@ -31,8 +31,6 @@ public class DirectionsViewController extends AbstractController {
 
     private MapController mapController;
 
-    private TimerTask task;
-
     @FXML
     private Button backBtn;
     @FXML
@@ -68,19 +66,6 @@ public class DirectionsViewController extends AbstractController {
 
         // show the text directions
         directionsText.setText("Directions:\n" + path.textPath());
-
-        Timer timer = new Timer();
-
-        TimerTask task = new TimerTask()
-        {
-            public void run()
-            {
-                KioskMain.getUI().setScene(new WelcomeScreenController());
-            }
-
-        };
-
-        timer.schedule(task,5000);
     }
 
     @FXML

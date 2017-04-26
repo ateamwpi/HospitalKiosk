@@ -3,14 +3,19 @@ package models.ui;
 import controllers.AboutPageController;
 import controllers.AbstractPopupController;
 import controllers.IController;
+import controllers.WelcomeScreenController;
 import core.KioskMain;
+import core.Timeout;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -26,19 +31,9 @@ public class UIManager {
     private Parent root;
     private Scene scene;
 
+
     private AbstractPopupController popup;
     private static DoubleProperty fontSize = new SimpleDoubleProperty(15);
-
-    Timer timer = new Timer();
-
-    TimerTask task = new TimerTask()
-    {
-        public void run()
-        {
-            KioskMain.getUI().setScene(new AboutPageController());
-        }
-
-    };
 
     public UIManager(Stage stage) {
         this.stage = stage;
@@ -46,7 +41,24 @@ public class UIManager {
     }
 
     public void setScene(IController controller) {
+        Timeout timeout = new Timeout();
         scene = new Scene(controller.getRoot());
+
+        scene.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                System.out.println("mouse click detected! " + mouseEvent.getSource());
+            }
+        });
+
+        scene.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                System.out.println("key press detected! " + keyEvent.getSource());
+                timeout.resetTimer();
+            }
+        });
+
 //        fontSize.bind(scene.widthProperty().add(scene.heightProperty()).divide(100));
 //        Screen screen = Screen.getPrimary();
 //        Rectangle2D bounds = screen.getVisualBounds();
@@ -61,7 +73,7 @@ public class UIManager {
 
         stage.setScene(scene);
 
-        timer.schedule(task, 1);
+        timeout.startTimer();
     }
 
     public Node lookup(String query) {
