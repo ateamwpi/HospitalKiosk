@@ -3,6 +3,7 @@ package controllers.mapView;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import controllers.AbstractController;
+import controllers.DirectionsDirectoryController;
 import controllers.map.MapController;
 import core.KioskMain;
 import core.Utils;
@@ -12,6 +13,7 @@ import core.exception.PathNotFoundException;
 import javafx.fxml.FXML;
 import javafx.print.*;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -59,19 +61,25 @@ public class DrawerController extends AbstractController {
     @FXML
     private VBox toggleContainer;
     @FXML
+    private Label startDir;
+    @FXML
+    private Label endDir;
+    @FXML
     private Pane root;
     private Location startLocation;
     private Location endLocation;
     private Path path;
     private MapController mapController;
+    private Parent mainRoot;
 
-    public DrawerController(MapController mapController) {
-        super(mapController);
+    public DrawerController(MapController mapController, Parent mainRoot) {
+        super(mapController, mainRoot);
     }
 
     @Override
     public void initData(Object... data) {
         mapController = (MapController) data[0];
+        mainRoot = (Parent) data[1];
     }
 
     @FXML
@@ -79,6 +87,14 @@ public class DrawerController extends AbstractController {
         // listen to search input
         start.textProperty().addListener(observable -> handleKeyPressStart());
         end.textProperty().addListener(observable -> handleKeyPressEnd());
+        startDir.setOnMouseClicked(event -> {
+            DirectionsDirectoryController dir = new DirectionsDirectoryController(mainRoot, this::setStart, true);
+            dir.showCentered();
+        });
+        endDir.setOnMouseClicked(event -> {
+            DirectionsDirectoryController dir = new DirectionsDirectoryController(mainRoot, this::setEnd, true);
+            dir.showCentered();
+        });
         // show search container
         showSearch();
     }
@@ -97,32 +113,38 @@ public class DrawerController extends AbstractController {
     }
 
     private void print(Node first) {
-        Printer printer = Printer.getDefaultPrinter();
-        PageLayout pageLayout = printer.createPageLayout(Paper.NA_LETTER, PageOrientation.PORTRAIT, Printer.MarginType.DEFAULT);
-        PrinterJob job = PrinterJob.createPrinterJob();
-        if (job != null && job.showPrintDialog(null)) {
-            boolean success = false;
-            job.printPage(first);
-            int oldFloor = mapController.getFloor();
-            for (String s : path.getFloorsSpanning()) {
+        try {
+            Printer printer = Printer.getDefaultPrinter();
+            PageLayout pageLayout = printer.createPageLayout(Paper.NA_LETTER, PageOrientation.PORTRAIT, Printer.MarginType.DEFAULT);
+            PrinterJob job = PrinterJob.createPrinterJob();
+            if (job != null && job.showPrintDialog(null)) {
+                boolean success = false;
+                job.printPage(first);
+                int oldFloor = mapController.getFloor();
+                for (String s : path.getFloorsSpanning()) {
+                    mapController.clearOverlay();
+                    mapController.setFloor(Integer.parseInt(s.substring(0,1)));
+                    mapController.drawPath(path);
+                    mapController.hideButtons();
+                    double scaleX = pageLayout.getPrintableWidth() / mapController.getRoot().getBoundsInParent().getWidth();
+                    Scale scale = new Scale(scaleX, scaleX);
+                    mapController.getRoot().getTransforms().add(scale);
+                    success = job.printPage(pageLayout, mapController.getRoot());
+                    mapController.getRoot().getTransforms().remove(scale);
+                    mapController.showButtons();
+                }
                 mapController.clearOverlay();
-                mapController.setFloor(Integer.parseInt(s.substring(0,1)));
+                mapController.setFloor(oldFloor);
                 mapController.drawPath(path);
-                mapController.hideButtons();
-                double scaleX = pageLayout.getPrintableWidth() / mapController.getRoot().getBoundsInParent().getWidth();
-                Scale scale = new Scale(scaleX, scaleX);
-                mapController.getRoot().getTransforms().add(scale);
-                success = job.printPage(pageLayout, mapController.getRoot());
-                mapController.getRoot().getTransforms().remove(scale);
-                mapController.showButtons();
+                if (success) {
+                    job.endJob();
+                }
             }
-            mapController.clearOverlay();
-            mapController.setFloor(oldFloor);
-            mapController.drawPath(path);
-            if (success) {
-                job.endJob();
-            }
+        } catch (NullPointerException e) {
+            Utils.showAlert(root, "Error While Printing!", "There was an error when attempting to print the " +
+                            "directions. Ensure you have a printer installed!");
         }
+
     }
 
     @FXML
@@ -206,7 +228,7 @@ public class DrawerController extends AbstractController {
                 showDirections(path.getDirections());
                 mapController.setFloor(path.getStart().getFloor());
                 // bind actions
-                for(JFXButton b: mapController.getFloorButtons()) {
+                for (JFXButton b : mapController.getFloorButtons()) {
                     b.setOnAction(event -> {
                         mapController.clearOverlay();
                         mapController.setFloor(Integer.parseInt(b.getText()));

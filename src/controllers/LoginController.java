@@ -2,9 +2,8 @@ package controllers;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
-import com.jfoenix.controls.JFXTextArea;
+import com.jfoenix.controls.JFXPopup;
 import com.jfoenix.controls.JFXTextField;
-import controllers.admin.AdminMenuController;
 import core.KioskMain;
 import core.Utils;
 import javafx.event.ActionEvent;
@@ -13,11 +12,12 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Region;
 
 /**
  * Created by mattm on 3/29/2017.
  */
-public class LoginController extends AbstractPopupController {
+public class LoginController extends AbstractController implements IPopup {
 
     @FXML
     private JFXButton loginBtn;
@@ -25,9 +25,12 @@ public class LoginController extends AbstractPopupController {
     private JFXPasswordField password;
     @FXML
     private JFXTextField username;
+    private Parent parent;
+    private JFXPopup instance;
 
     public LoginController(Parent parent) {
-        super(parent);
+        this.parent = parent;
+        this.instance = new JFXPopup(this.getRegion());
     }
 
     @FXML
@@ -66,5 +69,20 @@ public class LoginController extends AbstractPopupController {
     @Override
     public String getURL() {
         return "views/Login.fxml";
+    }
+
+    @Override
+    public JFXPopup getInstance() {
+        return this.instance;
+    }
+
+    @Override
+    public Region getRegion() {
+        return (Region) this.getRoot();
+    }
+
+    @Override
+    public Parent getParent() {
+        return this.parent;
     }
 }

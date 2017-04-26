@@ -1,6 +1,7 @@
 package controllers;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXPopup;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -8,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Region;
 import javafx.scene.text.Text;
 
 import java.util.function.Consumer;
@@ -15,7 +17,7 @@ import java.util.function.Consumer;
 /**
  * Created by mattm on 3/29/2017.
  */
-public class AlertController extends AbstractPopupController {
+public class AlertController extends AbstractController implements IPopup {
 
     @FXML
     private JFXButton okButton;
@@ -25,6 +27,8 @@ public class AlertController extends AbstractPopupController {
     private Text alertBody;
     @FXML
     private AnchorPane root;
+    private Parent parent;
+    private JFXPopup instance;
 
     private Consumer<Event> onClose;
 
@@ -33,7 +37,8 @@ public class AlertController extends AbstractPopupController {
     }
 
     public AlertController(Parent parent, String title, String body, Consumer<Event> onClose) {
-        super(parent);
+        this.parent = parent;
+        this.instance = new JFXPopup(this.getRegion());
         this.alertTitle.setText(title);
         this.alertBody.setText(body);
         this.onClose = onClose;
@@ -62,5 +67,20 @@ public class AlertController extends AbstractPopupController {
     @Override
     public String getURL() {
         return "views/Alert.fxml";
+    }
+
+    @Override
+    public JFXPopup getInstance() {
+        return this.instance;
+    }
+
+    @Override
+    public Region getRegion() {
+        return (Region) this.getRoot();
+    }
+
+    @Override
+    public Parent getParent() {
+        return this.parent;
     }
 }
