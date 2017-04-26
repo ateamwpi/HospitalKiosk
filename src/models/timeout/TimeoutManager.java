@@ -36,7 +36,7 @@ public class TimeoutManager {
             }
         };
 
-        timer.schedule(task, 15000);
+        timer.schedule(task, 90000);
     }
 
     public synchronized void stopTimer() {
