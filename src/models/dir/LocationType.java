@@ -22,7 +22,7 @@ public enum LocationType {
     Unknown(Color.GRAY);
 
     private Color nodeColor;
-    private static HashMap<String, LocationType> names = new HashMap<>();
+    private static final HashMap<String, LocationType> names = new HashMap<>();
 
     LocationType(Color nodeColor) {
         this.nodeColor = nodeColor;
@@ -36,26 +36,27 @@ public enum LocationType {
     }
 
     public Color getNodeColor() {
-        return this.nodeColor;
+        return nodeColor;
     }
 
     public boolean isInternal() {
-        return this.equals(Hallway) || this.equals(Unknown) || this.equals(Kiosk) || this.equals(Entrance);
+        return equals(Hallway) || equals(Unknown) || equals(Kiosk) || equals(Entrance);
     }
 
     public boolean hasNearest() {
-        return this.equals(PointOfInterest) || this.equals(Restroom) || this.equals(Staircase) || this.equals(Elevator);
+        return equals(PointOfInterest) || equals(Restroom) || equals(Staircase) || equals(Elevator);
     }
 
     public static LocationType getType(String s) {
-        if(names.containsKey(s.toUpperCase()))
-            return names.get(s.toUpperCase());
-        else
-            return Unknown;    }
+        return names.getOrDefault(s.toUpperCase(), Unknown);
+    }
 
     public String friendlyName() {
-        if(this.equals(PointOfInterest)) return "Point of Interest";
-        else return this.name();
+        if (equals(PointOfInterest)) {
+            return "Point of Interest";
+        } else  {
+            return name();
+        }
     }
 
     /**
