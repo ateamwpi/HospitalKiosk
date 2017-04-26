@@ -90,6 +90,12 @@
 }
 
 /*noinspection ALL*/
+.white-dir {
+    -fx-background-image: url("/resources/icons/white-directory.png");
+    -fx-background-size: 24px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
 .settings {
     -fx-background-image: url("/resources/icons/settings.png");
     -fx-background-size: 24px;

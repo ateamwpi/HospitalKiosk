@@ -1,8 +1,10 @@
 package controllers.DirectoryView;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import controllers.AbstractController;
 import core.KioskMain;
+import core.Utils;
 import core.exception.RoomNotFoundException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -12,6 +14,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.layout.VBox;
 import models.dir.Directory;
 import models.dir.Location;
 import models.dir.LocationType;
@@ -26,6 +29,9 @@ import java.util.HashMap;
  * Created by Kevin O'Brien on 4/7/2017.
  */
 public abstract class AbstractDirectoryViewController extends AbstractController {
+    @FXML
+    protected VBox locationTypes;
+
     private HashMap<LocationType, Directory> directories;
     private Collection<Location> selectedLocations; // all Locations of the current LocationType
     private Collection<Location> filteredLocations; // all Locations that match the searchBox
@@ -65,22 +71,6 @@ public abstract class AbstractDirectoryViewController extends AbstractController
         roomCol.setCellValueFactory(new PropertyValueFactory<>("roomName"));
         typeCol.setCellValueFactory(new PropertyValueFactory<>("locType"));
         locationsTable.getSortOrder().add(nameCol); // Default to sort by name
-    }
-
-    /**
-     * Populate LocationType Dropdown menu with all LocationTypes. Additionally, allow for Full Directory to be selected.
-     */
-    protected void initializeDropdown() {
-        locationDropdown.getSelectionModel().selectedItemProperty().addListener((
-                (observable, oldValue, newValue) -> selectDirectory(locationDropdown.getSelectionModel().getSelectedItem())));
-        locationDropdown.getItems().add("Full Directory");
-        for (LocationType locType : LocationType.values()) {
-            if (!locType.isInternal()) {
-                locationDropdown.getItems().add(locType.friendlyName());
-            }
-
-        }
-        locationDropdown.getSelectionModel().selectFirst();
     }
 
     protected void initializeFilter() {
@@ -206,5 +196,29 @@ public abstract class AbstractDirectoryViewController extends AbstractController
         invalidRoom.setTitle("Try Again!");
         invalidRoom.setContentText("Please enter a room that is currently in the database!");
         invalidRoom.showAndWait();
+    }
+
+    protected void addLocationBtns(String cssClass, int prefWidth) {
+        JFXButton fulldir = new JFXButton();
+        fulldir.setText("Full Directory");
+        fulldir.setOnAction(event -> setFullDirectory());
+        fulldir.setPrefWidth(prefWidth);
+        fulldir.getStylesheets().add(Utils.getResourceAsExternal("resources/styles/Main.css"));
+        fulldir.getStyleClass().add(cssClass);
+        locationTypes.getChildren().add(fulldir);
+
+        for (LocationType locType : LocationType.userValues()) {
+            JFXButton loc = new JFXButton();
+            loc.setText(locType.friendlyName());
+            loc.setOnAction(event -> selectDirectory(locType));
+            loc.setPrefWidth(prefWidth);
+            loc.getStylesheets().add(Utils.getResourceAsExternal("resources/styles/Main.css"));
+            loc.getStyleClass().add(cssClass);
+            locationTypes.getChildren().add(loc);
+        }
+    }
+
+    protected void addLocationBtns() {
+        addLocationBtns("content-button", 150);
     }
 }

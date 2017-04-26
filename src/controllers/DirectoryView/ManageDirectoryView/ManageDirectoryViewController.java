@@ -4,13 +4,10 @@ import com.jfoenix.controls.JFXButton;
 import controllers.DirectoryView.AbstractDirectoryViewController;
 import controllers.MapView.MapView.MapViewController;
 import core.KioskMain;
-import core.Utils;
 import core.exception.RoomNotFoundException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
 import models.dir.Location;
 import models.dir.LocationType;
 import models.path.Node;
@@ -20,15 +17,6 @@ import models.path.Node;
  */
 public class ManageDirectoryViewController extends AbstractDirectoryViewController {
 
-    private Node startNode; // The selected starting node for pathfinding
-    private Node endNode;
-
-    @FXML
-    private Button backButton;
-    @FXML
-    private Label title;
-    @FXML
-    private Button goToFinalSel; //button user will press to get path to selected
     @FXML
     private Label directions; //label to give user instructions
     @FXML
@@ -36,9 +24,7 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
     @FXML
     private JFXButton removeEntry;
     @FXML
-    private Button kiosk;
-    @FXML
-    private VBox locationTypes;
+    private JFXButton backButton;
 
 
     public ManageDirectoryViewController() {}
@@ -74,10 +60,8 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
     private void adminMode() {
         setTableEdit();
         removeEntry.setDisable(true);
-        title.setText("Manage Directory");
         directions.setText("");
         addLocationBtns();
-
     }
 
     @FXML  //when user clicks "back" button, they will return to main menu
@@ -109,29 +93,6 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
             KioskMain.getDir().removeLocation(selectedLocation);
             KioskMain.getUI().setScene(new ManageDirectoryViewController());
         }
-    }
-
-    @FXML
-    private void addLocationBtns() {
-
-        JFXButton fulldir = new JFXButton();
-        fulldir.setText("Full Directory");
-        fulldir.setOnAction(event -> setFullDirectory());
-        fulldir.setPrefWidth(150);
-        fulldir.getStylesheets().add(Utils.getResourceAsExternal("resources/styles/Main.css"));
-        fulldir.getStyleClass().add("content-button");
-        locationTypes.getChildren().add(fulldir);
-
-        for (LocationType locType : LocationType.userValues()) {
-            JFXButton loc = new JFXButton();
-            loc.setText(locType.friendlyName());
-            loc.setOnAction(event -> selectDirectory(locType));
-            loc.setPrefWidth(150);
-            loc.getStylesheets().add(Utils.getResourceAsExternal("resources/styles/Main.css"));
-            loc.getStyleClass().add("content-button");
-            locationTypes.getChildren().add(loc);
-        }
-
     }
 
 

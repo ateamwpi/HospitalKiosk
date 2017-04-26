@@ -40,7 +40,7 @@ public class MapViewController extends AbstractController {
         mapController.setFloor(KioskMain.getDir().getTheKiosk().getNode().getFloor());
         mapContainer.getChildren().add(mapController.getRoot());
         // setup directions drawer
-        DirectionsDrawerController directionsDrawerController = new DirectionsDrawerController(mapController);
+        DirectionsDrawerController directionsDrawerController = new DirectionsDrawerController(mapController, getRoot());
         drawer.setSidePane(directionsDrawerController.getRoot());
         drawer.open();
         directionsDrawerController.getDrawerClose().setOnMouseClicked(event -> {

@@ -5,6 +5,7 @@ import controllers.AbstractController;
 import controllers.LoginView.LoginViewController;
 import controllers.DirectoryView.ManageDirectoryView.ManageDirectoryViewController;
 import controllers.MapView.ManageMapView.ManageMapViewController;
+import controllers.DirectoryView.DirectionsDirectoryController;
 import core.KioskMain;
 import core.Utils;
 import core.exception.RoomNotFoundException;
@@ -29,7 +30,8 @@ public class MenuItem extends AbstractController {
         ManageMap("Manage Map", "map", EnumMenuItem::manageMapPressed),
         ManageDir("Manage Directory", "dir", EnumMenuItem::manageDirPressed),
         SelectAlgo("Select Path Algorithm", "settings", EnumMenuItem::selectAlgoPressed),
-        SelectKiosk("Select Kiosk Location", "settings", EnumMenuItem::selectKioskPressed);
+        SelectKiosk("Select Kiosk Location", "settings", EnumMenuItem::selectKioskPressed),
+        UserDir("View Directory", "dir", EnumMenuItem::userDirPressed);
 
         final String path;
         final String text;
@@ -81,6 +83,13 @@ public class MenuItem extends AbstractController {
                         KioskMain.getDir().getTheKiosk().setNode(n);
                     });
         }
+
+        private static void userDirPressed(MouseEvent e, Parent mainRoot) {
+            DirectionsDirectoryController dir = new DirectionsDirectoryController(mainRoot, (location -> {
+                System.out.println("you clicked " + location);
+            }), false);
+            dir.showCentered();
+        }
     }
 
     private EnumMenuItem item;
@@ -99,8 +108,8 @@ public class MenuItem extends AbstractController {
 
     @Override
     public void initData(Object... data) {
-        item = (EnumMenuItem) data[0];
-        mainRoot = (Parent) data[1];
+        this.item = (EnumMenuItem) data[0];
+        this.mainRoot = (Parent) data[1];
     }
 
     @FXML
@@ -109,7 +118,7 @@ public class MenuItem extends AbstractController {
         root.setOnMouseClicked(this::onPressed);
 
         menuLabel.setText(item.text);
-        menuIcon.getStyleClass().add(item.path);
+        menuIcon.getStyleClass().add(this.item.path);
 
 //        menuLabel.styleProperty().bind(
 //            Bindings.when(root.hoverProperty())
@@ -120,7 +129,7 @@ public class MenuItem extends AbstractController {
 
     @FXML
     private void onPressed(MouseEvent e) {
-        item.onClick.accept(e, mainRoot);
+        this.item.onClick.accept(e, mainRoot);
     }
 
     public String getURL() {

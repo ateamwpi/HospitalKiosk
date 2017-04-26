@@ -3,15 +3,17 @@ package controllers.MapView.MapView;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import controllers.AbstractController;
+import controllers.DirectoryView.DirectionsDirectoryController;
 import controllers.MapView.Map.MapController;
 import core.KioskMain;
+import core.Utils;
 import core.exception.FloorNotReachableException;
 import core.exception.NearestNotFoundException;
 import core.exception.PathNotFoundException;
 import javafx.fxml.FXML;
 import javafx.print.*;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
+import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -66,20 +68,26 @@ public class DirectionsDrawerController extends AbstractController {
     @FXML
     private VBox toggleContainer;
     @FXML
+    private Label startDir;
+    @FXML
+    private Label endDir;
+    @FXML
     private Pane root;
 
     private Location startLocation;
     private Location endLocation;
     private Path path;
     private MapController mapController;
+    private Parent mainRoot;
 
-    public DirectionsDrawerController(MapController mapController) {
-        super(mapController);
+    public DirectionsDrawerController(MapController mapController, Parent mainRoot) {
+        super(mapController, mainRoot);
     }
 
     @Override
     public void initData(Object... data) {
         mapController = (MapController) data[0];
+        mainRoot = (Parent) data[1];
     }
 
     @FXML
@@ -88,9 +96,18 @@ public class DirectionsDrawerController extends AbstractController {
         directionsBackButton.setOnMouseClicked(event -> showSearch());
         printDirectionsIcon.setOnMouseClicked(event -> printDirections());
         speakDirectionsIcon.setOnMouseClicked(event -> speakDirections());
+
         // listen to search input
         start.textProperty().addListener(observable -> handleKeyPressStart());
         end.textProperty().addListener(observable -> handleKeyPressEnd());
+        startDir.setOnMouseClicked(event -> {
+            DirectionsDirectoryController dir = new DirectionsDirectoryController(mainRoot, this::setStart, true);
+            dir.showCentered();
+        });
+        endDir.setOnMouseClicked(event -> {
+            DirectionsDirectoryController dir = new DirectionsDirectoryController(mainRoot, this::setEnd, true);
+            dir.showCentered();
+        });
         // show search container
         showSearch();
     }
@@ -109,33 +126,38 @@ public class DirectionsDrawerController extends AbstractController {
     }
 
     private void print(Node first) {
-        Printer printer = Printer.getDefaultPrinter();
-        PageLayout pageLayout = printer.createPageLayout(Paper.NA_LETTER, PageOrientation.PORTRAIT, Printer.MarginType.DEFAULT);
-        PrinterJob job = PrinterJob.createPrinterJob();
-        if (job != null && job.showPrintDialog(null)) {
-            boolean success = false;
-            job.printPage(first);
-            int oldFloor = mapController.getFloor();
-            for (String s : path.getFloorsSpanning()) {
+        try {
+            Printer printer = Printer.getDefaultPrinter();
+            PageLayout pageLayout = printer.createPageLayout(Paper.NA_LETTER, PageOrientation.PORTRAIT, Printer.MarginType.DEFAULT);
+            PrinterJob job = PrinterJob.createPrinterJob();
+            if (job != null && job.showPrintDialog(null)) {
+                boolean success = false;
+                job.printPage(first);
+                int oldFloor = mapController.getFloor();
+                for (String s : path.getFloorsSpanning()) {
+                    mapController.clearOverlay();
+                    mapController.setFloor(Integer.parseInt(s.substring(0,1)));
+                    mapController.drawPath(path);
+                    mapController.hideButtons();
+                    double scaleX = pageLayout.getPrintableWidth() / mapController.getRoot().getBoundsInParent().getWidth();
+                    Scale scale = new Scale(scaleX, scaleX);
+                    mapController.getRoot().getTransforms().add(scale);
+                    success = job.printPage(pageLayout, mapController.getRoot());
+                    mapController.getRoot().getTransforms().remove(scale);
+                    mapController.showButtons();
+                }
                 mapController.clearOverlay();
-                mapController.setFloor(Integer.parseInt(s.substring(0,1)));
+                mapController.setFloor(oldFloor);
                 mapController.drawPath(path);
-                mapController.hideButtons();
-                double width = pageLayout.getPrintableWidth() / mapController.getRoot().getBoundsInParent().getWidth();
-                //noinspection SuspiciousNameCombination
-                Scale scale = new Scale(width, width);
-                mapController.getRoot().getTransforms().add(scale);
-                success = job.printPage(pageLayout, mapController.getRoot());
-                mapController.getRoot().getTransforms().remove(scale);
-                mapController.showButtons();
+                if (success) {
+                    job.endJob();
+                }
             }
-            mapController.clearOverlay();
-            mapController.setFloor(oldFloor);
-            mapController.drawPath(path);
-            if (success) {
-                job.endJob();
-            }
+        } catch (NullPointerException e) {
+            Utils.showAlert(root, "Error While Printing!", "There was an error when attempting to print the " +
+                            "directions. Ensure you have a printer installed!");
         }
+
     }
 
     @FXML
@@ -149,7 +171,7 @@ public class DirectionsDrawerController extends AbstractController {
             // search if not empty
             search(startQuery, this::setStart);
         } else {
-            setStart(null);
+            //setStart(null);
             clearSearchResults();
         }
     }
@@ -160,7 +182,7 @@ public class DirectionsDrawerController extends AbstractController {
             // search if not empty
             search(endQuery, this::setEnd);
         } else {
-            setEnd(null);
+            //setEnd(null);
             clearSearchResults();
         }
     }
@@ -221,7 +243,7 @@ public class DirectionsDrawerController extends AbstractController {
                 showDirections(path.getDirections());
                 mapController.setFloor(path.getStart().getFloor());
                 // bind actions
-                for(JFXButton b: mapController.getFloorButtons()) {
+                for (JFXButton b : mapController.getFloorButtons()) {
                     b.setOnAction(event -> {
                         mapController.clearOverlay();
                         mapController.setFloor(Integer.parseInt(b.getText()));
@@ -231,8 +253,21 @@ public class DirectionsDrawerController extends AbstractController {
                 mapController.drawPath(path);
                 mapController.enableButtons(path.getFloorsSpanning());
 
-            } catch (PathNotFoundException | NearestNotFoundException | FloorNotReachableException e) {
-                e.printStackTrace();
+            } catch (PathNotFoundException e) {
+                // Path not found
+                // should only happen if an admin adds a dead end/unconnected node
+                String body = "There is no known way to get from " + startLocation.getNode().getRoomName() + " to " + endLocation.getNode().getRoomName() + "!\nThis is most likely caused by an issue with the database. Please contact a hospital administrator to fix this problem!";
+                Utils.showAlert(getRoot(),"Path Not Found!", body);
+            }
+            catch (NearestNotFoundException e) {
+                // this should only happen if there is no elevator on the current floor
+                String body = "There is no elevator on the " + Utils.strForNum(startLocation.getNode().getFloor()) + " Floor!\nThis is most likely caused by an issue with the database. Please contact a hospital administrator to fix this problem!";
+                Utils.showAlert(getRoot(), "Elevator Not Found!", body);
+            }
+            catch (FloorNotReachableException e) {
+                // this should only happen if the admin messes with the elevators
+                String body = "There is no known way to reach the " + Utils.strForNum(endLocation.getNode().getFloor()) + " Floor from the " + Utils.strForNum(startLocation.getNode().getFloor()) + " Floor!\nThis is most likely caused by an issue with the database. Please contact a hospital administrator to fix this problem!";
+                Utils.showAlert(getRoot(), "Floor Not Reachable!", body);
             }
         }
     }

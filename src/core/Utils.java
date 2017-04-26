@@ -4,6 +4,7 @@ import controllers.PopupView.AlertViewController;
 import controllers.PopupView.DropdownAlertViewController;
 import controllers.PopupView.OptionAlertViewController;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
 
@@ -30,6 +31,11 @@ public class Utils {
 
     public static void showAlert(Parent root, String title, String body) {
         AlertViewController alert = new AlertViewController(root, title, body);
+        alert.showCentered();
+    }
+
+    public static void showAlert(Parent root, String title, String body, Consumer<Event> onClose) {
+        AlertViewController alert = new AlertViewController(root, title, body, onClose);
         alert.showCentered();
     }
 
