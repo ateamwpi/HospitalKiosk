@@ -9,7 +9,7 @@ import java.util.HashMap;
 /**
  * Created by mattm on 4/3/2017.
  */
-public abstract class AbstractPathfindingAlgorithm {
+public abstract class   AbstractPathfindingAlgorithm {
 
     public abstract Path findPath(Node start, Node goal) throws PathNotFoundException;
 

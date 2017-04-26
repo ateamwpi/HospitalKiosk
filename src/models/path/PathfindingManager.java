@@ -137,6 +137,19 @@ public class PathfindingManager {
         return distance;
     }
 
+    public Integer distanceInFeet(Node end, Node start){
+        double inPixels;
+        double inFeet;
+        double inchesPerPixel = 4.068;
+        int inFeetRounded;
+        inPixels = distanceFormula(end, start);
+        inFeet = ((inPixels * inchesPerPixel) / 12);
+
+        inFeetRounded = (int) (inFeet + 0.5);
+
+        return inFeetRounded;
+    }
+
     public Node getRoom(String roomName) throws RoomNotFoundException {
         if(!this.ids.containsKey(roomName)) {
             throw new RoomNotFoundException(roomName);
