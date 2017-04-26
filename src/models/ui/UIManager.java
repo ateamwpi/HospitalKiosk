@@ -37,6 +37,7 @@ public class UIManager {
         scene.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
+                System.out.println("mouse click");
                 KioskMain.getTimeout().resetTimer();
             }
         });
@@ -44,6 +45,7 @@ public class UIManager {
         scene.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
+                System.out.println("key pressed");
                 KioskMain.getTimeout().resetTimer();
             }
         });

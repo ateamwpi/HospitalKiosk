@@ -17,6 +17,8 @@ public class TimeoutManager {
     public TimeoutManager(){}
 
     public synchronized void resetTimer() {
+        System.out.println("hi buddie");
+
         if (timer != null) {
             timer.cancel();
             timer.purge();
@@ -35,5 +37,14 @@ public class TimeoutManager {
         };
 
         timer.schedule(task, 15000);
+    }
+
+    public synchronized void stopTimer() {
+        if (timer != null) {
+            System.out.println("hellpo");
+            timer.cancel();
+            timer.purge();
+            System.out.println("goodby");
+        }
     }
 }
