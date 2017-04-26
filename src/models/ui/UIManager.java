@@ -1,6 +1,6 @@
 package models.ui;
 
-import controllers.IPopup;
+import controllers.PopupView.IPopup;
 import controllers.IController;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -14,7 +14,7 @@ import javafx.stage.Stage;
  */
 public class UIManager {
 
-    private Stage stage;
+    private final Stage stage;
     private Parent root;
     private Scene scene;
 

@@ -10,10 +10,10 @@ import java.util.*;
  */
 public class DirectoryManager {
 
-    private HashMap<LocationType, Directory> directories;
-    private Location theKiosk;
-    private Location mainEntr;
-    private Location belkinEntr;
+    private final HashMap<LocationType, Directory> directories;
+    private final Location theKiosk;
+    private final Location mainEntr;
+    private final Location belkinEntr;
 
     public DirectoryManager(HashMap<LocationType, Directory> allLocations, Location theKiosk, Location mainEntr, Location belkinEntr) {
         this.directories = allLocations;
@@ -27,15 +27,15 @@ public class DirectoryManager {
     }
 
     public Location getTheKiosk() {
-        return this.theKiosk;
+        return theKiosk;
     }
 
     public Location getMainEntr() {
-        return this.mainEntr;
+        return mainEntr;
     }
 
     public Location getBelkinEntr() {
-        return this.belkinEntr;
+        return belkinEntr;
     }
 
     public void removeLocation(Location l) {
@@ -50,9 +50,9 @@ public class DirectoryManager {
         return directories.get(locType);
     }
 
-    public void updateLocationType(Location location, LocationType newLocType) {
-        this.getDirectory(location.getLocType()).moveLocation(location, newLocType);
-        this.getDirectory(newLocType).moveLocation(location, newLocType);
+    void updateLocationType(Location location, LocationType newLocType) {
+        getDirectory(location.getLocType()).moveLocation(location, newLocType);
+        getDirectory(newLocType).moveLocation(location, newLocType);
     }
 
     public List<Location> search(String query, Integer maxResults) {
@@ -99,14 +99,16 @@ public class DirectoryManager {
             nearPOI = KioskMain.getPath().getNearest(LocationType.PointOfInterest, theKiosk.getNode());
 
         } catch (NearestNotFoundException e) {
+            // TODO
         }
         try {
             nearRest = KioskMain.getPath().getNearest(LocationType.Restroom, theKiosk.getNode());
         } catch (NearestNotFoundException e) {
+            // TODO
         }
 
         if(nearPOI == null && nearRest == null) return new ArrayList<>();
-        List<Location> ret = new ArrayList();
+        List<Location> ret = new ArrayList<>();
 
         while (nearPOI != null && !nearPOI.isEmpty()) {
             Location l = Collections.min(nearPOI.entrySet(), Comparator.comparingInt(entry -> (int) entry.getValue().doubleValue())).getKey();

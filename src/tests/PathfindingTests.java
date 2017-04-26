@@ -3,6 +3,7 @@ package tests;
 import core.exception.FloorNotReachableException;
 import core.exception.NearestNotFoundException;
 import core.exception.PathNotFoundException;
+import core.exception.WrongFloorException;
 import models.path.Node;
 import models.path.Path;
 import models.path.PathfindingManager;
@@ -26,7 +27,7 @@ public class PathfindingTests {
 
     @Before
     public void setup1() {
-        HashMap<Integer, Node> n = new HashMap<Integer, Node>();
+        HashMap<Integer, Node> n = new HashMap<>();
         Node n1 = new Node(1, 1, 1, 4, false, "NONE");
         Node n2 = new Node(2, 2, 2, 4, false, "NONE");
         Node n3 = new Node(3, 3, 3, 4, false, "NONE");
@@ -36,7 +37,9 @@ public class PathfindingTests {
         try {
             n1.addConnection(n2);
             n2.addConnection(n3);
-        } catch (Exception e) {}
+        } catch (WrongFloorException e) {
+            // TODO
+        }
         n.put(1, n1);
         n.put(2, n2);
         n.put(3, n3);
@@ -48,7 +51,7 @@ public class PathfindingTests {
 
     @Before
     public void setup2() {
-        HashMap<Integer, Node> n = new HashMap<Integer, Node>();
+        HashMap<Integer, Node> n = new HashMap<>();
         Node n1  = new Node(1,  1, 1, 4, false, "NONE");
         Node n2  = new Node(2,  1, 2, 4, false, "NONE");
         Node n3  = new Node(3,  1, 3, 4, false, "NONE");
@@ -113,7 +116,9 @@ public class PathfindingTests {
             n22.addConnection(n20);
             n24.addConnection(n25);
             n25.addConnection(n19);
-        } catch (Exception e) {}
+        } catch (WrongFloorException e) {
+            // TODO
+        }
         pm2 = new PathfindingManager(n);
     }
 
