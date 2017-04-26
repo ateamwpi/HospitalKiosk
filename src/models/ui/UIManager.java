@@ -2,24 +2,17 @@ package models.ui;
 
 import controllers.AbstractPopupController;
 import controllers.IController;
-import controllers.WelcomeScreenController;
 import core.KioskMain;
-import core.Timeout;
-import javafx.beans.binding.Bindings;
+import models.timeout.TimeoutManager;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.EventHandler;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Created by dylan on 4/11/17.
@@ -39,22 +32,19 @@ public class UIManager {
     }
 
     public void setScene(IController controller) {
-        Timeout timeout = new Timeout();
         scene = new Scene(controller.getRoot());
 
         scene.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                System.out.println("mouse click detected! " + mouseEvent.getSource());
-                timeout.resetTimer();
+                KioskMain.getTimeout().resetTimer();
             }
         });
 
         scene.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
-                System.out.println("key press detected! " + keyEvent.getSource());
-                timeout.resetTimer();
+                KioskMain.getTimeout().resetTimer();
             }
         });
 
@@ -72,7 +62,7 @@ public class UIManager {
 
         stage.setScene(scene);
 
-        timeout.startTimer();
+
     }
 
     public Node lookup(String query) {

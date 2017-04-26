@@ -14,33 +14,23 @@ public class TimeoutManager {
 
     private Timer timer;
 
-    private TimerTask task = new TimerTask() {
-        @Override
-        public void run() {
-            Platform.runLater(
-                    () -> {
-                        System.out.println("1");
-                        timer.cancel();
-                        KioskMain.getUI().setScene(new WelcomeScreenController());
-                        System.out.println("2");
-                    });
-        }
-    };
+    private TimerTask task;
 
     public TimeoutManager(){
+
+    }
+
+    public synchronized void resetTimer() {
         timer = new Timer();
-    }
-
-    public void startTimer() {
-        System.out.println("Starting timer!");
+        task = new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(
+                        () -> {
+                            KioskMain.getUI().setScene(new WelcomeScreenController());
+                        });
+            }
+        };
         timer.schedule(task, 15000);
-        System.out.println("Task complete");
-    }
-
-    public void resetTimer() {
-        System.out.println("Resetting timer!");
-        timer.cancel();
-        timer.purge();
-        timer.schedule(task, 30000);
     }
 }
