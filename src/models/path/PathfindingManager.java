@@ -222,12 +222,14 @@ public class PathfindingManager {
                 nearests.remove(min);
             } while (matching == null);
             Path startFloor = this.cur.findPath(start, curr);
+            Path endFloor = this.cur.findPath(matching, end);
             return startFloor.addSteps(endFloor);
         }
         else {
             return this.cur.findPath(start, end);
         }
     }
+
 
     public Collection<String> getRoomNames() {
         ArrayList<String> roomNames = new ArrayList<String>(this.ids.keySet());
