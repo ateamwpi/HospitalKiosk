@@ -29,6 +29,11 @@ public class MapViewController extends AbstractController {
 
     @FXML
     private void initialize() {
+        // bind event handlers
+        drawerOpen.setOnMouseClicked(event -> {
+            drawerOpen.setVisible(false);
+            drawer.open();
+        });
         // load the map controller
         MapController mapController = new MapController();
         // add the map to the container
@@ -38,10 +43,6 @@ public class MapViewController extends AbstractController {
         DirectionsDrawerController directionsDrawerController = new DirectionsDrawerController(mapController);
         drawer.setSidePane(directionsDrawerController.getRoot());
         drawer.open();
-        drawerOpen.setOnMouseClicked(event -> {
-            drawerOpen.setVisible(false);
-            drawer.open();
-        });
         directionsDrawerController.getDrawerClose().setOnMouseClicked(event -> {
             drawer.close();
             drawerOpen.setVisible(true);

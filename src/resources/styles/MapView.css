@@ -85,6 +85,9 @@
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
 }
+.shadow {
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 20, 0, 0, 0);
+}
 
 /*noinspection ALL*/
 .settings {

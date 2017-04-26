@@ -149,6 +149,7 @@ public class DirectionsDrawerController extends AbstractController {
             // search if not empty
             search(startQuery, this::setStart);
         } else {
+            setStart(null);
             clearSearchResults();
         }
     }
@@ -159,6 +160,7 @@ public class DirectionsDrawerController extends AbstractController {
             // search if not empty
             search(endQuery, this::setEnd);
         } else {
+            setEnd(null);
             clearSearchResults();
         }
     }
