@@ -9,6 +9,7 @@ import models.dir.Location;
 import models.dir.LocationType;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by mattm on 3/29/2017.
@@ -185,7 +186,12 @@ public class Node {
 
     public Collection<Node> getConnections() {
         //noinspection unchecked
-        return (Collection<Node>) connections.clone();
+        Collection<Node> clone = (Collection<Node>) connections.clone();
+
+        if(KioskMain.getLogin().getState().hasAccess())
+            return clone;
+        else
+            return clone.stream().filter(node -> !node.isRestricted()).collect(Collectors.toList());
     }
 
     public final int getFloor(){

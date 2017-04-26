@@ -85,7 +85,7 @@ public class DirectoryManager {
     private Collection<Location> getLocationsOfType(LocationType locType) {
         if (directories.containsKey(locType)) {
             Directory dir = directories.get(locType);
-            HashMap<Integer, Location> locations = dir.getLocations();
+            Map<Integer, Location> locations = dir.getLocations();
             return locations.values();
         } else {
             throw new RuntimeException("Could not find location type: " + locType.toString());

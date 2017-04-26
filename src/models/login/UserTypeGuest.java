@@ -25,6 +25,11 @@ public class UserTypeGuest extends AbstractUserType {
     }
 
     @Override
+    public boolean hasAccess() {
+        return false;
+    }
+
+    @Override
     public Collection<MenuItem.EnumMenuItem> getAvailableOptions() {
         return Arrays.asList(MenuItem.EnumMenuItem.About, MenuItem.EnumMenuItem.Login, MenuItem.EnumMenuItem.UserDir);
     }

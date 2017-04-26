@@ -16,6 +16,7 @@ import models.ui.UIManager;
 
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Map;
 
 public class KioskMain extends Application {
 
@@ -63,10 +64,10 @@ public class KioskMain extends Application {
 
     private static void initManagers() {
         initDBMg();
+        initLoginMg();
         initPathMg();
         initDirMg();
         initTTSMg();
-        initLoginMg();
     }
 
     private static void initDBMg() {
@@ -100,7 +101,7 @@ public class KioskMain extends Application {
     private static void initDirMg() {
         // create the directory manager with directories from the db
         HashMap<LocationType, Directory> allDirectories = getDB().getAllDirectories();
-        HashMap<Integer, Location> kiosks = allDirectories.get(LocationType.Kiosk).getLocations();
+        Map<Integer, Location> kiosks = allDirectories.get(LocationType.Kiosk).getLocations();
 
         // Find the kiosk
         if(kiosks.size() > 1) {

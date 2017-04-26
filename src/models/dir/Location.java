@@ -42,6 +42,10 @@ public class Location {
         return id;
     }
 
+    public boolean isRestricted() {
+        return this.getNode().isRestricted();
+    }
+
     public boolean isNew() {
         return isNew;
     }

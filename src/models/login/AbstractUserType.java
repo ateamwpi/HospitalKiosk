@@ -24,6 +24,8 @@ public abstract class AbstractUserType {
 
     public abstract String toString();
 
+    public abstract boolean hasAccess();
+
     public abstract Collection<MenuItem.EnumMenuItem> getAvailableOptions();
 
     public abstract String getWelcomeMessage();
