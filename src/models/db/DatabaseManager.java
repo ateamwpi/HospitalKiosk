@@ -6,6 +6,7 @@ import models.dir.Directory;
 import models.dir.Location;
 import models.dir.LocationType;
 import models.path.Node;
+import models.path.NodeType;
 
 import java.sql.*;
 import java.util.HashMap;
@@ -137,6 +138,7 @@ public class DatabaseManager {
 
         int x, y, floor, id = 0;
         boolean restricted;
+        NodeType type;
         String roomName;
 
         //noinspection TryWithIdenticalCatches
@@ -150,7 +152,8 @@ public class DatabaseManager {
                 floor = rset.getInt("FLOOR");
                 roomName = rset.getString("ROOMNAME");
                 restricted = rset.getBoolean("RESTRICTED");
-                allNodes.put(id, new Node(id, x, y, floor, restricted, roomName));
+                type = NodeType.getType(rset.getString("NODETYPE"));
+                allNodes.put(id, new Node(id, x, y, floor, restricted, type, roomName));
             }
 
             // Run SQL query to get all EDGES from the database
@@ -186,7 +189,7 @@ public class DatabaseManager {
 
     public void addNode(Node n) {
         try {
-            String str = "INSERT INTO NODE VALUES (?, ?, ?, ?, ?, ?)";
+            String str = "INSERT INTO NODE VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement stmt = conn.prepareStatement(str);
             stmt.setInt(1, n.getID());
             stmt.setInt(2, n.getX());
@@ -194,6 +197,7 @@ public class DatabaseManager {
             stmt.setString(4, n.getRoomName());
             stmt.setInt(5, n.getFloor());
             stmt.setBoolean(6, n.isRestricted());
+            stmt.setString(7, n.getNodeType().name());
             stmt.execute();
         }
         catch (SQLException e) {
@@ -227,14 +231,15 @@ public class DatabaseManager {
 
     public void updateNode(Node n) {
         try {
-            String str = "UPDATE NODE SET X=?, Y=?, FLOOR=?, ROOMNAME=?, RESTRICTED=? WHERE ID=?";
+            String str = "UPDATE NODE SET X=?, Y=?, FLOOR=?, ROOMNAME=?, RESTRICTED=?, NODETYPE=? WHERE ID=?";
             PreparedStatement stmt = conn.prepareStatement(str);
             stmt.setInt(1, n.getX());
             stmt.setInt(2, n.getY());
             stmt.setInt(3, n.getFloor());
             stmt.setString(4, n.getRoomName());
             stmt.setBoolean(5, n.isRestricted());
-            stmt.setInt(6, n.getID());
+            stmt.setString(6, n.getNodeType().name());
+            stmt.setInt(7, n.getID());
             stmt.execute();
         }
         catch (SQLException e) {

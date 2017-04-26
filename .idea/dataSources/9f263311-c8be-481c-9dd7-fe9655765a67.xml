@@ -103,20 +103,25 @@ BNODEID</ColNames>
       <DataType>BOOLEAN(1)|16</DataType>
       <DefaultExpression>FALSE</DefaultExpression>
     </column>
-    <key id="34" parent="15" name="PK_NODE">
+    <column id="34" parent="15" name="NODETYPE">
+      <Position>7</Position>
+      <DataType>VARCHAR(15)|12</DataType>
+      <DefaultExpression>&apos;Location&apos;</DefaultExpression>
+    </column>
+    <key id="35" parent="15" name="PK_NODE">
       <ColNames>ID</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="35" parent="16" name="NAME">
+    <column id="36" parent="16" name="NAME">
       <Position>1</Position>
       <DataType>VARCHAR(20)|12</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="36" parent="16" name="VALUE">
+    <column id="37" parent="16" name="VALUE">
       <Position>2</Position>
       <DataType>VARCHAR(50)|12</DataType>
     </column>
-    <key id="37" parent="16" name="PK_VARS">
+    <key id="38" parent="16" name="PK_VARS">
       <ColNames>NAME</ColNames>
       <Primary>1</Primary>
     </key>

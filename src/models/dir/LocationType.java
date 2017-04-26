@@ -1,32 +1,28 @@
 package models.dir;
 
-import javafx.scene.paint.Color;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
  * Created by mattm on 3/29/2017.
+ * nice
  */
 public enum LocationType {
-    Room(Color.BLACK),
-    Service(Color.MAGENTA),
-    Physician(Color.CADETBLUE),
-    PointOfInterest(Color.ORANGE),
-    Restroom(Color.ORANGE),
-    Kiosk(Color.GREEN),
-    Entrance(Color.GREEN),
-    Staircase(Color.DARKBLUE),
-    Elevator(Color.DARKBLUE),
-    Hallway(Color.GRAY),
-    Unknown(Color.GRAY);
+    Room(),
+    Service(),
+    Physician(),
+    PointOfInterest(),
+    Restroom(),
+    Kiosk(),
+    Entrance(),
+    Staircase(),
+    Elevator(),
+    Hallway(),
+    Unknown();
 
-    private Color nodeColor;
     private static final HashMap<String, LocationType> names = new HashMap<>();
 
-    LocationType(Color nodeColor) {
-        this.nodeColor = nodeColor;
-    }
+    LocationType() {}
 
     static {
         for (LocationType l : LocationType.values()) {
@@ -35,17 +31,13 @@ public enum LocationType {
         }
     }
 
-    public Color getNodeColor() {
-        return nodeColor;
-    }
-
     public boolean isInternal() {
         return equals(Hallway) || equals(Unknown) || equals(Kiosk) || equals(Entrance);
     }
 
-    public boolean hasNearest() {
-        return equals(PointOfInterest) || equals(Restroom) || equals(Staircase) || equals(Elevator);
-    }
+//    public boolean hasNearest() {
+//        return equals(PointOfInterest) || equals(Restroom) || equals(Staircase) || equals(Elevator);
+//    }
 
     public static LocationType getType(String s) {
         return names.getOrDefault(s.toUpperCase(), Unknown);

@@ -6,13 +6,15 @@ import core.exception.WrongFloorException;
 import javafx.beans.property.*;
 import javafx.scene.paint.Color;
 import models.dir.Location;
-import models.dir.LocationType;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.stream.Collectors;
 
 /**
  * Created by mattm on 3/29/2017.
+ *
  */
 public class Node {
     private static int nextNodeID;
@@ -26,7 +28,7 @@ public class Node {
     private String previousRoomName = "";
     private final ArrayList<Node> connections;
     private final HashMap<Integer, Location> locations;
-    private final HashMap<LocationType, Integer> counts;
+    private NodeType nodeType;
     private final boolean isNew;
     private boolean isBelkin;
     private boolean isMain;
@@ -35,7 +37,7 @@ public class Node {
     /** This constructor should _ONLY_ be used when loading from the database. For any
      *  new nodes created, use Node(x, y) and a unique ID will automatically be generated.
      */
-    public Node(int id, int x, int y, int floor, boolean restricted, String roomName) {
+    public Node(int id, int x, int y, int floor, boolean restricted, NodeType type, String roomName) {
         idProperty.set(id);
         xProperty.set(x);
         yProperty.set(y);
@@ -44,13 +46,13 @@ public class Node {
         restrictedProperty.set(restricted);
         connections = new ArrayList<>();
         locations = new HashMap<>();
-        counts = new HashMap<>();
+        this.nodeType = type;
         isNew = false;
         isDone = false;
         updateBuilding();
     }
 
-    public Node(int x, int y, int floor, boolean restricted, String roomName) {
+    public Node(int x, int y, int floor, boolean restricted, NodeType type, String roomName) {
         idProperty.set(getNextNodeID());
         xProperty.set(x);
         yProperty.set(y);
@@ -59,13 +61,13 @@ public class Node {
         restrictedProperty.set(restricted);
         connections = new ArrayList<>();
         locations = new HashMap<>();
-        counts = new HashMap<>();
+        this.nodeType = type;
         isNew = true;
         isDone = true;
         updateBuilding();
     }
 
-    public Node(int x, int y, int floor, boolean restricted) {
+    public Node(int x, int y, int floor, boolean restricted, NodeType type) {
         idProperty.set(getNextNodeID());
         xProperty.set(x);
         yProperty.set(y);
@@ -74,7 +76,7 @@ public class Node {
         restrictedProperty.set(restricted);
         connections = new ArrayList<>();
         locations = new HashMap<>();
-        counts = new HashMap<>();
+        this.nodeType = type;
         isNew = true;
         isDone = true;
         updateBuilding();
@@ -82,8 +84,6 @@ public class Node {
 
     public void addLocation(Location l) {
         locations.put(l.getID(), l);
-        if(!counts.containsKey(l.getLocType())) counts.put(l.getLocType(), 1);
-        else counts.put(l.getLocType(), counts.get(l.getLocType()) + 1);
     }
 
     public void addConnection(Node other) throws WrongFloorException {
@@ -99,13 +99,8 @@ public class Node {
         }
     }
 
-    public LocationType getPrimaryLocType() {
-        if(counts.isEmpty()) return LocationType.Unknown;
-        return Collections.max(counts.entrySet(), Map.Entry.comparingByValue()).getKey();
-    }
-
     public Color getColor() {
-        return getPrimaryLocType().getNodeColor();
+        return this.nodeType.getNodeColor();
     }
 
     private void removeConnection(Node other) {
@@ -121,7 +116,7 @@ public class Node {
         isMain = getX() >= 110 && getX() <= 910 && getY() >= 230 && getY() <= 680;
     }
 
-    public void removeAllConnections() {
+    void removeAllConnections() {
         //noinspection unchecked
         Collection<Node> clone = (Collection<Node>) connections.clone();
         connections.clear();
@@ -164,7 +159,7 @@ public class Node {
         return idProperty.get();
     }
 
-    public boolean isBelkin() {
+    boolean isBelkin() {
         return isBelkin;
     }
 
@@ -176,11 +171,11 @@ public class Node {
         return roomNameProperty.get();
     }
 
-    public StringProperty getRoomNameProperty() {
-        return roomNameProperty;
-    }
+//    public StringProperty getRoomNameProperty() {
+//        return roomNameProperty;
+//    }
 
-    public Collection<Location> getLocations() {
+    Collection<Location> getLocations() {
         return locations.values();
     }
 
@@ -211,9 +206,9 @@ public class Node {
         updateBuilding();
     }
 
-    public IntegerProperty xProperty() {
-        return xProperty;
-    }
+//    public IntegerProperty xProperty() {
+//        return xProperty;
+//    }
 
     public final int getY(){
         return yProperty.get();
@@ -230,13 +225,16 @@ public class Node {
         KioskMain.getDB().updateNode(this);
     }
 
-    public IntegerProperty yProperty() {
-        return yProperty;
-    }
+//    public IntegerProperty yProperty() {
+//        return yProperty;
+//    }
 
     public void removeLocation(Location l) {
         locations.remove(l.getID());
-        counts.put(l.getLocType(), counts.get(l.getLocType())-1);
+    }
+
+    public NodeType getNodeType() {
+        return this.nodeType;
     }
 
     public String toString() {
@@ -275,7 +273,7 @@ public class Node {
         return val;
     }
 
-    public IntegerProperty idProperty() {
-        return idProperty;
-    }
+//    public IntegerProperty idProperty() {
+//        return idProperty;
+//    }
 }

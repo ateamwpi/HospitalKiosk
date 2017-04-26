@@ -15,6 +15,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Line;
 import javafx.util.Pair;
 import models.path.Node;
+import models.path.NodeType;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -127,7 +128,7 @@ public class ManageMapController extends AbstractController implements IClickabl
 
         // create new node
         Node node = new Node(   (int) x,
-                                (int) y, mapController.getFloor(), false, room);
+                                (int) y, mapController.getFloor(), false, NodeType.Location, room);
         // create new visual node with gestures
         DraggableNode draggableNode = getDraggableNode(node);
         // draw node with gestures
