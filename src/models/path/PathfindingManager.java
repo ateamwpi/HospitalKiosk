@@ -184,7 +184,7 @@ public class PathfindingManager {
         }
 
         for(int i = 0; i <= path.getPath().size(); i++){
-            if(path.getPath().get(i+1).getFloor() != path.getPath().get(i).getFloor(){
+            if(path.getPath().get(i+1).getFloor() != path.getPath().get(i).getFloor()){
                 floorDifference += Math.abs(path.getPath().get(i+1).getFloor() - path.getPath().get(i).getFloor());
             }
         }
@@ -193,6 +193,8 @@ public class PathfindingManager {
 
         return timeTaken;
     }
+
+
 
     public Node getRoom(String roomName) throws RoomNotFoundException {
         if(!this.ids.containsKey(roomName)) {
