@@ -50,7 +50,7 @@
                     <HBox alignment="BOTTOM_CENTER" spacing="10.0">
                         <JFXTextField fx:id="start" prefWidth="180.0" promptText="Your location" styleClass="search"
                                       stylesheets="@/resources/styles/MapView.css"/>
-                        <Label fx:id="startDir" prefHeight="20.0" prefWidth="20.0" styleClass="white-dir"
+                        <Label fx:id="startDirectory" prefHeight="20.0" prefWidth="20.0" styleClass="white-dir"
                                stylesheets="@/resources/styles/MapView.css">
                             <HBox.margin>
                                 <Insets/>
@@ -60,7 +60,7 @@
                     <HBox alignment="BOTTOM_CENTER" spacing="10.0">
                         <JFXTextField fx:id="end" prefWidth="180.0" promptText="Choose destination..."
                                       styleClass="search" stylesheets="@/resources/styles/MapView.css"/>
-                        <Label fx:id="endDir" prefHeight="20.0" prefWidth="20.0" styleClass="white-dir"
+                        <Label fx:id="endDirectory" prefHeight="20.0" prefWidth="20.0" styleClass="white-dir"
                                stylesheets="@/resources/styles/MapView.css">
                             <HBox.margin>
                                 <Insets/>
