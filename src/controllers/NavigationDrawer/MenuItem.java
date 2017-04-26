@@ -1,5 +1,6 @@
 package controllers.NavigationDrawer;
 
+import com.sun.org.apache.xalan.internal.xsltc.dom.KeyIndex;
 import controllers.AboutView.AboutViewController;
 import controllers.AboutView.HelpInfoController;
 import controllers.AbstractController;
@@ -101,6 +102,7 @@ public class MenuItem extends AbstractController {
                     "Choose how long (in ms) the application should wait before signing out and returning to the splash screen.",
                     KioskMain.getTimeout().getDelay()+"", (t) -> {
                 KioskMain.getTimeout().setDelay(Integer.parseInt(t));
+                KioskMain.getDB().setVar(TimeoutManager.DELAY_VAR, t);
             }, (t) -> {
                 try {
                     Integer.parseInt(t);

@@ -12,11 +12,13 @@ import java.util.TimerTask;
  */
 public class TimeoutManager {
 
+    public static final String DELAY_VAR = "TIMEOUT";
+
     private Timer timer;
     private int delay;
 
-    public TimeoutManager() {
-        this.delay = 90000;
+    public TimeoutManager(int delay) {
+        this.delay = delay;
     }
 
     public synchronized void setDelay(int value) {

@@ -6,6 +6,7 @@
         <identifier-quote-string>&quot;</identifier-quote-string>
       </database-info>
       <case-sensitivity plain-identifiers="upper" quoted-identifiers="exact" />
+      <introspection-schemas>*:APP</introspection-schemas>
     </data-source>
   </component>
 </project>

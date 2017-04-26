@@ -167,6 +167,6 @@ public class KioskMain extends Application {
     }
 
     private static void initTimeoutMg() {
-        theTimeoutManager = new TimeoutManager();
+        theTimeoutManager = new TimeoutManager(Integer.parseInt(getDB().getVar(TimeoutManager.DELAY_VAR)));
     }
 }
