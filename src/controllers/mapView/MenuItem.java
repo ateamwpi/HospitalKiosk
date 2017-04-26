@@ -30,7 +30,7 @@ public class MenuItem extends AbstractController {
         ManageDir("Manage Directory", "dir", EnumMenuItem::manageDirPressed),
         SelectAlgo("Select Path Algorithm", "settings", EnumMenuItem::selectAlgoPressed),
         SelectKiosk("Select Kiosk Location", "settings", EnumMenuItem::selectKioskPressed),
-        DirectionsDir("Select From Directory", "dir", EnumMenuItem::userDirPressed);
+        UserDir("View Directory", "dir", EnumMenuItem::userDirPressed);
 
         String path;
         String text;
@@ -84,7 +84,7 @@ public class MenuItem extends AbstractController {
         private static void userDirPressed(MouseEvent e, Parent mainRoot) {
             DirectionsDirectoryController dir = new DirectionsDirectoryController(mainRoot, (location -> {
                 System.out.println("you clicked " + location);
-            }));
+            }), false);
             dir.showCentered();
         }
     }

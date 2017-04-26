@@ -162,7 +162,6 @@ public class MapController extends AbstractController implements IClickableContr
 
         // create the Proxies for all of the map images
         for(String url : MAP_URLS) {
-            System.out.println(this.maps);
             this.maps.add(new ImageProxy(url));
         }
 

@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXPopup;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import models.dir.Location;
 
@@ -22,9 +23,13 @@ public class DirectionsDirectoryController extends AbstractDirectoryViewControll
     @FXML
     private JFXButton okButton;
 
-    public DirectionsDirectoryController(Parent parent, Consumer<Location> onSelect) {
+    public DirectionsDirectoryController(Parent parent, Consumer<Location> onSelect, boolean needsAccept) {
         this.parent = parent;
         this.onSelect = onSelect;
+        if(!needsAccept) {
+            okButton.setVisible(false);
+            okButton.setDisable(true);
+        }
         this.instance = new JFXPopup(this.getRegion());
     }
 

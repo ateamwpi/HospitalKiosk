@@ -2,7 +2,6 @@ package models.login;
 
 import controllers.mapView.MenuItem;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -27,7 +26,7 @@ public class UserTypeGuest extends AbstractUserType {
 
     @Override
     public Collection<MenuItem.EnumMenuItem> getAvailableOptions() {
-        return Arrays.asList(MenuItem.EnumMenuItem.About, MenuItem.EnumMenuItem.DirectionsDir, MenuItem.EnumMenuItem.Login);
+        return Arrays.asList(MenuItem.EnumMenuItem.About, MenuItem.EnumMenuItem.Login, MenuItem.EnumMenuItem.UserDir);
     }
 
     @Override
