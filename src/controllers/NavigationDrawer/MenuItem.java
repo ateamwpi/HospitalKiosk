@@ -1,6 +1,7 @@
 package controllers.NavigationDrawer;
 
 import controllers.AboutView.AboutViewController;
+import controllers.AboutView.HelpInfoController;
 import controllers.AbstractController;
 import controllers.LoginView.LoginViewController;
 import controllers.DirectoryView.ManageDirectoryView.ManageDirectoryViewController;
@@ -33,7 +34,8 @@ public class MenuItem extends AbstractController {
         SelectAlgo("Select Path Algorithm", "settings", EnumMenuItem::selectAlgoPressed),
         SelectKiosk("Select Kiosk Location", "settings", EnumMenuItem::selectKioskPressed),
         UserDir("View Directory", "dir", EnumMenuItem::userDirPressed),
-        SelectTimeout("Select Timeout Delay", "settings", EnumMenuItem::timeoutPressed);
+        SelectTimeout("Select Timeout Delay", "settings", EnumMenuItem::timeoutPressed),
+        HelpInfo("Info & Visiting Hours", "help", EnumMenuItem::infoPressed);
 
         final String path;
         final String text;
@@ -107,6 +109,11 @@ public class MenuItem extends AbstractController {
                 }
             });
             text.showCentered();
+        }
+
+        private static void infoPressed(MouseEvent e, Parent mainRoot) {
+            HelpInfoController help = new HelpInfoController(mainRoot);
+            help.showCentered();
         }
     }
 
