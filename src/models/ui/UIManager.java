@@ -46,6 +46,7 @@ public class UIManager {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 System.out.println("mouse click detected! " + mouseEvent.getSource());
+                timeout.resetTimer();
             }
         });
 
