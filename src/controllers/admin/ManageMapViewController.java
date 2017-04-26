@@ -212,9 +212,10 @@ public class ManageMapViewController extends AbstractController {
 
     @FXML
     private void clickBack(ActionEvent event) {
-        if (adminMapController.attemptUnselectNode()) {
-            KioskMain.getUI().setScene(new MapViewController());
-        }
+        adminMapController.attemptUnselectNode( (result) -> {
+            if(result)
+                KioskMain.getUI().setScene(new MapViewController());
+        });
     }
 
     @FXML

@@ -19,6 +19,7 @@ import models.path.Node;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -91,7 +92,7 @@ public class AdminMapController extends AbstractController implements IClickable
     public void handleMouseClick(MouseEvent e) {
         // unselect if already selecting node
         if (nodeIsSelected()) {
-            attemptUnselectNode();
+            attemptUnselectNode((result) -> {});
             // add new node if not selecting node
         } else {
             // convert the mouse coordinates to map coordinates
@@ -185,11 +186,13 @@ public class AdminMapController extends AbstractController implements IClickable
     }
 
     public void selectNode(DraggableNode node) {
-        if (attemptUnselectNode()) {
-            selectedNode = node;
-            selectedNode.select();
-            manageMapViewController.selectNode(selectedNode);
-        }
+        attemptUnselectNode( (result) -> {
+            if(result) {
+                selectedNode = node;
+                selectedNode.select();
+                manageMapViewController.selectNode(selectedNode);
+            }
+        });
     }
 
     public ManageMapViewController getManageMapViewController() {
@@ -201,40 +204,40 @@ public class AdminMapController extends AbstractController implements IClickable
     }
 
     // return true if unselected
-    public Boolean attemptUnselectNode() {
+    public void attemptUnselectNode(Consumer<Boolean> func) {
         if (selectedNode == null) {
-            return true;
+            func.accept(true);
         }
         if (selectedNode.hasUnsavedChanges()) {
             warnDiscardChanges((result) -> {
                 if(result) {
                     unselectNode();
-                    return true;
+                    func.accept(true);
                 }
                 else {
-                    return false;
+                    func.accept(false);
                 }
             });
         } else {
             unselectNode();
-            return true;
+            func.accept(true);
         }
-        return false;
+        func.accept(false);
     }
 
 
     // returns true if admin chooses to discard changes
-    private void warnDiscardChanges(Function<Boolean, Boolean> cps) {
+    private void warnDiscardChanges(Consumer<Boolean> cps) {
         Utils.showOption(getManageMapViewController().getRoot(), "Unsaved Changes", "All unsaved changed will be lost. Are you sure you want to continue?",
                 "Cancel",
                 event -> {
                     Utils.hidePopup();
-                    cps.apply(false);
+                    cps.accept(false);
                 },
                 "Discard Changes",
                 event -> {
                     Utils.hidePopup();
-                    cps.apply(true);
+                    cps.accept(true);
                 });
     }
 
