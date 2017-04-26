@@ -1,28 +1,22 @@
 package core;
 
-import controllers.IController;
-import controllers.WelcomeScreenController;
+import controllers.WelcomeView.WelcomeViewController;
 import javafx.application.Application;
-import javafx.beans.binding.Bindings;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.Scene;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import models.db.DatabaseManager;
 import models.dir.Directory;
 import models.dir.DirectoryManager;
 import models.dir.Location;
 import models.dir.LocationType;
-import models.path.PathfindingManager;
+import models.login.LoginManager;
 import models.path.Node;
+import models.path.PathfindingManager;
 import models.tts.TTSManager;
 import models.ui.UIManager;
 
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.Scanner;
+import java.util.Map;
 
 public class KioskMain extends Application {
 
@@ -31,8 +25,9 @@ public class KioskMain extends Application {
     private static DatabaseManager theDBManager;
     private static TTSManager theTTSManager;
     private static UIManager theUIManager;
+    private static LoginManager theLoginManager;
 
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
     private static final String MAIN_ENTR_NAME = "Main Entrance";
     private static final String BELKIN_ENTR_NAME = "Belkin Entrance";
 
@@ -41,7 +36,7 @@ public class KioskMain extends Application {
         initUIMg(stage);
         // load the main menu
         //getUI().setScene(new MapViewControllerOLD());
-        getUI().setScene(new WelcomeScreenController());
+        getUI().setScene(new WelcomeViewController());
     }
 
     public static void main(String[] args) {
@@ -65,8 +60,11 @@ public class KioskMain extends Application {
 
     public static UIManager getUI() { return theUIManager; }
 
+    public static LoginManager getLogin() { return theLoginManager; }
+
     private static void initManagers() {
         initDBMg();
+        initLoginMg();
         initPathMg();
         initDirMg();
         initTTSMg();
@@ -103,7 +101,7 @@ public class KioskMain extends Application {
     private static void initDirMg() {
         // create the directory manager with directories from the db
         HashMap<LocationType, Directory> allDirectories = getDB().getAllDirectories();
-        HashMap<Integer, Location> kiosks = allDirectories.get(LocationType.Kiosk).getLocations();
+        Map<Integer, Location> kiosks = allDirectories.get(LocationType.Kiosk).getLocations();
 
         // Find the kiosk
         if(kiosks.size() > 1) {
@@ -149,6 +147,10 @@ public class KioskMain extends Application {
 
     private static void initTTSMg() {
         theTTSManager = new TTSManager();
+    }
+
+    private static void initLoginMg() {
+        theLoginManager = new LoginManager();
     }
 
     private static void initUIMg(Stage stage) {

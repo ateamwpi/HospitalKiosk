@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<Pane fx:id="root" layoutX="6.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+    <VBox>
+        <padding>
+            <Insets left="250.0"/>
+        </padding>
+        <Pane fx:id="scrim" styleClass="scrim" stylesheets="@/resources/styles/MapView.css"/>
+    </VBox>
+    <VBox prefWidth="250.0">
+        <VBox>
+            <padding>
+                <Insets bottom="20.0" />
+            </padding>
+            <HBox alignment="CENTER_LEFT" spacing="100.0">
+                <padding>
+                    <Insets left="24.0"/>
+                </padding>
+                <Label styleClass="title-text" stylesheets="@/resources/styles/NavigationDrawer.css" text="Kiosk">
+                    <padding>
+                        <Insets top="8.0"/>
+                    </padding>
+                </Label>
+                <VBox>
+                    <padding>
+                        <Insets bottom="10.0" left="20.0" top="20.0"/>
+                    </padding>
+                    <Label fx:id="drawerClose" prefHeight="20.0" prefWidth="20.0" styleClass="minimize-menu"
+                           stylesheets="@/resources/styles/MapView.css"/>
+                </VBox>
+            </HBox>
+        </VBox>
+        <VBox fx:id="directions" alignment="CENTER_LEFT" style="-fx-background-color: #FAFAFA;">
+         <Label fx:id="accountText" styleClass="alert-body" stylesheets="@/resources/styles/NavigationDrawer.css" text="Welcome, " />
+         <padding>
+            <Insets left="24.0" />
+         </padding>
+        </VBox>
+      <VBox fx:id="menuItems" spacing="24.0">
+         <padding>
+            <Insets bottom="12.0" top="12.0" />
+         </padding>
+      </VBox>
+    </VBox>
+</Pane>

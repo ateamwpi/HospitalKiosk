@@ -5,8 +5,8 @@ import core.exception.*;
 import models.dir.Location;
 import models.dir.LocationType;
 import models.path.algo.AStar;
-import models.path.algo.BreadthFirst;
 import models.path.algo.AbstractPathfindingAlgorithm;
+import models.path.algo.BreadthFirst;
 import models.path.algo.DepthFirst;
 
 import java.util.*;
@@ -16,38 +16,38 @@ import java.util.*;
  */
 public class PathfindingManager {
 
-    private HashMap<Integer, Node> graph;
-    private HashMap<String, Integer> ids;
-    private ArrayList<AbstractPathfindingAlgorithm> algorithms = new ArrayList<AbstractPathfindingAlgorithm>();
+    private final HashMap<Integer, Node> graph;
+    private final HashMap<String, Integer> ids;
+    private final ArrayList<AbstractPathfindingAlgorithm> algorithms = new ArrayList<>();
     private AbstractPathfindingAlgorithm cur;
 
     public PathfindingManager(HashMap<Integer, Node> allNodes) {
-        this.graph = allNodes;
-        this.ids = new HashMap<String, Integer>();
-        for (Node n : this.graph.values()) {
-            if(n.getRoomName() != null && !n.getRoomName().equals("NONE")) this.ids.put(n.getRoomName(), n.getID());
+        graph = allNodes;
+        ids = new HashMap<>();
+        for (Node n : graph.values()) {
+            if(n.getRoomName() != null && !n.getRoomName().equals("NONE")) ids.put(n.getRoomName(), n.getID());
         }
-        this.algorithms.add(new AStar());
-        this.algorithms.add(new BreadthFirst());
-        this.algorithms.add(new DepthFirst());
-        this.selectAlgorithm("A* Search");
-        System.out.println("Loaded algorithms " + this.getAlgorithms());
-        System.out.println("Selected algorithm: " + this.getSelectedAlgorithm().getName());
+        algorithms.add(new AStar());
+        algorithms.add(new BreadthFirst());
+        algorithms.add(new DepthFirst());
+        selectAlgorithm("A* Search");
+        System.out.println("Loaded algorithms " + getAlgorithms());
+        System.out.println("Selected algorithm: " + getSelectedAlgorithm().getName());
     }
 
     public Node getNode(int id) {
-        return this.graph.get(id);
+        return graph.get(id);
     }
 
     public void updateRoomName(Node n, String oldName) {
-        this.ids.remove(oldName);
-        this.ids.put(n.getRoomName(), n.getID());
+        ids.remove(oldName);
+        ids.put(n.getRoomName(), n.getID());
     }
 
     public boolean selectAlgorithm(String name) {
-        for(AbstractPathfindingAlgorithm algo : this.algorithms) {
+        for(AbstractPathfindingAlgorithm algo : algorithms) {
             if(name.equals(algo.getName())) {
-                this.cur = algo;
+                cur = algo;
                 return true;
             }
         }
@@ -55,13 +55,13 @@ public class PathfindingManager {
     }
 
     public AbstractPathfindingAlgorithm getSelectedAlgorithm() {
-        return this.cur;
+        return cur;
     }
 
     public ArrayList<String> getAlgorithms() {
         ArrayList<String> names = new ArrayList<>();
 
-        for(AbstractPathfindingAlgorithm algo : this.algorithms) {
+        for(AbstractPathfindingAlgorithm algo : algorithms) {
             names.add(algo.getName());
         }
 
@@ -72,12 +72,12 @@ public class PathfindingManager {
         if (n.isNew()) {
             KioskMain.getDB().addNode(n);
         }
-        this.graph.put(n.getID(), n);
-        this.ids.put(n.getRoomName(), n.getID());
+        graph.put(n.getID(), n);
+        ids.put(n.getRoomName(), n.getID());
     }
 
     public HashMap<Integer, Node> getGraph() {
-        return this.graph;
+        return graph;
     }
 
     public void removeNode(Node n) throws NodeInUseException{
@@ -86,8 +86,8 @@ public class PathfindingManager {
         }
         else {
             n.removeAllConnections();
-            this.graph.remove(n.getID());
-            this.ids.remove(n.getRoomName());
+            graph.remove(n.getID());
+            ids.remove(n.getRoomName());
             KioskMain.getDB().removeNode(n);
         }
     }
@@ -103,7 +103,7 @@ public class PathfindingManager {
     }
 
     public HashMap<Location, Double> getNearest(LocationType loc, Node start) throws NearestNotFoundException {
-        HashMap<Location, Double> nearests = new HashMap<Location, Double>();
+        HashMap<Location, Double> nearests = new HashMap<>();
         Collection<Location> locations = KioskMain.getDir().getDirectory(loc).getLocations().values();
 
         for(Location l : locations){
@@ -132,28 +132,26 @@ public class PathfindingManager {
         double distX = endX - startX;
         double distY = endY - startY;
 
-        double distance = Math.sqrt(Math.pow(distX, 2) + Math.pow(distY, 2));
-
-        return distance;
+        return Math.sqrt(Math.pow(distX, 2) + Math.pow(distY, 2));
     }
 
     public Node getRoom(String roomName) throws RoomNotFoundException {
-        if(!this.ids.containsKey(roomName)) {
+        if(!ids.containsKey(roomName)) {
             throw new RoomNotFoundException(roomName);
         }
-        else return this.graph.get(this.ids.get(roomName));
+        else return graph.get(ids.get(roomName));
     }
 
     public boolean hasRoomName(String name) {
-        return this.ids.containsKey(name);
+        return ids.containsKey(name);
     }
 
     public Path findPath(Node start, Node end) throws PathNotFoundException, NearestNotFoundException, FloorNotReachableException {
         if(start.isBelkin() == end.isBelkin()) {
-            return this.findSameBuilding(start, end);
+            return findSameBuilding(start, end);
         }
         else {
-            return this.findDifferentBuilding(start, end);
+            return findDifferentBuilding(start, end);
         }
     }
 
@@ -168,9 +166,9 @@ public class PathfindingManager {
             startBuild = KioskMain.getDir().getMainEntr().getNode();
             endBuild = KioskMain.getDir().getBelkinEntr().getNode();
         }
-        Path build1 = this.findSameBuilding(start, startBuild);
-        Path crossLot = this.cur.findPath(startBuild, endBuild);
-        Path build2 = this.findSameBuilding(endBuild, end);
+        Path build1 = findSameBuilding(start, startBuild);
+        Path crossLot = cur.findPath(startBuild, endBuild);
+        Path build2 = findSameBuilding(endBuild, end);
         return build1.addSteps(crossLot).addSteps(build2);
     }
 
@@ -182,7 +180,7 @@ public class PathfindingManager {
             Location min;
             do {
                 try {
-                    min = Collections.min(nearests.entrySet(), (entry1, entry2) -> (int) entry1.getValue().doubleValue() - (int) entry2.getValue().doubleValue()).getKey();
+                    min = Collections.min(nearests.entrySet(), Comparator.comparingInt(entry -> (int) entry.getValue().doubleValue())).getKey();
                 } catch (NoSuchElementException e) {
                     throw new FloorNotReachableException(start, end.getFloor());
                 }
@@ -190,17 +188,17 @@ public class PathfindingManager {
                 matching = findMatching(curr, end.getFloor(), LocationType.Elevator);
                 nearests.remove(min);
             } while (matching == null);
-            Path startFloor = this.cur.findPath(start, curr);
-            Path endFloor = this.cur.findPath(matching, end);
+            Path startFloor = cur.findPath(start, curr);
+            Path endFloor = cur.findPath(matching, end);
             return startFloor.addSteps(endFloor);
         }
         else {
-            return this.cur.findPath(start, end);
+            return cur.findPath(start, end);
         }
     }
 
     public Collection<String> getRoomNames() {
-        ArrayList<String> roomNames = new ArrayList<String>(this.ids.keySet());
+        ArrayList<String> roomNames = new ArrayList<>(ids.keySet());
         Collections.sort(roomNames);
         return roomNames;
     }

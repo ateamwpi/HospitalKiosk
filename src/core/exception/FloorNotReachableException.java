@@ -6,8 +6,8 @@ import models.path.Node;
  * Created by mattm on 4/13/2017.
  */
 public class FloorNotReachableException extends Exception {
-    private Node start;
-    private int floor;
+    private final Node start;
+    private final int floor;
 
     public FloorNotReachableException(Node start, int floor) {
         this.start = start;

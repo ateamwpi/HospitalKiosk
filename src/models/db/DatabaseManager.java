@@ -22,7 +22,7 @@ public class DatabaseManager {
     public void connect() throws SQLException, ClassNotFoundException {
         Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
         System.out.println("Successfully located database drivers.");
-        this.conn = DriverManager.getConnection("jdbc:derby:hospitalDB;create=false");
+        conn = DriverManager.getConnection("jdbc:derby:hospitalDB;create=false");
         System.out.println("Successfully connected to database.");
     }
 
@@ -30,8 +30,8 @@ public class DatabaseManager {
 
     public HashMap<LocationType, Directory> getAllDirectories() {
         // Run SQL query to get all LOCATIONS from the database
-        HashMap<LocationType, Directory> allDirectories = new HashMap<LocationType, Directory>();
-        Statement stmt = null;
+        HashMap<LocationType, Directory> allDirectories = new HashMap<>();
+        Statement stmt;
         ResultSet rset = null;
         try {
             stmt = conn.createStatement();
@@ -52,6 +52,7 @@ public class DatabaseManager {
 
         try {
             // Go through each entry and create a new Location object
+            assert rset != null;
             while (rset.next()) {
                 id = rset.getInt("ID");
                 nodeid = rset.getInt("NODEID");
@@ -123,7 +124,7 @@ public class DatabaseManager {
 
     public HashMap<Integer, Node> getAllNodes() {
         // Run SQL query to get all NODEs from the database
-        HashMap<Integer, Node> allNodes = new HashMap<Integer, Node>();
+        HashMap<Integer, Node> allNodes = new HashMap<>();
         Statement stmt = null;
         ResultSet rset = null;
         try {
@@ -135,17 +136,21 @@ public class DatabaseManager {
         }
 
         int x, y, floor, id = 0;
+        boolean restricted;
         String roomName;
 
+        //noinspection TryWithIdenticalCatches
         try {
             // Go through each entry one at a time and make a new Node object
+            assert rset != null;
             while (rset.next()) {
                 id = rset.getInt("ID");
                 x = rset.getInt("X");
                 y = rset.getInt("Y");
                 floor = rset.getInt("FLOOR");
                 roomName = rset.getString("ROOMNAME");
-                allNodes.put(id, new Node(id, x, y, floor, roomName));
+                restricted = rset.getBoolean("RESTRICTED");
+                allNodes.put(id, new Node(id, x, y, floor, restricted, roomName));
             }
 
             // Run SQL query to get all EDGES from the database
@@ -181,13 +186,14 @@ public class DatabaseManager {
 
     public void addNode(Node n) {
         try {
-            String str = "INSERT INTO NODE VALUES (?, ?, ?, ?, ?)";
+            String str = "INSERT INTO NODE VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement stmt = conn.prepareStatement(str);
             stmt.setInt(1, n.getID());
             stmt.setInt(2, n.getX());
             stmt.setInt(3, n.getY());
             stmt.setString(4, n.getRoomName());
             stmt.setInt(5, n.getFloor());
+            stmt.setBoolean(6, n.isRestricted());
             stmt.execute();
         }
         catch (SQLException e) {
@@ -221,13 +227,14 @@ public class DatabaseManager {
 
     public void updateNode(Node n) {
         try {
-            String str = "UPDATE NODE SET X=?, Y=?, FLOOR=?, ROOMNAME=? WHERE ID=?";
+            String str = "UPDATE NODE SET X=?, Y=?, FLOOR=?, ROOMNAME=?, RESTRICTED=? WHERE ID=?";
             PreparedStatement stmt = conn.prepareStatement(str);
             stmt.setInt(1, n.getX());
             stmt.setInt(2, n.getY());
             stmt.setInt(3, n.getFloor());
             stmt.setString(4, n.getRoomName());
-            stmt.setInt(5, n.getID());
+            stmt.setBoolean(5, n.isRestricted());
+            stmt.setInt(6, n.getID());
             stmt.execute();
         }
         catch (SQLException e) {

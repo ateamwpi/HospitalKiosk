@@ -3,7 +3,7 @@ package tests;
 import core.exception.FloorNotReachableException;
 import core.exception.NearestNotFoundException;
 import core.exception.PathNotFoundException;
-import models.dir.LocationType;
+import core.exception.WrongFloorException;
 import models.path.Node;
 import models.path.Path;
 import models.path.PathfindingManager;
@@ -12,10 +12,6 @@ import org.junit.Test;
 
 import java.util.HashMap;
 
-import static java.awt.Color.MAGENTA;
-import static models.dir.LocationType.Elevator;
-import static models.dir.LocationType.PointOfInterest;
-import static models.dir.LocationType.Restroom;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
@@ -31,17 +27,19 @@ public class PathfindingTests {
 
     @Before
     public void setup1() {
-        HashMap<Integer, Node> n = new HashMap<Integer, Node>();
-        Node n1 = new Node(1, 1, 1, 4, "NONE");
-        Node n2 = new Node(2, 2, 2, 4, "NONE");
-        Node n3 = new Node(3, 3, 3, 4, "NONE");
-        Node n4 = new Node(4,4, 4, 4, "NONE");
-        Node n5 = new Node(5,5,5,5,"NONE");
-        Node n6 = new Node(6,6,6,6,"NONE");
+        HashMap<Integer, Node> n = new HashMap<>();
+        Node n1 = new Node(1, 1, 1, 4, false, "NONE");
+        Node n2 = new Node(2, 2, 2, 4, false, "NONE");
+        Node n3 = new Node(3, 3, 3, 4, false, "NONE");
+        Node n4 = new Node(4,4, 4, 4, false, "NONE");
+        Node n5 = new Node(5,5,5,5, false,"NONE");
+        Node n6 = new Node(6,6,6,6, false,"NONE");
         try {
             n1.addConnection(n2);
             n2.addConnection(n3);
-        } catch (Exception e) {}
+        } catch (WrongFloorException e) {
+            // TODO
+        }
         n.put(1, n1);
         n.put(2, n2);
         n.put(3, n3);
@@ -53,34 +51,34 @@ public class PathfindingTests {
 
     @Before
     public void setup2() {
-        HashMap<Integer, Node> n = new HashMap<Integer, Node>();
-        Node n1  = new Node(1,  1, 1, 4, "NONE");
-        Node n2  = new Node(2,  1, 2, 4, "NONE");
-        Node n3  = new Node(3,  1, 3, 4, "NONE");
-        Node n4  = new Node(4,  1, 4, 4, "NONE");
-        Node n5  = new Node(5,  2, 5, 4, "NONE");
-        Node n6  = new Node(6,  3, 6, 4, "NONE");
-        Node n7  = new Node(7,  4, 7, 4, "NONE");
-        Node n8  = new Node(8,  5, 7, 4, "NONE");
-        Node n9  = new Node(9,  6, 7, 4, "NONE");
-        Node n10 = new Node(10, 2, 3, 4, "NONE");
-        Node n11 = new Node(11, 3, 3, 4, "NONE");
-        Node n12 = new Node(12, 7, 7, 4, "NONE");
-        Node n13 = new Node(13, 3, 4, 4, "NONE");
-        Node n14 = new Node(14, 3, 5, 4, "NONE");
-        Node n15 = new Node(15, 3, 7, 4, "NONE");
-        Node n16 = new Node(16, 2, 7, 4, "NONE");
-        Node n17 = new Node(17, 6, 6, 4, "NONE");
-        Node n18 = new Node(18, 5, 5, 4, "NONE");
-        Node n19 = new Node(19, 5, 4, 4, "NONE");
-        Node n20 = new Node(20, 6, 2, 4, "NONE");
-        Node n21 = new Node(21, 4, 2, 4, "NONE");
-        Node n22 = new Node(22, 5, 1, 4, "NONE");
-        Node n23 = new Node(23, 6, 4, 4, "NONE");
-        Node n24 = new Node(24, 6, 2, 4, "NONE");
-        Node n25 = new Node(25, 5, 2, 4, "NONE");
-        Node n26 = new Node(26, 10, 12, 4, "NONE");
-        Node n27 = new Node(27,11,22,5,"NONE");
+        HashMap<Integer, Node> n = new HashMap<>();
+        Node n1  = new Node(1,  1, 1, 4, false, "NONE");
+        Node n2  = new Node(2,  1, 2, 4, false, "NONE");
+        Node n3  = new Node(3,  1, 3, 4, false, "NONE");
+        Node n4  = new Node(4,  1, 4, 4, false, "NONE");
+        Node n5  = new Node(5,  2, 5, 4, false, "NONE");
+        Node n6  = new Node(6,  3, 6, 4, false, "NONE");
+        Node n7  = new Node(7,  4, 7, 4, false, "NONE");
+        Node n8  = new Node(8,  5, 7, 4, false, "NONE");
+        Node n9  = new Node(9,  6, 7, 4, false, "NONE");
+        Node n10 = new Node(10, 2, 3, 4, false, "NONE");
+        Node n11 = new Node(11, 3, 3, 4, false, "NONE");
+        Node n12 = new Node(12, 7, 7, 4, false, "NONE");
+        Node n13 = new Node(13, 3, 4, 4, false, "NONE");
+        Node n14 = new Node(14, 3, 5, 4, false, "NONE");
+        Node n15 = new Node(15, 3, 7, 4, false, "NONE");
+        Node n16 = new Node(16, 2, 7, 4, false, "NONE");
+        Node n17 = new Node(17, 6, 6, 4, false, "NONE");
+        Node n18 = new Node(18, 5, 5, 4, false, "NONE");
+        Node n19 = new Node(19, 5, 4, 4, false, "NONE");
+        Node n20 = new Node(20, 6, 2, 4, false, "NONE");
+        Node n21 = new Node(21, 4, 2, 4, false, "NONE");
+        Node n22 = new Node(22, 5, 1, 4, false, "NONE");
+        Node n23 = new Node(23, 6, 4, 4, false, "NONE");
+        Node n24 = new Node(24, 6, 2, 4, false, "NONE");
+        Node n25 = new Node(25, 5, 2, 4, false, "NONE");
+        Node n26 = new Node(26, 10, 12, 4, false, "NONE");
+        Node n27 = new Node(27,11,22, 5, false,"NONE");
 
         n.put(1, n1); n.put(2, n2); n.put(3, n3); n.put(4, n4);
         n.put(5, n5); n.put(6, n6); n.put(7, n7); n.put(8, n8);
@@ -118,7 +116,9 @@ public class PathfindingTests {
             n22.addConnection(n20);
             n24.addConnection(n25);
             n25.addConnection(n19);
-        } catch (Exception e) {}
+        } catch (WrongFloorException e) {
+            // TODO
+        }
         pm2 = new PathfindingManager(n);
     }
 
