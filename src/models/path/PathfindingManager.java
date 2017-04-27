@@ -194,7 +194,24 @@ public class PathfindingManager {
         return timeTaken;
     }
 
+    public String totalTimeTaken(Node end, Node start) throws PathNotFoundException, NearestNotFoundException, FloorNotReachableException {
 
+        String stringTime;
+        int timeSec;
+        int timeMin;
+        String stringMin;
+        String stringSec;
+        int timeTaken = timeInSeconds(end, start);
+
+        timeMin = (timeTaken/60);
+        timeSec = (timeTaken%60);
+
+        stringMin = Integer.toString(timeMin);
+        stringSec = Integer.toString(timeSec);
+
+        stringTime = "the time to your destination is " + stringMin + " minutes and " + stringSec + " seconds.";
+        return stringTime;
+    }
 
     public Node getRoom(String roomName) throws RoomNotFoundException {
         if(!this.ids.containsKey(roomName)) {
