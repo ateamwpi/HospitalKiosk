@@ -114,7 +114,6 @@ public class DirectionsDrawerController extends AbstractController {
 
     private void changeStartFocus(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
         if (newValue) {
-            System.out.println("changeStartFocus");
             clearSearchResults();
             typeStart(null);
         }
@@ -122,7 +121,6 @@ public class DirectionsDrawerController extends AbstractController {
 
     private void changeEndFocus(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
         if (newValue) {
-            System.out.println("changeEndFocus");
             clearSearchResults();
             typeEnd(null);
         }
@@ -135,7 +133,7 @@ public class DirectionsDrawerController extends AbstractController {
             // search if not empty
             search(startQuery, this::selectStart);
         } else {
-            showPOI();
+            showPOI(this::selectStart);
         }
     }
 
@@ -146,7 +144,7 @@ public class DirectionsDrawerController extends AbstractController {
             // search if not empty
             search(endQuery, this::selectEnd);
         } else {
-            showPOI();
+            showPOI(this::selectEnd);
         }
     }
 
@@ -158,19 +156,19 @@ public class DirectionsDrawerController extends AbstractController {
         selectLocationFromDirectory(this::selectEnd);
     }
 
-    private void selectLocationFromDirectory(Consumer<Location> setLocation) {
-        new DirectoryViewController(mainRoot, setLocation, true).showCentered();
+    private void selectLocationFromDirectory(Consumer<Location> selectLocation) {
+        new DirectoryViewController(mainRoot, selectLocation, true).showCentered();
     }
 
     private void clearSearchResults() {
         searchResults.getChildren().clear();
     }
 
-    private void showPOI() {
+    private void showPOI(Consumer<Location> selectLocation) {
         clearSearchResults();
         Collection<Location> POIs = KioskMain.getDir().getPOI();
         for (Location location : POIs) {
-            searchResults.getChildren().add(new SearchResult(location, this::selectEnd).getRoot());
+            searchResults.getChildren().add(new SearchResult(location, selectLocation).getRoot());
         }
     }
 
@@ -194,9 +192,11 @@ public class DirectionsDrawerController extends AbstractController {
         // fill in field
         end.setText(location != null ? location.getName() : "");
         // focus on other field
-        if (startLocation == null) {
-            Platform.runLater(() -> start.requestFocus());
-        }
+        Platform.runLater(() -> {
+            if (startLocation == null) {
+                start.requestFocus();
+            }
+        });
     }
 
     private void setStart(Location location) {
@@ -205,16 +205,18 @@ public class DirectionsDrawerController extends AbstractController {
         // fill in field
         start.setText(location != null ? location.getName() : "");
         // focus on other field
-        if (endLocation == null) {
-            Platform.runLater(() -> end.requestFocus());
-        }
+        Platform.runLater(() -> {
+            if (endLocation == null) {
+                end.requestFocus();
+            }
+        });
     }
 
-    private void search(String query, Consumer<Location> setLocation) {
+    private void search(String query, Consumer<Location> selectLocation) {
         clearSearchResults();
         List<Location> locations = KioskMain.getDir().search(query);
         for (Location location : locations) {
-            searchResults.getChildren().add(new SearchResult(location, setLocation).getRoot());
+            searchResults.getChildren().add(new SearchResult(location, selectLocation).getRoot());
         }
     }
 
@@ -295,7 +297,7 @@ public class DirectionsDrawerController extends AbstractController {
         setEnd(null);
         setStart(KioskMain.getDir().getTheKiosk());
         // show POI
-        showPOI();
+        showPOI(this::selectStart);
         // reset map
         mapController.enableAllButtons();
         mapController.clearOverlay();

@@ -26,9 +26,6 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
     @FXML
     private JFXButton backButton;
 
-
-    public ManageDirectoryViewController() {}
-
     @Override
     public String getURL() {
         return "resources/views/DirectoryView/ManageDirectoryView/ManageDirectoryView.fxml";

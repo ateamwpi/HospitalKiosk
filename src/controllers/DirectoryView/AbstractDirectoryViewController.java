@@ -6,6 +6,7 @@ import controllers.AbstractController;
 import core.KioskMain;
 import core.Utils;
 import core.exception.RoomNotFoundException;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
@@ -52,10 +53,6 @@ public abstract class AbstractDirectoryViewController extends AbstractController
 
     protected LocationType dirType;
 
-    protected AbstractDirectoryViewController(Object... data) {
-        super(data);
-    }
-
     @Override
     public void initData(Object... data) {
         directories = KioskMain.getDir().getDirectories();
@@ -75,19 +72,14 @@ public abstract class AbstractDirectoryViewController extends AbstractController
     }
 
     protected void initializeFilter() {
-        searchBox.textProperty().addListener((observable, oldValue, newValue) -> filterLocations());
+        searchBox.textProperty().addListener(this::filterLocations);
     }
 
-    private void filterLocations() {
+    private void filterLocations(ObservableValue<? extends String> observable, String oldValue, String newValue) {
         filteredLocations.clear(); // Clear the list keeping track of filtered locations
         String filterString = searchBox.getText().toLowerCase(); // get the keyword
         // check which locations contain the keyword
-        for (Location loc : selectedLocations) {
-            if (loc.getName().toLowerCase().contains(filterString) ||
-                    loc.getNode().getRoomName().toLowerCase().contains(filterString)) {
-                filteredLocations.add(loc);
-            }
-        }
+        filteredLocations = KioskMain.getDir().search(filterString, selectedLocations);
         showLocations(filteredLocations); // update the table to reflect the filteredLocations
     }
 
