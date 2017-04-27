@@ -100,8 +100,8 @@ public class DirectionsDrawerController extends AbstractController {
         directionsBackButton.setOnMouseClicked(this::showSearch);
         printDirectionsIcon.setOnMouseClicked(this::printDirections);
         speakDirectionsIcon.setOnMouseClicked(this::speakDirections);
-        start.setOnKeyPressed(this::typeStart);
-        end.setOnKeyPressed(this::typeEnd);
+        start.setOnKeyReleased(this::typeStart);
+        end.setOnKeyReleased(this::typeEnd);
         startDirectory.setOnMouseClicked(this::selectStartFromDirectory);
         endDirectory.setOnMouseClicked(this::selectEndFromDirectory);
         // show search container
@@ -132,7 +132,7 @@ public class DirectionsDrawerController extends AbstractController {
             // search if not empty
             search(startQuery, this::selectStart);
         } else {
-            clearSearchResults();
+            showPOI();
         }
     }
 
@@ -143,7 +143,7 @@ public class DirectionsDrawerController extends AbstractController {
             // search if not empty
             search(endQuery, this::selectEnd);
         } else {
-            clearSearchResults();
+            showPOI();
         }
     }
 
@@ -161,8 +161,11 @@ public class DirectionsDrawerController extends AbstractController {
 
     private void clearSearchResults() {
         searchResults.getChildren().clear();
+    }
+
+    private void showPOI() {
+        clearSearchResults();
         Collection<Location> POIs = KioskMain.getDir().getPOI();
-        searchResults.getChildren().clear();
         for (Location location : POIs) {
             searchResults.getChildren().add(new SearchResult(location, this::selectEnd).getRoot());
         }
@@ -205,8 +208,8 @@ public class DirectionsDrawerController extends AbstractController {
     }
 
     private void search(String query, Consumer<Location> setLocation) {
+        clearSearchResults();
         List<Location> locations = KioskMain.getDir().search(query);
-        searchResults.getChildren().clear();
         for (Location location : locations) {
             searchResults.getChildren().add(new SearchResult(location, setLocation).getRoot());
         }
@@ -288,6 +291,8 @@ public class DirectionsDrawerController extends AbstractController {
         // reset the locations
         setEnd(null);
         setStart(KioskMain.getDir().getTheKiosk());
+        // show POI
+        showPOI();
         // reset map
         mapController.enableAllButtons();
         mapController.clearOverlay();
