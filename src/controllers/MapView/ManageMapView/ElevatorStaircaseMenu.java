@@ -151,6 +151,9 @@ public class ElevatorStaircaseMenu extends AbstractController implements IPopup 
             }
         }
 
+        clicked.resetPreviewConnections();
+        clicked.save();
+
         this.getInstance().hide();
     }
 
