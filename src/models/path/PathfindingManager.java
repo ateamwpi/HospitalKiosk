@@ -137,27 +137,22 @@ public class PathfindingManager {
         return distance;
     }
 
-    public int distanceInFeet(Node end, Node start){
+    public double distanceInFeet(Node end, Node start){
         double inPixels;
         double inFeet;
         double inchesPerPixel = 4.068;
-        int inFeetRounded;
         inPixels = distanceFormula(end, start);
         inFeet = ((inPixels * inchesPerPixel) / 12);
 
-        inFeetRounded = (int) (inFeet + 0.5);
-
-        return inFeetRounded;
+        return inFeet;
     }
 
-    public int totalDistance(Node end, Node start) throws PathNotFoundException, NearestNotFoundException, FloorNotReachableException {
+    public double totalDistance(Path path) throws PathNotFoundException, NearestNotFoundException, FloorNotReachableException {
 
-        int distance = 0;
-        Path path = findPath(start, end);
+        double distance = 0;
         int i = 0;
-
         while(true){
-            if (path.getPath().get(i).equals(end)) {
+            if (path.getPath().get(i).equals(path.getEnd())) {
                 break;
             }else{
                 distance = distance + distanceInFeet(path.getPath().get(i+1), path.getPath().get(i));
@@ -167,11 +162,10 @@ public class PathfindingManager {
         return distance;
     }
 
-    public int timeInSeconds(Node end, Node start) throws PathNotFoundException, NearestNotFoundException, FloorNotReachableException {
+    public int timeInSeconds(Path path) throws PathNotFoundException, NearestNotFoundException, FloorNotReachableException {
 
         int timeTaken = 0;
-        Path path = findPath(start, end);
-        double distance = (double)totalDistance(end, start);
+        double distance = totalDistance(path);
         int count = 0;
         int minimumElevatorTime = 20;
         double averagePace = 4.54667;
@@ -189,19 +183,19 @@ public class PathfindingManager {
             }
         }
 
-        timeTaken = (int)((distance/averagePace)+ ((count/2)*minimumElevatorTime)+ (floorDifference*elevatorTime));
+        timeTaken = (int)((distance/averagePace)+ ((count/2)*minimumElevatorTime)+ (floorDifference*elevatorTime) + 0.5);
 
         return timeTaken;
     }
 
-    public String totalTimeTaken(Node end, Node start) throws PathNotFoundException, NearestNotFoundException, FloorNotReachableException {
+    public String totalTimeTaken(Path path) throws PathNotFoundException, NearestNotFoundException, FloorNotReachableException {
 
         String stringTime;
         int timeSec;
         int timeMin;
         String stringMin;
         String stringSec;
-        int timeTaken = timeInSeconds(end, start);
+        int timeTaken = timeInSeconds(path);
 
         timeMin = (timeTaken/60);
         timeSec = (timeTaken%60);
