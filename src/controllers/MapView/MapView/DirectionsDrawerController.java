@@ -10,6 +10,7 @@ import core.Utils;
 import core.exception.FloorNotReachableException;
 import core.exception.NearestNotFoundException;
 import core.exception.PathNotFoundException;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.print.*;
@@ -99,24 +100,12 @@ public class DirectionsDrawerController extends AbstractController {
         directionsBackButton.setOnMouseClicked(this::showSearch);
         printDirectionsIcon.setOnMouseClicked(this::printDirections);
         speakDirectionsIcon.setOnMouseClicked(this::speakDirections);
-        start.setOnKeyPressed(this::handleKeyPressStart);
-        end.setOnKeyPressed(this::handleKeyPressEnd);
+        start.setOnKeyPressed(this::typeStart);
+        end.setOnKeyPressed(this::typeEnd);
         startDirectory.setOnMouseClicked(this::selectStartFromDirectory);
         endDirectory.setOnMouseClicked(this::selectEndFromDirectory);
         // show search container
         showSearch(null);
-    }
-    
-    private void selectStartFromDirectory(MouseEvent event) {
-        selectLocationFromDirectory(this::setStart);
-    }
-
-    private void selectEndFromDirectory(MouseEvent event) {
-        selectLocationFromDirectory(this::setEnd);
-    }
-
-    private void selectLocationFromDirectory(Consumer<Location> setLocation) {
-        new DirectoryViewController(mainRoot, setLocation, true).showCentered();
     }
 
     @FXML
@@ -129,7 +118,6 @@ public class DirectionsDrawerController extends AbstractController {
         text.setFont(new Font(14));
         text.setText(dirs);
         print(text);
-
     }
 
     @FXML
@@ -137,26 +125,38 @@ public class DirectionsDrawerController extends AbstractController {
         KioskMain.getTTS().speak(path.textPath());
     }
 
-    private void handleKeyPressStart(KeyEvent e) {
+    private void typeStart(KeyEvent e) {
         String startQuery = start.getText();
+        startLocation = null;
         if (!startQuery.isEmpty()) {
             // search if not empty
-            search(startQuery, this::setStart);
+            search(startQuery, this::selectStart);
         } else {
-            //setStart(null);
             clearSearchResults();
         }
     }
 
-    private void handleKeyPressEnd(KeyEvent e) {
+    private void typeEnd(KeyEvent e) {
         String endQuery = end.getText();
+        endLocation = null;
         if (!endQuery.isEmpty()) {
             // search if not empty
-            search(endQuery, this::setEnd);
+            search(endQuery, this::selectEnd);
         } else {
-            //setEnd(null);
             clearSearchResults();
         }
+    }
+
+    private void selectStartFromDirectory(MouseEvent event) {
+        selectLocationFromDirectory(this::selectStart);
+    }
+
+    private void selectEndFromDirectory(MouseEvent event) {
+        selectLocationFromDirectory(this::selectEnd);
+    }
+
+    private void selectLocationFromDirectory(Consumer<Location> setLocation) {
+        new DirectoryViewController(mainRoot, setLocation, true).showCentered();
     }
 
     private void clearSearchResults() {
@@ -164,43 +164,51 @@ public class DirectionsDrawerController extends AbstractController {
         Collection<Location> POIs = KioskMain.getDir().getPOI();
         searchResults.getChildren().clear();
         for (Location location : POIs) {
-            searchResults.getChildren().add(new SearchResult(location, this::setEnd).getRoot());
+            searchResults.getChildren().add(new SearchResult(location, this::selectEnd).getRoot());
         }
     }
 
-    private void setStart(Location location) {
-        startLocation = location;
-        // fill in field
-        start.setText(location != null ? location.getName() : "");
-        // focus on other field
-        if (endLocation == null) {
-            end.requestFocus();
-        }
-        // clear results
-        clearSearchResults();
+    private void selectStart(Location location) {
+        // set the location
+        setStart(location);
+        // try to find path
+        findPath();
+    }
+
+    private void selectEnd(Location location) {
+        // set the location
+        setEnd(location);
         // try to find path
         findPath();
     }
 
     private void setEnd(Location location) {
+        // set the location
         endLocation = location;
         // fill in field
         end.setText(location != null ? location.getName() : "");
         // focus on other field
         if (startLocation == null) {
-            start.requestFocus();
+            Platform.runLater(() -> start.requestFocus());
         }
-        // clear results
-        clearSearchResults();
-        // try to find path
-        findPath();
     }
 
-    private void search(String query, Consumer<Location> handler) {
+    private void setStart(Location location) {
+        // set the location
+        startLocation = location;
+        // fill in field
+        start.setText(location != null ? location.getName() : "");
+        // focus on other field
+        if (endLocation == null) {
+            Platform.runLater(() -> end.requestFocus());
+        }
+    }
+
+    private void search(String query, Consumer<Location> setLocation) {
         List<Location> locations = KioskMain.getDir().search(query);
         searchResults.getChildren().clear();
         for (Location location : locations) {
-            searchResults.getChildren().add(new SearchResult(location, handler).getRoot());
+            searchResults.getChildren().add(new SearchResult(location, setLocation).getRoot());
         }
     }
 
@@ -255,7 +263,7 @@ public class DirectionsDrawerController extends AbstractController {
         for (DirectionStep directionStep : directionSteps) {
             directions.getChildren().add(directionStep.getRoot());
         }
-        // render
+        // render drawer content
         root.getChildren().clear();
         root.getChildren().addAll(toggleContainer, directionsContainer);
     }
@@ -280,11 +288,10 @@ public class DirectionsDrawerController extends AbstractController {
         // reset the locations
         setEnd(null);
         setStart(KioskMain.getDir().getTheKiosk());
-        end.requestFocus();
         // reset map
         mapController.enableAllButtons();
         mapController.clearOverlay();
-        // render
+        // render drawer content
         root.getChildren().clear();
         root.getChildren().addAll(toggleContainer, searchContainer);
     }
