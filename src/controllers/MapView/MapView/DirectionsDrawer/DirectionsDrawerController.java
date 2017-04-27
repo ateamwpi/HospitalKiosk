@@ -1,4 +1,4 @@
-package controllers.MapView.MapView;
+package controllers.MapView.MapView.DirectionsDrawer;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
@@ -320,7 +320,7 @@ public class DirectionsDrawerController extends AbstractController {
 
     @Override
     public String getURL() {
-        return "resources/views/MapView/MapView/DirectionsDrawer.fxml";
+        return "resources/views/MapView/MapView/DirectionsDrawer/DirectionsDrawer.fxml";
     }
 
     private void print(Node first) {
