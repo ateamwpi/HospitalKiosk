@@ -11,6 +11,8 @@ import core.exception.FloorNotReachableException;
 import core.exception.NearestNotFoundException;
 import core.exception.PathNotFoundException;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.print.*;
@@ -101,28 +103,29 @@ public class DirectionsDrawerController extends AbstractController {
         printDirectionsIcon.setOnMouseClicked(this::printDirections);
         speakDirectionsIcon.setOnMouseClicked(this::speakDirections);
         start.setOnKeyReleased(this::typeStart);
+        start.focusedProperty().addListener(this::changeStartFocus);
         end.setOnKeyReleased(this::typeEnd);
+        end.focusedProperty().addListener(this::changeEndFocus);
         startDirectory.setOnMouseClicked(this::selectStartFromDirectory);
         endDirectory.setOnMouseClicked(this::selectEndFromDirectory);
         // show search container
         showSearch(null);
     }
 
-    @FXML
-    private void printDirections(MouseEvent event) {
-        String dirs = "\n\nBrigham and Women's Faulkner Hospital Directions\n";
-        dirs += "From: " + path.getStart().getRoomName() + "\n";
-        dirs += "To: " + path.getEnd().getRoomName() + "\n";
-        dirs += path.textPath();
-        Text text = new Text();
-        text.setFont(new Font(14));
-        text.setText(dirs);
-        print(text);
+    private void changeStartFocus(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+        if (newValue) {
+            System.out.println("changeStartFocus");
+            clearSearchResults();
+            typeStart(null);
+        }
     }
 
-    @FXML
-    private void speakDirections(MouseEvent event) {
-        KioskMain.getTTS().speak(path.textPath());
+    private void changeEndFocus(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+        if (newValue) {
+            System.out.println("changeEndFocus");
+            clearSearchResults();
+            typeEnd(null);
+        }
     }
 
     private void typeStart(KeyEvent e) {
@@ -350,5 +353,22 @@ public class DirectionsDrawerController extends AbstractController {
             Utils.showAlert(root, "Error While Printing!", "There was an error when attempting to print the " +
                     "directions. Ensure you have a printer installed!");
         }
+    }
+
+    @FXML
+    private void printDirections(MouseEvent event) {
+        String dirs = "\n\nBrigham and Women's Faulkner Hospital Directions\n";
+        dirs += "From: " + path.getStart().getRoomName() + "\n";
+        dirs += "To: " + path.getEnd().getRoomName() + "\n";
+        dirs += path.textPath();
+        Text text = new Text();
+        text.setFont(new Font(14));
+        text.setText(dirs);
+        print(text);
+    }
+
+    @FXML
+    private void speakDirections(MouseEvent event) {
+        KioskMain.getTTS().speak(path.textPath());
     }
 }
