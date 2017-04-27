@@ -10,11 +10,17 @@ import core.Utils;
 import core.exception.FloorNotReachableException;
 import core.exception.NearestNotFoundException;
 import core.exception.PathNotFoundException;
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.print.*;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -68,9 +74,9 @@ public class DirectionsDrawerController extends AbstractController {
     @FXML
     private VBox toggleContainer;
     @FXML
-    private Label startDir;
+    private Label startDirectory;
     @FXML
-    private Label endDir;
+    private Label endDirectory;
     @FXML
     private Pane root;
 
@@ -93,142 +99,124 @@ public class DirectionsDrawerController extends AbstractController {
     @FXML
     private void initialize() {
         // bind event handlers
-        directionsBackButton.setOnMouseClicked(event -> showSearch());
-        printDirectionsIcon.setOnMouseClicked(event -> printDirections());
-        speakDirectionsIcon.setOnMouseClicked(event -> speakDirections());
-
-        // listen to search input
-        start.textProperty().addListener(observable -> handleKeyPressStart());
-        end.textProperty().addListener(observable -> handleKeyPressEnd());
-        startDir.setOnMouseClicked(event -> {
-            DirectoryViewController dir = new DirectoryViewController(mainRoot, this::setStart, true);
-            dir.showCentered();
-        });
-        endDir.setOnMouseClicked(event -> {
-            DirectoryViewController dir = new DirectoryViewController(mainRoot, this::setEnd, true);
-            dir.showCentered();
-        });
+        directionsBackButton.setOnMouseClicked(this::showSearch);
+        printDirectionsIcon.setOnMouseClicked(this::printDirections);
+        speakDirectionsIcon.setOnMouseClicked(this::speakDirections);
+        start.setOnKeyReleased(this::typeStart);
+        start.focusedProperty().addListener(this::changeStartFocus);
+        end.setOnKeyReleased(this::typeEnd);
+        end.focusedProperty().addListener(this::changeEndFocus);
+        startDirectory.setOnMouseClicked(this::selectStartFromDirectory);
+        endDirectory.setOnMouseClicked(this::selectEndFromDirectory);
         // show search container
-        showSearch();
+        showSearch(null);
     }
 
-    @FXML
-    private void printDirections() {
-        String dirs = "\n\nBrigham and Women's Faulkner Hospital Directions\n";
-        dirs += "From: " + path.getStart().getRoomName() + "\n";
-        dirs += "To: " + path.getEnd().getRoomName() + "\n";
-        dirs += path.textPath();
-        Text text = new Text();
-        text.setFont(new Font(14));
-        text.setText(dirs);
-        print(text);
-
-    }
-
-    private void print(Node first) {
-        try {
-            Printer printer = Printer.getDefaultPrinter();
-            PageLayout pageLayout = printer.createPageLayout(Paper.NA_LETTER, PageOrientation.PORTRAIT, Printer.MarginType.DEFAULT);
-            PrinterJob job = PrinterJob.createPrinterJob();
-            if (job != null && job.showPrintDialog(null)) {
-                boolean success = false;
-                job.printPage(first);
-                int oldFloor = mapController.getFloor();
-                for (String s : path.getFloorsSpanning()) {
-                    mapController.clearOverlay();
-                    mapController.setFloor(Integer.parseInt(s.substring(0,1)));
-                    mapController.drawPath(path);
-                    mapController.hideButtons();
-                    double scaleX = pageLayout.getPrintableWidth() / mapController.getRoot().getBoundsInParent().getWidth();
-                    Scale scale = new Scale(scaleX, scaleX);
-                    mapController.getRoot().getTransforms().add(scale);
-                    success = job.printPage(pageLayout, mapController.getRoot());
-                    mapController.getRoot().getTransforms().remove(scale);
-                    mapController.showButtons();
-                }
-                mapController.clearOverlay();
-                mapController.setFloor(oldFloor);
-                mapController.drawPath(path);
-                if (success) {
-                    job.endJob();
-                }
-            }
-        } catch (NullPointerException e) {
-            Utils.showAlert(root, "Error While Printing!", "There was an error when attempting to print the " +
-                            "directions. Ensure you have a printer installed!");
+    private void changeStartFocus(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+        if (newValue) {
+            clearSearchResults();
+            typeStart(null);
         }
-
     }
 
-    @FXML
-    private void speakDirections() {
-        KioskMain.getTTS().speak(path.textPath());
+    private void changeEndFocus(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+        if (newValue) {
+            clearSearchResults();
+            typeEnd(null);
+        }
     }
 
-    private void handleKeyPressStart() {
+    private void typeStart(KeyEvent e) {
         String startQuery = start.getText();
+        startLocation = null;
         if (!startQuery.isEmpty()) {
             // search if not empty
-            search(startQuery, this::setStart);
+            search(startQuery, this::selectStart);
         } else {
-            //setStart(null);
-            clearSearchResults();
+            showPOI(this::selectStart);
         }
     }
 
-    private void handleKeyPressEnd() {
+    private void typeEnd(KeyEvent e) {
         String endQuery = end.getText();
+        endLocation = null;
         if (!endQuery.isEmpty()) {
             // search if not empty
-            search(endQuery, this::setEnd);
+            search(endQuery, this::selectEnd);
         } else {
-            //setEnd(null);
-            clearSearchResults();
+            showPOI(this::selectEnd);
         }
+    }
+
+    private void selectStartFromDirectory(MouseEvent event) {
+        selectLocationFromDirectory(this::selectStart);
+    }
+
+    private void selectEndFromDirectory(MouseEvent event) {
+        selectLocationFromDirectory(this::selectEnd);
+    }
+
+    private void selectLocationFromDirectory(Consumer<Location> selectLocation) {
+        new DirectoryViewController(mainRoot, selectLocation, true).showCentered();
     }
 
     private void clearSearchResults() {
         searchResults.getChildren().clear();
+    }
+
+    private void showPOI(Consumer<Location> selectLocation) {
+        clearSearchResults();
         Collection<Location> POIs = KioskMain.getDir().getPOI();
-        searchResults.getChildren().clear();
         for (Location location : POIs) {
-            searchResults.getChildren().add(new SearchResult(location, this::setEnd).getRoot());
+            searchResults.getChildren().add(new SearchResult(location, selectLocation).getRoot());
         }
     }
 
-    private void setStart(Location location) {
-        startLocation = location;
-        // fill in field
-        start.setText(location != null ? location.getName() : "");
-        // focus on other field
-        if (endLocation == null) {
-            end.requestFocus();
-        }
-        // clear results
-        clearSearchResults();
+    private void selectStart(Location location) {
+        // set the location
+        setStart(location);
+        // try to find path
+        findPath();
+    }
+
+    private void selectEnd(Location location) {
+        // set the location
+        setEnd(location);
         // try to find path
         findPath();
     }
 
     private void setEnd(Location location) {
+        // set the location
         endLocation = location;
         // fill in field
         end.setText(location != null ? location.getName() : "");
         // focus on other field
-        if (startLocation == null) {
-            start.requestFocus();
-        }
-        // clear results
-        clearSearchResults();
-        // try to find path
-        findPath();
+        Platform.runLater(() -> {
+            if (startLocation == null) {
+                start.requestFocus();
+            }
+        });
     }
 
-    private void search(String query, Consumer<Location> handler) {
+    private void setStart(Location location) {
+        // set the location
+        startLocation = location;
+        // fill in field
+        start.setText(location != null ? location.getName() : "");
+        // focus on other field
+        Platform.runLater(() -> {
+            if (endLocation == null) {
+                end.requestFocus();
+            }
+        });
+    }
+
+    private void search(String query, Consumer<Location> selectLocation) {
+        clearSearchResults();
         List<Location> locations = KioskMain.getDir().search(query);
-        searchResults.getChildren().clear();
         for (Location location : locations) {
-            searchResults.getChildren().add(new SearchResult(location, handler).getRoot());
+            searchResults.getChildren().add(new SearchResult(location, selectLocation).getRoot());
         }
     }
 
@@ -283,7 +271,7 @@ public class DirectionsDrawerController extends AbstractController {
         for (DirectionStep directionStep : directionSteps) {
             directions.getChildren().add(directionStep.getRoot());
         }
-        // render
+        // render drawer content
         root.getChildren().clear();
         root.getChildren().addAll(toggleContainer, directionsContainer);
     }
@@ -304,15 +292,16 @@ public class DirectionsDrawerController extends AbstractController {
     }
 
     @FXML
-    private void showSearch() {
+    private void showSearch(MouseEvent event) {
         // reset the locations
         setEnd(null);
         setStart(KioskMain.getDir().getTheKiosk());
-        end.requestFocus();
+        // show POI
+        showPOI(this::selectStart);
         // reset map
         mapController.enableAllButtons();
         mapController.clearOverlay();
-        // render
+        // render drawer content
         root.getChildren().clear();
         root.getChildren().addAll(toggleContainer, searchContainer);
     }
@@ -332,5 +321,56 @@ public class DirectionsDrawerController extends AbstractController {
     @Override
     public String getURL() {
         return "resources/views/MapView/MapView/DirectionsDrawer/DirectionsDrawer.fxml";
+    }
+
+    private void print(Node first) {
+        try {
+            Printer printer = Printer.getDefaultPrinter();
+            PageLayout pageLayout = printer.createPageLayout(Paper.NA_LETTER, PageOrientation.PORTRAIT, Printer.MarginType.DEFAULT);
+            PrinterJob job = PrinterJob.createPrinterJob();
+            if (job != null && job.showPrintDialog(null)) {
+                boolean success = false;
+                job.printPage(first);
+                int oldFloor = mapController.getFloor();
+                for (String s : path.getFloorsSpanning()) {
+                    mapController.clearOverlay();
+                    mapController.setFloor(Integer.parseInt(s.substring(0,1)));
+                    mapController.drawPath(path);
+                    mapController.hideButtons();
+                    double scaleX = pageLayout.getPrintableWidth() / mapController.getRoot().getBoundsInParent().getWidth();
+                    Scale scale = new Scale(scaleX, scaleX);
+                    mapController.getRoot().getTransforms().add(scale);
+                    success = job.printPage(pageLayout, mapController.getRoot());
+                    mapController.getRoot().getTransforms().remove(scale);
+                    mapController.showButtons();
+                }
+                mapController.clearOverlay();
+                mapController.setFloor(oldFloor);
+                mapController.drawPath(path);
+                if (success) {
+                    job.endJob();
+                }
+            }
+        } catch (NullPointerException e) {
+            Utils.showAlert(root, "Error While Printing!", "There was an error when attempting to print the " +
+                    "directions. Ensure you have a printer installed!");
+        }
+    }
+
+    @FXML
+    private void printDirections(MouseEvent event) {
+        String dirs = "\n\nBrigham and Women's Faulkner Hospital Directions\n";
+        dirs += "From: " + path.getStart().getRoomName() + "\n";
+        dirs += "To: " + path.getEnd().getRoomName() + "\n";
+        dirs += path.textPath();
+        Text text = new Text();
+        text.setFont(new Font(14));
+        text.setText(dirs);
+        print(text);
+    }
+
+    @FXML
+    private void speakDirections(MouseEvent event) {
+        KioskMain.getTTS().speak(path.textPath());
     }
 }
