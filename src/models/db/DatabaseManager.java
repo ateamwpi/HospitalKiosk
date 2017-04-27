@@ -37,7 +37,8 @@ public class DatabaseManager {
         ResultSet rset = null;
         try {
             stmt = conn.createStatement();
-            rset = stmt.executeQuery("SELECT * FROM LOCATION ORDER BY ID ASC");        } catch (SQLException e) {
+            rset = stmt.executeQuery("SELECT * FROM LOCATION ORDER BY ID ASC");
+        } catch (SQLException e) {
             System.out.println("Failed to load information from the database!");
             e.printStackTrace();
         }

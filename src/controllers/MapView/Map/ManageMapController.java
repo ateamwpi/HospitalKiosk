@@ -25,6 +25,7 @@ import java.util.function.Function;
 
 /**
  * Created by dylan on 4/8/17.
+ *
  */
 public class ManageMapController extends AbstractController implements IClickableController {
 
@@ -321,8 +322,8 @@ public class ManageMapController extends AbstractController implements IClickabl
     private void drawDraggableNodeConnections(DraggableNode draggableNode) {
         Node node = draggableNode.getNode();
         for (Node other : node.getConnections()) {
-            // don't draw connection twice
-            if (node.getID() < other.getID()) {
+            // don't draw connection twice, only draw connections on this floor
+            if (node.getID() < other.getID() && node.getFloor() == other.getFloor()) {
                 // draw connection
                 drawDraggableConnection(draggableNode, getDraggableNode(other));
             }

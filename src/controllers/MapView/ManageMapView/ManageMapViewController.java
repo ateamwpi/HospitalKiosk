@@ -319,8 +319,15 @@ public class ManageMapViewController extends AbstractController {
 
     private void refreshScene() {
         int floor = manageMapController.getMapController().getFloor();
+        double scale = manageMapController.getMapController().getOverlay().getScaleX();
+        double transX = manageMapController.getMapController().getOverlay().getTranslateX();
+        double transY = manageMapController.getMapController().getOverlay().getTranslateY();
+
         ManageMapViewController con = new ManageMapViewController();
-        //con.floors.getSelectionModel().select(floor - 1);
+        con.setFloor(floor);
+        con.manageMapController.getMapController().getSceneGestures().zoomToScale(scale);
+        con.manageMapController.getMapController().getOverlay().setTranslateY(transY);
+        con.manageMapController.getMapController().getOverlay().setTranslateX(transX);
         KioskMain.getUI().setScene(con);
     }
 

@@ -260,4 +260,8 @@ public class MapController extends AbstractController implements IClickableContr
         zoomIn.setVisible(true);
         zoomOut.setVisible(true);
     }
+
+    public SceneGestures getSceneGestures() {
+        return this.sceneGestures;
+    }
 }

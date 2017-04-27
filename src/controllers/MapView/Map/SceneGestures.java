@@ -10,7 +10,7 @@ import java.util.Objects;
 /**
  * Listeners for making the scene's canvas draggable and zoomable
  */
-class SceneGestures {
+public class SceneGestures {
     //Minimum and maximum zoom levels
     private static final double MAX_SCALE = 5.0d;
     private static final double MIN_SCALE = 1.0d;
@@ -168,7 +168,7 @@ class SceneGestures {
         return value;
     }
 
-    private void zoomToScale(double scale){
+    public void zoomToScale(double scale){
         scale = clamp( scale, MIN_SCALE, MAX_SCALE);
         double oldScale = mapController.getOverlay().getScaleX();
 
@@ -179,10 +179,10 @@ class SceneGestures {
         mapController.getOverlay().setTranslateY(
                 mapController.getOverlay().getTranslateY()*scale/oldScale);//mapController.getOverlay().getScaleX());
     }
-    public void zoomIn(){
+    void zoomIn(){
         zoomToScale(mapController.getOverlay().getScaleX()+0.5);
     }
-    public void zoomOut(){
+    void zoomOut(){
         zoomToScale(mapController.getOverlay().getScaleX()-0.5);
     }
 
