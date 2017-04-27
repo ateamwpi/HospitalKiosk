@@ -3,6 +3,7 @@ package controllers.MapView.MapView;
 import controllers.AbstractController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.text.Text;
 
 /**
  * Created by dylan on 4/18/17.
@@ -33,7 +34,7 @@ public class DirectionStep extends AbstractController {
     private String message;
 
     @FXML
-    private Label directionLabel;
+    private Text directionText;
     @FXML
     private Label directionIcon;
 
@@ -49,7 +50,8 @@ public class DirectionStep extends AbstractController {
 
     @FXML
     private void initialize() {
-        directionLabel.setText(message);
+        directionText.setWrappingWidth(230);
+        directionText.setText(message);
         // add direction icon
         directionIcon.getStyleClass().add(direction.path);
     }
