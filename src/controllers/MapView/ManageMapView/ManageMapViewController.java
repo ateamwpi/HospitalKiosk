@@ -23,6 +23,7 @@ import javafx.util.StringConverter;
 import javafx.util.converter.IntegerStringConverter;
 import javafx.util.converter.NumberStringConverter;
 import models.path.Node;
+import models.path.NodeType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -171,6 +172,11 @@ public class ManageMapViewController extends AbstractController {
         nodeAction.setText("Delete");
         // update connections table
         setTableNeighbors(selectedNode.getNode().getConnections());
+
+        if(node.getNodeType().equals(NodeType.Elevator)) {
+            ElevatorStaircaseMenu menu = new ElevatorStaircaseMenu(getRoot(), draggableNode);
+            menu.showCentered();
+        }
     }
 
     public void unselectNode() {

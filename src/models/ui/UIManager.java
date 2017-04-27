@@ -90,7 +90,7 @@ public class UIManager {
     public void setPopup(IPopup popup) {
         this.popup = popup;
 
-        if(popup != null) {
+        if(popup != null && popup.getInstance() != null) {
             popup.getInstance().addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {

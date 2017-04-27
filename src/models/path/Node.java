@@ -7,6 +7,7 @@ import javafx.beans.property.*;
 import javafx.scene.paint.Color;
 import models.dir.Location;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -111,6 +112,14 @@ public class Node {
         }
     }
 
+    public void removeElevatorConnections() {
+        for(Node n : this.getConnections()) {
+            if(n.getFloor() != this.getFloor()) {
+                n.removeConnection(this);
+            }
+        }
+    }
+
     private void updateBuilding() {
         isBelkin = getX() >= 30 && getX() <= 220 && getY() >= 10 && getY() <= 210;
         isMain = getX() >= 110 && getX() <= 910 && getY() >= 230 && getY() <= 680;
@@ -132,6 +141,7 @@ public class Node {
         }
         previousRoomName = getRoomName();
         roomNameProperty.setValue(name);
+        KioskMain.getPath().updateRoomName(this, previousRoomName);
     }
 
     public void setConnections(Collection<Node> conns) throws WrongFloorException {
@@ -221,7 +231,6 @@ public class Node {
 
     public final void save() {
         // TODO check if node in db first
-        KioskMain.getPath().updateRoomName(this, previousRoomName);
         KioskMain.getDB().updateNode(this);
     }
 
