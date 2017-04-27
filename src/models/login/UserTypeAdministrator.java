@@ -1,6 +1,6 @@
 package models.login;
 
-import controllers.mapView.MenuItem;
+import controllers.NavigationDrawer.MenuItem;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -20,8 +20,15 @@ public class UserTypeAdministrator extends AbstractUserType {
     }
 
     @Override
+    public boolean hasAccess() {
+        return true;
+    }
+
+    @Override
     public Collection<MenuItem.EnumMenuItem> getAvailableOptions() {
-        return Arrays.asList(MenuItem.EnumMenuItem.About, MenuItem.EnumMenuItem.Logout, MenuItem.EnumMenuItem.ManageDir, MenuItem.EnumMenuItem.ManageMap, MenuItem.EnumMenuItem.SelectAlgo, MenuItem.EnumMenuItem.SelectKiosk);
+        return Arrays.asList(MenuItem.EnumMenuItem.About, MenuItem.EnumMenuItem.Logout, MenuItem.EnumMenuItem.ManageDir,
+                MenuItem.EnumMenuItem.ManageMap, MenuItem.EnumMenuItem.SelectAlgo, MenuItem.EnumMenuItem.SelectKiosk,
+                MenuItem.EnumMenuItem.SelectTimeout);
     }
 
     @Override

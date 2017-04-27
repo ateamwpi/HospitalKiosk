@@ -1,6 +1,6 @@
 package core;
 
-import controllers.WelcomeScreenController;
+import controllers.WelcomeView.WelcomeViewController;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import models.db.DatabaseManager;
@@ -11,12 +11,14 @@ import models.dir.LocationType;
 import models.login.LoginManager;
 import models.path.Node;
 import models.path.PathfindingManager;
+import models.timeout.TimeoutManager;
 import models.tts.TTSManager;
 import models.ui.UIManager;
-import sun.rmi.runtime.Log;
+import org.junit.rules.Timeout;
 
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Map;
 
 public class KioskMain extends Application {
 
@@ -26,17 +28,19 @@ public class KioskMain extends Application {
     private static TTSManager theTTSManager;
     private static UIManager theUIManager;
     private static LoginManager theLoginManager;
+    private static TimeoutManager theTimeoutManager;
 
     private static final boolean DEBUG = false;
     private static final String MAIN_ENTR_NAME = "Main Entrance";
     private static final String BELKIN_ENTR_NAME = "Belkin Entrance";
+
 
     @Override
     public void start(Stage stage) {
         initUIMg(stage);
         // load the main menu
         //getUI().setScene(new MapViewControllerOLD());
-        getUI().setScene(new WelcomeScreenController());
+        getUI().setScene(new WelcomeViewController());
     }
 
     public static void main(String[] args) {
@@ -44,6 +48,8 @@ public class KioskMain extends Application {
         initManagers();
         // Launch the JavaFX application after initial setup
         launch(args);
+        // Stop the timer thread when the application closes
+        getTimeout().stopTimer();
     }
 
     public static DirectoryManager getDir() {
@@ -60,14 +66,17 @@ public class KioskMain extends Application {
 
     public static UIManager getUI() { return theUIManager; }
 
-    public static LoginManager getLogin() { return theLoginManager; };
+    public static LoginManager getLogin() { return theLoginManager; }
+
+    public static TimeoutManager getTimeout() { return theTimeoutManager; }
 
     private static void initManagers() {
         initDBMg();
+        initLoginMg();
         initPathMg();
         initDirMg();
         initTTSMg();
-        initLoginMg();
+        initTimeoutMg();
     }
 
     private static void initDBMg() {
@@ -101,7 +110,7 @@ public class KioskMain extends Application {
     private static void initDirMg() {
         // create the directory manager with directories from the db
         HashMap<LocationType, Directory> allDirectories = getDB().getAllDirectories();
-        HashMap<Integer, Location> kiosks = allDirectories.get(LocationType.Kiosk).getLocations();
+        Map<Integer, Location> kiosks = allDirectories.get(LocationType.Kiosk).getLocations();
 
         // Find the kiosk
         if(kiosks.size() > 1) {
@@ -155,5 +164,9 @@ public class KioskMain extends Application {
 
     private static void initUIMg(Stage stage) {
         theUIManager = new UIManager(stage);
+    }
+
+    private static void initTimeoutMg() {
+        theTimeoutManager = new TimeoutManager(Integer.parseInt(getDB().getVar(TimeoutManager.DELAY_VAR)));
     }
 }

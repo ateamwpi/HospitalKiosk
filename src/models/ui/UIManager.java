@@ -1,12 +1,17 @@
 package models.ui;
 
-import controllers.AbstractPopupController;
+import controllers.PopupView.IPopup;
 import controllers.IController;
+import core.KioskMain;
+import models.timeout.TimeoutManager;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 /**
@@ -14,11 +19,11 @@ import javafx.stage.Stage;
  */
 public class UIManager {
 
-    private Stage stage;
+    private final Stage stage;
     private Parent root;
     private Scene scene;
 
-    private AbstractPopupController popup;
+    private IPopup popup;
     private static DoubleProperty fontSize = new SimpleDoubleProperty(15);
 
     public UIManager(Stage stage) {
@@ -27,7 +32,26 @@ public class UIManager {
     }
 
     public void setScene(IController controller) {
-        scene = new Scene(controller.getRoot());
+        if (scene == null){
+            scene = new Scene(controller.getRoot());
+        } else {
+            scene = new Scene(controller.getRoot(), scene.getWidth(), scene.getHeight());
+        }
+
+        scene.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                KioskMain.getTimeout().resetTimer();
+            }
+        });
+
+        scene.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                KioskMain.getTimeout().resetTimer();
+            }
+        });
+
 //        fontSize.bind(scene.widthProperty().add(scene.heightProperty()).divide(100));
 //        Screen screen = Screen.getPrimary();
 //        Rectangle2D bounds = screen.getVisualBounds();
@@ -59,11 +83,27 @@ public class UIManager {
         return root;
     }
 
-    public AbstractPopupController getPopup() {
+    public IPopup getPopup() {
         return popup;
     }
 
-    public void setPopup(AbstractPopupController popup) {
+    public void setPopup(IPopup popup) {
         this.popup = popup;
+
+        if(popup != null) {
+            popup.getInstance().addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    KioskMain.getTimeout().resetTimer();
+                }
+            });
+
+            popup.getInstance().addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+                @Override
+                public void handle(KeyEvent keyEvent) {
+                    KioskMain.getTimeout().resetTimer();
+                }
+            });
+        }
     }
 }

@@ -15,7 +15,7 @@ public abstract class   AbstractPathfindingAlgorithm {
 
     public abstract String getName();
 
-    protected Path constructPath(HashMap<Node, Node> cameFrom, Node end) {
+    Path constructPath(HashMap<Node, Node> cameFrom, Node end) {
         Path p = new Path();
         p.buildPath(end);
         Node current = end;

@@ -1,6 +1,6 @@
 package models.login;
 
-import controllers.mapView.MenuItem;
+import controllers.NavigationDrawer.MenuItem;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -17,6 +17,11 @@ public class UserTypeProfessional extends AbstractUserType {
     @Override
     public String toString() {
         return "Professional";
+    }
+
+    @Override
+    public boolean hasAccess() {
+        return true;
     }
 
     @Override

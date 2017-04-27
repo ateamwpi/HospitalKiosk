@@ -22,7 +22,7 @@ public class DatabaseManager {
     public void connect() throws SQLException, ClassNotFoundException {
         Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
         System.out.println("Successfully located database drivers.");
-        this.conn = DriverManager.getConnection("jdbc:derby:hospitalDB;create=false");
+        conn = DriverManager.getConnection("jdbc:derby:hospitalDB;create=false");
         System.out.println("Successfully connected to database.");
     }
 
@@ -30,8 +30,8 @@ public class DatabaseManager {
 
     public HashMap<LocationType, Directory> getAllDirectories() {
         // Run SQL query to get all LOCATIONS from the database
-        HashMap<LocationType, Directory> allDirectories = new HashMap<LocationType, Directory>();
-        Statement stmt = null;
+        HashMap<LocationType, Directory> allDirectories = new HashMap<>();
+        Statement stmt;
         ResultSet rset = null;
         try {
             stmt = conn.createStatement();
@@ -52,6 +52,7 @@ public class DatabaseManager {
 
         try {
             // Go through each entry and create a new Location object
+            assert rset != null;
             while (rset.next()) {
                 id = rset.getInt("ID");
                 nodeid = rset.getInt("NODEID");
@@ -123,7 +124,7 @@ public class DatabaseManager {
 
     public HashMap<Integer, Node> getAllNodes() {
         // Run SQL query to get all NODEs from the database
-        HashMap<Integer, Node> allNodes = new HashMap<Integer, Node>();
+        HashMap<Integer, Node> allNodes = new HashMap<>();
         Statement stmt = null;
         ResultSet rset = null;
         try {
@@ -138,8 +139,10 @@ public class DatabaseManager {
         boolean restricted;
         String roomName;
 
+        //noinspection TryWithIdenticalCatches
         try {
             // Go through each entry one at a time and make a new Node object
+            assert rset != null;
             while (rset.next()) {
                 id = rset.getInt("ID");
                 x = rset.getInt("X");
@@ -274,6 +277,42 @@ public class DatabaseManager {
             System.out.println("Failed to remove connection between " + n1.getID() + " and " + n2.getID() + ".");
             e.printStackTrace();
             System.exit(1);
+        }
+    }
+
+    /* VARS */
+
+    public String getVar(String id) {
+        PreparedStatement stmt = null;
+        ResultSet rset = null;
+        String value = "";
+        try {
+            stmt = conn.prepareStatement("SELECT * FROM VARS WHERE NAME=?");
+            stmt.setString(1, id.toUpperCase());
+            rset = stmt.executeQuery();
+            rset.next();
+            value = rset.getString("VALUE");
+            rset.close();
+            stmt.close();
+        } catch (SQLException e) {
+            System.out.println("Failed to load information from the database!");
+            e.printStackTrace();
+        }
+
+        return value;
+    }
+
+    public void setVar(String id, String newValue) {
+        PreparedStatement stmt = null;
+        try {
+            stmt = conn.prepareStatement("UPDATE VARS SET VALUE=? WHERE NAME=?");
+            stmt.setString(1, newValue);
+            stmt.setString(2, id.toUpperCase());
+            stmt.execute();
+        }
+        catch (SQLException e) {
+            System.out.println("Failed to load information from the database!");
+            e.printStackTrace();
         }
     }
 
