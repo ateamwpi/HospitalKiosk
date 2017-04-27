@@ -1,4 +1,4 @@
-package controllers.MapView.MapView;
+package controllers.MapView.MapView.DirectionsDrawer;
 
 import controllers.AbstractController;
 import javafx.fxml.FXML;
@@ -60,6 +60,6 @@ public class DirectionStep extends AbstractController {
 
     @Override
     public String getURL() {
-        return "resources/views/MapView/MapView/DirectionStep.fxml";
+        return "resources/views/MapView/MapView/DirectionsDrawer/DirectionStep.fxml";
     }
 }
