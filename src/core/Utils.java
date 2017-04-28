@@ -13,6 +13,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Collection;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * Created by mattm on 4/14/2017.
@@ -30,23 +31,19 @@ public class Utils {
     }
 
     public static void showAlert(Parent root, String title, String body) {
-        AlertViewController alert = new AlertViewController(root, title, body);
-        alert.showCentered();
+        new AlertViewController(root, title, body);
     }
 
     public static void showAlert(Parent root, String title, String body, Consumer<Event> onClose) {
-        AlertViewController alert = new AlertViewController(root, title, body, onClose);
-        alert.showCentered();
+        new AlertViewController(root, title, body, onClose);
     }
 
-    public static void showOption(Parent root, String title, String body, String btn1text, EventHandler<ActionEvent> btn1, String btn2text, EventHandler<ActionEvent> btn2) {
-        OptionAlertViewController option = new OptionAlertViewController(root, title, body, btn1text, btn1, btn2text, btn2);
-        option.showCentered();
+    public static void showOption(Parent root, String title, String body, String cancelText, String confirmText, Consumer<Boolean> setConfirm) {
+        new OptionAlertViewController(root, title, body, cancelText, confirmText, setConfirm);
     }
 
     public static void showDropdown(Parent root, String title, String body, Collection<String> items, String def, Consumer<String> fcn) {
-        DropdownAlertViewController drop = new DropdownAlertViewController(root, title, body, items, def, fcn);
-        drop.showCentered();
+        new DropdownAlertViewController(root, title, body, items, def, fcn);
     }
 
     public static void hidePopup() {
@@ -85,5 +82,9 @@ public class Utils {
             throw new RuntimeException("Resource not found: " + resource);
         }
         return path;
+    }
+
+    public static<R> Consumer<R> applyAndAccept(Function<? super R,? extends R> f, Consumer<R> c){
+        return t -> c.accept(f.apply(t));
     }
 }

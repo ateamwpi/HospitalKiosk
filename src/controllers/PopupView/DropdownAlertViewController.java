@@ -51,6 +51,8 @@ public class DropdownAlertViewController extends AbstractController implements I
                 this.getInstance().hide();
             }
         });
+
+        showCentered();
     }
 
     @FXML

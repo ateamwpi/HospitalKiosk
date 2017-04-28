@@ -53,13 +53,12 @@ public class ManageMapController extends AbstractController implements IClickabl
     @Override
     public void initData(Object... data) {
         // set map manager
-        this.manageMapViewController = (ManageMapViewController) data[0];
+        manageMapViewController = (ManageMapViewController) data[0];
         // load all the nodes
         nodes = KioskMain.getPath().getGraph().values();
         // init props
         draggableNodes = new HashMap<>();
         draggableNodeConnections = new HashMap<>();
-
     }
 
     @Override
@@ -74,25 +73,31 @@ public class ManageMapController extends AbstractController implements IClickabl
 
     public void setFloor(int floor) {
         mapController.setFloor(floor);
-        removeNodesAndLines();
+        removeAllNodes();
         drawAllNodes();
     }
 
-    private void removeNodesAndLines() {
-        for(DraggableNode n : draggableNodes.values()) {
-            mapController.removeOverlay(n);
+    private void removeAllNodes() {
+        for(DraggableNode node : draggableNodes.values()) {
+            removeDraggableNode(node);
         }
-        for(Line l : draggableNodeConnections.values()) {
-            mapController.removeOverlay(l);
+    }
+
+    private void removeDraggableNode(DraggableNode node) {
+        // remove node connections
+        for (Node connection : node.getPreviewConnections()) {
+            node.removePreviewConnection(connection);
         }
-        draggableNodes = new HashMap<>();
-        draggableNodeConnections = new HashMap<>();
+        // remove node from map
+        draggableNodes.remove(node);
+        // remove node from overlay
+        mapController.removeOverlay(node);
     }
 
     public void handleMouseClick(MouseEvent e) {
         // unselect if already selecting node
         if (nodeIsSelected()) {
-            attemptUnselectNode((result) -> {});
+            attemptUnselectNode(isUnselected -> {});
             // add new node if not selecting node
         } else {
             // convert the mouse coordinates to map coordinates
@@ -138,56 +143,49 @@ public class ManageMapController extends AbstractController implements IClickabl
         KioskMain.getPath().addNode(node);
     }
 
-    public Boolean attemptDeleteSelectedNode() {
+    public void attemptDeleteSelectedNode(Consumer<Boolean> setDeleted) {
         if (selectedNode == null) {
-            return false;
+            setDeleted.accept(false);
+        } else {
+            warnDeleteNode(Utils.applyAndAccept(isDeleted -> {
+                if (isDeleted) {
+                    try {
+                        deleteSelectedNode();
+                    } catch (NodeInUseException e) {
+                        showNodeInUseAlert();
+                        return false;
+                    }
+                }
+                return isDeleted;
+            }, setDeleted));
         }
-        warnDeleteNode((result) -> {
-            if(result) {
-                deleteSelectedNode();
-                return true;
-            }
-            else {
-                return false;
-            }
-        });
-        return false;
     }
 
-    private void warnDeleteNode(Function<Boolean, Boolean> cps) {
-        Utils.showOption(getManageMapViewController().getRoot(), "Delete Node", "Are you sure you want to delete? This cannot be undone!",
+    private void warnDeleteNode(Consumer<Boolean> setDeleted) {
+        Utils.showOption(getManageMapViewController().getRoot(),
+                "Delete Node",
+                "Are you sure you want to delete? This cannot be undone!",
                 "Cancel",
-                (event -> {
-                    Utils.hidePopup();
-                    cps.apply(false);
-                }),
                 "Delete",
-                (event -> {
-                    Utils.hidePopup();
-                    cps.apply(true);
-                }));
+                setDeleted);
     }
 
-    private void deleteSelectedNode() {
+    private void deleteSelectedNode() throws NodeInUseException {
         // try to delete the node
-        try {
-            System.out.println("delete node");
-            // keep reference to selected node
-            DraggableNode nodeToDelete = selectedNode;
-            // delete the node from the db
-            KioskMain.getPath().removeNode(nodeToDelete.getNode());
-            // remove the visual node from the overlay
-            mapController.removeOverlay(nodeToDelete);
-            // unselect the node
-            unselectNode();
-        } catch (NodeInUseException e) {
-            showNodeInUseAlert();
-        }
+        System.out.println("delete node");
+        // keep reference to selected node
+        DraggableNode nodeToDelete = selectedNode;
+        // delete the node from the db
+        KioskMain.getPath().removeNode(nodeToDelete.getNode());
+        // remove the visual node from the overlay
+        removeDraggableNode(nodeToDelete);
+        // unselect the node
+        unselectNode();
     }
 
     public void selectNode(DraggableNode node) {
-        attemptUnselectNode( (result) -> {
-            if(result) {
+        attemptUnselectNode(isUnselected -> {
+            if (isUnselected) {
                 selectedNode = node;
                 selectedNode.select();
                 manageMapViewController.selectNode(selectedNode);
@@ -204,41 +202,32 @@ public class ManageMapController extends AbstractController implements IClickabl
     }
 
     // return true if unselected
-    public void attemptUnselectNode(Consumer<Boolean> func) {
+    public void attemptUnselectNode(Consumer<Boolean> setUnselectNode) {
         if (selectedNode == null) {
-            func.accept(true);
-        }
-        if (selectedNode.hasUnsavedChanges()) {
-            warnDiscardChanges((result) -> {
-                if(result) {
-                    unselectNode();
-                    func.accept(true);
-                }
-                else {
-                    func.accept(false);
-                }
-            });
+            setUnselectNode.accept(true);
         } else {
-            unselectNode();
-            func.accept(true);
+            if (selectedNode.hasUnsavedChanges()) {
+                warnDiscardChanges(setUnselectNode.andThen(isUnselected -> {
+                    if (isUnselected) {
+                        unselectNode();
+                    }
+                }));
+            } else {
+                unselectNode();
+                setUnselectNode.accept(true);
+            }
         }
-        func.accept(false);
     }
 
 
     // returns true if admin chooses to discard changes
-    private void warnDiscardChanges(Consumer<Boolean> cps) {
-        Utils.showOption(getManageMapViewController().getRoot(), "Unsaved Changes", "All unsaved changed will be lost. Are you sure you want to continue?",
+    private void warnDiscardChanges(Consumer<Boolean> setDiscard) {
+        Utils.showOption(getManageMapViewController().getRoot(),
+                "Unsaved Changes",
+                "All unsaved changed will be lost. Are you sure you want to continue?",
                 "Cancel",
-                event -> {
-                    Utils.hidePopup();
-                    cps.accept(false);
-                },
                 "Discard Changes",
-                event -> {
-                    Utils.hidePopup();
-                    cps.accept(true);
-                });
+                setDiscard);
     }
 
     private void unselectNode() {
