@@ -13,26 +13,17 @@ import core.exception.NameInUseException;
 import core.exception.NodeInUseException;
 import core.exception.WrongFloorException;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
-import javafx.scene.control.Label;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
-import javafx.scene.text.Text;
 import models.path.Node;
-import models.path.NodeType;
 
-import java.lang.reflect.Array;
 import java.util.*;
-import java.util.function.Consumer;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 /**
- * Created by mattm on 3/29/2017.
+ * Created by mattm on 4/26/2017.
+ *
  */
 public class ElevatorStaircaseMenu extends AbstractController implements IPopup {
 
@@ -74,7 +65,7 @@ public class ElevatorStaircaseMenu extends AbstractController implements IPopup 
         this.clicked = clicked;
         this.nameField.setText(elevatorName);
         for(Node n : KioskMain.getPath().getGraph().values()) {
-            if(n.getNodeType().equals(NodeType.Elevator) && elevatorName(n).equals(elevatorName)) {
+            if(n.getNodeType().equals(clicked.getNode().getNodeType()) && elevatorName(n).equals(elevatorName)) {
                 floors.get(n.getFloor()-1).selectedProperty().set(true);
                 initial[n.getFloor()-1] = true;
                 elevators.put(n.getFloor()-1, n);
@@ -100,7 +91,7 @@ public class ElevatorStaircaseMenu extends AbstractController implements IPopup 
         }
 
         // Update all names of the elevators in this row
-        if(elevatorName != nameField.getText()) {
+        if(!elevators.equals(nameField.getText())) {
             for(Node n : elevators.values()) {
                 try {
                     n.setRoomName(toElevatorName(n.getFloor()));
@@ -116,10 +107,9 @@ public class ElevatorStaircaseMenu extends AbstractController implements IPopup 
             int floor = index+1;
             boolean before = initial[index];
             boolean after = box.selectedProperty().get();
-            if(before == after) continue;
-            else if(!before && after) {
+            if(!before && after) {
                 // add
-                Node n = new Node(clicked.getPreviewX(), clicked.getPreviewY(), floor, clicked.getNode().isRestricted(), NodeType.Elevator, toElevatorName(floor));
+                Node n = new Node(clicked.getPreviewX(), clicked.getPreviewY(), floor, clicked.getNode().isRestricted(), clicked.getNode().getNodeType(), toElevatorName(floor));
                 elevators.put(index, n);
                 KioskMain.getPath().addNode(n);
             }
@@ -136,12 +126,12 @@ public class ElevatorStaircaseMenu extends AbstractController implements IPopup 
         }
 
         for (Node n : elevators.values()) {
-            n.removeElevatorConnections();
+            n.removeCrossFloorConnections();
         }
 
         ArrayList<Node> els = new ArrayList<>(elevators.values());
 
-        Collections.sort(els, (o1, o2) -> o1.getFloor() - o2.getFloor());
+        els.sort(Comparator.comparingInt(Node::getFloor));
 
         for(int i = 1; i < els.size(); i++) {
             try {
@@ -157,23 +147,9 @@ public class ElevatorStaircaseMenu extends AbstractController implements IPopup 
         this.getInstance().hide();
     }
 
-    private void checkBoxClicked(ActionEvent event, JFXCheckBox box) {
-        int floor = floors.indexOf(box)+1;
-        if(box.selectedProperty().get()) { // just checked the box, so add the elevator
-
-        }
-        else { // just unchecked the box, so remove the elevator
-
-        }
-        System.out.println("You clicked the box for floor " + (floors.indexOf(box)+1) + ", also " + box.selectedProperty().get());
-    }
-
     @FXML
     private void initialize() {
-        // bind event handlers
 
-//        int lines = alertBody.getText().length() / 29;
-//        this.root.setPrefHeight(24+45+20+(15*lines)+20+12+36+24);
     }
 
     @Override

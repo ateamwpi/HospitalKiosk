@@ -88,7 +88,7 @@ public class Node {
     }
 
     public void addConnection(Node other) throws WrongFloorException {
-        if(getFloor() != other.getFloor() && !this.nodeType.equals(NodeType.Elevator)) {
+        if(getFloor() != other.getFloor() && !(this.nodeType.equals(NodeType.Elevator) || this.nodeType.equals(NodeType.Staircase))) {
             throw new WrongFloorException(this, other);
         }
         if(!connections.contains(other)) {
@@ -112,7 +112,7 @@ public class Node {
         }
     }
 
-    public void removeElevatorConnections() {
+    public void removeCrossFloorConnections() {
         for(Node n : this.getConnections()) {
             if(n.getFloor() != this.getFloor()) {
                 n.removeConnection(this);

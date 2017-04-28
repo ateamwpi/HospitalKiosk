@@ -173,7 +173,9 @@ public class ManageMapViewController extends AbstractController {
         // update connections table
         setTableNeighbors(selectedNode.getNode().getConnections());
 
-        if(node.getNodeType().equals(NodeType.Elevator)) {
+        System.out.println("clicked " + node.getNodeType());
+
+        if(node.getNodeType().equals(NodeType.Elevator) || node.getNodeType().equals(NodeType.Staircase)) {
             ElevatorStaircaseMenu menu = new ElevatorStaircaseMenu(getRoot(), draggableNode);
             menu.showCentered();
         }
