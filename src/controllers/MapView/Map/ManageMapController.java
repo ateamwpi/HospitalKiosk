@@ -183,7 +183,7 @@ public class ManageMapController extends AbstractController implements IClickabl
         unselectNode();
     }
 
-    public void selectNode(DraggableNode node) {
+    void selectNode(DraggableNode node) {
         attemptUnselectNode(isUnselected -> {
             if (isUnselected) {
                 selectedNode = node;
@@ -193,7 +193,7 @@ public class ManageMapController extends AbstractController implements IClickabl
         });
     }
 
-    public ManageMapViewController getManageMapViewController() {
+    ManageMapViewController getManageMapViewController() {
         return manageMapViewController;
     }
 
@@ -266,10 +266,13 @@ public class ManageMapController extends AbstractController implements IClickabl
     }
 
     public void removeDraggableConnection(DraggableNode nodeA, DraggableNode nodeB) {
+        Pair<DraggableNode, DraggableNode> pair = getNodePair(nodeA, nodeB);
         // get the line corresponding to the nodes
-        Line line = draggableNodeConnections.get(getNodePair(nodeA, nodeB));
+        Line line = draggableNodeConnections.get(pair);
         // remove the line from the overlay
         mapController.removeOverlay(line);
+        // remove the pair from the connections
+        draggableNodeConnections.remove(pair);
     }
 
     //// Private API ////

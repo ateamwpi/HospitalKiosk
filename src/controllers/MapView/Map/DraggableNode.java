@@ -85,15 +85,16 @@ public class DraggableNode extends Circle {
         if(node.getFloor() == this.node.getFloor()) {
             previewConnections.add(node);
             manageMapController.drawDraggableConnection(this, manageMapController.getDraggableNode(node));
-        }
-        else {
+        } else {
             Utils.showAlert(manageMapController.getManageMapViewController().getRoot(), "Invalid Node Connection!", "You cannot add this connection as the nodes are on different floors!");
         }
     }
 
     public void removePreviewConnection(Node node) {
         previewConnections.remove(node);
-        manageMapController.removeDraggableConnection(this, manageMapController.getDraggableNode(node));
+        DraggableNode connection = manageMapController.getDraggableNode(node);
+        manageMapController.removeDraggableConnection(this, connection);
+        connection.save();
     }
 
     public Collection<Node> getPreviewConnections() {
@@ -108,7 +109,7 @@ public class DraggableNode extends Circle {
         return previewYProperty.get();
     }
 
-    private String getPreviewRoomName() {
+    public String getPreviewRoomName() {
         return previewRoomNameProperty.get();
     }
 

@@ -3,12 +3,14 @@ package controllers.MapView.ManageMapView;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.validation.base.ValidatorBase;
 import controllers.AbstractController;
 import controllers.MapView.Map.ManageMapController;
 import controllers.MapView.Map.DraggableNode;
 import controllers.MapView.MapView.MapViewController;
 import core.KioskMain;
 import core.Utils;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -161,6 +163,15 @@ public class ManageMapViewController extends AbstractController {
         Bindings.bindBidirectional(restrictedProperty, selectedNode.previewRestrictedProperty());
         // update node id
         id.setText("ID: " + Integer.toString(node.getID()));
+//        Platform.runLater(() -> {
+//            x.requestFocus();
+//            x.labelFloatProperty().addListener(((observable, oldValue, newValue) -> {
+//                y.requestFocus();
+//            }));
+//            y.labelFloatProperty().addListener(((observable, oldValue, newValue) -> {
+//                room.requestFocus();
+//            }));
+//        });
         restrictedBox.setVisible(true);
         restrictedBox.setDisable(false);
         // show save button
@@ -188,6 +199,8 @@ public class ManageMapViewController extends AbstractController {
         x.setText("");
         y.setText("");
         room.setText("");
+        // reset focus
+        getRoot().requestFocus();
         restrictedBox.setVisible(false);
         restrictedBox.setDisable(true);
         // remove save button
@@ -217,7 +230,7 @@ public class ManageMapViewController extends AbstractController {
     @FXML
     private void clickBack(ActionEvent event) {
         manageMapController.attemptUnselectNode(isUnselected -> {
-            if(isUnselected) {
+            if (isUnselected) {
                 KioskMain.getUI().setScene(new MapViewController());
             }
         });
@@ -236,7 +249,6 @@ public class ManageMapViewController extends AbstractController {
         }
         // add the preview connection
         selectedNode.previewConnection(node);
-        //refreshScene();
         // update the table of connections with preview connections
         setTableNeighbors(selectedNode.getPreviewConnections());
 
@@ -264,7 +276,7 @@ public class ManageMapViewController extends AbstractController {
     @FXML
     private void clickSave(ActionEvent event) {
         selectedNode.save();
-        refreshScene();
+        manageMapController.attemptUnselectNode(isUnselected -> {});
     }
 
     @FXML
@@ -278,11 +290,7 @@ public class ManageMapViewController extends AbstractController {
 
     private void clickDelete() {
         // delete the node
-        selectedNode.delete(isDeleted -> {
-            if (isDeleted) {
-                refreshScene();
-            }
-        });
+        selectedNode.delete(isDeleted -> {});
     }
 
     private void clickAdd() {
@@ -318,13 +326,6 @@ public class ManageMapViewController extends AbstractController {
     private void setFloor(int floor) {
         System.out.println("We found the floor to be: " + floor);
         manageMapController.setFloor(floor);
-    }
-
-    private void refreshScene() {
-        int floor = manageMapController.getMapController().getFloor();
-        ManageMapViewController con = new ManageMapViewController();
-        //con.floors.getSelectionModel().select(floor - 1);
-        KioskMain.getUI().setScene(con);
     }
 
 }
