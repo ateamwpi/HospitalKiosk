@@ -163,15 +163,7 @@ public class ManageMapViewController extends AbstractController {
         Bindings.bindBidirectional(restrictedProperty, selectedNode.previewRestrictedProperty());
         // update node id
         id.setText("ID: " + Integer.toString(node.getID()));
-//        Platform.runLater(() -> {
-//            x.requestFocus();
-//            x.labelFloatProperty().addListener(((observable, oldValue, newValue) -> {
-//                y.requestFocus();
-//            }));
-//            y.labelFloatProperty().addListener(((observable, oldValue, newValue) -> {
-//                room.requestFocus();
-//            }));
-//        });
+        // TODO fix #128
         restrictedBox.setVisible(true);
         restrictedBox.setDisable(false);
         // show save button
