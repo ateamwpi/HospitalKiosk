@@ -44,6 +44,12 @@ public class MapViewController extends AbstractController {
         DirectionsDrawerController directionsDrawerController = new DirectionsDrawerController(mapController, getRoot());
         drawer.setSidePane(directionsDrawerController.getRoot());
         drawer.open();
+        drawer.setOnDrawerClosed(event -> {
+            drawerOpen.setVisible(true);
+        });
+        drawer.setOnDrawerOpened(event -> {
+            drawerOpen.setVisible(false);
+        });
         directionsDrawerController.getDrawerClose().setOnMouseClicked(event -> {
             drawer.close();
             drawerOpen.setVisible(true);

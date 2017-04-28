@@ -48,7 +48,7 @@
                 </VBox>
                 <VBox spacing="15.0">
                     <HBox alignment="BOTTOM_CENTER" spacing="10.0">
-                        <JFXTextField fx:id="start" prefWidth="180.0" promptText="Your location" styleClass="search"
+                        <JFXTextField fx:id="start" prefWidth="180.0" promptText="Choose starting point..." styleClass="search"
                                       stylesheets="@/resources/styles/MapView.css"/>
                         <Label fx:id="startDirectory" prefHeight="20.0" prefWidth="20.0" styleClass="white-dir"
                                stylesheets="@/resources/styles/MapView.css">
