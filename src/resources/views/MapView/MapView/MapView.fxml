@@ -12,15 +12,13 @@
     <StackPane fx:id="mapContainer" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
     <VBox>
         <padding>
-            <Insets top="10.0"/>
+            <Insets top="10.0" />
         </padding>
         <Pane styleClass="drawer-toggle, shadow" stylesheets="@/resources/styles/MapView.css">
-            <Label prefHeight="48.0" prefWidth="23.0" styleClass="chevron-right"
-                   stylesheets="@/resources/styles/MapView.css"/>
+            <Label prefHeight="48.0" prefWidth="23.0" styleClass="chevron-right" stylesheets="@/resources/styles/MapView.css" />
         </Pane>
     </VBox>
     <JFXDrawer fx:id="drawer" defaultDrawerSize="310.0" layoutY="-6.0" styleClass="shadow" stylesheets="@/resources/styles/MapView.css" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" />
-   <JFXDrawer fx:id="optionsMenu" defaultDrawerSize="250.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" />
     <VBox>
         <padding>
             <Insets top="10" />
@@ -29,4 +27,5 @@
             <Label prefHeight="48.0" prefWidth="23.0" styleClass="chevron-right" stylesheets="@/resources/styles/MapView.css" />
         </Pane>
     </VBox>
+   <JFXDrawer fx:id="optionsMenu" defaultDrawerSize="250.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" />
 </AnchorPane>
