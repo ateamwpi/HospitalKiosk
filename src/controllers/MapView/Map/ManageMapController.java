@@ -73,9 +73,13 @@ public class ManageMapController extends AbstractController implements IClickabl
     }
 
     public void setFloor(int floor) {
-        mapController.setFloor(floor);
-        removeNodesAndLines();
-        drawAllNodes();
+        attemptUnselectNode(isUnselected -> {
+            if(isUnselected) {
+                mapController.setFloor(floor);
+                removeNodesAndLines();
+                drawAllNodes();
+            }
+        });
     }
 
     private void removeNodesAndLines() {
@@ -208,7 +212,7 @@ public class ManageMapController extends AbstractController implements IClickabl
         if (selectedNode == null) {
             func.accept(true);
         }
-        if (selectedNode.hasUnsavedChanges()) {
+        else if (selectedNode.hasUnsavedChanges()) {
             warnDiscardChanges((result) -> {
                 if(result) {
                     unselectNode();
@@ -218,7 +222,8 @@ public class ManageMapController extends AbstractController implements IClickabl
                     func.accept(false);
                 }
             });
-        } else {
+        }
+        else {
             unselectNode();
             func.accept(true);
         }
