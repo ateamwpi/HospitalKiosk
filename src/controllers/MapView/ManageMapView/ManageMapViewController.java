@@ -1,8 +1,6 @@
 package controllers.MapView.ManageMapView;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXCheckBox;
-import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.*;
 import controllers.AbstractController;
 import controllers.MapView.Map.ManageMapController;
 import controllers.MapView.Map.DraggableNode;
@@ -19,6 +17,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.util.StringConverter;
 import javafx.util.converter.IntegerStringConverter;
 import javafx.util.converter.NumberStringConverter;
@@ -41,36 +40,12 @@ public class ManageMapViewController extends AbstractController {
 
     private ArrayList<String> floorList;
 
-//    @FXML
-//    private JFXComboBox<String> floors;
     @FXML
-    private Button backButton;
+    private StackPane mapContainer;
     @FXML
-    private JFXTextField x;
-    @FXML
-    private JFXTextField y;
-    @FXML
-    private JFXTextField room;
-    @FXML
-    private AnchorPane mapContainer;
-    @FXML
-    private JFXButton nodeAction;
-    @FXML
-    private JFXButton saveNode;
-    @FXML
-    private TableView<Node> tableNeighbors;
-    @FXML
-    private TableColumn<Node, Integer> idColumn;
-    @FXML
-    private JFXButton deleteNeighbor;
-    @FXML
-    private JFXButton addNeighbor;
-    @FXML
-    private JFXTextField newNeighbor;
-    @FXML
-    private JFXCheckBox restrictedBox;
-    @FXML
-    private Label id;
+    private JFXDrawer snackbar;
+
+    ManageMapSnackbarController manageMapSnackbarController;
 
     @Override
     public String getURL() {
@@ -89,12 +64,18 @@ public class ManageMapViewController extends AbstractController {
 
     @FXML
     private void initialize() {
+
+        snackbar.open();
+
+        // setup drawer
+        manageMapSnackbarController = new ManageMapSnackbarController(getRoot(), manageMapController);
+        snackbar.setSidePane(manageMapSnackbarController.getRoot());
+
         // bind event handlers
-        backButton.setOnAction(this::clickBack);
-        saveNode.setOnAction(this::clickSave);
-        nodeAction.setOnAction(this::clickNodeAction);
-        deleteNeighbor.setOnAction(this::clickDeleteNeighbor);
-        addNeighbor.setOnAction(this::clickAddNeighbor);
+        manageMapSnackbarController.saveNode.setOnAction(this::clickSave);
+        manageMapSnackbarController.nodeAction.setOnAction(this::clickNodeAction);
+
+
         // load the admin map controller
         manageMapController = new ManageMapController(this);
         // add the map to the container
@@ -104,50 +85,28 @@ public class ManageMapViewController extends AbstractController {
             b.setOnAction(event -> setFloor(Utils.strForNum(Integer.parseInt(b.getText())) + " Floor"));
         }
 
-//        floors.getItems().addAll(floorList);
-//        floors.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
-//            if (floors.getSelectionModel().getSelectedItem() != null) {
-//                if (manageMapController.attemptUnselectNode()) {
-//                    String fl = floors.getSelectionModel().getSelectedItem();
-//                    System.out.println("The current selected floor is " + fl);
-//                    setFloor(fl);
-//                } else {
-//                }
-//
-//            }
-//        });
-//        floors.getSelectionModel().selectFirst();
         // init input text properties
-        xTextProperty = x.textProperty();
-        yTextProperty = y.textProperty();
-        restrictedProperty = restrictedBox.selectedProperty();
-        roomNameProperty = room.textProperty();
+        xTextProperty = manageMapSnackbarController.x.textProperty();
+        yTextProperty = manageMapSnackbarController.y.textProperty();
+        restrictedProperty = manageMapSnackbarController.employeeOnly.selectedProperty();
         // format numeric text fields
         TextFormatter<Integer> numericX = new TextFormatter<>(
                 new IntegerStringConverter(),
                 0,
-                c -> Pattern.matches("\\d*", c.getText()) ? c : null );
+                c -> Pattern.matches("\\d*", c.getText()) ? c : null);
         TextFormatter<Integer> numericY = new TextFormatter<>(
                 new IntegerStringConverter(),
                 0,
-                c -> Pattern.matches("\\d*", c.getText()) ? c : null );
+                c -> Pattern.matches("\\d*", c.getText()) ? c : null);
         TextFormatter<Integer> numericNeighbor = new TextFormatter<>(
                 new IntegerStringConverter(),
                 0,
-                c -> Pattern.matches("\\d*", c.getText()) ? c : null );
-        x.setTextFormatter(numericX);
-        y.setTextFormatter(numericY);
-        newNeighbor.setTextFormatter(numericNeighbor);
+                c -> Pattern.matches("\\d*", c.getText()) ? c : null);
+        manageMapSnackbarController.x.setTextFormatter(numericX);
+        manageMapSnackbarController.y.setTextFormatter(numericY);
         // reset edit view
         unselectNode();
-        // set the connections table factories
-        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
-        // add listener to table item selection
-        tableNeighbors.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
-            if (tableNeighbors.getSelectionModel().getSelectedItem() != null) {
-                deleteNeighbor.setDisable(false);
-            }
-        });
+
     }
 
     public void selectNode(DraggableNode draggableNode) {
@@ -159,18 +118,12 @@ public class ManageMapViewController extends AbstractController {
         Bindings.bindBidirectional(yTextProperty, selectedNode.previewYProperty(), converter);
         Bindings.bindBidirectional(roomNameProperty, selectedNode.previewRoomNameProperty());
         Bindings.bindBidirectional(restrictedProperty, selectedNode.previewRestrictedProperty());
-        // update node id
-        id.setText("ID: " + Integer.toString(node.getID()));
-        restrictedBox.setVisible(true);
-        restrictedBox.setDisable(false);
+        manageMapSnackbarController.employeeOnly.setVisible(true);
+        manageMapSnackbarController.employeeOnly.setDisable(false);
         // show save button
-        saveNode.setVisible(true);
-        // enable add connection button
-        addNeighbor.setDisable(false);
         // show delete button
-        nodeAction.setText("Delete");
-        // update connections table
-        setTableNeighbors(selectedNode.getNode().getConnections());
+        manageMapSnackbarController.nodeAction.setText("Delete");
+
     }
 
     public void unselectNode() {
@@ -184,33 +137,26 @@ public class ManageMapViewController extends AbstractController {
         // unset selected node
         selectedNode = null;
         // update edit view
-        id.setText("");
-        x.setText("");
-        y.setText("");
-        room.setText("");
-        restrictedBox.setVisible(false);
-        restrictedBox.setDisable(true);
+        manageMapSnackbarController.x.setText("");
+        manageMapSnackbarController.y.setText("");
+        //manageMapSnackbarController.room.setText("");
+        manageMapSnackbarController.employeeOnly.setVisible(false);
+        manageMapSnackbarController.employeeOnly.setDisable(true);
         // remove save button
-        saveNode.setVisible(false);
-        // disable add and delete connection buttons
-        addNeighbor.setDisable(true);
-        deleteNeighbor.setDisable(true);
-        // show add button
-        nodeAction.setText("Add");
-        // clear connections table
-        tableNeighbors.getItems().clear();
+        manageMapSnackbarController.saveNode.setVisible(false);
+
     }
 
     private int getX() {
-        return Integer.parseInt(x.getText());
+        return Integer.parseInt(manageMapSnackbarController.x.getText());
     }
 
     private int getY() {
-        return Integer.parseInt(y.getText());
+        return Integer.parseInt(manageMapSnackbarController.y.getText());
     }
 
     private String getRoomName() {
-        String roomName = room.getText();
+        String roomName = manageMapSnackbarController.room.getText();
         return roomName.equals("") ? "NONE" : roomName;
     }
 
@@ -222,43 +168,6 @@ public class ManageMapViewController extends AbstractController {
         });
     }
 
-    @FXML
-    private void clickAddNeighbor(ActionEvent event) {
-        // get the node id
-        int neighborID = Integer.parseInt(newNeighbor.getText());
-        // get the node
-        Node node = KioskMain.getPath().getNode(neighborID);
-        // check if node exists and is not itself
-        if (node == null || node.equals(selectedNode.getNode())) {
-            alertAddConnectionError();
-            return;
-        }
-        // add the preview connection
-        selectedNode.previewConnection(node);
-        //refreshScene();
-        // update the table of connections with preview connections
-        setTableNeighbors(selectedNode.getPreviewConnections());
-
-        newNeighbor.clear();
-    }
-
-    private void alertAddConnectionError() {
-        Utils.showAlert(getRoot(), "Invalid Node Connection!", "This node cannot be connected to itself!");
-    }
-
-    private void setTableNeighbors(Collection<Node> nodes) {
-        tableNeighbors.getItems().setAll(nodes);
-    }
-
-    @FXML
-    private void clickDeleteNeighbor(ActionEvent event) {
-        // get the node
-        Node nodeToDelete = tableNeighbors.getSelectionModel().getSelectedItem();
-        // remove the preview connection
-        selectedNode.removePreviewConnection(nodeToDelete);
-        // update the table
-        setTableNeighbors(selectedNode.getPreviewConnections());
-    }
 
     @FXML
     private void clickSave(ActionEvent event) {
@@ -293,7 +202,7 @@ public class ManageMapViewController extends AbstractController {
     private Boolean verifyNode() {
         // TODO fix hard coded values
         // check x and y exist
-        if (x.getText().equals("") || y.getText().equals("")) {
+        if (manageMapSnackbarController.x.getText().equals("") || manageMapSnackbarController.y.getText().equals("")) {
             return false;
         }
         // check x and y within bounds

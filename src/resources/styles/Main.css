@@ -38,6 +38,13 @@
     -fx-background-color: #58a5f0;
 }
 
+/*for labels*/
+.label-text {
+    /*-fx-background-color: #004C8C;*/
+    -fx-text-fill: black;
+    -fx-font: bold roboto sannserif;
+}
+
 
 /* For Alerts and other small popups like Admin Login */
 .alert-title {

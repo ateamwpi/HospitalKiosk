@@ -1,70 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXCheckBox?>
-<?import com.jfoenix.controls.JFXTextField?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
+<?import com.jfoenix.controls.JFXDrawer?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Line?>
+<?import javafx.scene.layout.StackPane?>
 
-<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.111"
-            xmlns:fx="http://javafx.com/fxml/1">
-    <SplitPane dividerPositions="0.15" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-               AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <AnchorPane maxWidth="200.0" minWidth="200.0" prefWidth="200.0" styleClass="background"
-                    stylesheets="@../../../styles/Main.css">
-            <VBox alignment="CENTER" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" spacing="17.0">
-                <padding>
-                    <Insets bottom="24.0" left="24.0" right="24.0" top="24.0"/>
-                </padding>
-                <HBox>
-                    <JFXButton fx:id="backButton" mnemonicParsing="false"
-                               styleClass="navigation-button" stylesheets="@../../../styles/Main.css"
-                               text="Back"/>
-                </HBox>
-                <Line endX="100.0" startX="-100.0"/>
-                <HBox>
-                    <Label fx:id="id" text="ID: Label">
-                        <HBox.margin>
-                            <Insets right="18.0"/>
-                        </HBox.margin>
-                    </Label>
-                    <JFXCheckBox fx:id="restrictedBox" text="Restricted"/>
-                </HBox>
-                <JFXTextField labelFloat="true" promptText="X-Coordinate" fx:id="x"/>
-                <JFXTextField fx:id="y" labelFloat="true" promptText="Y-Coordinate"/>
-                <JFXTextField fx:id="room" labelFloat="true" promptText="Room Name"/>
-                <HBox spacing="38.0">
-                    <JFXButton fx:id="saveNode" mnemonicParsing="false"
-                               styleClass="content-button" stylesheets="@../../../styles/Main.css"
-                               text="Save"/>
-                    <JFXButton fx:id="nodeAction" mnemonicParsing="false"
-                               styleClass="content-button" stylesheets="@../../../styles/Main.css"
-                               text="Delete"/>
-                </HBox>
-                <Line endX="100.0" startX="-100.0"/>
-                <TableView fx:id="tableNeighbors" maxWidth="-Infinity" prefHeight="160.0" prefWidth="160.0">
-                    <columns>
-                        <TableColumn fx:id="idColumn" maxWidth="150.0" minWidth="150.0" prefWidth="150.0"
-                                     resizable="false" text="Connection Node ID"/>
-                    </columns>
-                </TableView>
-                <JFXButton fx:id="deleteNeighbor" mnemonicParsing="false"
-                           styleClass="content-button" stylesheets="@../../../styles/Main.css"
-                           text="Delete Connection"/>
-                <JFXTextField fx:id="newNeighbor" labelFloat="true" promptText="New Neighbor ID"/>
-                <JFXButton fx:id="addNeighbor" mnemonicParsing="false"
-                           styleClass="content-button" stylesheets="@../../../styles/Main.css"
-                           text="Add Connection"/>
-            </VBox>
-        </AnchorPane>
-        <AnchorPane fx:id="mapContainer" minHeight="0.0" minWidth="0.0" prefHeight="398.0" prefWidth="386.0"/>
-    </SplitPane>
+<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <StackPane fx:id="mapContainer" layoutX="463.0" layoutY="179.0" prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <JFXDrawer fx:id="snackbar" defaultDrawerSize="310.0" prefWidth="310.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" />
+   </children>
 </AnchorPane>
