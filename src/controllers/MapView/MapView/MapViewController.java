@@ -3,6 +3,7 @@ package controllers.MapView.MapView;
 import com.jfoenix.controls.JFXDrawer;
 import controllers.AbstractController;
 import controllers.MapView.Map.MapController;
+import controllers.MapView.MapView.DirectionsDrawer.DirectionsDrawerController;
 import controllers.NavigationDrawer.NavigationDrawerController;
 import core.KioskMain;
 import javafx.fxml.FXML;
@@ -43,6 +44,12 @@ public class MapViewController extends AbstractController {
         DirectionsDrawerController directionsDrawerController = new DirectionsDrawerController(mapController, getRoot());
         drawer.setSidePane(directionsDrawerController.getRoot());
         drawer.open();
+        drawer.setOnDrawerClosed(event -> {
+            drawerOpen.setVisible(true);
+        });
+        drawer.setOnDrawerOpened(event -> {
+            drawerOpen.setVisible(false);
+        });
         directionsDrawerController.getDrawerClose().setOnMouseClicked(event -> {
             drawer.close();
             drawerOpen.setVisible(true);

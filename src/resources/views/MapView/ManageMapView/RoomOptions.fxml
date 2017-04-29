@@ -16,9 +16,9 @@
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <JFXTextField layoutX="88.0" layoutY="12.0" prefHeight="25.0" prefWidth="188.0" />
-      <JFXButton layoutX="109.0" layoutY="69.0" styleClass="content-button" stylesheets="@../../../styles/Main.css" text="Edit Entries" />
-      <TableView layoutX="55.0" layoutY="166.0" prefHeight="200.0" prefWidth="200.0">
+      <JFXTextField fx:id="roomName" layoutX="88.0" layoutY="12.0" prefHeight="25.0" prefWidth="188.0" />
+      <JFXButton fx:id="editEntries" buttonType="RAISED" layoutX="109.0" layoutY="69.0" styleClass="content-button" stylesheets="@../../../styles/Main.css" text="Edit Entries" />
+      <TableView fx:id="currentEntries" layoutX="55.0" layoutY="166.0" prefHeight="200.0" prefWidth="200.0">
         <columns>
           <TableColumn prefWidth="75.0" text="Name" />
           <TableColumn prefWidth="75.0" text="Type" />

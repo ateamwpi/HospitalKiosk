@@ -1,12 +1,18 @@
 package controllers.MapView.ManageMapView;
 
 import com.jfoenix.controls.*;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXCheckBox;
+import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.validation.base.ValidatorBase;
 import controllers.AbstractController;
 import controllers.MapView.Map.ManageMapController;
 import controllers.MapView.Map.DraggableNode;
 import controllers.MapView.MapView.MapViewController;
+import controllers.NavigationDrawer.NavigationDrawerController;
 import core.KioskMain;
 import core.Utils;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -47,6 +53,8 @@ public class ManageMapViewController extends AbstractController {
     private StackPane mapContainer;
     @FXML
     private JFXDrawer snackbar;
+    @FXML
+    private JFXDrawer navigationDrawer;
 
     ManageMapSnackbarController manageMapSnackbarController;
 
@@ -112,7 +120,22 @@ public class ManageMapViewController extends AbstractController {
         // reset edit view
         unselectNode();
 
+        // setup navigation drawer
+        NavigationDrawerController navigationDrawerController = new NavigationDrawerController(getRoot());
+        navigationDrawer.setSidePane(navigationDrawerController.getRoot());
+        //optionsMenu.open();
+        manageMapSnackbarController.getHamburgerButton().setOnMouseClicked(event -> navigationDrawer.open());
+        navigationDrawerController.getDrawerClose().setOnMouseClicked(event -> navigationDrawer.close());
+        navigationDrawerController.getScrim().setOnMouseClicked(event -> navigationDrawer.close());
+        navigationDrawerController.getScrim().prefWidthProperty().bind(KioskMain.getUI().getStage().widthProperty().add(100));
+        navigationDrawerController.getScrim().prefHeightProperty().bind(KioskMain.getUI().getStage().heightProperty());
     }
+
+    public JFXDrawer getOptionsMenu() {
+        return navigationDrawer;
+    }
+
+
 
     public void selectNode(DraggableNode draggableNode) {
         // set selected node
@@ -149,6 +172,7 @@ public class ManageMapViewController extends AbstractController {
         //manageMapSnackbarController.room.setText("");
         manageMapSnackbarController.employeeOnly.setVisible(false);
         manageMapSnackbarController.employeeOnly.setDisable(true);
+        getRoot().requestFocus();
         // remove save button
         manageMapSnackbarController.saveNode.setVisible(false);
 
@@ -169,9 +193,10 @@ public class ManageMapViewController extends AbstractController {
 
     @FXML
     private void clickBack(ActionEvent event) {
-        manageMapController.attemptUnselectNode( (result) -> {
-            if(result)
+        manageMapController.attemptUnselectNode(isUnselected -> {
+            if (isUnselected) {
                 KioskMain.getUI().setScene(new MapViewController());
+            }
         });
     }
 
@@ -179,7 +204,7 @@ public class ManageMapViewController extends AbstractController {
     @FXML
     private void clickSave(ActionEvent event) {
         selectedNode.save();
-        refreshScene();
+        manageMapController.attemptUnselectNode(isUnselected -> {});
     }
 
     @FXML
@@ -193,9 +218,7 @@ public class ManageMapViewController extends AbstractController {
 
     private void clickDelete() {
         // delete the node
-        if (selectedNode.delete()) {
-            refreshScene();
-        }
+        selectedNode.delete(isDeleted -> {});
     }
 
     private void clickAdd() {
@@ -232,12 +255,4 @@ public class ManageMapViewController extends AbstractController {
         System.out.println("We found the floor to be: " + floor);
         manageMapController.setFloor(floor);
     }
-
-    private void refreshScene() {
-        int floor = manageMapController.getMapController().getFloor();
-        ManageMapViewController con = new ManageMapViewController();
-        //con.floors.getSelectionModel().select(floor - 1);
-        KioskMain.getUI().setScene(con);
-    }
-
 }

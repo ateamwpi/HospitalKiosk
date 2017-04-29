@@ -29,9 +29,9 @@
            </font>
         </Text>
         <HBox alignment="BOTTOM_RIGHT" styleClass="alert-action-hbox" stylesheets="@../../styles/Main.css">
-            <JFXButton fx:id="button1" maxHeight="36.0" minHeight="36.0" prefHeight="36.0" styleClass="alert-button"
+            <JFXButton fx:id="cancelButton" maxHeight="36.0" minHeight="36.0" prefHeight="36.0" styleClass="alert-button"
                        stylesheets="@../../styles/Main.css" text="button1" textAlignment="CENTER"/>
-            <JFXButton fx:id="button2" alignment="CENTER_RIGHT" contentDisplay="CENTER" maxHeight="36.0"
+            <JFXButton fx:id="confirmButton" alignment="CENTER_RIGHT" contentDisplay="CENTER" maxHeight="36.0"
                        minHeight="36.0" prefHeight="36.0" ripplerFill="BLACK" styleClass="alert-button"
                        stylesheets="@../../styles/Main.css" text="button2" textAlignment="CENTER" textFill="#2196f3">
                 <font>

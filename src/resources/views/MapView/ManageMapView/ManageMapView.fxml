@@ -7,6 +7,7 @@
 <AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <StackPane fx:id="mapContainer" layoutX="463.0" layoutY="179.0" prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-      <JFXDrawer fx:id="snackbar" defaultDrawerSize="310.0" prefWidth="310.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <JFXDrawer fx:id="snackbar" alignment="TOP_CENTER" defaultDrawerSize="310.0" layoutX="-6.0" prefWidth="310.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <JFXDrawer fx:id="navigationDrawer" defaultDrawerSize="250.0" />
    </children>
 </AnchorPane>
