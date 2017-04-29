@@ -48,8 +48,8 @@ public class SceneGestures {
     private EventHandler<MouseEvent> onMousePressedEventHandler = new EventHandler<MouseEvent>() {
         public void handle(MouseEvent event) {
             // right mouse button => panning
-            if (event.getButton().name() != "SECONDARY")//if( !event.isSecondaryButtonDown())
-                return;
+            //if (event.getButton().name() != "SECONDARY")//if( !event.isSecondaryButtonDown())
+            //    return;
             System.out.println("scene press");
             // update scene drag context
             sceneDragContext.mouseAnchorX = event.getSceneX();
@@ -64,17 +64,19 @@ public class SceneGestures {
 
     private EventHandler<MouseEvent> onMouseClickedEventHandler = new EventHandler<MouseEvent>() {
         public void handle(MouseEvent event) {
-            if(event.getButton().name().equals("PRIMARY"))
-                mapController.handleMouseClick(event);// unselect the current node
-            // right mouse button => panning
-            if (event.getButton().name() != "SECONDARY")//if( !event.isSecondaryButtonDown())
-                return;
             System.out.println("scene click");
             // update scene drag context
             sceneDragContext.mouseAnchorX = event.getSceneX();
             sceneDragContext.mouseAnchorY = event.getSceneY();
             sceneDragContext.translateAnchorX = mapController.getOverlay().getTranslateX();
             sceneDragContext.translateAnchorY = mapController.getOverlay().getTranslateY();
+
+            if(event.getButton().name().equals("PRIMARY"))
+                mapController.handleMouseClick(event);// unselect the current node
+            // right mouse button => panning
+            //if (event.getButton().name() != "SECONDARY")//if( !event.isSecondaryButtonDown())
+            //    return;
+
         }
 
     };
@@ -82,8 +84,9 @@ public class SceneGestures {
     private EventHandler<MouseEvent> onMouseDraggedEventHandler = new EventHandler<MouseEvent>() {
         public void handle(MouseEvent event) {
             // right mouse button => panning
-            if(!event.isSecondaryButtonDown())
-                return;
+            System.out.println("mouse dragged");
+            //if(!event.isSecondaryButtonDown())
+                //return;
             // update the canvas
             //canvas.setTranslateX(sceneDragContext.translateAnchorX + event.getSceneX() - sceneDragContext.mouseAnchorX);
             //canvas.setTranslateY(sceneDragContext.translateAnchorY + event.getSceneY() - sceneDragContext.mouseAnchorY);

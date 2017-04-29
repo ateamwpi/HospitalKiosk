@@ -1,13 +1,11 @@
 package controllers.admin;
 
-import com.sun.javafx.scene.control.behavior.OptionalBoolean;
 import controllers.AbstractController;
 import controllers.IClickableController;
 import controllers.map.*;
 import core.KioskMain;
 import core.Utils;
 import core.exception.NodeInUseException;
-import core.exception.WrongFloorException;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
@@ -330,7 +328,8 @@ public class AdminMapController extends AbstractController implements IClickable
         // create the scene gestures for zooming and panning
         SceneGestures sceneGestures = new SceneGestures(canvas, this);
         // register handlers zooming and panning
-        mapContainer.addEventHandler(MouseEvent.ANY, new ClickDragHandler(sceneGestures.getOnMouseClickedEventHandler(), sceneGestures.getOnMouseDraggedEventHandler()));
+        mapContainer.addEventHandler(MouseEvent.ANY, new ClickDragHandler(sceneGestures.getOnMouseClickedEventHandler(), event -> {},
+                sceneGestures.getOnMouseDraggedEventHandler()));
         mapContainer.addEventHandler(MouseEvent.MOUSE_PRESSED, sceneGestures.getOnMousePressedEventHandler());
         // draw all of the nodes
         drawAllNodes();

@@ -8,14 +8,17 @@ import javafx.scene.input.MouseEvent;
  */
 public class ClickDragHandler implements EventHandler<MouseEvent> {
 
-    private final EventHandler<MouseEvent> onDraggedEventHandler;
+    private final EventHandler<MouseEvent> onPrimaryDraggedEventHandler;
+    private final EventHandler<MouseEvent> onSecondaryDraggedEventHandler;
+
 
     private final EventHandler<MouseEvent> onClickedEventHandler;
 
     private boolean dragging = false;
 
-    public ClickDragHandler(EventHandler<MouseEvent> onClickedEventHandler, EventHandler<MouseEvent> onDraggedEventHandler) {
-        this.onDraggedEventHandler = onDraggedEventHandler;
+    public ClickDragHandler(EventHandler<MouseEvent> onClickedEventHandler, EventHandler<MouseEvent> onPrimaryDraggedEventHandler, EventHandler<MouseEvent> onSecondaryDraggedEventHandler) {
+        this.onPrimaryDraggedEventHandler = onPrimaryDraggedEventHandler;
+        this.onSecondaryDraggedEventHandler = onSecondaryDraggedEventHandler;
         this.onClickedEventHandler = onClickedEventHandler;
     }
 
@@ -29,7 +32,10 @@ public class ClickDragHandler implements EventHandler<MouseEvent> {
         }
         else if (event.getEventType() == MouseEvent.MOUSE_DRAGGED) {
             //maybe filter on dragging (== true)
-            onDraggedEventHandler.handle(event);
+            if(event.getButton().name().equals("PRIMARY"))
+                onPrimaryDraggedEventHandler.handle(event);
+            else if(event.getButton().name().equals("SECONDARY"))
+                onSecondaryDraggedEventHandler.handle(event);
         }
         else if (event.getEventType() == MouseEvent.MOUSE_CLICKED) {
             if (!dragging) {

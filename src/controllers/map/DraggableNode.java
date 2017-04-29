@@ -44,7 +44,8 @@ public class DraggableNode extends Circle {
         this.adminMapController = adminMapController;
         setDefaultPreview();
         // handlers for mouse click and drag
-        addEventHandler(MouseEvent.ANY, new ClickDragHandler(nodeGestures.getOnMouseClickedEventHandler(), nodeGestures.getOnMouseDraggedEventHandler()));
+        addEventHandler(MouseEvent.ANY, new ClickDragHandler(nodeGestures.getOnMouseClickedEventHandler(),
+                nodeGestures.getOnMouseDraggedEventHandler(), event->{}));
         addEventHandler(ScrollEvent.ANY, nodeGestures.getOnScrollEventHandler());
     }
 
