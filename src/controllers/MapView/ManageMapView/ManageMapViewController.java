@@ -105,7 +105,7 @@ public class ManageMapViewController extends AbstractController {
         manageMapSnackbarController.x.setTextFormatter(numericX);
         manageMapSnackbarController.y.setTextFormatter(numericY);
         // reset edit view
-        unselectNode();
+        unselectNode(false);
 
     }
 
@@ -126,7 +126,7 @@ public class ManageMapViewController extends AbstractController {
 
     }
 
-    public void unselectNode() {
+    public void unselectNode(boolean reselect) {
         // unbind text fields with node properties
         if (selectedNode != null) {
             Bindings.unbindBidirectional(xTextProperty, selectedNode.previewXProperty());
@@ -165,7 +165,7 @@ public class ManageMapViewController extends AbstractController {
         manageMapController.attemptUnselectNode( (result) -> {
             if(result)
                 KioskMain.getUI().setScene(new MapViewController());
-        });
+        }, false);
     }
 
 

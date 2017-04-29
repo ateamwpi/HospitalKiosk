@@ -79,7 +79,7 @@ public class ManageMapController extends AbstractController implements IClickabl
                 removeNodesAndLines();
                 drawAllNodes();
             }
-        });
+        }, false);
     }
 
     private void removeNodesAndLines() {
@@ -96,7 +96,7 @@ public class ManageMapController extends AbstractController implements IClickabl
     public void handleMouseClick(MouseEvent e) {
         // unselect if already selecting node
         if (nodeIsSelected()) {
-            attemptUnselectNode((result) -> {});
+            attemptUnselectNode((result) -> {}, false);
             // add new node if not selecting node
         } else {
             // convert the mouse coordinates to map coordinates
@@ -183,7 +183,7 @@ public class ManageMapController extends AbstractController implements IClickabl
             // remove the visual node from the overlay
             mapController.removeOverlay(nodeToDelete);
             // unselect the node
-            unselectNode();
+            unselectNode(false);
         } catch (NodeInUseException e) {
             showNodeInUseAlert();
         }
@@ -196,7 +196,7 @@ public class ManageMapController extends AbstractController implements IClickabl
                 selectedNode.select();
                 manageMapViewController.selectNode(selectedNode);
             }
-        });
+        }, true);
     }
 
     public ManageMapViewController getManageMapViewController() {
@@ -208,14 +208,14 @@ public class ManageMapController extends AbstractController implements IClickabl
     }
 
     // return true if unselected
-    public void attemptUnselectNode(Consumer<Boolean> func) {
+    public void attemptUnselectNode(Consumer<Boolean> func, boolean reselect) {
         if (selectedNode == null) {
             func.accept(true);
         }
         else if (selectedNode.hasUnsavedChanges()) {
             warnDiscardChanges((result) -> {
                 if(result) {
-                    unselectNode();
+                    unselectNode(reselect);
                     func.accept(true);
                 }
                 else {
@@ -224,7 +224,7 @@ public class ManageMapController extends AbstractController implements IClickabl
             });
         }
         else {
-            unselectNode();
+            unselectNode(reselect);
             func.accept(true);
         }
         func.accept(false);
@@ -246,10 +246,10 @@ public class ManageMapController extends AbstractController implements IClickabl
                 });
     }
 
-    private void unselectNode() {
+    private void unselectNode(boolean reselect) {
         selectedNode.unselect();
         selectedNode = null;
-        manageMapViewController.unselectNode();
+        manageMapViewController.unselectNode(reselect);
 
     }
 
