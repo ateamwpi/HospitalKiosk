@@ -1,6 +1,8 @@
 package controllers.map;
 
 import controllers.IClickableController;
+import controllers.admin.AdminMapController;
+import controllers.mapView.MapViewController;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
@@ -91,15 +93,15 @@ public class SceneGestures {
 
 
             //Clamp view as not to go off the map, even when zoomed
-            if(mapController.getOverlay().getTranslateX() < -canvas.getWidth()/2 * mapController.getOverlay().getScaleX())
-                mapController.getOverlay().setTranslateX(-canvas.getWidth()/2 * mapController.getOverlay().getScaleX());
-            if(mapController.getOverlay().getTranslateX() > canvas.getWidth()/2 * mapController.getOverlay().getScaleX())
-                mapController.getOverlay().setTranslateX(canvas.getWidth()/2 * mapController.getOverlay().getScaleX());
+            if(mapController.getOverlay().getTranslateX() < -canvas.getBoundsInParent().getWidth()/2 * mapController.getOverlay().getScaleX())
+                mapController.getOverlay().setTranslateX(-canvas.getBoundsInParent().getWidth()/2 * mapController.getOverlay().getScaleX());
+            if(mapController.getOverlay().getTranslateX() > canvas.getBoundsInParent().getWidth()/2 * mapController.getOverlay().getScaleX())
+                mapController.getOverlay().setTranslateX(canvas.getBoundsInParent().getWidth()/2 * mapController.getOverlay().getScaleX());
 
-            if(mapController.getOverlay().getTranslateY() < -canvas.getHeight()/2 * mapController.getOverlay().getScaleY())
-                mapController.getOverlay().setTranslateY(-canvas.getHeight()/2 * mapController.getOverlay().getScaleY());
-            if(mapController.getOverlay().getTranslateY() > canvas.getHeight()/2 * mapController.getOverlay().getScaleY())
-                mapController.getOverlay().setTranslateY(canvas.getHeight()/2 * mapController.getOverlay().getScaleY());
+            if(mapController.getOverlay().getTranslateY() < -canvas.getBoundsInParent().getHeight()/2 * mapController.getOverlay().getScaleY())
+                mapController.getOverlay().setTranslateY(-canvas.getBoundsInParent().getHeight()/2 * mapController.getOverlay().getScaleY());
+            if(mapController.getOverlay().getTranslateY() > canvas.getBoundsInParent().getHeight()/2 * mapController.getOverlay().getScaleY())
+                mapController.getOverlay().setTranslateY(canvas.getBoundsInParent().getHeight()/2 * mapController.getOverlay().getScaleY());
 
             // cancel event bubbling
             event.consume();
@@ -125,13 +127,6 @@ public class SceneGestures {
 
             scale = clamp( scale, MIN_SCALE, MAX_SCALE);
 
-            double f = (scale / oldScale)-1;
-
-            //double dx = (event.getSceneX() - (canvas.getBoundsInParent().getWidth()/2 + canvas.getBoundsInParent().getMinX()/2));
-            //double dy = (event.getSceneY() - (canvas.getBoundsInParent().getHeight()/2 + canvas.getBoundsInParent().getMinY()/2));
-
-            //canvas.setScale(scale);
-
             mapController.getOverlay().setScaleX(scale);
             mapController.getOverlay().setTranslateX(
                     mapController.getOverlay().getTranslateX()*scale/oldScale);//mapController.getOverlay().getScaleX());
@@ -139,14 +134,6 @@ public class SceneGestures {
 
             mapController.getOverlay().setTranslateY(
                     mapController.getOverlay().getTranslateY()*scale/oldScale);//mapController.getOverlay().getScaleX());
-
-            //System.out.println(mapController.getOverlay().getTranslateX());
-            //canvas.setTranslateX(4 * mapController.getOverlay().getScaleX() * mapController.getOverlay().getTranslateX());
-            //canvas.setTranslateY(2 * mapController.getOverlay().getScaleY() * mapController.getOverlay().getTranslateY());
-
-            // note: pivot value must be untransformed, i. e. without scaling
-            canvas.setPivot(f,f);//*dx, f*dy);
-            //canvas.setPivot(f/**dx*/, f/**dy*/);
 
             event.consume();
 
@@ -190,15 +177,15 @@ public class SceneGestures {
 
 
         //Clamp view as not to go off the map, even when zoomed
-        if(mapController.getOverlay().getTranslateX() < -canvas.getWidth()/2 * mapController.getOverlay().getScaleX())
-            mapController.getOverlay().setTranslateX(-canvas.getWidth()/2 * mapController.getOverlay().getScaleX());
-        if(mapController.getOverlay().getTranslateX() > canvas.getWidth()/2 * mapController.getOverlay().getScaleX())
-            mapController.getOverlay().setTranslateX(canvas.getWidth()/2 * mapController.getOverlay().getScaleX());
+        if(mapController.getOverlay().getTranslateX() < -canvas.getBoundsInParent().getWidth()/2 * mapController.getOverlay().getScaleX())
+            mapController.getOverlay().setTranslateX(-canvas.getBoundsInParent().getWidth()/2 * mapController.getOverlay().getScaleX());
+        if(mapController.getOverlay().getTranslateX() > canvas.getBoundsInParent().getWidth()/2 * mapController.getOverlay().getScaleX())
+            mapController.getOverlay().setTranslateX(canvas.getBoundsInParent().getWidth()/2 * mapController.getOverlay().getScaleX());
 
-        if(mapController.getOverlay().getTranslateY() < -canvas.getHeight()/2 * mapController.getOverlay().getScaleY())
-            mapController.getOverlay().setTranslateY(-canvas.getHeight()/2 * mapController.getOverlay().getScaleY());
-        if(mapController.getOverlay().getTranslateY() > canvas.getHeight()/2 * mapController.getOverlay().getScaleY())
-            mapController.getOverlay().setTranslateY(canvas.getHeight()/2 * mapController.getOverlay().getScaleY());
+        if(mapController.getOverlay().getTranslateY() < -canvas.getBoundsInParent().getHeight()/2 * mapController.getOverlay().getScaleY())
+            mapController.getOverlay().setTranslateY(-canvas.getBoundsInParent().getHeight()/2 * mapController.getOverlay().getScaleY());
+        if(mapController.getOverlay().getTranslateY() > canvas.getBoundsInParent().getHeight()/2 * mapController.getOverlay().getScaleY())
+            mapController.getOverlay().setTranslateY(canvas.getBoundsInParent().getHeight()/2 * mapController.getOverlay().getScaleY());
     }
 
 

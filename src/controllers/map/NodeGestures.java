@@ -6,6 +6,7 @@ import core.exception.WrongFloorException;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import models.path.Node;
 
 import java.util.Collection;
@@ -33,6 +34,8 @@ public class NodeGestures {
         return onMouseDraggedEventHandler;
     }
 
+    public EventHandler<ScrollEvent> getOnScrollEventHandler() {return onScrollEventHandler; }
+
     private EventHandler<MouseEvent> onMouseClickedEventHandler = new EventHandler<MouseEvent>() {
         public void handle(MouseEvent event) {
             // right mouse button => panning
@@ -43,19 +46,18 @@ public class NodeGestures {
             // get the node clicked on
             DraggableNode node = (DraggableNode) event.getSource();
             //Shift click is used only for node connections
-            if(event.isShiftDown() && adminMapController.getSelectedNode() != null){
+            if (event.isShiftDown() && adminMapController.getSelectedNode() != null) {
                 //Given that a node is selected and shift is held down
                 //toggle connection
 
                 //If already connected
-                if(adminMapController.getSelectedNode().getNode().getConnections().contains(node.getNode())){
+                if (adminMapController.getSelectedNode().getNode().getConnections().contains(node.getNode())) {
                     //Disconnect
                     deleteNeighbor(event, node);
                 } else {
                     addNeighbor(event, node);
                 }
-            }
-            else {
+            } else {
                 // update node drag context
                 System.out.println(adminMapController.getOverlay().getTranslateX());
                 nodeDragContext.mouseAnchorX = event.getSceneX();
@@ -96,8 +98,7 @@ public class NodeGestures {
         //Connect the two nodes if they are on the same floor
         try {
             adminMapController.getSelectedNode().getNode().addConnection(node);
-        }
-        catch(WrongFloorException wfe){
+        } catch (WrongFloorException wfe) {
             Utils.showAlert(adminMapController.getManageMapViewController().getRoot(), "Invalid Node Connection!", "Cannot connect nodes on multiple floors!");
         }
     }
@@ -134,12 +135,12 @@ public class NodeGestures {
             if (node.equals(adminMapController.getSelectedNode())) {
                 // calculate the new coordinates
                 int newX = (int) ((nodeDragContext.translateAnchorX + event.getSceneX() - nodeDragContext.mouseAnchorX) / scale
-                - adminMapController.getMapController().getOverlay().getTranslateX()/scale
-                        +(scale-1)/(scale*scale)*adminMapController.getMapController().getOverlay().getBoundsInParent().getWidth()*0.5
+                        - adminMapController.getMapController().getOverlay().getTranslateX() / scale
+                        + (scale - 1) / (scale * scale) * adminMapController.getMapController().getOverlay().getBoundsInParent().getWidth() * 0.5
                 );
                 int newY = (int) ((nodeDragContext.translateAnchorY + event.getSceneY() - nodeDragContext.mouseAnchorY) / scale
-                - adminMapController.getMapController().getOverlay().getTranslateY()/scale
-                        +(scale-1)/(scale*scale)*adminMapController.getMapController().getOverlay().getBoundsInParent().getHeight()*0.5
+                        - adminMapController.getMapController().getOverlay().getTranslateY() / scale
+                        + (scale - 1) / (scale * scale) * adminMapController.getMapController().getOverlay().getBoundsInParent().getHeight() * 0.5
                 );
                 // preview the node coordinates
                 node.previewX(newX);
@@ -148,5 +149,38 @@ public class NodeGestures {
             // cancel event bubbling
             event.consume();
         }
+    };
+
+    //Must be able to scroll when hovering over nodes, too
+    private EventHandler<ScrollEvent> onScrollEventHandler = new EventHandler<ScrollEvent>() {
+
+        @Override
+        public void handle(ScrollEvent event) {
+            double delta = 0.5;
+
+            double scale = adminMapController.getMapController().getOverlay().getScaleX(); // currently we only use Y, same value is used for X
+            double oldScale = scale;
+
+            if (event.getDeltaY() < 0)
+                scale -= delta;
+            else
+                scale += delta;
+
+            if (scale < 1.0)
+                scale = 1.0;
+            else if (scale > 5.0)
+                scale = 5.0;
+
+            adminMapController.getMapController().getOverlay().setScaleX(scale);
+            adminMapController.getMapController().getOverlay().setTranslateX(
+                    adminMapController.getMapController().getOverlay().getTranslateX() * scale / oldScale);//mapController.getOverlay().getScaleX());
+            adminMapController.getMapController().getOverlay().setScaleY(scale);
+            adminMapController.getMapController().getOverlay().setTranslateY(
+                    adminMapController.getMapController().getOverlay().getTranslateY() * scale / oldScale);//mapController.getOverlay().getScaleX());
+
+            event.consume();
+
+        }
+
     };
 }

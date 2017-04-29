@@ -9,6 +9,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import models.path.Node;
@@ -44,6 +45,7 @@ public class DraggableNode extends Circle {
         setDefaultPreview();
         // handlers for mouse click and drag
         addEventHandler(MouseEvent.ANY, new ClickDragHandler(nodeGestures.getOnMouseClickedEventHandler(), nodeGestures.getOnMouseDraggedEventHandler()));
+        addEventHandler(ScrollEvent.ANY, nodeGestures.getOnScrollEventHandler());
     }
 
     public void previewX(int x) {
