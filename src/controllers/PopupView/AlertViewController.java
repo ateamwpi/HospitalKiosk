@@ -31,13 +31,9 @@ public class AlertViewController extends AbstractController implements IPopup {
     private Parent parent;
     private JFXPopup instance;
 
-    private Consumer<Event> onClose;
+    private Runnable onClose;
 
-    public AlertViewController(Parent parent, String title, String body) {
-        this(parent, title, body, null);
-    }
-
-    public AlertViewController(Parent parent, String title, String body, Consumer<Event> onClose) {
+    public AlertViewController(Parent parent, String title, String body, Runnable onClose) {
         this.parent = parent;
         this.instance = new JFXPopup(this.getRegion());
         this.alertTitle.setText(title);
@@ -47,8 +43,8 @@ public class AlertViewController extends AbstractController implements IPopup {
         this.root.setOnKeyPressed(event -> {
             System.out.println("ALERT PRESSED");
             if (event.getCode().equals(KeyCode.ENTER)) {
-                if(this.onClose != null) onClose.accept(event);
-                this.getInstance().hide();
+                onClose.run();
+                getInstance().hide();
                 event.consume();
             }
         });
@@ -67,8 +63,8 @@ public class AlertViewController extends AbstractController implements IPopup {
 
     @FXML
     private void clickOk(ActionEvent event) {
-        if(this.onClose != null) onClose.accept(event);
-        this.getInstance().hide();
+        onClose.run();
+        getInstance().hide();
     }
 
     @Override

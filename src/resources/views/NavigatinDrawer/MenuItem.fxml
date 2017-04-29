@@ -3,11 +3,13 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
+<?import controllers.Icon?>
 
 <HBox fx:id="root" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
     <padding>
         <Insets left="10.0" />
     </padding>
+    <!--<Icon fx:id="menuIcon" prefWidth="30" prefHeight="30"/>-->
      <Label fx:id="menuIcon" prefHeight="30.0" prefWidth="30.0" stylesheets="@/resources/styles/MapView.css" />
      <Label fx:id="menuLabel" prefHeight="30.0" prefWidth="230.0" styleClass="button-body" stylesheets="@/resources/styles/NavigationDrawer.css" text="text">
       <padding>

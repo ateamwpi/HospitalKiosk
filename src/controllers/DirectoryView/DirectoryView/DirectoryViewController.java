@@ -36,9 +36,9 @@ public class DirectoryViewController extends AbstractDirectoryViewController imp
             okButton.setDisable(true);
         }
         this.instance = new JFXPopup(this.getRegion());
-
         this.getRoot().setOnKeyPressed(this::keySubmit);
         this.locationsTable.setOnKeyPressed(this::keySubmit);
+        showCentered();
     }
 
     private void keySubmit(KeyEvent event) {

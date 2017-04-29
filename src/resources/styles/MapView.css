@@ -1,17 +1,89 @@
-.chevron-left {
-    -fx-background-image: url("/resources/icons/chevron-left.png");
-    -fx-background-size: 20px;
-    -fx-background-repeat: no-repeat;
-    -fx-background-position: center;
-}
-.chevron-right {
-    -fx-background-image: url("/resources/icons/chevron-right.png");
-    -fx-background-size: 20px;
-    -fx-background-repeat: no-repeat;
-    -fx-background-position: center;
-}
 .drawer-toggle {
     -fx-background-color: rgba(255, 255, 255, 0.9);
+}
+.shadow {
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 20, 0, 0, 0);
+}
+.scrim {
+    -fx-background-color: rgba(0,0,0,0.3);
+}
+.search {
+    -fx-text-fill: #e7effe;
+    -fx-prompt-text-fill: #8eb6f8;
+    -jfx-unfocus-color: rgba(255,255,255,0.87);
+    -jfx-focus-color: rgba(255,255,255,0);
+    -fx-accent: rgba(255,255,255,0.2);
+}
+.list-border {
+    -fx-border-color: #e6e6e6;
+    -fx-border-style: solid none none none;
+}
+.header {
+    -fx-background-color:  #4285f4;
+}
+
+
+.volume-icon {
+    -fx-background-image: url("/resources/icons/volume.png");
+    -fx-background-size: 30px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+.printer-icon {
+    -fx-background-image: url("/resources/icons/printer.png");
+    -fx-background-size: 30px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+
+/*noinspection ALL*/
+.turn-left-icon {
+    -fx-background-image: url("/resources/icons/turn-left.png");
+    -fx-background-size: 30px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+
+/*noinspection ALL*/
+.turn-right-icon {
+    -fx-background-image: url("/resources/icons/turn-right.png");
+    -fx-background-size: 30px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+
+/*noinspection ALL*/
+.go-straight-icon {
+    -fx-background-image: url("/resources/icons/go-straight.png");
+    -fx-background-size: 20px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+.back-icon {
+    -fx-background-image: url("/resources/icons/back.png");
+    -fx-background-size: 30px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+.help-icon {
+    -fx-background-image: url("/resources/icons/help-icon.png");
+    -fx-background-size: 24px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+
+/*noinspection ALL*/
+.white-dir {
+    -fx-background-image: url("/resources/icons/white-directory.png");
+    -fx-background-size: 24px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+.settings {
+    -fx-background-image: url("/resources/icons/settings.png");
+    -fx-background-size: 24px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
 }
 .start-icon {
     -fx-background-image: url("/resources/icons/start.png");
@@ -91,84 +163,15 @@
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
 }
-.shadow {
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 20, 0, 0, 0);
-}
-
-/*noinspection ALL*/
-.white-dir {
-    -fx-background-image: url("/resources/icons/white-directory.png");
-    -fx-background-size: 24px;
-    -fx-background-repeat: no-repeat;
-    -fx-background-position: center;
-}
-.settings {
-    -fx-background-image: url("/resources/icons/settings.png");
-    -fx-background-size: 24px;
-    -fx-background-repeat: no-repeat;
-    -fx-background-position: center;
-}
-.help-icon {
-    -fx-background-image: url("../resources/icons/help-icon.png");
-    -fx-background-size: 24px;
-    -fx-background-repeat: no-repeat;
-    -fx-background-position: center;
-}
-.scrim {
-    -fx-background-color: rgba(0,0,0,0.3);
-}
-.search {
-    -fx-text-fill: #e7effe;
-    -jfx-unfocus-color: rgba(255,255,255,0.87);
-    -jfx-focus-color: rgba(255,255,255,0);
-    -fx-accent: rgba(255,255,255,0.2);
-}
-.list-border {
-    -fx-border-color: #e6e6e6;
-    -fx-border-style: solid none none none;
-}
-
-/*noinspection ALL*/
-.turn-left-icon {
-    -fx-background-image: url("/resources/icons/turn-left.png");
-    -fx-background-size: 30px;
-    -fx-background-repeat: no-repeat;
-    -fx-background-position: center;
-}
-
-/*noinspection ALL*/
-.turn-right-icon {
-    -fx-background-image: url("/resources/icons/turn-right.png");
-    -fx-background-size: 30px;
-    -fx-background-repeat: no-repeat;
-    -fx-background-position: center;
-}
-
-/*noinspection ALL*/
-.go-straight-icon {
-    -fx-background-image: url("/resources/icons/go-straight.png");
+.chevron-left {
+    -fx-background-image: url("/resources/icons/chevron-left.png");
     -fx-background-size: 20px;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
 }
-.back-icon {
-    -fx-background-image: url("/resources/icons/back.png");
-    -fx-background-size: 30px;
-    -fx-background-repeat: no-repeat;
-    -fx-background-position: center;
-}
-.header {
-    -fx-background-color:  #4285f4;
-}
-.volume-icon {
-    -fx-background-image: url("/resources/icons/volume.png");
-    -fx-background-size: 30px;
-    -fx-background-repeat: no-repeat;
-    -fx-background-position: center;
-}
-.printer-icon {
-    -fx-background-image: url("/resources/icons/printer.png");
-    -fx-background-size: 30px;
+.chevron-right {
+    -fx-background-image: url("/resources/icons/chevron-right.png");
+    -fx-background-size: 20px;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
 }

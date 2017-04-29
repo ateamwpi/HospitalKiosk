@@ -1,23 +1,19 @@
 package controllers.PopupView;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXPopup;
 import com.jfoenix.controls.JFXTextField;
 import controllers.AbstractController;
 import core.KioskMain;
 import core.Utils;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 import javafx.scene.text.Text;
 
-import java.util.Collection;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -39,19 +35,19 @@ public class TextboxAlertViewController extends AbstractController implements IP
     private Parent parent;
     private JFXPopup instance;
 
-    private final Consumer<String> onSelect;
+    private final Consumer<String> setText;
     private final Function<String, Boolean> validate;
 
-    public TextboxAlertViewController(Parent parent, String title, String body, String def, Consumer<String> onSelect, Function<String, Boolean> validate) {
+    public TextboxAlertViewController(Parent parent, String title, String body, String def, Consumer<String> setText, Function<String, Boolean> validate) {
         this.parent = parent;
         this.instance = new JFXPopup(this.getRegion());
         this.alertTitle.setText(title);
         this.alertBody.setText(body);
-        this.onSelect = onSelect;
+        this.setText = setText;
         this.validate = validate;
         this.textfield.setText(def);
-
         this.textfield.setOnAction(this::clickOk);
+        showCentered();
     }
 
     @FXML
@@ -63,8 +59,8 @@ public class TextboxAlertViewController extends AbstractController implements IP
     @FXML
     private void clickOk(ActionEvent event) {
         if(validate.apply(this.textfield.getText())) {
-            this.onSelect.accept(this.textfield.getText());
-            this.getInstance().hide();
+            this.setText.accept(this.textfield.getText());
+            getInstance().hide();
         }
         else {
             this.okButton.requestFocus();
@@ -72,7 +68,7 @@ public class TextboxAlertViewController extends AbstractController implements IP
         }
     }
 
-    private void regainFocus(Event e) {
+    private void regainFocus() {
         this.textfield.requestFocus();
         KioskMain.getUI().setPopup(this);
     }

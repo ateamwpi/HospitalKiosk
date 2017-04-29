@@ -31,10 +31,10 @@ public class Utils {
     }
 
     public static void showAlert(Parent root, String title, String body) {
-        new AlertViewController(root, title, body);
+        new AlertViewController(root, title, body, () -> {});
     }
 
-    public static void showAlert(Parent root, String title, String body, Consumer<Event> onClose) {
+    public static void showAlert(Parent root, String title, String body, Runnable onClose) {
         new AlertViewController(root, title, body, onClose);
     }
 
@@ -42,8 +42,8 @@ public class Utils {
         new OptionAlertViewController(root, title, body, cancelText, confirmText, setConfirm);
     }
 
-    public static void showDropdown(Parent root, String title, String body, Collection<String> items, String def, Consumer<String> fcn) {
-        new DropdownAlertViewController(root, title, body, items, def, fcn);
+    public static void showDropdown(Parent root, String title, String body, Collection<String> items, String def, Consumer<String> setSelected) {
+        new DropdownAlertViewController(root, title, body, items, def, setSelected);
     }
 
     public static void hidePopup() {
@@ -53,7 +53,7 @@ public class Utils {
     }
 
     /* Returns a instance of InputStream for the resource */
-    public static InputStream getResourceAsStream(String resource) {
+    static InputStream getResourceAsStream(String resource) {
         try {
             return getResource(resource).openStream();
         } catch (IOException e) {

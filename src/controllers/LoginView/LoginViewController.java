@@ -31,6 +31,7 @@ public class LoginViewController extends AbstractController implements IPopup {
     public LoginViewController(Parent parent) {
         this.parent = parent;
         this.instance = new JFXPopup(this.getRegion());
+        showCentered();
     }
 
     @FXML
@@ -53,7 +54,7 @@ public class LoginViewController extends AbstractController implements IPopup {
         }
     }
 
-    private void regainFocus(Event e) {
+    private void regainFocus() {
         this.password.requestFocus();
         KioskMain.getUI().setPopup(this);
     }

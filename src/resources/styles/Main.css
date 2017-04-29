@@ -84,4 +84,9 @@
     -jfx-button-type: flat;
 }
 
+.icon {
+    -fx-background-size: 30px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
 

@@ -34,20 +34,20 @@ public class DropdownAlertViewController extends AbstractController implements I
     private Parent parent;
     private JFXPopup instance;
 
-    private final Consumer<String> onSelect;
+    private final Consumer<String> setSelected;
 
-    public DropdownAlertViewController(Parent parent, String title, String body, Collection<String> options, String def, Consumer<String> onSelect) {
+    public DropdownAlertViewController(Parent parent, String title, String body, Collection<String> options, String def, Consumer<String> setSelected) {
         this.parent = parent;
         this.instance = new JFXPopup(this.getRegion());
         this.alertTitle.setText(title);
         this.alertBody.setText(body);
         this.alertBox.getItems().setAll(options);
         this.alertBox.getSelectionModel().select(def);
-        this.onSelect = onSelect;
+        this.setSelected = setSelected;
 
         this.root.setOnKeyPressed(event -> {
             if (event.getCode().equals(KeyCode.ENTER)) {
-                this.onSelect.accept((String)this.alertBox.getSelectionModel().getSelectedItem());
+                this.setSelected.accept((String)this.alertBox.getSelectionModel().getSelectedItem());
                 this.getInstance().hide();
             }
         });
@@ -63,7 +63,7 @@ public class DropdownAlertViewController extends AbstractController implements I
 
     @FXML
     private void clickOk(ActionEvent event) {
-        this.onSelect.accept((String)this.alertBox.getSelectionModel().getSelectedItem());
+        this.setSelected.accept((String)this.alertBox.getSelectionModel().getSelectedItem());
         this.getInstance().hide();
     }
 

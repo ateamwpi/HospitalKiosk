@@ -56,8 +56,8 @@ public class NavigationDrawerController extends AbstractController implements IL
 
     private void setMenuItems() {
         menuItems.getChildren().clear();
-        for (EnumMenuItem e : KioskMain.getLogin().getState().getAvailableOptions()) {
-            menuItems.getChildren().add(new MenuItem(e, mainRoot).getRoot());
+        for (EnumMenuItem menuItem : KioskMain.getLogin().getState().getAvailableOptions()) {
+            menuItems.getChildren().add(new MenuItem(menuItem, mainRoot).getRoot());
         }
     }
 

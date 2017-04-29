@@ -18,6 +18,7 @@ public class HelpInfoController extends AbstractController implements IPopup {
     public HelpInfoController(Parent parent) {
         this.parent = parent;
         this.instance = new JFXPopup(getRegion());
+        showCentered();
     }
 
     @Override

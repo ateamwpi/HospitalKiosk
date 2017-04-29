@@ -157,7 +157,7 @@ public class DirectionsDrawerController extends AbstractController {
     }
 
     private void selectLocationFromDirectory(Consumer<Location> selectLocation) {
-        new DirectoryViewController(mainRoot, selectLocation, true).showCentered();
+        new DirectoryViewController(mainRoot, selectLocation, true);
     }
 
     private void clearSearchResults() {

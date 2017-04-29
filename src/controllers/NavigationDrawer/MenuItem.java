@@ -4,6 +4,7 @@ import com.sun.org.apache.xalan.internal.xsltc.dom.KeyIndex;
 import controllers.AboutView.AboutViewController;
 import controllers.AboutView.HelpInfoController;
 import controllers.AbstractController;
+import controllers.Icon;
 import controllers.LoginView.LoginViewController;
 import controllers.DirectoryView.ManageDirectoryView.ManageDirectoryViewController;
 import controllers.MapView.ManageMapView.ManageMapViewController;
@@ -21,11 +22,14 @@ import models.path.Node;
 import models.timeout.TimeoutManager;
 
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 /**
  * Created by mattm on 4/24/2017
  */
 public class MenuItem extends AbstractController {
+
+    private static final Double ICON_SIZE = 24.0;
 
     public enum EnumMenuItem {
         About("About This Application", "info", EnumMenuItem::aboutPressed),
@@ -41,48 +45,54 @@ public class MenuItem extends AbstractController {
 
         final String path;
         final String text;
-        final BiConsumer<MouseEvent, Parent> onClick;
+        final Consumer<Parent> onClick;
 
-        EnumMenuItem(String text, String path, BiConsumer<MouseEvent, Parent> onClick) {
+        EnumMenuItem(String text, String path, Consumer<Parent> onClick) {
             this.text = text;
             this.path = path;
+            // TODO uncomment below
+//            this.path = "/resources/icons/" + path + ".png";
             this.onClick = onClick;
         }
 
-        private static void aboutPressed(MouseEvent e, Parent mainRoot) {
+        private static void aboutPressed(Parent mainRoot) {
             KioskMain.getUI().setScene(new AboutViewController());
         }
 
-        private static void loginPressed(MouseEvent e, Parent mainRoot) {
-            LoginViewController login = new LoginViewController(mainRoot);
-            login.showCentered();
+        private static void loginPressed(Parent mainRoot) {
+            new LoginViewController(mainRoot);
         }
 
-        private static void logoutPressed(MouseEvent e, Parent mainRoot) {
+        private static void logoutPressed(Parent mainRoot) {
             KioskMain.getLogin().logout();
         }
 
-        private static void manageMapPressed(MouseEvent e, Parent mainRoot) {
+        private static void manageMapPressed(Parent mainRoot) {
             KioskMain.getUI().setScene(new ManageMapViewController());
         }
 
-        private static void manageDirPressed(MouseEvent e, Parent mainRoot) {
+        private static void manageDirPressed(Parent mainRoot) {
             KioskMain.getUI().setScene(new ManageDirectoryViewController());
         }
 
-        private static void selectAlgoPressed(MouseEvent e, Parent mainRoot) {
-            Utils.showDropdown(mainRoot, "Select Algorithm", "Choose which pathfinding algorithm the application should use.",
-                    KioskMain.getPath().getAlgorithms(), KioskMain.getPath().getSelectedAlgorithm().getName(),
-                    (s) -> KioskMain.getPath().selectAlgorithm(s));
+        private static void selectAlgoPressed(Parent mainRoot) {
+            Utils.showDropdown(mainRoot, "Select Algorithm",
+                    "Choose which pathfinding algorithm the application should use.",
+                    KioskMain.getPath().getAlgorithms(),
+                    KioskMain.getPath().getSelectedAlgorithm().getName(),
+                    algorithm -> KioskMain.getPath().selectAlgorithm(algorithm));
         }
 
-        private static void selectKioskPressed(MouseEvent e, Parent mainRoot) {
-            Utils.showDropdown(mainRoot, "Select Kiosk Location", "Choose the location that the Kiosk is currently at.",
-                    KioskMain.getPath().getRoomNames(), KioskMain.getDir().getTheKiosk().getNode().getRoomName(),
-                    (s) -> {
+        private static void selectKioskPressed(Parent mainRoot) {
+            Utils.showDropdown(mainRoot,
+                    "Select Kiosk Location",
+                    "Choose the location that the Kiosk is currently at.",
+                    KioskMain.getPath().getRoomNames(),
+                    KioskMain.getDir().getTheKiosk().getNode().getRoomName(),
+                    roomName -> {
                         Node n = null;
                         try {
-                            n = KioskMain.getPath().getRoom(s);
+                            n = KioskMain.getPath().getRoom(roomName);
                         } catch (RoomNotFoundException e1) {
                             // TODO
                         }
@@ -90,33 +100,33 @@ public class MenuItem extends AbstractController {
                     });
         }
 
-        private static void userDirPressed(MouseEvent e, Parent mainRoot) {
-            DirectoryViewController dir = new DirectoryViewController(mainRoot, (location -> {
-                System.out.println("you clicked " + location);
-            }), false);
-            dir.showCentered();
+        private static void userDirPressed(Parent mainRoot) {
+            new DirectoryViewController(mainRoot,
+                    location -> System.out.println("you clicked " + location),
+                    false);
         }
 
-        private static void timeoutPressed(MouseEvent e, Parent mainRoot) {
-            TextboxAlertViewController text = new TextboxAlertViewController(mainRoot, "Select Timeout Delay",
-                    "Choose how long (in ms) the application should wait before signing out and returning to the splash screen.",
-                    KioskMain.getTimeout().getDelay()+"", (t) -> {
-                KioskMain.getTimeout().setDelay(Integer.parseInt(t));
-                KioskMain.getDB().setVar(TimeoutManager.DELAY_VAR, t);
-            }, (t) -> {
-                try {
-                    Integer.parseInt(t);
-                    return true;
-                } catch (NumberFormatException ex) {
-                    return false;
-                }
-            });
-            text.showCentered();
+        private static void timeoutPressed(Parent mainRoot) {
+            new TextboxAlertViewController(mainRoot,
+                "Select Timeout Delay",
+                "Choose how long (in ms) the application should wait before signing out and returning to the splash screen.",
+                KioskMain.getTimeout().getDelay()+"",
+                time -> {
+                    KioskMain.getTimeout().setDelay(Integer.parseInt(time));
+                    KioskMain.getDB().setVar(TimeoutManager.DELAY_VAR, time);
+                },
+                time -> {
+                    try {
+                        Integer.parseInt(time);
+                        return true;
+                    } catch (NumberFormatException ex) {
+                        return false;
+                    }
+                });
         }
 
-        private static void infoPressed(MouseEvent e, Parent mainRoot) {
-            HelpInfoController help = new HelpInfoController(mainRoot);
-            help.showCentered();
+        private static void infoPressed(Parent mainRoot) {
+            new HelpInfoController(mainRoot);
         }
     }
 
@@ -126,11 +136,11 @@ public class MenuItem extends AbstractController {
     @FXML
     private HBox root;
     @FXML
-    private Label menuIcon;
+    private Label menuIcon; // TODO change to Icon
     @FXML
     private Label menuLabel;
 
-    public MenuItem(EnumMenuItem m, Parent mainRoot) {
+    MenuItem(EnumMenuItem m, Parent mainRoot) {
         super(m, mainRoot);
     }
 
@@ -147,6 +157,9 @@ public class MenuItem extends AbstractController {
 
         menuLabel.setText(item.text);
         menuIcon.getStyleClass().add(this.item.path);
+        // TODO uncomment below
+//        menuIcon.setPath(item.path);
+//        menuIcon.setSize(ICON_SIZE);
 
 //        menuLabel.styleProperty().bind(
 //            Bindings.when(root.hoverProperty())
@@ -157,7 +170,7 @@ public class MenuItem extends AbstractController {
 
     @FXML
     private void onPressed(MouseEvent e) {
-        this.item.onClick.accept(e, mainRoot);
+        this.item.onClick.accept(mainRoot);
     }
 
     public String getURL() {
