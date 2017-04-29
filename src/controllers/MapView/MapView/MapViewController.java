@@ -3,6 +3,7 @@ package controllers.MapView.MapView;
 import com.jfoenix.controls.JFXDrawer;
 import controllers.AbstractController;
 import controllers.MapView.Map.MapController;
+import controllers.MapView.MapView.DirectionsDrawer.DirectionsDrawerController;
 import controllers.NavigationDrawer.NavigationDrawerController;
 import core.KioskMain;
 import javafx.application.Platform;

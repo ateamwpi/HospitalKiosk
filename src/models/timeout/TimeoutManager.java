@@ -2,6 +2,7 @@ package models.timeout;
 
 import controllers.WelcomeView.WelcomeViewController;
 import core.KioskMain;
+import core.Utils;
 import javafx.application.Platform;
 
 import java.util.Timer;
@@ -45,6 +46,7 @@ public class TimeoutManager {
                         () -> {
                             KioskMain.getUI().setScene(new WelcomeViewController());
                             KioskMain.getLogin().logout();
+                            Utils.hidePopup();
                         });
             }
         };

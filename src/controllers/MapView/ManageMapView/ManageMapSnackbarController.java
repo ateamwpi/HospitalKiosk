@@ -9,6 +9,7 @@ import controllers.MapView.MapView.MapViewController;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXTextField;
+import controllers.NavigationDrawer.NavigationDrawerController;
 import core.KioskMain;
 import core.Utils;
 import javafx.beans.binding.Bindings;
@@ -19,6 +20,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextFormatter;
+import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
 import javafx.util.converter.IntegerStringConverter;
 import models.path.Node;
@@ -61,6 +63,8 @@ public class ManageMapSnackbarController extends AbstractController{
     protected Parent mainRoot;
     @FXML
     protected JFXButton nodeAction;
+    @FXML
+    protected Label hamburger;
 
 
     public ManageMapSnackbarController(Parent mainRoot, ManageMapController manageMapController) {
@@ -86,6 +90,9 @@ public class ManageMapSnackbarController extends AbstractController{
     }
 
 
+    public Label getHamburgerButton() {
+        return hamburger;
+    }
 
 
 

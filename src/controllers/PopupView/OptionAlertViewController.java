@@ -2,6 +2,7 @@ package controllers.PopupView;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPopup;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import controllers.AbstractController;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -12,15 +13,19 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 import javafx.scene.text.Text;
 
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+
 /**
  * Created by mattm on 3/29/2017.
  */
 public class OptionAlertViewController extends AbstractController implements IPopup {
 
+    private final Consumer<Boolean> setConfirm;
     @FXML
-    private JFXButton button1;
+    private JFXButton cancelButton;
     @FXML
-    private JFXButton button2;
+    private JFXButton confirmButton;
     @FXML
     private Label alertTitle;
     @FXML
@@ -30,16 +35,33 @@ public class OptionAlertViewController extends AbstractController implements IPo
     private Parent parent;
     private JFXPopup instance;
 
-    public OptionAlertViewController(Parent parent, String title, String body, String btn1text, EventHandler<ActionEvent> btn1, String btn2text, EventHandler<ActionEvent> btn2) {
+    // pass true to action on default, false on other
+    public OptionAlertViewController(Parent parent, String title, String body, String cancelText, String confirmText, Consumer<Boolean> setConfirm) {
         this.parent = parent;
+        this.setConfirm = setConfirm;
         this.instance = new JFXPopup(this.getRegion());
         this.alertTitle.setText(title);
         this.alertBody.setText(body);
-        this.button1.setText(btn1text.toUpperCase());
-        this.button2.setText(btn2text.toUpperCase());
-        this.button1.setOnAction(btn1);
-        this.button2.setOnAction(btn2);
+        this.cancelButton.setText(cancelText.toUpperCase());
+        this.confirmButton.setText(confirmText.toUpperCase());
+        this.cancelButton.setOnAction(this::clickCancel);
+        this.confirmButton.setOnAction(this::clickConfirm);
+        showCentered();
     }
+
+    private void clickCancel(ActionEvent event) {
+        clickButton(false);
+    }
+
+    private void clickConfirm(ActionEvent event) {
+        clickButton(true);
+    }
+
+    private void clickButton(Boolean isConfirmed) {
+        hide();
+        setConfirm.accept(isConfirmed);
+    }
+
 
     @FXML
     private void initialize() {

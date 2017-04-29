@@ -41,7 +41,7 @@
 /*for labels*/
 .label-text {
     /*-fx-background-color: #004C8C;*/
-    -fx-text-fill: black;
+    /*-fx-text-fill: black;*/
     -fx-font: bold roboto sannserif;
 }
 
