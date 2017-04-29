@@ -114,13 +114,8 @@ public class AdminMapController extends AbstractController implements IClickable
 
             // add the preview connection
             curnode.previewConnection(selectedNode.getNode());
-            //Connect the two nodes if they are on the same floor
-            try {
-                curnode.getNode().addConnection(selectedNode.getNode());
-            }
-            catch(WrongFloorException wfe){
-                Utils.showAlert(getManageMapViewController().getRoot(), "Invalid Node Connection!", "Cannot add connected node on a different floor!");
-            }
+            //Connect the two nodes if they are on the same floo
+            curnode.save();
         }
     }
 
