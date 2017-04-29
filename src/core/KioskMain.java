@@ -50,6 +50,9 @@ public class KioskMain extends Application {
         launch(args);
         // Stop the timer thread when the application closes
         getTimeout().stopTimer();
+        // Stop the speaking thread when the application closes
+        if(getTTS().isSpeaking())
+            getTTS().cancel();
     }
 
     public static DirectoryManager getDir() {
