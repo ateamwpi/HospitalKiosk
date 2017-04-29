@@ -14,18 +14,8 @@
 <Pane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="310.0" styleClass="button-box" stylesheets="@../../../styles/MapView.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label fx:id="hamburger" layoutX="14.0" layoutY="14.0" prefHeight="30.0" prefWidth="30.0" styleClass="hamburger-icon" stylesheets="@resources/styles/MapView.css" />
-      <Label layoutX="28.0" layoutY="43.0" styleClass="label-text" stylesheets="@../../../styles/Main.css" text="x:" textFill="#e7effe">
-         <font>
-            <Font name="System Bold" size="16.0" />
-         </font>
-      </Label>
-      <JFXTextField layoutX="50.0" layoutY="44.0" prefHeight="25.0" prefWidth="53.0" styleClass="search" stylesheets="@../../../styles/MapView.css" fx:id="x" />
-      <Label layoutX="155.0" layoutY="43.0" text="y:" textFill="#e7effe">
-         <font>
-            <Font name="System Bold" size="16.0" />
-         </font>
-      </Label>
-      <JFXTextField fx:id="y" layoutX="184.0" layoutY="44.0" prefHeight="25.0" prefWidth="53.0" styleClass="search" stylesheets="@../../../styles/MapView.css" />
+      <JFXTextField labelFloat="true" layoutX="50.0" layoutY="44.0" prefHeight="25.0" prefWidth="75.0" promptText="X-Coordinate" styleClass="search" stylesheets="@../../../styles/MapView.css" fx:id="x" />
+      <JFXTextField fx:id="y" labelFloat="true" layoutX="184.0" layoutY="44.0" prefHeight="25.0" prefWidth="75.0" promptText="Y-Coordinate" styleClass="search" stylesheets="@../../../styles/MapView.css" />
       <JFXCheckBox fx:id="employeeOnly" checkedColor="#0277bd" layoutX="8.0" layoutY="94.0" text="Employee Only" textFill="#e7effe" unCheckedColor="#e7effe">
          <font>
             <Font size="15.0" />
