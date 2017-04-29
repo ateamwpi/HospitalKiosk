@@ -33,6 +33,6 @@
       <VBox layoutY="141.0" prefWidth="310.0" />
       <JFXButton fx:id="saveNode" buttonType="RAISED" layoutX="19.0" layoutY="141.0" styleClass="content-button" stylesheets="@../../../styles/Main.css" text="Save" />
       <JFXButton fx:id="cancel" buttonType="RAISED" layoutX="224.0" layoutY="141.0" styleClass="content-button" stylesheets="@../../../styles/Main.css" text="Cancel" wrapText="true" />
-      <JFXButton fx:id="nodeAction" layoutX="123.0" layoutY="141.0" mnemonicParsing="false" styleClass="content-button" stylesheets="@../../../styles/Main.css" text="Button" />
+      <JFXButton fx:id="nodeAction" buttonType="RAISED" layoutX="123.0" layoutY="141.0" mnemonicParsing="false" styleClass="content-button" stylesheets="@../../../styles/Main.css" text="Delete" />
    </children>
 </Pane>
