@@ -12,6 +12,8 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -37,6 +39,7 @@ public class ManageMapViewController extends AbstractController {
     private StringProperty roomNameProperty;
     private BooleanProperty restrictedProperty;
     private StringConverter<Number> converter;
+    private ArrayList<String> nodeTypeList;
 
     private ArrayList<String> floorList;
 
@@ -60,6 +63,7 @@ public class ManageMapViewController extends AbstractController {
         roomNameProperty = new SimpleStringProperty();
         converter = new NumberStringConverter();
         floorList = new ArrayList<>(Arrays.asList("1st Floor", "2nd Floor", "3rd Floor", "4th Floor", "5th Floor", "6th Floor", "7th Floor"));
+        nodeTypeList = new ArrayList<>(Arrays.asList("Room", "Elevator", "Stairwell", "Outside"));
     }
 
     @FXML
@@ -86,6 +90,7 @@ public class ManageMapViewController extends AbstractController {
         }
 
         // init input text properties
+        //TODO: set employeeOnly and nodeType of selected node
         xTextProperty = manageMapSnackbarController.x.textProperty();
         yTextProperty = manageMapSnackbarController.y.textProperty();
         restrictedProperty = manageMapSnackbarController.employeeOnly.selectedProperty();
@@ -120,9 +125,11 @@ public class ManageMapViewController extends AbstractController {
         Bindings.bindBidirectional(restrictedProperty, selectedNode.previewRestrictedProperty());
         manageMapSnackbarController.employeeOnly.setVisible(true);
         manageMapSnackbarController.employeeOnly.setDisable(false);
+        manageMapSnackbarController.nodeAction.setDisable(false);
         // show save button
         // show delete button
         manageMapSnackbarController.nodeAction.setText("Delete");
+
 
     }
 

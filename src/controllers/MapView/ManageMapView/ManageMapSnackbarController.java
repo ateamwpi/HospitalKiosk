@@ -82,6 +82,7 @@ public class ManageMapSnackbarController extends AbstractController{
 
     @FXML
     public void initialize() {
+        nodeAction.setDisable(true);
     }
 
 
