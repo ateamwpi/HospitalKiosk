@@ -26,7 +26,7 @@ public class UserTypeProfessional extends AbstractUserType {
 
     @Override
     public Collection<MenuItem.EnumMenuItem> getAvailableOptions() {
-        return Arrays.asList(MenuItem.EnumMenuItem.GetDirections, MenuItem.EnumMenuItem.UserDir,
+        return Arrays.asList(/*MenuItem.EnumMenuItem.GetDirections,*/ MenuItem.EnumMenuItem.UserDir,
                 MenuItem.EnumMenuItem.HelpInfo, MenuItem.EnumMenuItem.About,
 
                 MenuItem.EnumMenuItem.Logout);

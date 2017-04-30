@@ -90,5 +90,11 @@
     -fx-alignment: center;
     -jfx-button-type: flat;
 }
+.white-alert-button {
+    -fx-font: bold 15px system;
+    -fx-text-fill: white;
+    -fx-alignment: center;
+    -jfx-button-type: flat;
+}
 
 

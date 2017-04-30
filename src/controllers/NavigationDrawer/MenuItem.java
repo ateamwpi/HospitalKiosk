@@ -63,7 +63,8 @@ public class MenuItem extends AbstractController {
         }
 
         private static void aboutPressed(MouseEvent e, Parent mainRoot) {
-            KioskMain.getUI().setScene(new AboutViewController());
+            AboutViewController about = new AboutViewController(mainRoot);
+            about.showCentered();
         }
 
         private static void loginPressed(MouseEvent e, Parent mainRoot) {
