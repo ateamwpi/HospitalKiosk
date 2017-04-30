@@ -61,7 +61,7 @@ public class DraggableNode extends Circle {
     }
 
     public void resetPreviewConnections() {
-        this.previewConnections = node.getConnections();
+        this.previewConnections = new ArrayList<>(node.getConnections());
     }
 
     private void previewConnections(Collection<Node> nodes) {

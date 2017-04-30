@@ -170,7 +170,7 @@ public class PathfindingManager {
         int floorDifference = 0;
         int elevatorTime = 14;
         for(Node n: path.getPath()){
-            if(n.getPrimaryLocType().equals(LocationType.Elevator)){
+            if(n.getNodeType().equals(NodeType.Elevator)){
                 count++;
             }
         }
