@@ -3,21 +3,15 @@ package controllers.NavigationDrawer;
 import controllers.AbstractController;
 import controllers.NavigationDrawer.MenuItem.EnumMenuItem;
 import core.KioskMain;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import models.login.ILoginObserver;
 import models.login.UserTypeAdministrator;
-import sun.plugin.javascript.navig.Anchor;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * Created by dylan on 4/16/17.
@@ -75,7 +69,7 @@ public class NavigationDrawerController extends AbstractController implements IL
 
     @Override
     public String getURL() {
-        return "resources/views/NavigatinDrawer/NavigationDrawer.fxml";
+        return "resources/views/NavigationDrawer/NavigationDrawer.fxml";
     }
 
     private void setMenuItems() {

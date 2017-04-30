@@ -14,8 +14,7 @@ public enum NodeType {
     Staircase(Color.DARKBLUE),
     Elevator(Color.DARKBLUE),
     Hallway(Color.GRAY),
-    Outside(Color.GRAY),
-    Unknown(Color.GRAY);
+    Outside(Color.GRAY);
 
     private Color nodeColor;
     private static final HashMap<String, NodeType> names = new HashMap<>();
@@ -43,7 +42,7 @@ public enum NodeType {
 //    }
 
     public static NodeType getType(String s) {
-        return names.getOrDefault(s.toUpperCase(), Unknown);
+        return names.getOrDefault(s.toUpperCase(), null);
     }
 
 //    /**

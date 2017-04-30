@@ -25,7 +25,7 @@ import java.util.*;
  * Created by mattm on 4/26/2017.
  *
  */
-public class ElevatorStaircaseMenu extends AbstractController implements IPopup {
+public class ElevatorStaircaseOptions extends AbstractController implements IPopup {
 
     @FXML
     private JFXTextField nameField;
@@ -58,7 +58,7 @@ public class ElevatorStaircaseMenu extends AbstractController implements IPopup 
     private String elevatorName;
     private DraggableNode clicked;
 
-    public ElevatorStaircaseMenu(Parent parent, DraggableNode clicked) {
+    public ElevatorStaircaseOptions(Parent parent, DraggableNode clicked) {
         this.parent = parent;
         this.instance = new JFXPopup(this.getRegion());
         this.elevatorName = elevatorName(clicked.getNode());
@@ -154,7 +154,7 @@ public class ElevatorStaircaseMenu extends AbstractController implements IPopup 
 
     @Override
     public String getURL() {
-        return "resources/views/MapView/ManageMapView/ElevatorStaircaseMenu.fxml";
+        return "resources/views/MapView/ManageMapView/ElevatorStaircaseOptions.fxml";
     }
 
     @Override

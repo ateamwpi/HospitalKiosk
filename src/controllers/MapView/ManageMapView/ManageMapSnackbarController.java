@@ -20,6 +20,8 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextFormatter;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
 import javafx.util.converter.IntegerStringConverter;
@@ -52,8 +54,6 @@ public class ManageMapSnackbarController extends AbstractController{
     @FXML
     protected JFXButton saveNode;
     @FXML
-    protected JFXButton deleteNode;
-    @FXML
     protected JFXButton cancel; //will discard changes
     @FXML
     protected JFXComboBox nodeType;
@@ -65,6 +65,10 @@ public class ManageMapSnackbarController extends AbstractController{
     protected JFXButton nodeAction;
     @FXML
     protected Label hamburger;
+    @FXML
+    private Pane root;
+    @FXML
+    private HBox bottomBox;
     @FXML
     private VBox contentBox;
 
@@ -79,8 +83,6 @@ public class ManageMapSnackbarController extends AbstractController{
         mainRoot = (Parent)data[0];
     }
 
-
-
     @Override
     public String getURL() {
         return "resources/views/MapVIew/ManageMapView/ManageMapSnackbar.fxml";
@@ -88,9 +90,11 @@ public class ManageMapSnackbarController extends AbstractController{
 
     @FXML
     public void initialize() {
-        nodeAction.setDisable(true);
+        nodeAction.setText("Add");
+        saveNode.setDisable(true);
+        cancel.setDisable(true);
+        bottomBox.prefHeightProperty().bind(root.heightProperty().subtract(390));
     }
-
 
     public Label getHamburgerButton() {
         return hamburger;

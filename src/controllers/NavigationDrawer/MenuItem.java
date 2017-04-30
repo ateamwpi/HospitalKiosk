@@ -196,7 +196,7 @@ public class MenuItem extends AbstractController {
 //    }
 
     public String getURL() {
-        return "resources/views/NavigatinDrawer/MenuItem.fxml";
+        return "resources/views/NavigationDrawer/MenuItem.fxml";
     }
 
 }
