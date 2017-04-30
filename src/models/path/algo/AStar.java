@@ -66,7 +66,9 @@ public class AStar extends AbstractPathfindingAlgorithm {
     }
 
     private double heuristicCost(Node start, Node goal){
-       return Math.abs(start.getX() - goal.getX()) + Math.abs(start.getY() - goal.getY());
+       return Math.abs(start.getX() - goal.getX())
+               + Math.abs(start.getY() - goal.getY())
+               + Math.abs(start.getFloor() - goal.getFloor());
     }
 
 

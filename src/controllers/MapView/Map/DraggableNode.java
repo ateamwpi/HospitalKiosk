@@ -60,6 +60,10 @@ public class DraggableNode extends Circle {
         previewRestrictedProperty.set(value);
     }
 
+    public void resetPreviewConnections() {
+        this.previewConnections = new ArrayList<>(node.getConnections());
+    }
+
     private void previewConnections(Collection<Node> nodes) {
         // redraw connections
 

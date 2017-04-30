@@ -6,6 +6,7 @@ import models.path.Node;
 
 /**
  * Created by mattm on 3/29/2017.
+ *
  */
 public class Location {
     private static int nextLocID;

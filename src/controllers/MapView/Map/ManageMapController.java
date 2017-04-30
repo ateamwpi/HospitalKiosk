@@ -15,6 +15,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Line;
 import javafx.util.Pair;
 import models.path.Node;
+import models.path.NodeType;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -24,6 +25,7 @@ import java.util.function.Function;
 
 /**
  * Created by dylan on 4/8/17.
+ *
  */
 public class ManageMapController extends AbstractController implements IClickableController {
 
@@ -136,7 +138,7 @@ public class ManageMapController extends AbstractController implements IClickabl
 
         // create new node
         Node node = new Node(   (int) x,
-                                (int) y, mapController.getFloor(), false, room);
+                                (int) y, mapController.getFloor(), false, NodeType.Location, room);
         // create new visual node with gestures
         DraggableNode draggableNode = getDraggableNode(node);
         // draw node with gestures
@@ -316,8 +318,8 @@ public class ManageMapController extends AbstractController implements IClickabl
     private void drawDraggableNodeConnections(DraggableNode draggableNode) {
         Node node = draggableNode.getNode();
         for (Node other : node.getConnections()) {
-            // don't draw connection twice
-            if (node.getID() < other.getID()) {
+            // don't draw connection twice, only draw connections on this floor
+            if (node.getID() < other.getID() && node.getFloor() == other.getFloor()) {
                 // draw connection
                 drawDraggableConnection(draggableNode, getDraggableNode(other));
             }

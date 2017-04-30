@@ -30,6 +30,7 @@ import javafx.util.StringConverter;
 import javafx.util.converter.IntegerStringConverter;
 import javafx.util.converter.NumberStringConverter;
 import models.path.Node;
+import models.path.NodeType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -153,7 +154,12 @@ public class ManageMapViewController extends AbstractController {
         // show delete button
         manageMapSnackbarController.nodeAction.setText("Delete");
 
+        System.out.println("clicked " + node.getNodeType());
 
+        if(node.getNodeType().equals(NodeType.Elevator) || node.getNodeType().equals(NodeType.Staircase)) {
+            ElevatorStaircaseMenu menu = new ElevatorStaircaseMenu(getRoot(), draggableNode);
+            menu.showCentered();
+        }
     }
 
     public void unselectNode(boolean reselect) {
@@ -257,4 +263,18 @@ public class ManageMapViewController extends AbstractController {
         System.out.println("We found the floor to be: " + floor);
         manageMapController.setFloor(floor);
     }
+
+//    private void refreshScene() {
+//        int floor = manageMapController.getMapController().getFloor();
+//        double scale = manageMapController.getMapController().getOverlay().getScaleX();
+//        double transX = manageMapController.getMapController().getOverlay().getTranslateX();
+//        double transY = manageMapController.getMapController().getOverlay().getTranslateY();
+//
+//        ManageMapViewController con = new ManageMapViewController();
+//        con.setFloor(floor);
+//        con.manageMapController.getMapController().getSceneGestures().zoomToScale(scale);
+//        con.manageMapController.getMapController().getOverlay().setTranslateY(transY);
+//        con.manageMapController.getMapController().getOverlay().setTranslateX(transX);
+//        KioskMain.getUI().setScene(con);
+//    }
 }
