@@ -22,8 +22,8 @@
          </font>
       </JFXCheckBox>
       <JFXComboBox fx:id="nodeType" focusColor="#e7effe" layoutX="196.0" layoutY="92.0" unFocusColor="#e7effe" />
-      <VBox layoutY="141.0" prefWidth="310.0" />
-      <HBox alignment="CENTER" layoutY="157.0" minWidth="-Infinity" prefHeight="76.0" prefWidth="310.0" styleClass="background" stylesheets="@../../../styles/Main.css">
+      <VBox fx:id="contentBox" layoutY="141.0" prefHeight="250.0" prefWidth="310.0" styleClass="background" stylesheets="@../../../styles/Main.css" />
+      <HBox alignment="CENTER" layoutY="390.0" minWidth="-Infinity" prefHeight="76.0" prefWidth="310.0" styleClass="background" stylesheets="@../../../styles/Main.css">
          <children>
             <JFXButton fx:id="saveNode" buttonType="RAISED" styleClass="content-button" stylesheets="@../../../styles/Main.css" text="Save" />
             <Region prefHeight="39.0" prefWidth="23.0" />

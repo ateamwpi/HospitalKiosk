@@ -65,6 +65,8 @@ public class ManageMapSnackbarController extends AbstractController{
     protected JFXButton nodeAction;
     @FXML
     protected Label hamburger;
+    @FXML
+    private VBox contentBox;
 
 
     public ManageMapSnackbarController(Parent mainRoot, ManageMapController manageMapController) {

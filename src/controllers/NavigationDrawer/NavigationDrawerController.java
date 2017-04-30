@@ -18,6 +18,7 @@ import java.util.Collection;
 
 /**
  * Created by dylan on 4/16/17.
+ *
  */
 public class NavigationDrawerController extends AbstractController implements ILoginObserver {
 
