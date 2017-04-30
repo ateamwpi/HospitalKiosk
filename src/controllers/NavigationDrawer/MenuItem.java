@@ -1,13 +1,12 @@
 package controllers.NavigationDrawer;
 
-import com.sun.org.apache.xalan.internal.xsltc.dom.KeyIndex;
 import controllers.AboutView.AboutViewController;
 import controllers.AboutView.HelpInfoController;
 import controllers.AbstractController;
-import controllers.LoginView.LoginViewController;
-import controllers.DirectoryView.ManageDirectoryView.ManageDirectoryViewController;
-import controllers.MapView.ManageMapView.ManageMapViewController;
 import controllers.DirectoryView.DirectoryView.DirectoryViewController;
+import controllers.DirectoryView.ManageDirectoryView.ManageDirectoryViewController;
+import controllers.LoginView.LoginViewController;
+import controllers.MapView.ManageMapView.ManageMapViewController;
 import controllers.MapView.MapView.MapViewController;
 import controllers.PopupView.TextboxAlertViewController;
 import core.KioskMain;
@@ -23,29 +22,41 @@ import models.timeout.TimeoutManager;
 
 import java.util.function.BiConsumer;
 
+import static controllers.NavigationDrawer.MenuItem.MenuHeader.ADMIN;
+import static controllers.NavigationDrawer.MenuItem.MenuHeader.TOP;
+import static controllers.NavigationDrawer.MenuItem.MenuHeader.USER;
+
 /**
  * Created by mattm on 4/24/2017
  */
 public class MenuItem extends AbstractController {
 
-    public enum EnumMenuItem {
-        About("About This Application", "info", EnumMenuItem::aboutPressed),
-        Login("Login", "login", EnumMenuItem::loginPressed),
-        Logout("Log Out", "logout", EnumMenuItem::logoutPressed),
-        ManageMap("Manage Map", "map", EnumMenuItem::manageMapPressed),
-        ManageDir("Manage Directory", "dir", EnumMenuItem::manageDirPressed),
-        SelectAlgo("Select Path Algorithm", "settings", EnumMenuItem::selectAlgoPressed),
-        SelectKiosk("Select Kiosk Location", "settings", EnumMenuItem::selectKioskPressed),
-        UserDir("View Directory", "dir", EnumMenuItem::userDirPressed),
-        SelectTimeout("Select Timeout Delay", "settings", EnumMenuItem::timeoutPressed),
-        HelpInfo("Info & Visiting Hours", "help", EnumMenuItem::infoPressed),
-        GetDirections("Get Directions", "path", EnumMenuItem::directionsPressed);
+    public enum MenuHeader {
+        USER,
+        ADMIN,
+        TOP;
+    }
 
+    public enum EnumMenuItem {
+        About(USER, "About This Application", "info", EnumMenuItem::aboutPressed),
+        Login(TOP, "Login", "login", EnumMenuItem::loginPressed),
+        Logout(TOP, "Log Out", "logout", EnumMenuItem::logoutPressed),
+        ManageMap(ADMIN, "Manage Map", "map", EnumMenuItem::manageMapPressed),
+        ManageDir(ADMIN, "Manage Directory", "dir", EnumMenuItem::manageDirPressed),
+        SelectAlgo(ADMIN, "Select Path Algorithm", "settings", EnumMenuItem::selectAlgoPressed),
+        SelectKiosk(ADMIN, "Select Kiosk Location", "settings", EnumMenuItem::selectKioskPressed),
+        UserDir(USER, "View Directory", "dir", EnumMenuItem::userDirPressed),
+        SelectTimeout(ADMIN, "Select Timeout Delay", "settings", EnumMenuItem::timeoutPressed),
+        HelpInfo(USER, "Info & Visiting Hours", "help", EnumMenuItem::infoPressed),
+        GetDirections(USER, "Get Directions", "path", EnumMenuItem::directionsPressed);
+
+        final MenuHeader head;
         final String path;
         final String text;
         final BiConsumer<MouseEvent, Parent> onClick;
 
-        EnumMenuItem(String text, String path, BiConsumer<MouseEvent, Parent> onClick) {
+        EnumMenuItem(MenuHeader head, String text, String path, BiConsumer<MouseEvent, Parent> onClick) {
+            this.head = head;
             this.text = text;
             this.path = path;
             this.onClick = onClick;
@@ -173,6 +184,10 @@ public class MenuItem extends AbstractController {
     private void onPressed(MouseEvent e) {
 //        this.menuLabel.getStyleClass().setAll("button-bold");
         this.item.onClick.accept(e, mainRoot);
+    }
+
+    public MenuHeader getHeader() {
+        return this.item.head;
     }
 
 //    public void deselectButton() {

@@ -16,7 +16,7 @@ public class UserTypeAdministrator extends AbstractUserType {
 
     @Override
     public String toString() {
-        return "Administrator";
+        return "Admin";
     }
 
     @Override
@@ -26,13 +26,18 @@ public class UserTypeAdministrator extends AbstractUserType {
 
     @Override
     public Collection<MenuItem.EnumMenuItem> getAvailableOptions() {
-        return Arrays.asList(MenuItem.EnumMenuItem.About, MenuItem.EnumMenuItem.GetDirections, MenuItem.EnumMenuItem.Logout,
-                MenuItem.EnumMenuItem.ManageDir, MenuItem.EnumMenuItem.ManageMap, MenuItem.EnumMenuItem.SelectAlgo,
-                MenuItem.EnumMenuItem.SelectKiosk, MenuItem.EnumMenuItem.SelectTimeout);
+        return Arrays.asList(MenuItem.EnumMenuItem.ManageMap, MenuItem.EnumMenuItem.ManageDir,
+                MenuItem.EnumMenuItem.SelectKiosk, MenuItem.EnumMenuItem.SelectTimeout,
+                MenuItem.EnumMenuItem.SelectAlgo,
+
+                MenuItem.EnumMenuItem.GetDirections, MenuItem.EnumMenuItem.UserDir,
+                MenuItem.EnumMenuItem.HelpInfo, MenuItem.EnumMenuItem.About,
+
+                MenuItem.EnumMenuItem.Logout);
     }
 
     @Override
     public String getWelcomeMessage() {
-        return "Signed in as Administrator";
+        return "Signed in as Admin";
     }
 }

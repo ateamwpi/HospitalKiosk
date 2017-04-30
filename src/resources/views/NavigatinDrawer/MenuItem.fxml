@@ -5,13 +5,10 @@
 <?import javafx.scene.layout.HBox?>
 
 <HBox fx:id="root" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
-    <padding>
-        <Insets left="10.0" />
-    </padding>
-     <Label fx:id="menuIcon" prefHeight="30.0" prefWidth="30.0" stylesheets="@/resources/styles/MapView.css" />
+     <Label fx:id="menuIcon" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="30.0" stylesheets="@/resources/styles/MapView.css" />
      <Label fx:id="menuLabel" prefHeight="30.0" prefWidth="230.0" stylesheets="@/resources/styles/NavigationDrawer.css" text="text">
       <padding>
-         <Insets left="32.0" />
+         <Insets left="16.0" />
       </padding>
    </Label>
    <opaqueInsets>
