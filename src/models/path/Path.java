@@ -1,7 +1,7 @@
 package models.path;
 
 
-import controllers.MapView.MapView.DirectionStep;
+import controllers.MapView.MapView.DirectionsDrawer.DirectionStep;
 import core.Utils;
 
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import static controllers.MapView.MapView.DirectionStep.DirectionIcon;
+import static controllers.MapView.MapView.DirectionsDrawer.DirectionStep.DirectionIcon;
 
 /**
  * Created by mattm on 3/29/2017.
@@ -209,4 +209,5 @@ public class Path {
         System.out.println(steps);
         return steps;
     }
+
 }

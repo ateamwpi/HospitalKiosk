@@ -3,12 +3,14 @@ package controllers.MapView.ManageMapView;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.validation.base.ValidatorBase;
 import controllers.AbstractController;
 import controllers.MapView.Map.ManageMapController;
 import controllers.MapView.Map.DraggableNode;
 import controllers.MapView.MapView.MapViewController;
 import core.KioskMain;
 import core.Utils;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -196,6 +198,8 @@ public class ManageMapViewController extends AbstractController {
         x.setText("");
         y.setText("");
         room.setText("");
+        // reset focus
+        getRoot().requestFocus();
         restrictedBox.setVisible(false);
         restrictedBox.setDisable(true);
         // remove save button
@@ -224,9 +228,10 @@ public class ManageMapViewController extends AbstractController {
 
     @FXML
     private void clickBack(ActionEvent event) {
-        manageMapController.attemptUnselectNode( (result) -> {
-            if(result)
+        manageMapController.attemptUnselectNode(isUnselected -> {
+            if (isUnselected) {
                 KioskMain.getUI().setScene(new MapViewController());
+            }
         });
     }
 
@@ -243,7 +248,6 @@ public class ManageMapViewController extends AbstractController {
         }
         // add the preview connection
         selectedNode.previewConnection(node);
-        //refreshScene();
         // update the table of connections with preview connections
         setTableNeighbors(selectedNode.getPreviewConnections());
 
@@ -271,7 +275,7 @@ public class ManageMapViewController extends AbstractController {
     @FXML
     private void clickSave(ActionEvent event) {
         selectedNode.save();
-        refreshScene();
+        manageMapController.attemptUnselectNode(isUnselected -> {});
     }
 
     @FXML
@@ -285,9 +289,7 @@ public class ManageMapViewController extends AbstractController {
 
     private void clickDelete() {
         // delete the node
-        if (selectedNode.delete()) {
-            refreshScene();
-        }
+        selectedNode.delete(isDeleted -> {});
     }
 
     private void clickAdd() {
@@ -325,18 +327,17 @@ public class ManageMapViewController extends AbstractController {
         manageMapController.setFloor(floor);
     }
 
-    private void refreshScene() {
-        int floor = manageMapController.getMapController().getFloor();
-        double scale = manageMapController.getMapController().getOverlay().getScaleX();
-        double transX = manageMapController.getMapController().getOverlay().getTranslateX();
-        double transY = manageMapController.getMapController().getOverlay().getTranslateY();
-
-        ManageMapViewController con = new ManageMapViewController();
-        con.setFloor(floor);
-        con.manageMapController.getMapController().getSceneGestures().zoomToScale(scale);
-        con.manageMapController.getMapController().getOverlay().setTranslateY(transY);
-        con.manageMapController.getMapController().getOverlay().setTranslateX(transX);
-        KioskMain.getUI().setScene(con);
-    }
-
+//    private void refreshScene() {
+//        int floor = manageMapController.getMapController().getFloor();
+//        double scale = manageMapController.getMapController().getOverlay().getScaleX();
+//        double transX = manageMapController.getMapController().getOverlay().getTranslateX();
+//        double transY = manageMapController.getMapController().getOverlay().getTranslateY();
+//
+//        ManageMapViewController con = new ManageMapViewController();
+//        con.setFloor(floor);
+//        con.manageMapController.getMapController().getSceneGestures().zoomToScale(scale);
+//        con.manageMapController.getMapController().getOverlay().setTranslateY(transY);
+//        con.manageMapController.getMapController().getOverlay().setTranslateX(transX);
+//        KioskMain.getUI().setScene(con);
+//    }
 }

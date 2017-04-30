@@ -1,4 +1,4 @@
-package controllers.MapView.MapView;
+package controllers.MapView.MapView.DirectionsDrawer;
 
 import controllers.AbstractController;
 import javafx.fxml.FXML;
@@ -44,6 +44,6 @@ public class SearchResult extends AbstractController {
 
     @Override
     public String getURL() {
-        return "resources/views/MapView/MapView/SearchResult.fxml";
+        return "resources/views/MapView/MapView/DirectionsDrawer/SearchResult.fxml";
     }
 }

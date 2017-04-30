@@ -52,6 +52,8 @@ public class AlertViewController extends AbstractController implements IPopup {
                 event.consume();
             }
         });
+
+        showCentered();
     }
 
     @FXML

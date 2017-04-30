@@ -4,6 +4,7 @@ import core.KioskMain;
 import core.exception.NearestNotFoundException;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by mattm on 3/29/2017.
@@ -56,21 +57,14 @@ public class DirectoryManager {
         getDirectory(newLocType).moveLocation(location, newLocType);
     }
 
-    public List<Location> search(String query, Integer maxResults) {
-        List<Location> locations = search(query);
-        int length = locations.size();
-        return locations.subList(0, maxResults > length ? length : maxResults);
+    public List<Location> search(String query) {
+        return search(query, getAllLocations());
     }
 
-    public List<Location> search(String query) {
-        query = query.toLowerCase();
-        List<Location> locations = new ArrayList<>();
-        for (Location loc : getAllLocations()) {
-            if (loc.getName().toLowerCase().contains(query) || loc.getNode().getRoomName().toLowerCase().contains(query)) {
-                locations.add(loc);
-            }
-        }
-        return locations;
+    public List<Location> search(String query, Collection<Location> locations) {
+        final String queryLower = query.toLowerCase();
+        return locations.stream().filter(location -> location.getName().toLowerCase().contains(queryLower)
+                || location.getNode().getRoomName().toLowerCase().contains(queryLower)).collect(Collectors.toList());
     }
 
     private Collection<Location> getAllLocations() {
@@ -80,6 +74,7 @@ public class DirectoryManager {
                 locations.addAll(getLocationsOfType(locType));
             }
         }
+        locations.add(KioskMain.getDir().getTheKiosk());
         return locations;
     }
 
@@ -110,7 +105,8 @@ public class DirectoryManager {
 
         if(nearPOI == null && nearRest == null) return new ArrayList<>();
         List<Location> ret = new ArrayList<>();
-
+        // add the kiosk
+        ret.add(KioskMain.getDir().getTheKiosk());
         while (nearPOI != null && !nearPOI.isEmpty()) {
             Location l = Collections.min(nearPOI.entrySet(), Comparator.comparingInt(entry -> (int) entry.getValue().doubleValue())).getKey();
             nearPOI.remove(l);

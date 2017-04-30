@@ -11,6 +11,7 @@ import models.path.Node;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.function.Consumer;
 
 /**
  * Created by dylan on 4/6/17.
@@ -27,7 +28,7 @@ public class DraggableNode extends Circle {
     private final IntegerProperty previewYProperty = new SimpleIntegerProperty();
     private final StringProperty previewRoomNameProperty = new SimpleStringProperty();
     private final BooleanProperty previewRestrictedProperty = new SimpleBooleanProperty();
-    private Collection<Node> previewConnections = new ArrayList<>();
+    private ArrayList<Node> previewConnections = new ArrayList<>();
 
     private final ManageMapController manageMapController;
 
@@ -88,19 +89,20 @@ public class DraggableNode extends Circle {
         if(node.getFloor() == this.node.getFloor()) {
             previewConnections.add(node);
             manageMapController.drawDraggableConnection(this, manageMapController.getDraggableNode(node));
-        }
-        else {
+        } else {
             Utils.showAlert(manageMapController.getManageMapViewController().getRoot(), "Invalid Node Connection!", "You cannot add this connection as the nodes are on different floors!");
         }
     }
 
     public void removePreviewConnection(Node node) {
         previewConnections.remove(node);
-        manageMapController.removeDraggableConnection(this, manageMapController.getDraggableNode(node));
+        DraggableNode connection = manageMapController.getDraggableNode(node);
+        manageMapController.removeDraggableConnection(this, connection);
+        connection.save();
     }
 
     public Collection<Node> getPreviewConnections() {
-        return previewConnections;
+        return (Collection<Node>) previewConnections.clone();
     }
 
     public final int getPreviewX(){
@@ -111,7 +113,7 @@ public class DraggableNode extends Circle {
         return previewYProperty.get();
     }
 
-    private String getPreviewRoomName() {
+    public String getPreviewRoomName() {
         return previewRoomNameProperty.get();
     }
 
@@ -163,8 +165,8 @@ public class DraggableNode extends Circle {
         node.save();
     }
 
-    public Boolean delete() {
-        return manageMapController.attemptDeleteSelectedNode();
+    public void delete(Consumer<Boolean> setDeleted) {
+        manageMapController.attemptDeleteSelectedNode(setDeleted);
     }
 
     public Node getNode() {
@@ -189,7 +191,7 @@ public class DraggableNode extends Circle {
         previewX(node.getX());
         previewY(node.getY());
         previewRoomName(node.getRoomName());
-        previewConnections = node.getConnections();
+        previewConnections = new ArrayList<>(node.getConnections());
         previewRestricted(node.isRestricted());
     }
 

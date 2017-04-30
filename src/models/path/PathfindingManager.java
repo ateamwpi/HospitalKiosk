@@ -135,6 +135,76 @@ public class PathfindingManager {
         return Math.sqrt(Math.pow(distX, 2) + Math.pow(distY, 2));
     }
 
+    public double distanceInFeet(Node end, Node start){
+        double inPixels;
+        double inFeet;
+        double inchesPerPixel = 4.068;
+        inPixels = distanceFormula(end, start);
+        inFeet = ((inPixels * inchesPerPixel) / 12);
+
+        return inFeet;
+    }
+
+    public double totalDistance(Path path) throws PathNotFoundException, NearestNotFoundException, FloorNotReachableException {
+
+        double distance = 0;
+        int i = 0;
+        while(true){
+            if (path.getPath().get(i).equals(path.getEnd())) {
+                break;
+            }else{
+                distance = distance + distanceInFeet(path.getPath().get(i+1), path.getPath().get(i));
+            }
+            i++;
+        }
+        return distance;
+    }
+
+    public int timeInSeconds(Path path) throws PathNotFoundException, NearestNotFoundException, FloorNotReachableException {
+
+        int timeTaken = 0;
+        double distance = totalDistance(path);
+        int count = 0;
+        int minimumElevatorTime = 20;
+        double averagePace = 4.54667;
+        int floorDifference = 0;
+        int elevatorTime = 14;
+        for(Node n: path.getPath()){
+            if(n.getPrimaryLocType().equals(LocationType.Elevator)){
+                count++;
+            }
+        }
+
+        for(int i = 0; i <= path.getPath().size(); i++){
+            if(path.getPath().get(i+1).getFloor() != path.getPath().get(i).getFloor()){
+                floorDifference += Math.abs(path.getPath().get(i+1).getFloor() - path.getPath().get(i).getFloor());
+            }
+        }
+
+        timeTaken = (int)((distance/averagePace)+ ((count/2)*minimumElevatorTime)+ (floorDifference*elevatorTime) + 0.5);
+
+        return timeTaken;
+    }
+
+    public String totalTimeTaken(Path path) throws PathNotFoundException, NearestNotFoundException, FloorNotReachableException {
+
+        String stringTime;
+        int timeSec;
+        int timeMin;
+        String stringMin;
+        String stringSec;
+        int timeTaken = timeInSeconds(path);
+
+        timeMin = (timeTaken/60);
+        timeSec = (timeTaken%60);
+
+        stringMin = Integer.toString(timeMin);
+        stringSec = Integer.toString(timeSec);
+
+        stringTime = "the time to your destination is " + stringMin + " minutes and " + stringSec + " seconds.";
+        return stringTime;
+    }
+
     public Node getRoom(String roomName) throws RoomNotFoundException {
         if(!ids.containsKey(roomName)) {
             throw new RoomNotFoundException(roomName);
