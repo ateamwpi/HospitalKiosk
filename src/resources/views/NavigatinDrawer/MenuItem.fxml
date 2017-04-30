@@ -9,7 +9,7 @@
         <Insets left="10.0" />
     </padding>
      <Label fx:id="menuIcon" prefHeight="30.0" prefWidth="30.0" stylesheets="@/resources/styles/MapView.css" />
-     <Label fx:id="menuLabel" prefHeight="30.0" prefWidth="230.0" styleClass="button-body" stylesheets="@/resources/styles/NavigationDrawer.css" text="text">
+     <Label fx:id="menuLabel" prefHeight="30.0" prefWidth="230.0" stylesheets="@/resources/styles/NavigationDrawer.css" text="text">
       <padding>
          <Insets left="32.0" />
       </padding>

@@ -26,9 +26,9 @@ public class UserTypeAdministrator extends AbstractUserType {
 
     @Override
     public Collection<MenuItem.EnumMenuItem> getAvailableOptions() {
-        return Arrays.asList(MenuItem.EnumMenuItem.About, MenuItem.EnumMenuItem.Logout, MenuItem.EnumMenuItem.ManageDir,
-                MenuItem.EnumMenuItem.ManageMap, MenuItem.EnumMenuItem.SelectAlgo, MenuItem.EnumMenuItem.SelectKiosk,
-                MenuItem.EnumMenuItem.SelectTimeout);
+        return Arrays.asList(MenuItem.EnumMenuItem.About, MenuItem.EnumMenuItem.GetDirections, MenuItem.EnumMenuItem.Logout,
+                MenuItem.EnumMenuItem.ManageDir, MenuItem.EnumMenuItem.ManageMap, MenuItem.EnumMenuItem.SelectAlgo,
+                MenuItem.EnumMenuItem.SelectKiosk, MenuItem.EnumMenuItem.SelectTimeout);
     }
 
     @Override

@@ -3,12 +3,18 @@ package controllers.NavigationDrawer;
 import controllers.AbstractController;
 import controllers.NavigationDrawer.MenuItem.EnumMenuItem;
 import core.KioskMain;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import models.login.ILoginObserver;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Created by dylan on 4/16/17.
@@ -23,6 +29,7 @@ public class NavigationDrawerController extends AbstractController implements IL
     private Label accountText;
     @FXML
     private VBox menuItems;
+    private ArrayList<MenuItem> items;
 
     private Parent mainRoot;
 
@@ -37,7 +44,9 @@ public class NavigationDrawerController extends AbstractController implements IL
 
     @FXML
     private void initialize() {
+        KioskMain.getUI().setNavDrawer(this);
         KioskMain.getLogin().attachObserver(this);
+        items = new ArrayList<>();
         onAccountChanged();
     }
 
@@ -56,8 +65,11 @@ public class NavigationDrawerController extends AbstractController implements IL
 
     private void setMenuItems() {
         menuItems.getChildren().clear();
+        items.clear();
         for (EnumMenuItem e : KioskMain.getLogin().getState().getAvailableOptions()) {
-            menuItems.getChildren().add(new MenuItem(e, mainRoot).getRoot());
+            MenuItem m = new MenuItem(e, mainRoot);
+            menuItems.getChildren().add(m.getRoot());
+            items.add(m);
         }
     }
 
@@ -70,4 +82,10 @@ public class NavigationDrawerController extends AbstractController implements IL
     public VBox getMenuItems() {
         return menuItems;
     }
+
+//    public void deselectButtons() {
+//        for(MenuItem m : items) {
+//            m.deselectButton();
+//        }
+//    }
 }

@@ -85,6 +85,12 @@
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
 }
+.path {
+    -fx-background-image: url("/resources/icons/path.png");
+    -fx-background-size: 24px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
 .help {
     -fx-background-image: url("/resources/icons/help-icon.png");
     -fx-background-size: 24px;

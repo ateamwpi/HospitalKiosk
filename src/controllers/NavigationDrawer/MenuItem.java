@@ -8,6 +8,7 @@ import controllers.LoginView.LoginViewController;
 import controllers.DirectoryView.ManageDirectoryView.ManageDirectoryViewController;
 import controllers.MapView.ManageMapView.ManageMapViewController;
 import controllers.DirectoryView.DirectoryView.DirectoryViewController;
+import controllers.MapView.MapView.MapViewController;
 import controllers.PopupView.TextboxAlertViewController;
 import core.KioskMain;
 import core.Utils;
@@ -37,7 +38,8 @@ public class MenuItem extends AbstractController {
         SelectKiosk("Select Kiosk Location", "settings", EnumMenuItem::selectKioskPressed),
         UserDir("View Directory", "dir", EnumMenuItem::userDirPressed),
         SelectTimeout("Select Timeout Delay", "settings", EnumMenuItem::timeoutPressed),
-        HelpInfo("Info & Visiting Hours", "help", EnumMenuItem::infoPressed);
+        HelpInfo("Info & Visiting Hours", "help", EnumMenuItem::infoPressed),
+        GetDirections("Get Directions", "path", EnumMenuItem::directionsPressed);
 
         final String path;
         final String text;
@@ -60,6 +62,7 @@ public class MenuItem extends AbstractController {
 
         private static void logoutPressed(MouseEvent e, Parent mainRoot) {
             KioskMain.getLogin().logout();
+            KioskMain.getUI().setScene(new MapViewController());
         }
 
         private static void manageMapPressed(MouseEvent e, Parent mainRoot) {
@@ -73,7 +76,10 @@ public class MenuItem extends AbstractController {
         private static void selectAlgoPressed(MouseEvent e, Parent mainRoot) {
             Utils.showDropdown(mainRoot, "Select Algorithm", "Choose which pathfinding algorithm the application should use.",
                     KioskMain.getPath().getAlgorithms(), KioskMain.getPath().getSelectedAlgorithm().getName(),
-                    (s) -> KioskMain.getPath().selectAlgorithm(s));
+                    (s) -> {
+                KioskMain.getPath().selectAlgorithm(s);
+//                KioskMain.getUI().getNavDrawer().deselectButtons();
+            });
         }
 
         private static void selectKioskPressed(MouseEvent e, Parent mainRoot) {
@@ -85,8 +91,10 @@ public class MenuItem extends AbstractController {
                             n = KioskMain.getPath().getRoom(s);
                         } catch (RoomNotFoundException e1) {
                             // TODO
+                            // literally not reachable since we do error checking elsewhere, bad design i guess?
                         }
                         KioskMain.getDir().getTheKiosk().setNode(n);
+//                        KioskMain.getUI().getNavDrawer().deselectButtons();
                     });
         }
 
@@ -103,6 +111,7 @@ public class MenuItem extends AbstractController {
                     KioskMain.getTimeout().getDelay()+"", (t) -> {
                 KioskMain.getTimeout().setDelay(Integer.parseInt(t));
                 KioskMain.getDB().setVar(TimeoutManager.DELAY_VAR, t);
+//                KioskMain.getUI().getNavDrawer().deselectButtons();
             }, (t) -> {
                 try {
                     Integer.parseInt(t);
@@ -117,6 +126,10 @@ public class MenuItem extends AbstractController {
         private static void infoPressed(MouseEvent e, Parent mainRoot) {
             HelpInfoController help = new HelpInfoController(mainRoot);
             help.showCentered();
+        }
+
+        private static void directionsPressed(MouseEvent e, Parent mainRoot) {
+            KioskMain.getUI().setScene(new MapViewController());
         }
     }
 
@@ -146,7 +159,8 @@ public class MenuItem extends AbstractController {
         root.setOnMouseClicked(this::onPressed);
 
         menuLabel.setText(item.text);
-        menuIcon.getStyleClass().add(this.item.path);
+        menuLabel.getStyleClass().setAll("button-body");
+        menuIcon.getStyleClass().setAll(this.item.path);
 
 //        menuLabel.styleProperty().bind(
 //            Bindings.when(root.hoverProperty())
@@ -157,8 +171,13 @@ public class MenuItem extends AbstractController {
 
     @FXML
     private void onPressed(MouseEvent e) {
+//        this.menuLabel.getStyleClass().setAll("button-bold");
         this.item.onClick.accept(e, mainRoot);
     }
+
+//    public void deselectButton() {
+//        this.menuLabel.getStyleClass().setAll("button-body");
+//    }
 
     public String getURL() {
         return "resources/views/NavigatinDrawer/MenuItem.fxml";

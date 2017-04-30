@@ -1,5 +1,6 @@
 package models.ui;
 
+import controllers.NavigationDrawer.NavigationDrawerController;
 import controllers.PopupView.IPopup;
 import controllers.IController;
 import core.KioskMain;
@@ -24,6 +25,7 @@ public class UIManager {
     private Scene scene;
 
     private IPopup popup;
+    private NavigationDrawerController nav;
     private static DoubleProperty fontSize = new SimpleDoubleProperty(15);
 
     public UIManager(Stage stage) {
@@ -105,5 +107,13 @@ public class UIManager {
                 }
             });
         }
+    }
+
+    public void setNavDrawer(NavigationDrawerController nav) {
+        this.nav = nav;
+    }
+
+    public NavigationDrawerController getNavDrawer() {
+        return this.nav;
     }
 }
