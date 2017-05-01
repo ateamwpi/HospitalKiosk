@@ -19,6 +19,7 @@ import javafx.print.*;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -84,6 +85,8 @@ public class DirectionsDrawerController extends AbstractController {
     private Label endDirectory;
     @FXML
     private Pane root;
+    @FXML
+    private ScrollPane scroll;
 
     private Location startLocation;
     private Location endLocation;
@@ -114,6 +117,7 @@ public class DirectionsDrawerController extends AbstractController {
         end.focusedProperty().addListener(this::changeEndFocus);
         startDirectory.setOnMouseClicked(this::selectStartFromDirectory);
         endDirectory.setOnMouseClicked(this::selectEndFromDirectory);
+        scroll.prefViewportHeightProperty().bind(root.heightProperty().subtract(300));
         // show search container
         showSearch(null);
     }

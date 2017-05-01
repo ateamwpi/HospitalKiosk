@@ -1,6 +1,7 @@
 package models.path;
 
 
+import controllers.MapView.Map.MapController;
 import controllers.MapView.MapView.DirectionsDrawer.DirectionStep;
 import core.Utils;
 
@@ -102,8 +103,8 @@ public class Path {
             if(waiting) continue;
 
             if(!getStep(i).getNodeType().equals(NodeType.Elevator) && getStep(i-1).getNodeType().equals(NodeType.Elevator)) {
-                str.append(stepNum).append(". Ride the elevator to the ").append(Utils.strForNum(getStep(i).getFloor())).append(" floor and exit.\n");
-                steps.add(new DirectionStep(DirectionIcon.STRAIGHT, "Ride the elevator to the " + Utils.strForNum(getStep(i).getFloor()) + " floor"));
+                str.append(stepNum).append(". Ride the elevator to Floor ").append(MapController.getAllFloors().get(getStep(i).getFloor()-1)).append(" and exit.\n");
+                steps.add(new DirectionStep(DirectionIcon.STRAIGHT, "Ride the elevator to Floor " + MapController.getAllFloors().get(getStep(i).getFloor()-1) + ""));
                 stepNum ++;
             }
             // Calculate the next cardinal turning direction
@@ -179,7 +180,7 @@ public class Path {
         ArrayList<String> results = new ArrayList<>();
 
         for (Node n : path) {
-            String floor = n.getFloor() + "";
+            String floor = MapController.getAllFloors().get(n.getFloor()-1);
             if(!n.getNodeType().equals(NodeType.Elevator) && !results.contains(floor)) results.add(floor);
         }
 
