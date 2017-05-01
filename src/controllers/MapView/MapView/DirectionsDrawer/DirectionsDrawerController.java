@@ -30,6 +30,7 @@ import javafx.scene.text.TextFlow;
 import javafx.scene.transform.Scale;
 import models.dir.Location;
 import models.path.Path;
+import models.qr.QRManager;
 
 import java.util.Collection;
 import java.util.List;
@@ -48,11 +49,15 @@ public class DirectionsDrawerController extends AbstractController {
     @FXML
     private Label speakDirectionsIcon;
     @FXML
+    private Label qrCodeIcon;
+    @FXML
     private JFXTextField start;
     @FXML
     private TextFlow fromFlow;
     @FXML
     private TextFlow toFlow;
+    @FXML
+    private Label timeLabel;
     @FXML
     private JFXTextField end;
     @FXML
@@ -102,6 +107,7 @@ public class DirectionsDrawerController extends AbstractController {
         directionsBackButton.setOnMouseClicked(this::showSearch);
         printDirectionsIcon.setOnMouseClicked(this::printDirections);
         speakDirectionsIcon.setOnMouseClicked(this::speakDirections);
+        qrCodeIcon.setOnMouseClicked(this::qrDirections);
         start.setOnKeyReleased(this::typeStart);
         start.focusedProperty().addListener(this::changeStartFocus);
         end.setOnKeyReleased(this::typeEnd);
@@ -289,6 +295,8 @@ public class DirectionsDrawerController extends AbstractController {
         toLocation.setFill(Color.web("#e7effe"));
         toFlow.getChildren().clear();
         toFlow.getChildren().addAll(to, toLocation);
+        timeLabel.setText(KioskMain.getPath().totalTimeTaken(path));
+
     }
 
     @FXML
@@ -383,5 +391,10 @@ public class DirectionsDrawerController extends AbstractController {
             speakDirectionsIcon.getStyleClass().setAll("volume-icon");
             KioskMain.getTTS().cancel();
         }
+    }
+
+    private void qrDirections(MouseEvent event) {
+        QRManager qr = new QRManager(root, path.textPath());
+
     }
 }

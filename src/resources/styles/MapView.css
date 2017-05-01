@@ -186,6 +186,13 @@
     -fx-background-position: center;
 }
 
+.qr-icon {
+    -fx-background-image: url("/resources/icons/qr.png");
+    -fx-background-size: 30px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+
 .button-box {
     -fx-background-color: #004C8C;
     -fx-text-fill: e7effe;
@@ -193,3 +200,7 @@
 
 
 
+
+.jfx-combo-box .list-cell {
+    -fx-text-fill: #8eb6f8;
+}

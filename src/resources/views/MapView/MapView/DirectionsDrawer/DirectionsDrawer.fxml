@@ -88,6 +88,11 @@
             <padding>
                 <Insets bottom="10.0" top="10.0" />
             </padding>
+         <HBox alignment="CENTER" prefWidth="155.0">
+            <children>
+               <Label fx:id="qrCodeIcon" prefHeight="30.0" prefWidth="30.0" styleClass="qr-icon" stylesheets="@../../../../styles/MapView.css" />
+            </children>
+         </HBox>
             <HBox alignment="CENTER" prefWidth="155.0">
                 <Label fx:id="printDirectionsIcon" prefHeight="30.0" prefWidth="30.0" styleClass="printer-icon" stylesheets="@/resources/styles/MapView.css" />
             </HBox>
@@ -106,15 +111,29 @@
             </Label>
         </VBox>
         <VBox fx:id="directions" />
+      <VBox>
+         <children>
+               <Label fx:id="endLabel" text="End">
+                   <font>
+                       <Font name="System Bold" size="17.0" />
+                   </font>
+                   <padding>
+                       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                   </padding>
+               </Label>
+         </children>
+      </VBox>
         <VBox alignment="CENTER_LEFT">
-            <Label fx:id="endLabel" text="End">
-                <font>
-                    <Font name="System Bold" size="17.0" />
-                </font>
-                <padding>
-                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                </padding>
+         <children>
+            <Label fx:id="timeLabel" text="Time" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="17.0" />
+               </font>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
             </Label>
+         </children>
         </VBox>
     </VBox>
 </Pane>

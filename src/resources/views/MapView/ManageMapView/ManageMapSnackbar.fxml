@@ -22,7 +22,7 @@
             <Font size="15.0" />
          </font>
       </JFXCheckBox>
-      <JFXComboBox fx:id="nodeType" focusColor="#e7effe" layoutX="178.0" layoutY="92.0" promptText="Staircase" style="-fx-text-fill: white;" stylesheets="@../../../styles/MapView.css" unFocusColor="#e7effe" />
+      <JFXComboBox fx:id="nodeType" layoutX="178.0" layoutY="92.0" promptText="Staircase" styleClass="search" stylesheets="@../../../styles/MapView.css" unFocusColor="WHITE" />
       <VBox layoutY="141.0">
          <children>
             <VBox fx:id="contentBox" prefWidth="310.0" styleClass="background" stylesheets="@../../../styles/Main.css" />
