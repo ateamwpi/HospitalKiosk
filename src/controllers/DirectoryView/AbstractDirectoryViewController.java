@@ -211,6 +211,10 @@ public abstract class AbstractDirectoryViewController extends AbstractController
         }
     }
 
+    public JFXTextField getSearchBox() {
+        return searchBox;
+    }
+
     protected void addLocationBtns() {
         addLocationBtns("popup-content-button", 125);
     }

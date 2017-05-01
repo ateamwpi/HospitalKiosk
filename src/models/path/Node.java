@@ -185,7 +185,7 @@ public class Node {
 //        return roomNameProperty;
 //    }
 
-    Collection<Location> getLocations() {
+    public Collection<Location> getLocations() {
         return locations.values();
     }
 

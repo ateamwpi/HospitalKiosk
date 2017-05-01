@@ -75,6 +75,10 @@ public class Location {
         return locType;
     }
 
+    public String getLocTypeFriendly() {
+        return locType.friendlyName();
+    }
+
     public Node getNode() {
         return node;
     }

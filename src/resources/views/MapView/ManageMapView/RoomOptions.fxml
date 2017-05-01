@@ -12,10 +12,10 @@
    <children>
       <JFXTextField fx:id="roomName" labelFloat="true" layoutX="60.0" layoutY="20.0" prefHeight="25.0" prefWidth="188.0" promptText="Room Name" />
       <JFXButton fx:id="editEntries" buttonType="RAISED" layoutX="109.0" layoutY="69.0" styleClass="content-button" stylesheets="@../../../styles/Main.css" text="Edit Entries" />
-      <TableView fx:id="currentEntries" layoutX="55.0" layoutY="166.0" prefHeight="200.0" prefWidth="200.0">
+      <TableView fx:id="currentEntries" layoutX="20.0" layoutY="166.0" prefHeight="200.0" prefWidth="270.0">
         <columns>
-          <TableColumn prefWidth="75.0" text="Name" />
-          <TableColumn prefWidth="75.0" text="Type" />
+          <TableColumn fx:id="nameCol" maxWidth="175.0" minWidth="175.0" prefWidth="175.0" text="Name" />
+          <TableColumn fx:id="typeCol" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Type" />
         </columns>
       </TableView>
       <Label layoutX="105.0" layoutY="139.0" text="Current Entries">
