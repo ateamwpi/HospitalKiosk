@@ -31,7 +31,7 @@ public class UIManager {
 
     public UIManager(Stage stage) {
         this.stage = stage;
-        this.stage.setTitle("Brigham and Women's Hospital Kiosk");
+        this.stage.setTitle("Brigham and Women's Faulkner Hospital Kiosk");
         this.stage.getIcons().add(new Image("/resources/icon.png"));
         this.stage.show();
     }
