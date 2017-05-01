@@ -10,12 +10,14 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.ImageView;
+import javafx.scene.image.*;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
@@ -37,32 +39,23 @@ public class QRManager extends AbstractController implements IPopup {
     @FXML
     private JFXButton okButton;
     @FXML
-    private javafx.scene.control.Label alertTitle;
-    @FXML
-    private Text alertBody;
+    private ImageView qrImage;
     @FXML
     private AnchorPane root;
     private Parent parent;
     private JFXPopup instance;
     private Consumer<Event> onClose;
 
-    public QRManager (Parent parent, String title, String body) {
-        this(parent, title, body, null);
-    }
-
-    public QRManager(Parent parent, String title, String body, Consumer<javafx.event.Event> onClose) {
+    public QRManager(Parent parent, String directions) {
         this.parent = parent;
         this.instance = new JFXPopup(this.getRegion());
-        this.alertTitle.setText(title);
-        this.alertBody.setText(body);
         this.onClose = onClose;
+        qrImage.setImage(makeQRCode(directions));
 
         this.root.setOnKeyPressed(event -> {
             System.out.println("ALERT PRESSED");
             if (event.getCode().equals(KeyCode.ENTER)) {
-                if(this.onClose != null) onClose.accept(event);
                 this.getInstance().hide();
-                event.consume();
             }
         });
 
@@ -86,10 +79,15 @@ public class QRManager extends AbstractController implements IPopup {
 
     @Override
     public String getURL() {
-        return "resources/views/PopupView/Alert.fxml";
+        return "resources/views/PopupView/QR.fxml";
     }
 
-    public void makeQRCode (Stage stage, String directions) {
+    @FXML
+    private void clickOk(ActionEvent event) {
+        this.getInstance().hide();
+    }
+
+    public javafx.scene.image.Image makeQRCode (String directions) {
 
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
         int width = 300;
@@ -120,17 +118,10 @@ public class QRManager extends AbstractController implements IPopup {
         } catch (WriterException ex) {
             Logger.getLogger(QRManager.class.getName()).log(Level.SEVERE, null, ex);
         }
+        WritableImage image = new WritableImage(width, height);
+        SwingFXUtils.toFXImage(bufferedImage, image);
+        return image;
 
-        ImageView qrView = new ImageView();
-        qrView.setImage(SwingFXUtils.toFXImage(bufferedImage, null));
-
-        StackPane root = new StackPane();
-        root.getChildren().add(qrView);
-
-        Scene scene = new Scene(root, 350, 350);
-
-        stage.setScene(scene);
-        stage.show();
     }
 
 

@@ -390,8 +390,7 @@ public class DirectionsDrawerController extends AbstractController {
     }
 
     private void qrDirections(MouseEvent event) {
-        QRManager qr = new QRManager(root, "test", "test");
-        qr.makeQRCode(KioskMain.getUI().getStage(), path.textPath());
+        QRManager qr = new QRManager(root, path.textPath());
 
     }
 }
