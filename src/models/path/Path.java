@@ -179,7 +179,7 @@ public class Path {
         ArrayList<String> results = new ArrayList<>();
 
         for (Node n : path) {
-            String floor = Utils.strForNum(n.getFloor()) + " Floor";
+            String floor = n.getFloor() + "";
             if(!n.getNodeType().equals(NodeType.Elevator) && !results.contains(floor)) results.add(floor);
         }
 

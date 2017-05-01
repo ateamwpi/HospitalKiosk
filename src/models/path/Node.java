@@ -170,11 +170,11 @@ public class Node {
     }
 
     boolean isBelkin() {
-        return isBelkin;
+        return (this.getFloor() == 1 && isBelkin) || (this.getFloor() > 7);
     }
 
     public boolean isMain() {
-        return isMain;
+        return (this.getFloor() == 1 && isMain) || (this.getFloor() < 8 && this.getFloor() > 1);
     }
 
     public final String getRoomName() {

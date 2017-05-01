@@ -44,8 +44,6 @@ public class ManageMapViewController extends AbstractController {
     private StringConverter<Number> converter;
     private ArrayList<String> nodeTypeList;
 
-    private ArrayList<String> floorList;
-
     @FXML
     private StackPane mapContainer;
     @FXML
@@ -67,7 +65,6 @@ public class ManageMapViewController extends AbstractController {
         restrictedProperty = new SimpleBooleanProperty();
         roomNameProperty = new SimpleStringProperty();
         converter = new NumberStringConverter();
-        floorList = new ArrayList<>(Arrays.asList("1st Floor", "2nd Floor", "3rd Floor", "4th Floor", "5th Floor", "6th Floor", "7th Floor"));
         nodeTypeList = new ArrayList<>(Arrays.asList("Room", "Elevator", "Stairwell", "Outside"));
     }
 
@@ -298,7 +295,7 @@ public class ManageMapViewController extends AbstractController {
     }
 
     private void setFloor(String fl) {
-        int floor = floorList.indexOf(fl) + 1;
+        int floor = manageMapController.getMapController().getAllFloors().indexOf(fl) + 1;
         setFloor(floor);
     }
 
