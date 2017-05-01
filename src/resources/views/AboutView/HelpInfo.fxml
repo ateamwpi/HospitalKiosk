@@ -23,7 +23,7 @@
                   </Label>
                </children>
             </HBox>
-            <JFXTabPane prefHeight="425.0" prefWidth="337.0" tabMinWidth="160.0">
+            <JFXTabPane prefHeight="425.0" prefWidth="337.0" stylesheets="@../../styles/Main.css" tabMinWidth="160.0">
                <tabs>
                 <Tab text="Directions Info">
                   <content>

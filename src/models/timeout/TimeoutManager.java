@@ -10,6 +10,7 @@ import java.util.TimerTask;
 
 /**
  * Created by zack on 4/24/2017.
+ *
  */
 public class TimeoutManager {
 

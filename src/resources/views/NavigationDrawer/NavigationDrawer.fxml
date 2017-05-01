@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<Pane fx:id="root" layoutX="-6.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+    <VBox>
+        <padding>
+            <Insets left="250.0" />
+        </padding>
+        <Pane fx:id="scrim" styleClass="scrim" stylesheets="@/resources/styles/MapView.css" />
+    </VBox>
+    <VBox prefWidth="250.0">
+        <VBox>
+            <padding>
+                <Insets bottom="20.0" />
+            </padding>
+            <HBox alignment="CENTER_LEFT" spacing="100.0">
+                <padding>
+                    <Insets left="24.0" />
+                </padding>
+                <Label styleClass="title-text" stylesheets="@/resources/styles/NavigationDrawer.css" text="Kiosk">
+                    <padding>
+                        <Insets top="8.0" />
+                    </padding>
+                </Label>
+                <VBox>
+                    <padding>
+                        <Insets bottom="10.0" left="20.0" top="20.0" />
+                    </padding>
+                    <Label fx:id="drawerClose" prefHeight="20.0" prefWidth="20.0" styleClass="minimize-menu" stylesheets="@/resources/styles/MapView.css" />
+                </VBox>
+            </HBox>
+        </VBox>
+        <VBox fx:id="directions" alignment="CENTER_LEFT" style="-fx-background-color: #FAFAFA;">
+         <Label fx:id="accountText" styleClass="alert-body" stylesheets="@/resources/styles/NavigationDrawer.css" text="Welcome, " />
+         <padding>
+            <Insets left="24.0" />
+         </padding>
+        </VBox>
+      <VBox fx:id="topItems" spacing="24.0">
+         <padding>
+            <Insets bottom="12.0" left="24.0" top="12.0" />
+         </padding>
+      </VBox>
+      <VBox fx:id="mainBox">
+         <children>
+            <VBox fx:id="adminHeader" alignment="CENTER_LEFT" style="-fx-background-color: #FAFAFA;">
+               <padding>
+                  <Insets left="24.0" />
+               </padding>
+               <children>
+                  <Label styleClass="alert-body" stylesheets="@/resources/styles/NavigationDrawer.css" text="Admin Options" />
+               </children>
+            </VBox>
+            <VBox fx:id="adminItems" spacing="24.0">
+               <padding>
+                  <Insets bottom="12.0" left="24.0" top="12.0" />
+               </padding>
+            </VBox>
+            <VBox fx:id="userHeader" alignment="CENTER_LEFT" style="-fx-background-color: #FAFAFA;">
+               <padding>
+                  <Insets left="24.0" />
+               </padding>
+               <children>
+                  <Label styleClass="alert-body" stylesheets="@/resources/styles/NavigationDrawer.css" text="User Options" />
+               </children>
+            </VBox>
+            <VBox fx:id="userItems" spacing="24.0">
+               <padding>
+                  <Insets bottom="12.0" left="24.0" top="12.0" />
+               </padding>
+            </VBox>
+         </children>
+      </VBox>
+    </VBox>
+</Pane>

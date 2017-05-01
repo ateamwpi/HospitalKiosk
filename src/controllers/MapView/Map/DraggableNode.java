@@ -16,6 +16,7 @@ import java.util.function.Consumer;
 
 /**
  * Created by dylan on 4/6/17.
+ *
  */
 public class DraggableNode extends Circle {
 
@@ -63,6 +64,10 @@ public class DraggableNode extends Circle {
         previewRestrictedProperty.set(value);
     }
 
+    public void resetPreviewConnections() {
+        this.previewConnections = new ArrayList<>(node.getConnections());
+    }
+
     private void previewConnections(Collection<Node> nodes) {
         // redraw connections
 
@@ -87,6 +92,7 @@ public class DraggableNode extends Circle {
     public void previewConnection(Node node) {
         if(node.getFloor() == this.node.getFloor()) {
             previewConnections.add(node);
+            manageMapController.getManageMapViewController().valueChanged();
             manageMapController.drawDraggableConnection(this, manageMapController.getDraggableNode(node));
         } else {
             Utils.showAlert(manageMapController.getManageMapViewController().getRoot(), "Invalid Node Connection!", "You cannot add this connection as the nodes are on different floors!");
@@ -95,8 +101,10 @@ public class DraggableNode extends Circle {
 
     public void removePreviewConnection(Node node) {
         previewConnections.remove(node);
+        manageMapController.getManageMapViewController().valueChanged();
         DraggableNode connection = manageMapController.getDraggableNode(node);
         manageMapController.removeDraggableConnection(this, connection);
+//        connection.save();
     }
 
     public Collection<Node> getPreviewConnections() {
@@ -135,7 +143,7 @@ public class DraggableNode extends Circle {
         return previewRestrictedProperty;
     }
 
-    void cancelPreview() {
+    public void cancelPreview() {
         System.out.println("cancel");
         previewConnections(node.getConnections());
         setDefaultPreview();
@@ -161,6 +169,7 @@ public class DraggableNode extends Circle {
             //TODO handle this
         }
         node.save();
+        manageMapController.getManageMapViewController().valueChanged();
     }
 
     public void delete(Consumer<Boolean> setDeleted) {
@@ -194,11 +203,21 @@ public class DraggableNode extends Circle {
     }
 
     public Boolean hasUnsavedChanges() {
-        return getPreviewX() != node.getX()
+        return manageMapController.getManageMapViewController().getSnackbar().hasUnsavedChanges()
+                || getPreviewX() != node.getX()
                 || getPreviewY() != node.getY()
                 || !getPreviewRoomName().equals(node.getRoomName())
                 || !getPreviewConnections().equals(node.getConnections())
                 || getPreviewRestricted() != node.isRestricted();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o instanceof DraggableNode) {
+            DraggableNode n = (DraggableNode) o;
+            return n.getNode().equals(this.getNode());
+        }
+        else return false;
     }
 
     public void toggleConnection(DraggableNode draggableNode) {

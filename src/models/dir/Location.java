@@ -6,6 +6,7 @@ import models.path.Node;
 
 /**
  * Created by mattm on 3/29/2017.
+ *
  */
 public class Location {
     private static int nextLocID;
@@ -72,6 +73,10 @@ public class Location {
 
     public LocationType getLocType() {
         return locType;
+    }
+
+    public String getLocTypeFriendly() {
+        return locType.friendlyName();
     }
 
     public Node getNode() {

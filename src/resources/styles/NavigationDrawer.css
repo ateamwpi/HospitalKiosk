@@ -14,6 +14,10 @@
     -fx-text-fill: black;
     -fx-font: 15px system;
 }
+.button-bold {
+    -fx-text-fill: royalblue;
+    -fx-font: bold 15px system;
+}
 .button-body:hover {
     -fx-text-fill: royalblue;
     -fx-font: 15px system;

@@ -1,8 +1,10 @@
 package models.ui;
 
+import controllers.NavigationDrawer.NavigationDrawerController;
 import controllers.PopupView.IPopup;
 import controllers.IController;
 import core.KioskMain;
+import javafx.scene.image.Image;
 import models.timeout.TimeoutManager;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -24,10 +26,13 @@ public class UIManager {
     private Scene scene;
 
     private IPopup popup;
+    private NavigationDrawerController nav;
     private static DoubleProperty fontSize = new SimpleDoubleProperty(15);
 
     public UIManager(Stage stage) {
         this.stage = stage;
+        this.stage.setTitle("Brigham and Women's Hospital Kiosk");
+        this.stage.getIcons().add(new Image("/resources/icon.png"));
         this.stage.show();
     }
 
@@ -37,6 +42,7 @@ public class UIManager {
         } else {
             scene = new Scene(controller.getRoot(), scene.getWidth(), scene.getHeight());
         }
+
 
         scene.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
             @Override
@@ -90,7 +96,7 @@ public class UIManager {
     public void setPopup(IPopup popup) {
         this.popup = popup;
 
-        if(popup != null) {
+        if(popup != null && popup.getInstance() != null) {
             popup.getInstance().addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
@@ -105,5 +111,13 @@ public class UIManager {
                 }
             });
         }
+    }
+
+    public void setNavDrawer(NavigationDrawerController nav) {
+        this.nav = nav;
+    }
+
+    public NavigationDrawerController getNavDrawer() {
+        return this.nav;
     }
 }

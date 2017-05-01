@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -23,10 +24,9 @@
           </columnConstraints>
           <rowConstraints>
               <RowConstraints maxHeight="99.0" minHeight="10.0" prefHeight="99.0" vgrow="SOMETIMES" />
-              <RowConstraints maxHeight="664.0" minHeight="10.0" prefHeight="623.0" vgrow="SOMETIMES" />
-              <RowConstraints maxHeight="94.0" minHeight="3.0" prefHeight="78.0" vgrow="SOMETIMES" />
+              <RowConstraints maxHeight="664.0" minHeight="10.0" prefHeight="623.0" vgrow="ALWAYS" />
           </rowConstraints>
-          <VBox fx:id="locationTypes" prefHeight="623.0" prefWidth="150.0" spacing="10.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+          <VBox fx:id="locationTypes" prefHeight="690.0" prefWidth="150.0" spacing="10.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
          <JFXTextField fx:id="searchBox" promptText="Search" />
          <GridPane.margin>
             <Insets top="10.0" />
@@ -39,26 +39,15 @@
                   <TableColumn fx:id="typeCol" maxWidth="-Infinity" minWidth="300.0" prefWidth="-1.0" text="Type" />
               </columns>
          <GridPane.margin>
-            <Insets left="10.0" right="10.0" top="10.0" />
+            <Insets bottom="15.0" left="10.0" right="10.0" top="10.0" />
          </GridPane.margin>
           </TableView>
-          <Label fx:id="directions" text="Label" wrapText="true" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS">
-              <padding>
-                  <Insets left="5.0" />
-              </padding>
-          </Label>
-          <HBox styleClass="banner" stylesheets="@/resources/styles/Main.css" GridPane.columnSpan="2147483647">
-              <JFXButton fx:id="backButton" styleClass="navigation-button" stylesheets="@/resources/styles/Main.css" text="Back">
-                  <HBox.margin>
-                      <Insets left="25.0" right="10.0" top="25.0" />
-                  </HBox.margin>
-                  <font>
-                      <Font size="16.0" />
-                  </font>
-                  <opaqueInsets>
-                      <Insets />
-                  </opaqueInsets>
-              </JFXButton>
+          <HBox prefHeight="100.0" prefWidth="1285.0" styleClass="banner" stylesheets="@/resources/styles/Main.css" GridPane.columnSpan="2147483647" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+         <Label fx:id="hamburger" contentDisplay="CENTER" prefHeight="35.0" prefWidth="47.0" styleClass="hamburger-icon" stylesheets="@../../../styles/MapView.css" HBox.hgrow="ALWAYS">
+            <HBox.margin>
+               <Insets left="20.0" top="25.0" />
+            </HBox.margin>
+         </Label>
               <Label fx:id="title" alignment="CENTER" styleClass="title-text" stylesheets="@/resources/styles/Main.css" text="Manage Directory">
                   <font>
                       <Font name="SansSerif Bold" size="37.0" />
@@ -70,7 +59,7 @@
                       <Insets top="15.0" />
                   </HBox.margin>
               </Label>
-              <Region prefHeight="82.0" prefWidth="680.0" />
+              <Region prefHeight="82.0" prefWidth="680.0" stylesheets="@../../../styles/Main.css" />
               <JFXButton fx:id="addEntry" styleClass="content-button" stylesheets="@/resources/styles/Main.css" text="Add">
                   <HBox.margin>
                       <Insets right="30.0" top="25.0" />
@@ -83,4 +72,6 @@
               </JFXButton>
           </HBox>
       </GridPane>
+   <JFXDrawer fx:id="navigationDrawer" defaultDrawerSize="250.0" layoutY="96.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+   <Region layoutX="1269.0" layoutY="-3.0" prefHeight="90.0" prefWidth="170.0" styleClass="banner" stylesheets="@../../../styles/Main.css" AnchorPane.topAnchor="0.0" />
 </AnchorPane>

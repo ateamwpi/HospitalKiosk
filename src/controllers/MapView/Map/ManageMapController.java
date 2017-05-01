@@ -15,7 +15,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Line;
 import javafx.util.Pair;
 import models.path.Node;
+import models.path.NodeType;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,6 +25,7 @@ import java.util.function.Consumer;
 
 /**
  * Created by dylan on 4/8/17.
+ *
  */
 public class ManageMapController extends AbstractController implements IClickableController {
 
@@ -71,42 +74,45 @@ public class ManageMapController extends AbstractController implements IClickabl
     }
 
     public void setFloor(int floor) {
-        mapController.setFloor(floor);
-        removeAllNodes();
-        drawAllNodes();
+        attemptUnselectNode(isUnselected -> {
+            if(isUnselected) {
+                mapController.setFloor(floor);
+                removeAllNodes();
+                drawAllNodes();
+            }
+        }, ()->{}, false);
     }
 
     private void removeAllNodes() {
-        for(DraggableNode node : draggableNodes.values()) {
+        Collection<DraggableNode> vals = new ArrayList<>(draggableNodes.values());
+        for(DraggableNode node : vals) {
             removeDraggableNode(node);
         }
     }
 
-    private void removeDraggableNode(DraggableNode node) {
+    public void removeDraggableNode(DraggableNode node) {
         // remove node connections
         for (Node connection : node.getPreviewConnections()) {
             node.removePreviewConnection(connection);
         }
         // remove node from map
-        draggableNodes.remove(node);
+        draggableNodes.remove(node.getNode());
         // remove node from overlay
         mapController.removeOverlay(node);
     }
 
     public void handleMouseClick(MouseEvent e) {
-        //Don't switch selections when connecting/disconnecting nodes, nor when adding chained nodes
+        // unselect if already selecting node
         if(!e.isShiftDown() && !e.isControlDown()) {
-            // unselect if already selecting node
             if (nodeIsSelected()) {
-                attemptUnselectNode(isUnselected -> {}, ()->{});
+                attemptUnselectNode(isUnselected -> {}, () -> {}, false);
                 // add new node if not selecting node
             } else {
                 // convert the mouse coordinates to map coordinates
                 Point2D p = new Point2D(e.getX(), e.getY());
-                addNode(p.getX(), p.getY(), "NONE", isAdded->{
-                    // pass along mouse press to the node
+                addNode(p.getX(), p.getY(), "NONE", isAdded -> {
                     selectedNode.fireEvent(e);
-                });
+                }, false);
             }
         }
 
@@ -120,7 +126,7 @@ public class ManageMapController extends AbstractController implements IClickabl
                 selectedNode.previewConnection(curnode.getNode());
                 //Connect the two nodes if they are on the same floo
                 selectedNode.save();
-            });
+            }, true);
         }
     }
 
@@ -133,7 +139,7 @@ public class ManageMapController extends AbstractController implements IClickabl
         return nodeGestures;
     }
 
-    public void addNode(double x, double y, String room, Consumer<Boolean> setAdded) {
+    public void addNode(double x, double y, String room, Consumer<Boolean> setAdded, boolean reselect) {
         attemptUnselectNode(isUnselected -> {
             if (isUnselected) {
                 System.out.println("add node");
@@ -150,7 +156,7 @@ public class ManageMapController extends AbstractController implements IClickabl
 
                 // create new node
                 Node node = new Node((int) newx,
-                        (int) newy, mapController.getFloor(), false, room);
+                        (int) newy, mapController.getFloor(), false, NodeType.Location, room);
                 // create new visual node with gestures
                 DraggableNode draggableNode = getDraggableNode(node);
                 // draw node with gestures
@@ -164,7 +170,7 @@ public class ManageMapController extends AbstractController implements IClickabl
             } else {
                 setAdded.accept(false);
             }
-        }, ()->setAdded.accept(false));
+        }, ()->setAdded.accept(false), reselect);
     }
 
     public void attemptDeleteSelectedNode(Consumer<Boolean> setDeleted) {
@@ -204,7 +210,7 @@ public class ManageMapController extends AbstractController implements IClickabl
         // remove the visual node from the overlay
         removeDraggableNode(nodeToDelete);
         // unselect the node
-        unselectNode();
+        unselectNode(false);
     }
 
     void selectNode(DraggableNode node) {
@@ -214,10 +220,10 @@ public class ManageMapController extends AbstractController implements IClickabl
                 selectedNode.select();
                 manageMapViewController.selectNode(selectedNode);
             }
-        }, ()->{});
+        }, ()->{}, true);
     }
 
-    ManageMapViewController getManageMapViewController() {
+    public ManageMapViewController getManageMapViewController() {
         return manageMapViewController;
     }
 
@@ -225,28 +231,28 @@ public class ManageMapController extends AbstractController implements IClickabl
         return selectedNode != null;
     }
 
-    public void attemptUnselectNode(Consumer<Boolean> setUnselectNode, Runnable onCancel) {
+    public void attemptUnselectNode(Consumer<Boolean> setUnselectNode, Runnable onCancel, boolean reselect) {
         if (selectedNode == null) {
             setUnselectNode.accept(true);
         } else {
             if (selectedNode.hasUnsavedChanges()) {
                 warnDiscardChanges(setUnselectNode.andThen(isSaved -> {
                     if (isSaved) {
-                        saveChanges();
+                        saveChanges(reselect);
                     } else {
                         discardChanges();
                     }
                 }), onCancel);
             } else {
-                unselectNode();
+                unselectNode(reselect);
                 setUnselectNode.accept(true);
             }
         }
     }
 
-    private void saveChanges() {
+    private void saveChanges(boolean reselect) {
         selectedNode.save();
-        unselectNode();
+        unselectNode(reselect);
     }
 
     private void discardChanges() {
@@ -263,10 +269,10 @@ public class ManageMapController extends AbstractController implements IClickabl
                 onCancel);
     }
 
-    private void unselectNode() {
+    private void unselectNode(boolean reselect) {
         selectedNode.unselect();
         selectedNode = null;
-        manageMapViewController.unselectNode();
+        manageMapViewController.unselectNode(reselect);
 
     }
 
@@ -346,8 +352,8 @@ public class ManageMapController extends AbstractController implements IClickabl
     private void drawDraggableNodeConnections(DraggableNode draggableNode) {
         Node node = draggableNode.getNode();
         for (Node other : node.getConnections()) {
-            // don't draw connection twice
-            if (node.getID() < other.getID()) {
+            // don't draw connection twice, only draw connections on this floor
+            if (node.getID() < other.getID() && node.getFloor() == other.getFloor()) {
                 // draw connection
                 drawDraggableConnection(draggableNode, getDraggableNode(other));
             }
