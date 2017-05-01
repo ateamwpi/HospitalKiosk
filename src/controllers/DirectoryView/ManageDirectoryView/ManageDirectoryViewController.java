@@ -2,34 +2,45 @@ package controllers.DirectoryView.ManageDirectoryView;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
+import com.jfoenix.controls.JFXPopup;
+import com.jfoenix.controls.JFXTextField;
 import controllers.DirectoryView.AbstractDirectoryViewController;
 import controllers.MapView.MapView.MapViewController;
+import controllers.NavigationDrawer.MenuItem;
 import controllers.NavigationDrawer.NavigationDrawerController;
+import controllers.PopupView.IPopup;
 import core.KioskMain;
 import core.Utils;
 import core.exception.RoomNotFoundException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Region;
 import models.dir.Location;
 import models.dir.LocationType;
 import models.path.Node;
 
 /**
  * Created by dylan on 4/9/17.
+ *
  */
 public class ManageDirectoryViewController extends AbstractDirectoryViewController {
 
     @FXML
-    private JFXButton addEntry;
+    protected JFXButton addEntry;
     @FXML
-    private JFXButton removeEntry;
+    protected JFXButton removeEntry;
     @FXML
     private JFXButton backButton;
     @FXML
     private Label hamburger;
     @FXML
     private JFXDrawer navigationDrawer;
+
+    public ManageDirectoryViewController(Object... data) {
+        super(data);
+    }
 
     @Override
     public String getURL() {
@@ -48,6 +59,7 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
         setFullDirectory();
         // choose admin mode
         adminMode();
+        addLocationBtns();
         // listen to location table selection event
         locationsTable.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
             if (locationsTable.getSelectionModel().getSelectedItem() != null) {
@@ -59,7 +71,7 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
         });
 
         // setup navigation drawer
-        NavigationDrawerController navigationDrawerController = new NavigationDrawerController(getRoot());
+        NavigationDrawerController navigationDrawerController = new NavigationDrawerController(getRoot(), MenuItem.EnumMenuItem.ManageDir);
         navigationDrawer.setSidePane(navigationDrawerController.getRoot());
         //optionsMenu.open();
         hamburger.setOnMouseClicked(event -> navigationDrawer.open());
@@ -69,10 +81,9 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
         navigationDrawerController.getScrim().prefHeightProperty().bind(KioskMain.getUI().getStage().heightProperty());
     }
 
-    private void adminMode() {
+    protected void adminMode() {
         setTableEdit();
         removeEntry.setDisable(true);
-        addLocationBtns();
     }
 
     @FXML  //when user clicks "back" button, they will return to main menu
@@ -81,7 +92,7 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
     }
 
     @FXML
-    private void clickAdd(ActionEvent event) {
+    protected void clickAdd(ActionEvent event) {
         String defaultRoomName = KioskMain.getPath().getRoomNames().iterator().next();
         Node defaultNode = null;
         try {
@@ -99,7 +110,7 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
     }
 
     @FXML
-    private void clickRemove(ActionEvent event) {
+    protected void clickRemove(ActionEvent event) {
         if (selectedLocation != null) {
             Utils.showOption(getRoot(), "Delete Directory Entry", "Please confirm that you would like to delete " + selectedLocation.getName() + " from the directory.", "Cancel", "Delete", this::processRemove);
         }
@@ -111,8 +122,4 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
             KioskMain.getUI().setScene(new ManageDirectoryViewController());
         }
     }
-
-
-
-
 }

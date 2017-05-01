@@ -41,14 +41,16 @@ public class NavigationDrawerController extends AbstractController implements IL
     private ArrayList<MenuItem> items;
 
     private Parent mainRoot;
+    private EnumMenuItem selected;
 
-    public NavigationDrawerController(Parent mainRoot) {
-        super(mainRoot);
+    public NavigationDrawerController(Parent mainRoot, EnumMenuItem selected) {
+        super(mainRoot, selected);
     }
 
     @Override
     public void initData(Object... data) {
         mainRoot = (Parent)data[0];
+        selected = (EnumMenuItem)data[1];
     }
 
     @FXML
@@ -85,6 +87,7 @@ public class NavigationDrawerController extends AbstractController implements IL
         items.clear();
         for (EnumMenuItem e : KioskMain.getLogin().getState().getAvailableOptions()) {
             MenuItem m = new MenuItem(e, mainRoot);
+            if(e.equals(this.selected)) m.setHighlighted();
             if(m.getHeader().equals(MenuItem.MenuHeader.ADMIN))
                 adminItems.getChildren().add(m.getRoot());
             else if(m.getHeader().equals(MenuItem.MenuHeader.USER))

@@ -23,11 +23,11 @@
             <padding>
                 <Insets bottom="20.0" />
             </padding>
-            <VBox>
+            <VBox fx:id="optionsMenuButton">
                 <padding>
                     <Insets bottom="10.0" left="20.0" top="20.0" />
                 </padding>
-                <Label fx:id="optionsMenuButton" prefHeight="20.0" prefWidth="20.0" styleClass="hamburger-icon" stylesheets="@/resources/styles/MapView.css" />
+                <Label prefHeight="20.0" prefWidth="20.0" styleClass="hamburger-icon" stylesheets="@/resources/styles/MapView.css" />
             </VBox>
             <HBox>
                 <VBox>

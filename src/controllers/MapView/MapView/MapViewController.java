@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXDrawer;
 import controllers.AbstractController;
 import controllers.MapView.Map.MapController;
 import controllers.MapView.MapView.DirectionsDrawer.DirectionsDrawerController;
+import controllers.NavigationDrawer.MenuItem;
 import controllers.NavigationDrawer.NavigationDrawerController;
 import core.KioskMain;
 import javafx.application.Platform;
@@ -51,7 +52,7 @@ public class MapViewController extends AbstractController {
         directionsDrawerController.getDrawerClose().setOnMouseClicked(event -> drawer.close());
         drawer.setOnDrawerClosed(event -> drawerOpen.setVisible(true));
         // setup navigation drawer
-        NavigationDrawerController navigationDrawerController = new NavigationDrawerController(getRoot());
+        NavigationDrawerController navigationDrawerController = new NavigationDrawerController(getRoot(), MenuItem.EnumMenuItem.GetDirections);
         optionsMenu.setSidePane(navigationDrawerController.getRoot());
         //optionsMenu.open();
         directionsDrawerController.getOptionsMenuButton().setOnMouseClicked(event -> optionsMenu.open());

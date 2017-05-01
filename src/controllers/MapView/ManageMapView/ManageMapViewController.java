@@ -8,7 +8,8 @@ import controllers.AbstractController;
 import controllers.MapView.Map.ManageMapController;
 import controllers.MapView.Map.DraggableNode;
 import controllers.MapView.MapView.MapViewController;
-import controllers.NavigationDrawer.NavigationDrawerController;
+import controllers.NavigationDrawer.*;
+import controllers.NavigationDrawer.MenuItem;
 import core.KioskMain;
 import core.Utils;
 import javafx.beans.binding.Bindings;
@@ -43,8 +44,6 @@ public class ManageMapViewController extends AbstractController {
     private StringConverter<Number> converter;
     private ArrayList<String> nodeTypeList;
 
-    private ArrayList<String> floorList;
-
     @FXML
     private StackPane mapContainer;
     @FXML
@@ -66,7 +65,6 @@ public class ManageMapViewController extends AbstractController {
         restrictedProperty = new SimpleBooleanProperty();
         roomNameProperty = new SimpleStringProperty();
         converter = new NumberStringConverter();
-        floorList = new ArrayList<>(Arrays.asList("1st Floor", "2nd Floor", "3rd Floor", "4th Floor", "5th Floor", "6th Floor", "7th Floor"));
         nodeTypeList = new ArrayList<>(Arrays.asList("Room", "Elevator", "Stairwell", "Outside"));
     }
 
@@ -84,6 +82,8 @@ public class ManageMapViewController extends AbstractController {
         // add the map to the container
         mapContainer.getChildren().add(manageMapController.getRoot());
 
+
+
         // setup drawer
         manageMapSnackbarController = new ManageMapSnackbarController(getRoot(), manageMapController);
         snackbar.setSidePane(manageMapSnackbarController.getRoot());
@@ -94,7 +94,7 @@ public class ManageMapViewController extends AbstractController {
         manageMapSnackbarController.nodeAction.setOnAction(this::clickNodeAction);
 
         for(JFXButton b: manageMapController.getMapController().getFloorButtons()) {
-            b.setOnAction(event -> setFloor(Utils.strForNum(Integer.parseInt(b.getText())) + " Floor"));
+            b.setOnAction(event -> setFloor(b.getText()));
         }
 
         manageMapSnackbarController.getNodeType().valueProperty().addListener(this::nodeTypeChanged);
@@ -132,7 +132,7 @@ public class ManageMapViewController extends AbstractController {
         unselectNode(false);
 
         // setup navigation drawer
-        NavigationDrawerController navigationDrawerController = new NavigationDrawerController(getRoot());
+        NavigationDrawerController navigationDrawerController = new NavigationDrawerController(getRoot(), MenuItem.EnumMenuItem.ManageMap);
         navigationDrawer.setSidePane(navigationDrawerController.getRoot());
         //optionsMenu.open();
         manageMapSnackbarController.getHamburgerButton().setOnMouseClicked(event -> navigationDrawer.open());
@@ -302,7 +302,7 @@ public class ManageMapViewController extends AbstractController {
     }
 
     private void setFloor(String fl) {
-        int floor = floorList.indexOf(fl) + 1;
+        int floor = manageMapController.getMapController().getAllFloors().indexOf(fl) + 1;
         setFloor(floor);
     }
 
