@@ -174,20 +174,21 @@ public class SceneGestures {
     }
 
     public void panToPos(double x, double y){
+        x = -(x - canvas.getWidth()/2) * mapController.getOverlay().getScaleX();
+        y = -(y - canvas.getHeight()/2) * mapController.getOverlay().getScaleY();
+        //Clamp view as not to go off the map, even when zoomed
+        if(x < -mapController.getOverlay().getBoundsInParent().getWidth()/2)
+            x = -mapController.getOverlay().getBoundsInParent().getWidth()/2;
+        if(x > mapController.getOverlay().getBoundsInParent().getWidth()/2)
+            x = mapController.getOverlay().getBoundsInParent().getWidth()/2;
+
+        if(y < -mapController.getOverlay().getBoundsInParent().getHeight()/2)
+            y = -mapController.getOverlay().getBoundsInParent().getHeight()/2;
+        if(y > mapController.getOverlay().getBoundsInParent().getHeight()/2)
+            y = mapController.getOverlay().getBoundsInParent().getHeight()/2;
+
         mapController.getOverlay().setTranslateX(x);
         mapController.getOverlay().setTranslateY(y);
-
-
-        //Clamp view as not to go off the map, even when zoomed
-        if(mapController.getOverlay().getTranslateX() < -canvas.getBoundsInParent().getWidth()/2 * mapController.getOverlay().getScaleX())
-            mapController.getOverlay().setTranslateX(-canvas.getBoundsInParent().getWidth()/2 * mapController.getOverlay().getScaleX());
-        if(mapController.getOverlay().getTranslateX() > canvas.getBoundsInParent().getWidth()/2 * mapController.getOverlay().getScaleX())
-            mapController.getOverlay().setTranslateX(canvas.getBoundsInParent().getWidth()/2 * mapController.getOverlay().getScaleX());
-
-        if(mapController.getOverlay().getTranslateY() < -canvas.getBoundsInParent().getHeight()/2 * mapController.getOverlay().getScaleY())
-            mapController.getOverlay().setTranslateY(-canvas.getBoundsInParent().getHeight()/2 * mapController.getOverlay().getScaleY());
-        if(mapController.getOverlay().getTranslateY() > canvas.getBoundsInParent().getHeight()/2 * mapController.getOverlay().getScaleY())
-            mapController.getOverlay().setTranslateY(canvas.getBoundsInParent().getHeight()/2 * mapController.getOverlay().getScaleY());
     }
 
 

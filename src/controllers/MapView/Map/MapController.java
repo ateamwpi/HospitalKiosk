@@ -8,6 +8,8 @@ import core.KioskMain;
 import core.Utils;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
@@ -18,6 +20,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import models.login.ILoginObserver;
+import javafx.scene.text.Text;
 import models.path.Node;
 import models.path.Path;
 
@@ -148,7 +151,10 @@ public class MapController extends AbstractController implements IClickableContr
     }
 
     public void drawPath(Path p) {
-        if(p.getStart().getFloor() == this.floor) drawNode(p.getStart(), Color.BLUE);
+        if(p.getStart().getFloor() == this.floor) {
+            drawNode(p.getStart(), Color.BLUE);
+            sceneGestures.panToPos(p.getStart().getX(), p.getStart().getY());
+        }
         for (int i = 1; i < p.getPath().size(); i++) {
             if(p.getStep(i-1).getFloor() == this.floor && p.getStep(i).getFloor() == this.floor)
                 drawConnection(p.getStep(i - 1), p.getStep(i));
@@ -157,7 +163,10 @@ public class MapController extends AbstractController implements IClickableContr
             else if(p.getStep(i).getFloor() == this.floor && p.getStep(i-1).getFloor() != this.floor)
                 drawMidpoint(p.getStep(i));
         }
-        if(p.getEnd().getFloor() == this.floor) drawNode(p.getEnd(), Color.RED);
+        if(p.getEnd().getFloor() == this.floor) {
+            drawEndNode(p.getEnd());
+        }
+
     }
 
     private void drawMidpoint(Node n) {
@@ -231,9 +240,22 @@ public class MapController extends AbstractController implements IClickableContr
         addOverlay(0, line);
     }
 
+
     private void drawNode(Node node, Color c) {
         Circle circle = new Circle(node.getX(), node.getY(), 5, c);
         addOverlay(circle);
+    }
+
+    private void drawEndNode(Node node) {
+        Image icon = new Image("/resources/icons/final-dest.png");
+        ImageView iv = new ImageView();
+        iv.setImage(icon);
+        iv.setScaleX(0.1);
+        iv.setScaleY(0.1);
+        iv.setX(node.getX()-100);
+        iv.setY(node.getY()-110);
+        addOverlay(iv);
+
     }
 
     private void drawNode(Node node) {
