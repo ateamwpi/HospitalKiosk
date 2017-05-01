@@ -35,24 +35,16 @@ class NodeGestures {
     private final EventHandler<MouseEvent> onMouseClickedEventHandler = new EventHandler<MouseEvent>() {
         public void handle(MouseEvent event) {
             // right mouse button => panning
-            if (!Objects.equals(event.getButton().name(), "PRIMARY")) {// !event.isPrimaryButtonDown())
+            if (!event.getButton().name().equals("PRIMARY")) {// !event.isPrimaryButtonDown())
                 return;
             }
             System.out.println("node clicked");
             // get the node clicked on
             DraggableNode node = (DraggableNode) event.getSource();
 
-            if (event.isShiftDown() && manageMapController.getSelectedNode() != null) {
-                //Given that a node is selected and shift is held down
-                //toggle connection
-
-                //If already connected
-                if (manageMapController.getSelectedNode().getNode().getConnections().contains(node.getNode())) {
-                    //Disconnect
-                    deleteNeighbor(event, node);
-                } else {
-                    addNeighbor(event, node);
-                }
+            if (event.isShiftDown()) {
+                // toggle the connection to this node
+                manageMapController.toggleConnection(node);
             } else {
                 // update node drag context
                 System.out.println(manageMapController.getOverlay().getTranslateX());

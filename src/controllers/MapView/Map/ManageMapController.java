@@ -225,15 +225,16 @@ public class ManageMapController extends AbstractController implements IClickabl
         return selectedNode != null;
     }
 
-    // return true if unselected
     public void attemptUnselectNode(Consumer<Boolean> setUnselectNode, Runnable onCancel) {
         if (selectedNode == null) {
             setUnselectNode.accept(true);
         } else {
             if (selectedNode.hasUnsavedChanges()) {
-                warnDiscardChanges(setUnselectNode.andThen(isUnselected -> {
-                    if (isUnselected) {
-                        unselectNode();
+                warnDiscardChanges(setUnselectNode.andThen(isSaved -> {
+                    if (isSaved) {
+                        saveChanges();
+                    } else {
+                        discardChanges();
                     }
                 }), onCancel);
             } else {
@@ -243,15 +244,22 @@ public class ManageMapController extends AbstractController implements IClickabl
         }
     }
 
+    private void saveChanges() {
+        selectedNode.save();
+        unselectNode();
+    }
 
-    // returns true if admin chooses to discard changes
-    private void warnDiscardChanges(Consumer<Boolean> setDiscard, Runnable onCancel) {
+    private void discardChanges() {
+        selectedNode.cancelPreview();
+    }
+
+    private void warnDiscardChanges(Consumer<Boolean> setSaved, Runnable onCancel) {
         Utils.showOption(getManageMapViewController().getRoot(),
                 "Unsaved Changes",
                 "All unsaved changed will be lost. Are you sure you want to continue?",
                 "Discard Changes",
                 "Save Changes",
-                setDiscard,
+                setSaved,
                 onCancel);
     }
 
@@ -357,5 +365,11 @@ public class ManageMapController extends AbstractController implements IClickabl
     private void drawDraggableNode(DraggableNode draggableNode) {
         // add visual node to overlay
         mapController.addOverlay(draggableNode);
+    }
+
+    public void toggleConnection(DraggableNode node) {
+        if (selectedNode != null) {
+            selectedNode.toggleConnection(node);
+        }
     }
 }
