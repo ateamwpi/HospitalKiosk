@@ -6,6 +6,7 @@ import controllers.DirectoryView.AbstractDirectoryViewController;
 import controllers.MapView.MapView.MapViewController;
 import controllers.NavigationDrawer.NavigationDrawerController;
 import core.KioskMain;
+import core.Utils;
 import core.exception.RoomNotFoundException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -100,6 +101,12 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
     @FXML
     private void clickRemove(ActionEvent event) {
         if (selectedLocation != null) {
+            Utils.showOption(getRoot(), "Delete Directory Entry", "Please confirm that you would like to delete " + selectedLocation.getName() + " from the directory.", "Cancel", "Delete", this::processRemove);
+        }
+    }
+
+    private void processRemove(boolean delete) {
+        if(delete) {
             KioskMain.getDir().removeLocation(selectedLocation);
             KioskMain.getUI().setScene(new ManageDirectoryViewController());
         }
