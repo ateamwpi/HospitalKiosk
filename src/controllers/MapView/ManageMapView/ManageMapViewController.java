@@ -82,6 +82,8 @@ public class ManageMapViewController extends AbstractController {
         // add the map to the container
         mapContainer.getChildren().add(manageMapController.getRoot());
 
+
+
         // setup drawer
         manageMapSnackbarController = new ManageMapSnackbarController(getRoot(), manageMapController);
         snackbar.setSidePane(manageMapSnackbarController.getRoot());
