@@ -297,6 +297,10 @@ public class DirectionsDrawerController extends AbstractController {
 
     @FXML
     private void showSearch(MouseEvent event) {
+        // reset TTS
+        if(KioskMain.getTTS().isSpeaking())
+            KioskMain.getTTS().cancel();
+        speakDirectionsIcon.getStyleClass().setAll("volume-icon");
         // reset the locations
         setEnd(null);
         setStart(KioskMain.getDir().getTheKiosk());
@@ -375,7 +379,14 @@ public class DirectionsDrawerController extends AbstractController {
 
     @FXML
     private void speakDirections(MouseEvent event) {
-        KioskMain.getTTS().speak(path.textPath());
+        if(!KioskMain.getTTS().isSpeaking()) {
+            speakDirectionsIcon.getStyleClass().setAll("volume-off-icon");
+            KioskMain.getTTS().speak(path.textPath());
+        }
+        else {
+            speakDirectionsIcon.getStyleClass().setAll("volume-icon");
+            KioskMain.getTTS().cancel();
+        }
     }
 
     private void qrDirections(MouseEvent event) {

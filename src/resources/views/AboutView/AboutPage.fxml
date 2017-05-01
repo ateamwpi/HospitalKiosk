@@ -1,136 +1,132 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <!--suppress XmlHighlighting -->
-<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.112"
-            xmlns:fx="http://javafx.com/fxml/1">
-   <GridPane alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-             AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-      <columnConstraints>
-         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-      </columnConstraints>
-      <rowConstraints>
-         <RowConstraints maxHeight="99.0" minHeight="10.0" prefHeight="99.0" vgrow="SOMETIMES"/>
-         <RowConstraints maxHeight="784.6666717529297" minHeight="10.0" prefHeight="696.0" vgrow="SOMETIMES"/>
-      </rowConstraints>
-      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1"
-            GridPane.vgrow="ALWAYS">
-         <Pane prefHeight="42.0" prefWidth="1280.0"/>
-         <Label text="Designed and Created by:">
-            <font>
-               <Font name="System Bold" size="18.0"/>
-            </font>
-         </Label>
-         <Label text="Madeline Burke - Project Manager ">
-            <font>
-               <Font size="18.0"/>
-            </font>
-         </Label>
-         <Label text="Matt McDonald - Lead Software Engineer">
-            <font>
-               <Font size="18.0"/>
-            </font>
-         </Label>
-         <Label text="Kevin O'Brien - Assistant Lead Software Engineer">
-            <font>
-               <Font size="18.0"/>
-            </font>
-         </Label>
-         <Label text="Dylan Richardson - Assistant Lead Software Engineer">
-            <font>
-               <Font size="18.0"/>
-            </font>
-         </Label>
-         <Label text="Zachary Vaughan - Product Owner">
-            <font>
-               <Font size="18.0"/>
-            </font>
-         </Label>
-         <Label text="Nik Castelino - Test Engineer">
-            <font>
-               <Font size="18.0"/>
-            </font>
-         </Label>
-         <Label text="Jonathan Ariza - Document Analyst">
-            <font>
-               <Font size="18.0"/>
-            </font>
-         </Label>
-         <Label text="Jacob Berman-Jolton - Software Engineer">
-            <font>
-               <Font size="18.0"/>
-            </font>
-         </Label>
-         <Label text="David Tang - Software Engineer">
-            <font>
-               <Font size="18.0"/>
-            </font>
-         </Label>
-         <Pane prefHeight="42.0" prefWidth="1280.0"/>
-         <ImageView fitHeight="81.0" fitWidth="241.0" pickOnBounds="true" preserveRatio="true">
-            <Image url="@/resources/wpi_logo.png"/>
-         </ImageView>
-         <Label text="Worcester Polytechnic Institute - Computer Science Department">
-            <font>
-               <Font size="18.0"/>
-            </font>
-         </Label>
-         <Label text="CS 3733 - Software Engineering">
-            <font>
-               <Font size="18.0"/>
-            </font>
-         </Label>
-         <Label text="Wilson Wong - Professor">
-            <font>
-               <Font size="18.0"/>
-            </font>
-         </Label>
-         <Label text="Binam Kayastha - Team Coach">
-            <font>
-               <Font size="18.0"/>
-            </font>
-         </Label>
-         <Label text="Submitted May 2017">
-            <font>
-               <Font size="18.0"/>
-            </font>
-         </Label>
-         <Pane prefHeight="42.0" prefWidth="1280.0"/>
-         <Label text="Special thanks to Brigham and Women's Faulkner Hospital and Andrew Shinn for their time and input.">
-            <font>
-               <Font size="18.0"/>
-            </font>
-         </Label>
-         <Pane prefHeight="42.0" prefWidth="1280.0"/>
-      </VBox>
-      <HBox prefHeight="100.0" prefWidth="1280.0" styleClass="banner" stylesheets="@../../styles/Main.css">
-         <Button fx:id="backButton" mnemonicParsing="false" styleClass="navigation-button"
-                 stylesheets="@../../styles/Main.css" text="Back">
-            <font>
-               <Font size="16.0"/>
-            </font>
-            <HBox.margin>
-               <Insets left="25.0" right="10.0" top="25.0"/>
-            </HBox.margin>
-         </Button>
+
+<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+   <VBox alignment="TOP_CENTER" prefWidth="530.0">
+      <HBox alignment="CENTER" prefHeight="50.0" prefWidth="1280.0" styleClass="banner" stylesheets="@../../styles/Main.css">
          <Label styleClass="title-text" stylesheets="@../../styles/Main.css" text="About Us">
             <font>
-               <Font size="36.0"/>
+               <Font size="36.0" />
             </font>
             <HBox.margin>
-               <Insets top="15.0"/>
+               <Insets />
             </HBox.margin>
             <padding>
-               <Insets left="10.0"/>
+               <Insets left="160.0" />
             </padding>
          </Label>
+         <VBox alignment="CENTER">
+            <children>
+               <JFXButton fx:id="backButton" styleClass="white-alert-button" stylesheets="@/resources/styles/Main.css" text="x" textAlignment="CENTER">
+                  <font>
+                     <Font size="16.0" />
+                  </font>
+                  <opaqueInsets>
+                     <Insets />
+                  </opaqueInsets>
+               </JFXButton>
+            </children>
+            <padding>
+               <Insets left="150.0" />
+            </padding>
+         </VBox>
       </HBox>
-   </GridPane>
+      <Label text="Designed and Created by:">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label text="Madeline Burke - Project Manager ">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label text="Matt McDonald - Lead Software Engineer">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label text="Kevin O'Brien - Assistant Lead Software Engineer">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label text="Dylan Richardson - Assistant Lead Software Engineer">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label text="Zachary Vaughan - Product Owner">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label text="Nik Castelino - Test Engineer">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label text="Jonathan Ariza - Document Analyst">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label text="Jacob Berman-Jolton - Software Engineer">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label text="David Tang - Software Engineer">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Pane layoutX="10.0" layoutY="575.0" prefHeight="25.0" prefWidth="1280.0" />
+      <ImageView fitHeight="81.0" fitWidth="241.0" pickOnBounds="true" preserveRatio="true">
+         <Image url="@/resources/wpi_logo.png" />
+      </ImageView>
+      <Label text="Worcester Polytechnic Institute - Computer Science Department">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label text="CS 3733 - Software Engineering">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label text="Wilson Wong - Professor">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label text="Binam Kayastha - Team Coach">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label text="Submitted May 2017">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Pane prefHeight="25.0" prefWidth="1280.0" />
+      <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="54.0" text="Special thanks to Brigham and Women's Faulkner Hospital and Andrew Shinn for their time and input." textAlignment="CENTER" wrapText="true">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+   </VBox>
 </AnchorPane>

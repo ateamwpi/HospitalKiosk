@@ -21,7 +21,6 @@ import models.path.Path;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 
 /**
  * Created by dylan on 4/2/17.
@@ -178,7 +177,8 @@ public class MapController extends AbstractController implements IClickableContr
         sceneGestures = new SceneGestures(canvas, this);
         sceneGestures.zoomIn();
         // register handlers zooming and panning
-        canvas.addEventHandler(MouseEvent.ANY, new ClickDragHandler(sceneGestures.getOnMouseClickedEventHandler(), sceneGestures.getOnMouseDraggedEventHandler()));
+        canvas.addEventHandler(MouseEvent.ANY, new ClickDragHandler(sceneGestures.getOnMouseClickedEventHandler(),
+                sceneGestures.getOnMouseDraggedEventHandler(), event -> {}));
         canvas.addEventHandler(MouseEvent.MOUSE_PRESSED, sceneGestures.getOnMousePressedEventHandler());
         canvas.addEventHandler(ScrollEvent.ANY, sceneGestures.getOnScrollEventHandler());
     }
@@ -195,21 +195,6 @@ public class MapController extends AbstractController implements IClickableContr
 
     private void drawNode(Node node) {
         drawNode(node, Color.BLACK);
-    }
-
-    private void replaceAllNodes(Collection<Node> nodes){
-        overlay = new Group();
-        root.getChildren().add(overlay);
-        // add the canvas to overlay
-        overlay.getChildren().add(canvas);
-        mapView.setImage(map.getImage());
-        mapView.setPreserveRatio(true);
-        // set base overlay index
-        overlayIndex = overlay.getChildren().size();
-        for(Node n: nodes){
-            drawNode(n);
-
-        }
     }
 
     private void addFloorButtons() {
@@ -259,5 +244,9 @@ public class MapController extends AbstractController implements IClickableContr
         }
         zoomIn.setVisible(true);
         zoomOut.setVisible(true);
+    }
+
+    public SceneGestures getSceneGestures() {
+        return this.sceneGestures;
     }
 }

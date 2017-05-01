@@ -1,34 +1,35 @@
 package controllers.MapView.ManageMapView;
 
+import com.jfoenix.controls.*;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.validation.base.ValidatorBase;
 import controllers.AbstractController;
 import controllers.MapView.Map.ManageMapController;
 import controllers.MapView.Map.DraggableNode;
 import controllers.MapView.MapView.MapViewController;
+import controllers.NavigationDrawer.NavigationDrawerController;
 import core.KioskMain;
 import core.Utils;
-import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.util.StringConverter;
 import javafx.util.converter.IntegerStringConverter;
 import javafx.util.converter.NumberStringConverter;
 import models.path.Node;
+import models.path.NodeType;
+import org.omg.CORBA.OBJ_ADAPTER;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.regex.Pattern;
 
 public class ManageMapViewController extends AbstractController {
@@ -40,39 +41,18 @@ public class ManageMapViewController extends AbstractController {
     private StringProperty roomNameProperty;
     private BooleanProperty restrictedProperty;
     private StringConverter<Number> converter;
+    private ArrayList<String> nodeTypeList;
 
     private ArrayList<String> floorList;
 
-//    @FXML
-//    private JFXComboBox<String> floors;
     @FXML
-    private Button backButton;
+    private StackPane mapContainer;
     @FXML
-    private JFXTextField x;
+    private JFXDrawer snackbar;
     @FXML
-    private JFXTextField y;
-    @FXML
-    private JFXTextField room;
-    @FXML
-    private AnchorPane mapContainer;
-    @FXML
-    private JFXButton nodeAction;
-    @FXML
-    private JFXButton saveNode;
-    @FXML
-    private TableView<Node> tableNeighbors;
-    @FXML
-    private TableColumn<Node, Integer> idColumn;
-    @FXML
-    private JFXButton deleteNeighbor;
-    @FXML
-    private JFXButton addNeighbor;
-    @FXML
-    private JFXTextField newNeighbor;
-    @FXML
-    private JFXCheckBox restrictedBox;
-    @FXML
-    private Label id;
+    private JFXDrawer navigationDrawer;
+
+    ManageMapSnackbarController manageMapSnackbarController;
 
     @Override
     public String getURL() {
@@ -87,70 +67,111 @@ public class ManageMapViewController extends AbstractController {
         roomNameProperty = new SimpleStringProperty();
         converter = new NumberStringConverter();
         floorList = new ArrayList<>(Arrays.asList("1st Floor", "2nd Floor", "3rd Floor", "4th Floor", "5th Floor", "6th Floor", "7th Floor"));
+        nodeTypeList = new ArrayList<>(Arrays.asList("Room", "Elevator", "Stairwell", "Outside"));
+    }
+
+    public ManageMapSnackbarController getSnackbar() {
+        return this.manageMapSnackbarController;
     }
 
     @FXML
     private void initialize() {
-        // bind event handlers
-        backButton.setOnAction(this::clickBack);
-        saveNode.setOnAction(this::clickSave);
-        nodeAction.setOnAction(this::clickNodeAction);
-        deleteNeighbor.setOnAction(this::clickDeleteNeighbor);
-        addNeighbor.setOnAction(this::clickAddNeighbor);
+
+        snackbar.open();
+
         // load the admin map controller
         manageMapController = new ManageMapController(this);
         // add the map to the container
         mapContainer.getChildren().add(manageMapController.getRoot());
 
+        // setup drawer
+        manageMapSnackbarController = new ManageMapSnackbarController(getRoot(), manageMapController);
+        snackbar.setSidePane(manageMapSnackbarController.getRoot());
+
+        // bind event handlers
+        manageMapSnackbarController.saveNode.setOnAction(this::clickSave);
+        manageMapSnackbarController.cancel.setOnAction(this::clickCancel);
+        manageMapSnackbarController.nodeAction.setOnAction(this::clickNodeAction);
+
         for(JFXButton b: manageMapController.getMapController().getFloorButtons()) {
             b.setOnAction(event -> setFloor(Utils.strForNum(Integer.parseInt(b.getText())) + " Floor"));
         }
 
-//        floors.getItems().addAll(floorList);
-//        floors.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
-//            if (floors.getSelectionModel().getSelectedItem() != null) {
-//                if (manageMapController.attemptUnselectNode()) {
-//                    String fl = floors.getSelectionModel().getSelectedItem();
-//                    System.out.println("The current selected floor is " + fl);
-//                    setFloor(fl);
-//                } else {
-//                }
-//
-//            }
-//        });
-//        floors.getSelectionModel().selectFirst();
+        manageMapSnackbarController.nodeType.valueProperty().addListener(this::nodeTypeChanged);
+        manageMapSnackbarController.nodeType.getItems().setAll((Object[])NodeType.values());
+        manageMapSnackbarController.nodeType.getSelectionModel().selectFirst();
+
         // init input text properties
-        xTextProperty = x.textProperty();
-        yTextProperty = y.textProperty();
-        restrictedProperty = restrictedBox.selectedProperty();
-        roomNameProperty = room.textProperty();
+        //TODO: set employeeOnly and nodeType of selected node
+        xTextProperty = manageMapSnackbarController.x.textProperty();
+        yTextProperty = manageMapSnackbarController.y.textProperty();
+        restrictedProperty = manageMapSnackbarController.employeeOnly.selectedProperty();
         // format numeric text fields
         TextFormatter<Integer> numericX = new TextFormatter<>(
                 new IntegerStringConverter(),
                 0,
-                c -> Pattern.matches("\\d*", c.getText()) ? c : null );
+                c -> Pattern.matches("\\d*", c.getText()) ? c : null);
         TextFormatter<Integer> numericY = new TextFormatter<>(
                 new IntegerStringConverter(),
                 0,
-                c -> Pattern.matches("\\d*", c.getText()) ? c : null );
+                c -> Pattern.matches("\\d*", c.getText()) ? c : null);
         TextFormatter<Integer> numericNeighbor = new TextFormatter<>(
                 new IntegerStringConverter(),
                 0,
-                c -> Pattern.matches("\\d*", c.getText()) ? c : null );
-        x.setTextFormatter(numericX);
-        y.setTextFormatter(numericY);
-        newNeighbor.setTextFormatter(numericNeighbor);
+                c -> Pattern.matches("\\d*", c.getText()) ? c : null);
+        manageMapSnackbarController.x.setTextFormatter(numericX);
+        manageMapSnackbarController.y.setTextFormatter(numericY);
+
+        xTextProperty.addListener(this::valueChanged);
+        yTextProperty.addListener(this::valueChanged);
+        roomNameProperty.addListener(this::valueChanged);
+        restrictedProperty.addListener(this::valueChanged);
+
+
         // reset edit view
-        unselectNode();
-        // set the connections table factories
-        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
-        // add listener to table item selection
-        tableNeighbors.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
-            if (tableNeighbors.getSelectionModel().getSelectedItem() != null) {
-                deleteNeighbor.setDisable(false);
-            }
-        });
+        unselectNode(false);
+
+        // setup navigation drawer
+        NavigationDrawerController navigationDrawerController = new NavigationDrawerController(getRoot());
+        navigationDrawer.setSidePane(navigationDrawerController.getRoot());
+        //optionsMenu.open();
+        manageMapSnackbarController.getHamburgerButton().setOnMouseClicked(event -> navigationDrawer.open());
+        navigationDrawerController.getDrawerClose().setOnMouseClicked(event -> navigationDrawer.close());
+        navigationDrawerController.getScrim().setOnMouseClicked(event -> navigationDrawer.close());
+        navigationDrawerController.getScrim().prefWidthProperty().bind(KioskMain.getUI().getStage().widthProperty().add(100));
+        navigationDrawerController.getScrim().prefHeightProperty().bind(KioskMain.getUI().getStage().heightProperty());
     }
+
+    private void nodeTypeChanged(ObservableValue nodeType, Object oldValue, Object newValue) {
+        if(selectedNode != null) {
+            /* lol this stuff is gonna be hard.
+             * if they have a node selected and they try to change the type what should happen?
+             * The options are location, elevator, staircase, hallway, and outside
+             * elevator == staircase, hallway == outside
+             */
+        }
+        manageMapSnackbarController.updateContent((NodeType)newValue);
+    }
+
+    public void valueChanged() {
+        this.valueChanged(null, null, null);
+    }
+
+    public void valueChanged(ObservableValue observableValue, Object oldValue, Object newValue) {
+        if(selectedNode != null && selectedNode.hasUnsavedChanges()) {
+            manageMapSnackbarController.saveNode.setDisable(false);
+            manageMapSnackbarController.cancel.setDisable(false);
+        } else {
+            manageMapSnackbarController.saveNode.setDisable(true);
+            manageMapSnackbarController.cancel.setDisable(true);
+        }
+    }
+
+    public JFXDrawer getOptionsMenu() {
+        return navigationDrawer;
+    }
+
+
 
     public void selectNode(DraggableNode draggableNode) {
         // set selected node
@@ -161,22 +182,18 @@ public class ManageMapViewController extends AbstractController {
         Bindings.bindBidirectional(yTextProperty, selectedNode.previewYProperty(), converter);
         Bindings.bindBidirectional(roomNameProperty, selectedNode.previewRoomNameProperty());
         Bindings.bindBidirectional(restrictedProperty, selectedNode.previewRestrictedProperty());
-        // update node id
-        id.setText("ID: " + Integer.toString(node.getID()));
-        // TODO fix #128
-        restrictedBox.setVisible(true);
-        restrictedBox.setDisable(false);
+        manageMapSnackbarController.nodeType.getSelectionModel().select(selectedNode.getNode().getNodeType());
+        manageMapSnackbarController.nodeChanged();
+//        manageMapSnackbarController.employeeOnly.setVisible(true);
+//        manageMapSnackbarController.employeeOnly.setDisable(false);
+        manageMapSnackbarController.nodeAction.setDisable(false);
         // show save button
-        saveNode.setVisible(true);
-        // enable add connection button
-        addNeighbor.setDisable(false);
         // show delete button
-        nodeAction.setText("Delete");
-        // update connections table
-        setTableNeighbors(selectedNode.getNode().getConnections());
+        manageMapSnackbarController.nodeAction.setText("Delete");
+        // manageMapSnackbarController.saveNode.setVisible(true);
     }
 
-    public void unselectNode() {
+    public void unselectNode(boolean reselect) {
         // unbind text fields with node properties
         if (selectedNode != null) {
             Bindings.unbindBidirectional(xTextProperty, selectedNode.previewXProperty());
@@ -187,36 +204,32 @@ public class ManageMapViewController extends AbstractController {
         // unset selected node
         selectedNode = null;
         // update edit view
-        id.setText("");
-        x.setText("");
-        y.setText("");
-        room.setText("");
-        // reset focus
+        if(!reselect) {
+            manageMapSnackbarController.x.setText("");
+            manageMapSnackbarController.y.setText("");
+        }
+//        manageMapSnackbarController.nodeAction.setText("Add");
+        manageMapSnackbarController.nodeAction.setDisable(true);
+        manageMapSnackbarController.nodeChanged();
+        //manageMapSnackbarController.room.setText("");
+//        manageMapSnackbarController.employeeOnly.setVisible(false);
+//        manageMapSnackbarController.employeeOnly.setDisable(true);
         getRoot().requestFocus();
-        restrictedBox.setVisible(false);
-        restrictedBox.setDisable(true);
         // remove save button
-        saveNode.setVisible(false);
-        // disable add and delete connection buttons
-        addNeighbor.setDisable(true);
-        deleteNeighbor.setDisable(true);
-        // show add button
-        nodeAction.setText("Add");
-        // clear connections table
-        tableNeighbors.getItems().clear();
+        // manageMapSnackbarController.saveNode.setVisible(false);
+
     }
 
     private int getX() {
-        return Integer.parseInt(x.getText());
+        return Integer.parseInt(manageMapSnackbarController.x.getText());
     }
 
     private int getY() {
-        return Integer.parseInt(y.getText());
+        return Integer.parseInt(manageMapSnackbarController.y.getText());
     }
 
     private String getRoomName() {
-        String roomName = room.getText();
-        return roomName.equals("") ? "NONE" : roomName;
+        return getSnackbar().getRoomName();
     }
 
     @FXML
@@ -225,56 +238,29 @@ public class ManageMapViewController extends AbstractController {
             if (isUnselected) {
                 KioskMain.getUI().setScene(new MapViewController());
             }
-        });
+        }, ()->{}, false);
     }
 
     @FXML
-    private void clickAddNeighbor(ActionEvent event) {
-        // get the node id
-        int neighborID = Integer.parseInt(newNeighbor.getText());
-        // get the node
-        Node node = KioskMain.getPath().getNode(neighborID);
-        // check if node exists and is not itself
-        if (node == null || node.equals(selectedNode.getNode())) {
-            alertAddConnectionError();
-            return;
-        }
-        // add the preview connection
-        selectedNode.previewConnection(node);
-        // update the table of connections with preview connections
-        setTableNeighbors(selectedNode.getPreviewConnections());
-
-        newNeighbor.clear();
-    }
-
-    private void alertAddConnectionError() {
-        Utils.showAlert(getRoot(), "Invalid Node Connection!", "This node cannot be connected to itself!");
-    }
-
-    private void setTableNeighbors(Collection<Node> nodes) {
-        tableNeighbors.getItems().setAll(nodes);
-    }
-
-    @FXML
-    private void clickDeleteNeighbor(ActionEvent event) {
-        // get the node
-        Node nodeToDelete = tableNeighbors.getSelectionModel().getSelectedItem();
-        // remove the preview connection
-        selectedNode.removePreviewConnection(nodeToDelete);
-        // update the table
-        setTableNeighbors(selectedNode.getPreviewConnections());
+    private void clickCancel(ActionEvent event) {
+        selectedNode.cancelPreview();
+        manageMapSnackbarController.cancelPressed();
     }
 
     @FXML
     private void clickSave(ActionEvent event) {
+        manageMapSnackbarController.savePressed();
         selectedNode.save();
-        manageMapController.attemptUnselectNode(isUnselected -> {});
+        manageMapSnackbarController.saveNode.setDisable(true);
+        manageMapSnackbarController.cancel.setDisable(true);
+        manageMapController.attemptUnselectNode(isUnselected -> {}, ()->{}, false);
     }
 
     @FXML
     private void clickNodeAction(ActionEvent event) {
         if (selectedNode == null) {
-            clickAdd();
+//            clickAdd();
+            return;
         } else {
             clickDelete();
         }
@@ -285,18 +271,18 @@ public class ManageMapViewController extends AbstractController {
         selectedNode.delete(isDeleted -> {});
     }
 
-    private void clickAdd() {
-        // verify the node properties
-        if (verifyNode()) {
-            // add the node
-            manageMapController.addNode(getX(), getY(), getRoomName());
-        }
-    }
+//    private void clickAdd() {
+//        // verify the node properties
+//        if (verifyNode()) {
+//            // add the node
+//            manageMapController.addNode(getX(), getY(), getRoomName());
+//        }
+//    }
 
     private Boolean verifyNode() {
         // TODO fix hard coded values
         // check x and y exist
-        if (x.getText().equals("") || y.getText().equals("")) {
+        if (manageMapSnackbarController.x.getText().equals("") || manageMapSnackbarController.y.getText().equals("")) {
             return false;
         }
         // check x and y within bounds
@@ -320,4 +306,17 @@ public class ManageMapViewController extends AbstractController {
         manageMapController.setFloor(floor);
     }
 
+//    private void refreshScene() {
+//        int floor = manageMapController.getMapController().getFloor();
+//        double scale = manageMapController.getMapController().getOverlay().getScaleX();
+//        double transX = manageMapController.getMapController().getOverlay().getTranslateX();
+//        double transY = manageMapController.getMapController().getOverlay().getTranslateY();
+//
+//        ManageMapViewController con = new ManageMapViewController();
+//        con.setFloor(floor);
+//        con.manageMapController.getMapController().getSceneGestures().zoomToScale(scale);
+//        con.manageMapController.getMapController().getOverlay().setTranslateY(transY);
+//        con.manageMapController.getMapController().getOverlay().setTranslateX(transX);
+//        KioskMain.getUI().setScene(con);
+//    }
 }

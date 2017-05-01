@@ -19,7 +19,7 @@
         </Pane>
     </VBox>
     <VBox fx:id="searchContainer" prefWidth="310.0">
-        <VBox fx:id="searchHeader" styleClass="header" stylesheets="@/resources/styles/MapView.css">
+        <VBox fx:id="searchHeader" styleClass="button-box" stylesheets="@../../../../styles/MapView.css">
             <padding>
                 <Insets bottom="20.0" />
             </padding>
@@ -69,12 +69,12 @@
         </VBox>
     </VBox>
     <VBox fx:id="directionsContainer" prefWidth="310.0">
-        <HBox styleClass="header" stylesheets="@/resources/styles/MapView.css">
+        <HBox styleClass="button-box" stylesheets="@../../../../styles/MapView.css">
             <VBox>
                 <padding>
                     <Insets bottom="10.0" left="20.0" top="20.0" />
                 </padding>
-                <Label fx:id="directionsBackButton" prefHeight="20.0" prefWidth="20.0" styleClass="back-icon" stylesheets="@/resources/styles/MapView.css" />
+                <Label fx:id="directionsBackButton" prefHeight="30.0" prefWidth="30.0" styleClass="back-icon" stylesheets="@/resources/styles/MapView.css" />
             </VBox>
             <VBox spacing="10.0">
                 <padding>
@@ -88,11 +88,6 @@
             <padding>
                 <Insets bottom="10.0" top="10.0" />
             </padding>
-         <HBox alignment="CENTER" prefWidth="155.0">
-            <children>
-               <Label fx:id="qrCodeIcon" prefHeight="30.0" prefWidth="30.0" styleClass="qr-icon" stylesheets="@/resources/styles/MapView.css" />
-            </children>
-         </HBox>
             <HBox alignment="CENTER" prefWidth="155.0">
                 <Label fx:id="printDirectionsIcon" prefHeight="30.0" prefWidth="30.0" styleClass="printer-icon" stylesheets="@/resources/styles/MapView.css" />
             </HBox>

@@ -1,5 +1,7 @@
 package models.tts;
 
+import com.sun.speech.freetts.FreeTTSSpeakable;
+import com.sun.speech.freetts.FreeTTSSpeakableImpl;
 import com.sun.speech.freetts.Voice;
 import com.sun.speech.freetts.VoiceManager;
 import core.KioskMain;
@@ -9,6 +11,7 @@ import core.KioskMain;
  */
 public class TTSManager {
     private static final String VOICE_NAME = "kevin16";
+    private FreeTTSSpeakable speakable;
 
     private final Voice voice;
 
@@ -20,10 +23,20 @@ public class TTSManager {
 
     public void speak(String s) {
         if (s != null && !s.isEmpty()) {
+            speakable = new FreeTTSSpeakableImpl(s);
+            Thread t = new Thread(() -> voice.speak(this.speakable));
+            t.start();
             KioskMain.getTimeout().stopTimer();
-            voice.speak(s);
             KioskMain.getTimeout().resetTimer();
         }
+    }
+
+    public boolean isSpeaking() {
+        return this.speakable != null && !this.speakable.isCompleted();
+    }
+
+    public void cancel() {
+        this.speakable.cancelled();
     }
 
 }

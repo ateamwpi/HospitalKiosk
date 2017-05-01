@@ -3,7 +3,6 @@ package models.path;
 
 import controllers.MapView.MapView.DirectionsDrawer.DirectionStep;
 import core.Utils;
-import models.dir.LocationType;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,6 +13,7 @@ import static controllers.MapView.MapView.DirectionsDrawer.DirectionStep.Directi
 
 /**
  * Created by mattm on 3/29/2017.
+ * nuggies
  */
 public class Path {
     private final LinkedList<Node> path;
@@ -33,7 +33,7 @@ public class Path {
         path.addFirst(n);
     }
 
-    public Path addSteps(Path p){
+    Path addSteps(Path p){
         for(Node n : p.getPath()){
             addInOrder(n);
         }
@@ -101,7 +101,7 @@ public class Path {
 
             if(waiting) continue;
 
-            if(getStep(i).getPrimaryLocType().equals(LocationType.Elevator) && getStep(i-1).getPrimaryLocType().equals(LocationType.Elevator)) {
+            if(!getStep(i).getNodeType().equals(NodeType.Elevator) && getStep(i-1).getNodeType().equals(NodeType.Elevator)) {
                 str.append(stepNum).append(". Ride the elevator to the ").append(Utils.strForNum(getStep(i).getFloor())).append(" floor and exit.\n");
                 steps.add(new DirectionStep(DirectionIcon.STRAIGHT, "Ride the elevator to the " + Utils.strForNum(getStep(i).getFloor()) + " floor"));
                 stepNum ++;
@@ -138,13 +138,13 @@ public class Path {
                     stepNum ++;
                 }
                 else {
-                    if(!getStep(i-1).getPrimaryLocType().equals(LocationType.Elevator)) {
+                    if(!getStep(i-1).getNodeType().equals(NodeType.Elevator)) {
                         str.append(stepNum).append(". Make a ").append(result);
-                        if (getStep(i).getPrimaryLocType().equals(LocationType.Elevator))
+                        if (getStep(i).getNodeType().equals(NodeType.Elevator))
                             str.append(" into the ").append(getStep(i).getRoomName()).append(".\n");
                         else str.append(".\n");
                         stepNum ++;
-                        steps.add(new DirectionStep(DirectionIcon.forString(result), "Make a " + result + ((getStep(i).getPrimaryLocType().equals(LocationType.Elevator)) ? (" into the " + getStep(i).getRoomName()) : "")));
+                        steps.add(new DirectionStep(DirectionIcon.forString(result), "Make a " + result + ((getStep(i).getNodeType().equals(NodeType.Elevator)) ? (" into the " + getStep(i).getRoomName()) : "")));
                     }
                 }
                 // Reset attempt counters every time a turn is made
@@ -180,7 +180,7 @@ public class Path {
 
         for (Node n : path) {
             String floor = Utils.strForNum(n.getFloor()) + " Floor";
-            if(!results.contains(floor)) results.add(floor);
+            if(!n.getNodeType().equals(NodeType.Elevator) && !results.contains(floor)) results.add(floor);
         }
 
         return results;

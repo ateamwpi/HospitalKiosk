@@ -85,6 +85,12 @@
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
 }
+.path {
+    -fx-background-image: url("/resources/icons/path.png");
+    -fx-background-size: 24px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
 .help {
     -fx-background-image: url("/resources/icons/help-icon.png");
     -fx-background-size: 24px;
@@ -167,6 +173,12 @@
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
 }
+.volume-off-icon {
+    -fx-background-image: url("/resources/icons/volume-off.png");
+    -fx-background-size: 30px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
 .printer-icon {
     -fx-background-image: url("/resources/icons/printer.png");
     -fx-background-size: 30px;
@@ -180,3 +192,11 @@
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
 }
+
+.button-box {
+    -fx-background-color: #004C8C;
+    -fx-text-fill: e7effe;
+}
+
+
+

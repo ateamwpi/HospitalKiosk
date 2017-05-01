@@ -16,6 +16,13 @@
     -fx-text-fill: white;
 }
 
+.popup-content-button{
+    -fx-font-size: 12px;
+    -fx-background-color: #0277BD;
+    -fx-padding: 6, 8, 6, 8;
+    -fx-text-fill: white;
+}
+
 .floor-button{
     -fx-font-size: 14px;
     -fx-background-color: white;
@@ -36,6 +43,13 @@
 
 .bottom {
     -fx-background-color: #58a5f0;
+}
+
+/*for labels*/
+.label-text {
+    /*-fx-background-color: #004C8C;*/
+    /*-fx-text-fill: black;*/
+    -fx-font: bold roboto sannserif;
 }
 
 
@@ -83,5 +97,22 @@
     -fx-alignment: center;
     -jfx-button-type: flat;
 }
+.white-alert-button {
+    -fx-font: bold 15px system;
+    -fx-text-fill: white;
+    -fx-alignment: center;
+    -jfx-button-type: flat;
+    -fx-background-color: #0277BD;
+}
 
+.jfx-tab-pane .headers-region {
+    -fx-background-color: #004C8C;
+}
+.jfx-tab-pane .tab-header-background {
+    -fx-background-color: #004C8C;
+}
+.jfx-tab-pane .tab-selected-line {
+    -fx-stroke: white;
+    -fx-stroke-width: 3pt;
+}
 

@@ -41,6 +41,9 @@ public class Utils {
     public static void showOption(Parent root, String title, String body, String cancelText, String confirmText, Consumer<Boolean> setConfirm) {
         new OptionAlertViewController(root, title, body, cancelText, confirmText, setConfirm);
     }
+    public static void showOption(Parent root, String title, String body, String cancelText, String confirmText, Consumer<Boolean> setConfirm, Runnable onCancel) {
+        new OptionAlertViewController(root, title, body, cancelText, confirmText, setConfirm, onCancel);
+    }
 
     public static void showDropdown(Parent root, String title, String body, Collection<String> items, String def, Consumer<String> fcn) {
         new DropdownAlertViewController(root, title, body, items, def, fcn);
