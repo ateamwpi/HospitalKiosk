@@ -114,6 +114,24 @@
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
 }
+.timer {
+    -fx-background-image: url("/resources/icons/timer.png");
+    -fx-background-size: 24px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+.kiosk {
+    -fx-background-image: url("/resources/icons/kiosk.png");
+    -fx-background-size: 24px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+.algo {
+    -fx-background-image: url("/resources/icons/algo.png");
+    -fx-background-size: 24px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
 .help-icon {
     -fx-background-image: url("/resources/icons/help-icon.png");
     -fx-background-size: 24px;

@@ -43,10 +43,10 @@ public class MenuItem extends AbstractController {
         Logout(TOP, "Log Out", "logout", EnumMenuItem::logoutPressed),
         ManageMap(ADMIN, "Manage Map", "map", EnumMenuItem::manageMapPressed),
         ManageDir(ADMIN, "Manage Directory", "dir", EnumMenuItem::manageDirPressed),
-        SelectAlgo(ADMIN, "Select Path Algorithm", "settings", EnumMenuItem::selectAlgoPressed),
-        SelectKiosk(ADMIN, "Select Kiosk Location", "settings", EnumMenuItem::selectKioskPressed),
+        SelectAlgo(ADMIN, "Select Path Algorithm", "algo", EnumMenuItem::selectAlgoPressed),
+        SelectKiosk(ADMIN, "Select Kiosk Location", "kiosk", EnumMenuItem::selectKioskPressed),
         UserDir(USER, "View Directory", "dir", EnumMenuItem::userDirPressed),
-        SelectTimeout(ADMIN, "Select Timeout Delay", "settings", EnumMenuItem::timeoutPressed),
+        SelectTimeout(ADMIN, "Select Timeout Delay", "timer", EnumMenuItem::timeoutPressed),
         HelpInfo(USER, "Info & Visiting Hours", "help", EnumMenuItem::infoPressed),
         GetDirections(USER, "Get Directions", "path", EnumMenuItem::directionsPressed);
 
