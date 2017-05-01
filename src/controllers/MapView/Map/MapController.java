@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import controllers.AbstractController;
 import controllers.IClickableController;
 import core.ImageProxy;
+import core.KioskMain;
 import core.Utils;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
@@ -16,6 +17,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import models.login.ILoginObserver;
 import models.path.Node;
 import models.path.Path;
 
@@ -25,9 +27,9 @@ import java.util.Arrays;
 /**
  * Created by dylan on 4/2/17.
  */
-public class MapController extends AbstractController implements IClickableController {
+public class MapController extends AbstractController implements IClickableController, ILoginObserver {
 
-    private static final String[] MAP_URLS = {
+    private static final String[] USER_MAP_URLS = {
             "resources/floor1.png",
             "resources/floor2.png",
             "resources/floor3.png",
@@ -41,9 +43,24 @@ public class MapController extends AbstractController implements IClickableContr
             "resources/highResBelkin/Belkin_4_hi_res.png"
     };
 
+    private static final String[] PROF_MAP_URLS = {
+            "resources/professionalMaps/floor1.png",
+            "resources/professionalMaps/floor2.png",
+            "resources/professionalMaps/floor3.png",
+            "resources/professionalMaps/floor4.png",
+            "resources/professionalMaps/floor5.png",
+            "resources/professionalMaps/floor6.png",
+            "resources/professionalMaps/floor7.png",
+//            "resources/highResBelkin/Belkin_1_hi_res.png",
+            "resources/highResBelkin/Belkin_2_hi_res.png",
+            "resources/highResBelkin/Belkin_3_hi_res.png",
+            "resources/highResBelkin/Belkin_4_hi_res.png"
+    };
+
     private ArrayList<String> allFloors;
 
-    private ArrayList<ImageProxy> maps;
+    private ArrayList<ImageProxy> userMaps;
+    private ArrayList<ImageProxy> profMaps;
 
     private ImageProxy map;
     private Group overlay;
@@ -151,7 +168,10 @@ public class MapController extends AbstractController implements IClickableContr
 
     public void setFloor(int floor){
         this.floor = floor;
-        map = this.maps.get(this.floor-1);
+        if(KioskMain.getLogin().getState().hasAccess())
+            map = this.profMaps.get(this.floor-1);
+        else
+            map = this.userMaps.get(this.floor-1);
         mapView.setImage(map.getImage());
         mapView.setPreserveRatio(true);
     }
@@ -170,15 +190,19 @@ public class MapController extends AbstractController implements IClickableContr
         overlay.getChildren().add(canvas);
 
         floor = 1;
-        this.maps = new ArrayList<>();
+        this.userMaps = new ArrayList<>();
+        this.profMaps = new ArrayList<>();
 
         // create the Proxies for all of the map images
-        for(String url : MAP_URLS) {
-            this.maps.add(new ImageProxy(url));
+        for(String url : USER_MAP_URLS) {
+            this.userMaps.add(new ImageProxy(url));
+        }
+        for(String url : PROF_MAP_URLS) {
+            this.profMaps.add(new ImageProxy(url));
         }
 
         // load the map into the map view
-        map = this.maps.get(0);
+        map = this.userMaps.get(0);
         mapView.setImage(map.getImage());
         mapView.setPreserveRatio(true);
         // add the map to the canvas
@@ -194,6 +218,8 @@ public class MapController extends AbstractController implements IClickableContr
                 sceneGestures.getOnMouseDraggedEventHandler(), sceneGestures.getOnMouseDraggedEventHandler()));
         canvas.addEventHandler(MouseEvent.MOUSE_PRESSED, sceneGestures.getOnMousePressedEventHandler());
         canvas.addEventHandler(ScrollEvent.ANY, sceneGestures.getOnScrollEventHandler());
+
+        KioskMain.getLogin().attachObserver(this);
     }
 
     private void drawConnection(Node nodeA, Node nodeB) {
@@ -260,5 +286,10 @@ public class MapController extends AbstractController implements IClickableContr
 
     public SceneGestures getSceneGestures() {
         return this.sceneGestures;
+    }
+
+    @Override
+    public void onAccountChanged() {
+        this.setFloor(this.getFloor());
     }
 }

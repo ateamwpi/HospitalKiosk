@@ -16,6 +16,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
+import javax.swing.*;
+
 /**
  * Created by dylan on 4/11/17.
  */
@@ -24,6 +26,7 @@ public class UIManager {
     private final Stage stage;
     private Parent root;
     private Scene scene;
+    private IController controller;
 
     private IPopup popup;
     private NavigationDrawerController nav;
@@ -42,6 +45,7 @@ public class UIManager {
         } else {
             scene = new Scene(controller.getRoot(), scene.getWidth(), scene.getHeight());
         }
+        this.controller = controller;
 
 
         scene.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
@@ -79,6 +83,10 @@ public class UIManager {
 
     public Scene getScene() {
         return this.scene;
+    }
+
+    public IController getController() {
+        return this.controller;
     }
 
     public Stage getStage() {

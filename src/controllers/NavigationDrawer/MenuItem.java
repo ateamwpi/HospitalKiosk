@@ -74,7 +74,8 @@ public class MenuItem extends AbstractController {
 
         private static void logoutPressed(MouseEvent e, Parent mainRoot) {
             KioskMain.getLogin().logout();
-            KioskMain.getUI().setScene(new MapViewController());
+            if(!(KioskMain.getUI().getController() instanceof MapViewController))
+                KioskMain.getUI().setScene(new MapViewController());
         }
 
         private static void manageMapPressed(MouseEvent e, Parent mainRoot) {

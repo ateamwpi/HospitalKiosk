@@ -3,6 +3,7 @@ package controllers.MapView.ManageMapView;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import controllers.AbstractController;
+import controllers.DirectoryView.ManageDirectoryView.ManageDirectoryPopupController;
 import controllers.DirectoryView.ManageDirectoryView.ManageDirectoryViewController;
 import controllers.MapView.Map.DraggableNode;
 import core.KioskMain;
@@ -45,9 +46,12 @@ public class RoomOptions extends AbstractNodeOptions {
     }
 
     private void editPressed(ActionEvent event) {
-        ManageDirectoryViewController dir = new ManageDirectoryViewController();
-        dir.getSearchBox().setText(this.clicked.getNode().getRoomName());
-        KioskMain.getUI().setScene(dir);
+        ManageDirectoryPopupController dir = new ManageDirectoryPopupController(
+                this.parent.getManageMapController().getManageMapViewController().getRoot(), this.clicked.getNode());
+        dir.showCentered();
+//        ManageDirectoryViewController dir = new ManageDirectoryViewController();
+//        dir.getSearchBox().setText(this.clicked.getNode().getRoomName());
+//        KioskMain.getUI().setScene(dir);
     }
 
     @Override
@@ -67,9 +71,12 @@ public class RoomOptions extends AbstractNodeOptions {
         if(clicked != null) {
             roomName.textProperty().bindBidirectional(clicked.previewRoomNameProperty());
             this.currentEntries.getItems().addAll(this.clicked.getNode().getLocations());
+            this.editEntries.setDisable(false);
         }
-        else
+        else {
             roomName.setText("");
+            this.editEntries.setDisable(true);
+        }
     }
 
     @Override
