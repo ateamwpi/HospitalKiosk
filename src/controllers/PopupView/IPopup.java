@@ -50,6 +50,11 @@ public interface IPopup {
     default void hide() {
         KioskMain.getUI().setPopup(null);
         this.getInstance().hide();
+        this.onHide();
+    }
+
+    default void onHide() {
+
     }
 
     default boolean hasFocus() {

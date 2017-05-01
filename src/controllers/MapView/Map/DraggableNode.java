@@ -5,6 +5,7 @@ import core.exception.NameInUseException;
 import core.exception.WrongFloorException;
 import javafx.beans.property.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import models.path.Node;
@@ -41,7 +42,9 @@ public class DraggableNode extends Circle {
         this.manageMapController = manageMapController;
         setDefaultPreview();
         // handlers for mouse click and drag
-        addEventHandler(MouseEvent.ANY, new ClickDragHandler(nodeGestures.getOnMouseClickedEventHandler(), nodeGestures.getOnMouseDraggedEventHandler()));
+        addEventHandler(MouseEvent.ANY, new ClickDragHandler(nodeGestures.getOnMouseClickedEventHandler(),
+                nodeGestures.getOnMouseDraggedEventHandler(), event->{}));
+        addEventHandler(ScrollEvent.ANY, nodeGestures.getOnScrollEventHandler());
     }
 
     public void previewX(int x) {
@@ -94,7 +97,6 @@ public class DraggableNode extends Circle {
         previewConnections.remove(node);
         DraggableNode connection = manageMapController.getDraggableNode(node);
         manageMapController.removeDraggableConnection(this, connection);
-        connection.save();
     }
 
     public Collection<Node> getPreviewConnections() {
@@ -133,7 +135,7 @@ public class DraggableNode extends Circle {
         return previewRestrictedProperty;
     }
 
-    private void cancelPreview() {
+    void cancelPreview() {
         System.out.println("cancel");
         previewConnections(node.getConnections());
         setDefaultPreview();
@@ -197,5 +199,14 @@ public class DraggableNode extends Circle {
                 || !getPreviewRoomName().equals(node.getRoomName())
                 || !getPreviewConnections().equals(node.getConnections())
                 || getPreviewRestricted() != node.isRestricted();
+    }
+
+    public void toggleConnection(DraggableNode draggableNode) {
+        Node node = draggableNode.getNode();
+        if (previewConnections.contains(node)) {
+            removePreviewConnection(node);
+        } else {
+            previewConnection(node);
+        }
     }
 }

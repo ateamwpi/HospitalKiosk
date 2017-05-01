@@ -3,14 +3,12 @@ package controllers.MapView.ManageMapView;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.validation.base.ValidatorBase;
 import controllers.AbstractController;
 import controllers.MapView.Map.ManageMapController;
 import controllers.MapView.Map.DraggableNode;
 import controllers.MapView.MapView.MapViewController;
 import core.KioskMain;
 import core.Utils;
-import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -225,7 +223,7 @@ public class ManageMapViewController extends AbstractController {
             if (isUnselected) {
                 KioskMain.getUI().setScene(new MapViewController());
             }
-        });
+        }, ()->{});
     }
 
     @FXML
@@ -268,7 +266,7 @@ public class ManageMapViewController extends AbstractController {
     @FXML
     private void clickSave(ActionEvent event) {
         selectedNode.save();
-        manageMapController.attemptUnselectNode(isUnselected -> {});
+        manageMapController.attemptUnselectNode(isUnselected -> {}, ()->{});
     }
 
     @FXML
@@ -289,7 +287,7 @@ public class ManageMapViewController extends AbstractController {
         // verify the node properties
         if (verifyNode()) {
             // add the node
-            manageMapController.addNode(getX(), getY(), getRoomName());
+            manageMapController.addNode(getX(), getY(), getRoomName(),isAdded->{});
         }
     }
 
