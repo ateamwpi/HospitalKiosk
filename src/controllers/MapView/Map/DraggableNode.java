@@ -5,6 +5,7 @@ import core.exception.NameInUseException;
 import core.exception.WrongFloorException;
 import javafx.beans.property.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import models.path.Node;
@@ -15,6 +16,7 @@ import java.util.function.Consumer;
 
 /**
  * Created by dylan on 4/6/17.
+ *
  */
 public class DraggableNode extends Circle {
 
@@ -41,7 +43,9 @@ public class DraggableNode extends Circle {
         this.manageMapController = manageMapController;
         setDefaultPreview();
         // handlers for mouse click and drag
-        addEventHandler(MouseEvent.ANY, new ClickDragHandler(nodeGestures.getOnMouseClickedEventHandler(), nodeGestures.getOnMouseDraggedEventHandler()));
+        addEventHandler(MouseEvent.ANY, new ClickDragHandler(nodeGestures.getOnMouseClickedEventHandler(),
+                nodeGestures.getOnMouseDraggedEventHandler(), event->{}));
+        addEventHandler(ScrollEvent.ANY, nodeGestures.getOnScrollEventHandler());
     }
 
     public void previewX(int x) {
@@ -88,6 +92,7 @@ public class DraggableNode extends Circle {
     public void previewConnection(Node node) {
         if(node.getFloor() == this.node.getFloor()) {
             previewConnections.add(node);
+            manageMapController.getManageMapViewController().valueChanged();
             manageMapController.drawDraggableConnection(this, manageMapController.getDraggableNode(node));
         } else {
             Utils.showAlert(manageMapController.getManageMapViewController().getRoot(), "Invalid Node Connection!", "You cannot add this connection as the nodes are on different floors!");
@@ -96,6 +101,7 @@ public class DraggableNode extends Circle {
 
     public void removePreviewConnection(Node node) {
         previewConnections.remove(node);
+        manageMapController.getManageMapViewController().valueChanged();
         DraggableNode connection = manageMapController.getDraggableNode(node);
         manageMapController.removeDraggableConnection(this, connection);
 //        connection.save();
@@ -163,6 +169,7 @@ public class DraggableNode extends Circle {
             //TODO handle this
         }
         node.save();
+        manageMapController.getManageMapViewController().valueChanged();
     }
 
     public void delete(Consumer<Boolean> setDeleted) {
@@ -196,7 +203,6 @@ public class DraggableNode extends Circle {
     }
 
     public Boolean hasUnsavedChanges() {
-        System.out.println("hi " + manageMapController.getManageMapViewController().getSnackbar().hasUnsavedChanges());
         return manageMapController.getManageMapViewController().getSnackbar().hasUnsavedChanges()
                 || getPreviewX() != node.getX()
                 || getPreviewY() != node.getY()
@@ -212,5 +218,14 @@ public class DraggableNode extends Circle {
             return n.getNode().equals(this.getNode());
         }
         else return false;
+    }
+
+    public void toggleConnection(DraggableNode draggableNode) {
+        Node node = draggableNode.getNode();
+        if (previewConnections.contains(node)) {
+            removePreviewConnection(node);
+        } else {
+            previewConnection(node);
+        }
     }
 }

@@ -2,7 +2,6 @@ package controllers.MapView.Map;
 
 import controllers.AbstractController;
 import controllers.IClickableController;
-import controllers.MapView.ManageMapView.ManageMapSnackbarController;
 import controllers.MapView.ManageMapView.ManageMapViewController;
 import core.KioskMain;
 import core.Utils;
@@ -23,7 +22,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 /**
  * Created by dylan on 4/8/17.
@@ -82,16 +80,14 @@ public class ManageMapController extends AbstractController implements IClickabl
                 removeAllNodes();
                 drawAllNodes();
             }
-        }, false);
+        }, ()->{}, false);
     }
 
     private void removeAllNodes() {
         Collection<DraggableNode> vals = new ArrayList<>(draggableNodes.values());
-        System.out.println(draggableNodes.size());
         for(DraggableNode node : vals) {
             removeDraggableNode(node);
         }
-        System.out.println("after " + draggableNodes.size());
     }
 
     public void removeDraggableNode(DraggableNode node) {
@@ -100,24 +96,37 @@ public class ManageMapController extends AbstractController implements IClickabl
             node.removePreviewConnection(connection);
         }
         // remove node from map
-        System.out.println("before " + draggableNodes.size() + " trying " + node + " help " + draggableNodes.get(node.getNode()));
         draggableNodes.remove(node.getNode());
-        System.out.println("after " + draggableNodes.size());
         // remove node from overlay
         mapController.removeOverlay(node);
     }
 
     public void handleMouseClick(MouseEvent e) {
         // unselect if already selecting node
-        if (nodeIsSelected()) {
-            attemptUnselectNode(isUnselected -> {}, false);
-            // add new node if not selecting node
-        } else {
+        if(!e.isShiftDown() && !e.isControlDown()) {
+            if (nodeIsSelected()) {
+                attemptUnselectNode(isUnselected -> {}, () -> {}, false);
+                // add new node if not selecting node
+            } else {
+                // convert the mouse coordinates to map coordinates
+                Point2D p = new Point2D(e.getX(), e.getY());
+                addNode(p.getX(), p.getY(), "NONE", isAdded -> {
+                    selectedNode.fireEvent(e);
+                }, false);
+            }
+        }
+
+        if(nodeIsSelected() && e.isControlDown()){
+            //Save the current node
+            DraggableNode curnode = selectedNode;
             // convert the mouse coordinates to map coordinates
             Point2D p = new Point2D(e.getX(), e.getY());
-            addNode(p.getX(), p.getY(), "NONE");
-            // pass along mouse press to the node
-            selectedNode.fireEvent(e);
+            addNode(p.getX(), p.getY(), "NONE", isAdded->{
+                // add the preview connection
+                selectedNode.previewConnection(curnode.getNode());
+                //Connect the two nodes if they are on the same floo
+                selectedNode.save();
+            }, true);
         }
     }
 
@@ -130,30 +139,38 @@ public class ManageMapController extends AbstractController implements IClickabl
         return nodeGestures;
     }
 
-    public void addNode(double x, double y, String room) {
-        System.out.println("add node");
-        //Update without weird offset
-        double scale = getOverlay().getScaleX();
-        x = (x / scale
-                - getOverlay().getTranslateX()/scale
-                +(scale-1)/(scale*scale)*getOverlay().getBoundsInParent().getWidth()*0.5
-        );
-        y = (y / scale
-                - getOverlay().getTranslateY()/scale
-                +(scale-1)/(scale*scale)*getOverlay().getBoundsInParent().getHeight()*0.5
-        );
+    public void addNode(double x, double y, String room, Consumer<Boolean> setAdded, boolean reselect) {
+        attemptUnselectNode(isUnselected -> {
+            if (isUnselected) {
+                System.out.println("add node");
+                //Update without weird offset
+                double scale = getOverlay().getScaleX();
+                double newx = (x / scale
+                        - getOverlay().getTranslateX() / scale
+                        + (scale - 1) / (scale * scale) * getOverlay().getBoundsInParent().getWidth() * 0.5
+                );
+                double newy = (y / scale
+                        - getOverlay().getTranslateY() / scale
+                        + (scale - 1) / (scale * scale) * getOverlay().getBoundsInParent().getHeight() * 0.5
+                );
 
-        // create new node
-        Node node = new Node(   (int) x,
-                                (int) y, mapController.getFloor(), false, NodeType.Location, room);
-        // create new visual node with gestures
-        DraggableNode draggableNode = getDraggableNode(node);
-        // draw node with gestures
-        drawDraggableNode(draggableNode);
-        // select the node
-        selectNode(draggableNode);
-        // add node to path manager
-        KioskMain.getPath().addNode(node);
+                // create new node
+                Node node = new Node((int) newx,
+                        (int) newy, mapController.getFloor(), false, NodeType.Location, room);
+                // create new visual node with gestures
+                DraggableNode draggableNode = getDraggableNode(node);
+                // draw node with gestures
+                drawDraggableNode(draggableNode);
+                // select the node
+                selectNode(draggableNode);
+                // add node to path manager
+                KioskMain.getPath().addNode(node);
+
+                setAdded.accept(true);
+            } else {
+                setAdded.accept(false);
+            }
+        }, ()->setAdded.accept(false), reselect);
     }
 
     public void attemptDeleteSelectedNode(Consumer<Boolean> setDeleted) {
@@ -203,7 +220,7 @@ public class ManageMapController extends AbstractController implements IClickabl
                 selectedNode.select();
                 manageMapViewController.selectNode(selectedNode);
             }
-        }, true);
+        }, ()->{}, true);
     }
 
     public ManageMapViewController getManageMapViewController() {
@@ -214,17 +231,18 @@ public class ManageMapController extends AbstractController implements IClickabl
         return selectedNode != null;
     }
 
-    // return true if unselected
-    public void attemptUnselectNode(Consumer<Boolean> setUnselectNode, boolean reselect) {
+    public void attemptUnselectNode(Consumer<Boolean> setUnselectNode, Runnable onCancel, boolean reselect) {
         if (selectedNode == null) {
             setUnselectNode.accept(true);
         } else {
             if (selectedNode.hasUnsavedChanges()) {
-                warnDiscardChanges(setUnselectNode.andThen(isUnselected -> {
-                    if (isUnselected) {
-                        unselectNode(reselect);
+                warnDiscardChanges(setUnselectNode.andThen(isSaved -> {
+                    if (isSaved) {
+                        saveChanges(reselect);
+                    } else {
+                        discardChanges();
                     }
-                }));
+                }), onCancel);
             } else {
                 unselectNode(reselect);
                 setUnselectNode.accept(true);
@@ -232,15 +250,23 @@ public class ManageMapController extends AbstractController implements IClickabl
         }
     }
 
+    private void saveChanges(boolean reselect) {
+        selectedNode.save();
+        unselectNode(reselect);
+    }
 
-    // returns true if admin chooses to discard changes
-    private void warnDiscardChanges(Consumer<Boolean> setDiscard) {
+    private void discardChanges() {
+        selectedNode.cancelPreview();
+    }
+
+    private void warnDiscardChanges(Consumer<Boolean> setSaved, Runnable onCancel) {
         Utils.showOption(getManageMapViewController().getRoot(),
                 "Unsaved Changes",
                 "All unsaved changed will be lost. Are you sure you want to continue?",
-                "Cancel",
                 "Discard Changes",
-                setDiscard);
+                "Save Changes",
+                setSaved,
+                onCancel);
     }
 
     private void unselectNode(boolean reselect) {
@@ -303,7 +329,8 @@ public class ManageMapController extends AbstractController implements IClickabl
         // create the scene gestures for zooming and panning
         SceneGestures sceneGestures = new SceneGestures(canvas, this);
         // register handlers zooming and panning
-        mapContainer.addEventHandler(MouseEvent.ANY, new ClickDragHandler(sceneGestures.getOnMouseClickedEventHandler(), sceneGestures.getOnMouseDraggedEventHandler()));
+        mapContainer.addEventHandler(MouseEvent.ANY, new ClickDragHandler(sceneGestures.getOnMouseClickedEventHandler(), event -> {},
+                sceneGestures.getOnMouseDraggedEventHandler()));
         mapContainer.addEventHandler(MouseEvent.MOUSE_PRESSED, sceneGestures.getOnMousePressedEventHandler());
         // draw all of the nodes
         drawAllNodes();
@@ -344,5 +371,11 @@ public class ManageMapController extends AbstractController implements IClickabl
     private void drawDraggableNode(DraggableNode draggableNode) {
         // add visual node to overlay
         mapController.addOverlay(draggableNode);
+    }
+
+    public void toggleConnection(DraggableNode node) {
+        if (selectedNode != null) {
+            selectedNode.toggleConnection(node);
+        }
     }
 }

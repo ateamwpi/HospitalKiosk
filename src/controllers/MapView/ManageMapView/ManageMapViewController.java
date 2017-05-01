@@ -2,6 +2,8 @@ package controllers.MapView.ManageMapView;
 
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXCheckBox;
+import com.jfoenix.controls.JFXTextField;
 import controllers.AbstractController;
 import controllers.MapView.Map.ManageMapController;
 import controllers.MapView.Map.DraggableNode;
@@ -125,6 +127,7 @@ public class ManageMapViewController extends AbstractController {
         roomNameProperty.addListener(this::valueChanged);
         restrictedProperty.addListener(this::valueChanged);
 
+
         // reset edit view
         unselectNode(false);
 
@@ -150,7 +153,11 @@ public class ManageMapViewController extends AbstractController {
         manageMapSnackbarController.updateContent((NodeType)newValue);
     }
 
-    public void valueChanged(ObservableValue observable, Object oldValue, Object newValue) {
+    public void valueChanged() {
+        this.valueChanged(null, null, null);
+    }
+
+    public void valueChanged(ObservableValue observableValue, Object oldValue, Object newValue) {
         if(selectedNode != null && selectedNode.hasUnsavedChanges()) {
             manageMapSnackbarController.saveNode.setDisable(false);
             manageMapSnackbarController.cancel.setDisable(false);
@@ -231,7 +238,7 @@ public class ManageMapViewController extends AbstractController {
             if (isUnselected) {
                 KioskMain.getUI().setScene(new MapViewController());
             }
-        }, false);
+        }, ()->{}, false);
     }
 
     @FXML
@@ -246,7 +253,7 @@ public class ManageMapViewController extends AbstractController {
         selectedNode.save();
         manageMapSnackbarController.saveNode.setDisable(true);
         manageMapSnackbarController.cancel.setDisable(true);
-        manageMapController.attemptUnselectNode(isUnselected -> {}, false);
+        manageMapController.attemptUnselectNode(isUnselected -> {}, ()->{}, false);
     }
 
     @FXML

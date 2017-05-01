@@ -22,6 +22,7 @@ import java.util.function.Predicate;
 public class OptionAlertViewController extends AbstractController implements IPopup {
 
     private final Consumer<Boolean> setConfirm;
+    private final Runnable onHideHandler;
     @FXML
     private JFXButton cancelButton;
     @FXML
@@ -36,7 +37,7 @@ public class OptionAlertViewController extends AbstractController implements IPo
     private JFXPopup instance;
 
     // pass true to action on default, false on other
-    public OptionAlertViewController(Parent parent, String title, String body, String cancelText, String confirmText, Consumer<Boolean> setConfirm) {
+    public OptionAlertViewController(Parent parent, String title, String body, String cancelText, String confirmText, Consumer<Boolean> setConfirm, Runnable onHide) {
         this.parent = parent;
         this.setConfirm = setConfirm;
         this.instance = new JFXPopup(this.getRegion());
@@ -46,7 +47,12 @@ public class OptionAlertViewController extends AbstractController implements IPo
         this.confirmButton.setText(confirmText.toUpperCase());
         this.cancelButton.setOnAction(this::clickCancel);
         this.confirmButton.setOnAction(this::clickConfirm);
+        this.onHideHandler = onHide;
         showCentered();
+    }
+
+    public OptionAlertViewController(Parent parent, String title, String body, String cancelText, String confirmText, Consumer<Boolean> setConfirm) {
+        this(parent, title, body, cancelText, confirmText, setConfirm,()->{});
     }
 
     private void clickCancel(ActionEvent event) {
@@ -93,4 +99,7 @@ public class OptionAlertViewController extends AbstractController implements IPo
     public Parent getParent() {
         return this.parent;
     }
+
+    @Override
+    public void onHide() {onHideHandler.run();}
 }
