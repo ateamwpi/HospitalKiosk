@@ -30,6 +30,7 @@ import javafx.scene.text.TextFlow;
 import javafx.scene.transform.Scale;
 import models.dir.Location;
 import models.path.Path;
+import models.qr.QRManager;
 
 import java.util.Collection;
 import java.util.List;
@@ -47,6 +48,8 @@ public class DirectionsDrawerController extends AbstractController {
     private Label printDirectionsIcon;
     @FXML
     private Label speakDirectionsIcon;
+    @FXML
+    private Label qrCodeIcon;
     @FXML
     private JFXTextField start;
     @FXML
@@ -102,6 +105,7 @@ public class DirectionsDrawerController extends AbstractController {
         directionsBackButton.setOnMouseClicked(this::showSearch);
         printDirectionsIcon.setOnMouseClicked(this::printDirections);
         speakDirectionsIcon.setOnMouseClicked(this::speakDirections);
+        qrCodeIcon.setOnMouseClicked(this::qrDirections);
         start.setOnKeyReleased(this::typeStart);
         start.focusedProperty().addListener(this::changeStartFocus);
         end.setOnKeyReleased(this::typeEnd);
@@ -383,5 +387,10 @@ public class DirectionsDrawerController extends AbstractController {
             speakDirectionsIcon.getStyleClass().setAll("volume-icon");
             KioskMain.getTTS().cancel();
         }
+    }
+
+    private void qrDirections(MouseEvent event) {
+        QRManager qr = new QRManager(root, path.textPath());
+
     }
 }

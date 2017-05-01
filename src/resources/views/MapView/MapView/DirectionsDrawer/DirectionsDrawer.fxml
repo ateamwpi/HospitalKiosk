@@ -88,6 +88,11 @@
             <padding>
                 <Insets bottom="10.0" top="10.0" />
             </padding>
+         <HBox alignment="CENTER" prefWidth="155.0">
+            <children>
+               <Label fx:id="qrCodeIcon" prefHeight="30.0" prefWidth="30.0" styleClass="qr-icon" stylesheets="@../../../../styles/MapView.css" />
+            </children>
+         </HBox>
             <HBox alignment="CENTER" prefWidth="155.0">
                 <Label fx:id="printDirectionsIcon" prefHeight="30.0" prefWidth="30.0" styleClass="printer-icon" stylesheets="@/resources/styles/MapView.css" />
             </HBox>
