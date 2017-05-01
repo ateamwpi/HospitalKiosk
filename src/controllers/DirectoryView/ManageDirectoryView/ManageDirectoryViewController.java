@@ -1,8 +1,10 @@
 package controllers.DirectoryView.ManageDirectoryView;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDrawer;
 import controllers.DirectoryView.AbstractDirectoryViewController;
 import controllers.MapView.MapView.MapViewController;
+import controllers.NavigationDrawer.NavigationDrawerController;
 import core.KioskMain;
 import core.exception.RoomNotFoundException;
 import javafx.event.ActionEvent;
@@ -18,13 +20,15 @@ import models.path.Node;
 public class ManageDirectoryViewController extends AbstractDirectoryViewController {
 
     @FXML
-    private Label directions; //label to give user instructions
-    @FXML
     private JFXButton addEntry;
     @FXML
     private JFXButton removeEntry;
     @FXML
     private JFXButton backButton;
+    @FXML
+    private Label hamburger;
+    @FXML
+    private JFXDrawer navigationDrawer;
 
     @Override
     public String getURL() {
@@ -34,7 +38,7 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
     @FXML
     private void initialize() {
         // bind event handlers
-        backButton.setOnAction(this::clickBack);
+        //backButton.setOnAction(this::clickBack);
         addEntry.setOnAction(this::clickAdd);
         removeEntry.setOnAction(this::clickRemove);
         // setup table and search
@@ -52,12 +56,21 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
                 removeEntry.setDisable(true);
             }
         });
+
+        // setup navigation drawer
+        NavigationDrawerController navigationDrawerController = new NavigationDrawerController(getRoot());
+        navigationDrawer.setSidePane(navigationDrawerController.getRoot());
+        //optionsMenu.open();
+        hamburger.setOnMouseClicked(event -> navigationDrawer.open());
+        navigationDrawerController.getDrawerClose().setOnMouseClicked(event -> navigationDrawer.close());
+        navigationDrawerController.getScrim().setOnMouseClicked(event -> navigationDrawer.close());
+        navigationDrawerController.getScrim().prefWidthProperty().bind(KioskMain.getUI().getStage().widthProperty().add(100));
+        navigationDrawerController.getScrim().prefHeightProperty().bind(KioskMain.getUI().getStage().heightProperty());
     }
 
     private void adminMode() {
         setTableEdit();
         removeEntry.setDisable(true);
-        directions.setText("");
         addLocationBtns();
     }
 
@@ -91,6 +104,8 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
             KioskMain.getUI().setScene(new ManageDirectoryViewController());
         }
     }
+
+
 
 
 }
