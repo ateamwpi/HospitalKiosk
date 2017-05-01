@@ -173,3 +173,10 @@
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
 }
+
+.qr-icon {
+    -fx-background-image: url("/resources/icons/qr.png");
+    -fx-background-size: 30px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
