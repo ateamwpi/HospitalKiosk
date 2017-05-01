@@ -134,6 +134,10 @@ public class Node {
         }
     }
 
+    public void setNodeType(NodeType nodeType) {
+        this.nodeType = nodeType;
+    }
+
     public void setRoomName(String name) throws NameInUseException {
         if(name.equals(getRoomName())) return;
         if(KioskMain.getPath().hasRoomName(name)) {

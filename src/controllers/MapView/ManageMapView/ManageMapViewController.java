@@ -97,9 +97,9 @@ public class ManageMapViewController extends AbstractController {
             b.setOnAction(event -> setFloor(Utils.strForNum(Integer.parseInt(b.getText())) + " Floor"));
         }
 
-        manageMapSnackbarController.nodeType.valueProperty().addListener(this::nodeTypeChanged);
-        manageMapSnackbarController.nodeType.getItems().setAll((Object[])NodeType.values());
-        manageMapSnackbarController.nodeType.getSelectionModel().selectFirst();
+        manageMapSnackbarController.getNodeType().valueProperty().addListener(this::nodeTypeChanged);
+        manageMapSnackbarController.getNodeType().getItems().setAll((Object[])NodeType.values());
+        manageMapSnackbarController.getNodeType().getSelectionModel().selectFirst();
 
         // init input text properties
         //TODO: set employeeOnly and nodeType of selected node
@@ -142,14 +142,19 @@ public class ManageMapViewController extends AbstractController {
         navigationDrawerController.getScrim().prefHeightProperty().bind(KioskMain.getUI().getStage().heightProperty());
     }
 
-    private void nodeTypeChanged(ObservableValue nodeType, Object oldValue, Object newValue) {
+    public void nodeTypeChanged(ObservableValue nodeType, Object oldValue, Object newValue) {
         if(selectedNode != null) {
             /* lol this stuff is gonna be hard.
              * if they have a node selected and they try to change the type what should happen?
              * The options are location, elevator, staircase, hallway, and outside
              * elevator == staircase, hallway == outside
              */
+            this.selectedNode.setNodeType((NodeType)newValue);
+
+            this.valueChanged(nodeType, oldValue, newValue);
         }
+
+
         manageMapSnackbarController.updateContent((NodeType)newValue);
     }
 
@@ -182,7 +187,7 @@ public class ManageMapViewController extends AbstractController {
         Bindings.bindBidirectional(yTextProperty, selectedNode.previewYProperty(), converter);
         Bindings.bindBidirectional(roomNameProperty, selectedNode.previewRoomNameProperty());
         Bindings.bindBidirectional(restrictedProperty, selectedNode.previewRestrictedProperty());
-        manageMapSnackbarController.nodeType.getSelectionModel().select(selectedNode.getNode().getNodeType());
+        manageMapSnackbarController.getNodeType().getSelectionModel().select(selectedNode.getNode().getNodeType());
         manageMapSnackbarController.nodeChanged();
 //        manageMapSnackbarController.employeeOnly.setVisible(true);
 //        manageMapSnackbarController.employeeOnly.setDisable(false);

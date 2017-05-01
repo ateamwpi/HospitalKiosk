@@ -156,7 +156,7 @@ public class ManageMapController extends AbstractController implements IClickabl
 
                 // create new node
                 Node node = new Node((int) newx,
-                        (int) newy, mapController.getFloor(), false, NodeType.Location, room);
+                        (int) newy, mapController.getFloor(), false, NodeType.Hallway, room);
                 // create new visual node with gestures
                 DraggableNode draggableNode = getDraggableNode(node);
                 // draw node with gestures

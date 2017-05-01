@@ -44,7 +44,7 @@ public class ManageMapSnackbarController extends AbstractController{
     @FXML
     protected JFXButton cancel; //will discard changes
     @FXML
-    protected JFXComboBox nodeType;
+    private JFXComboBox nodeType;
     @FXML
     protected JFXCheckBox employeeOnly;
     @FXML
@@ -75,6 +75,10 @@ public class ManageMapSnackbarController extends AbstractController{
     @Override
     public String getURL() {
         return "resources/views/MapVIew/ManageMapView/ManageMapSnackbar.fxml";
+    }
+
+    public JFXComboBox getNodeType() {
+        return this.nodeType;
     }
 
     @FXML

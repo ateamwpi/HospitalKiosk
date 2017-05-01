@@ -9,6 +9,7 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import models.path.Node;
+import models.path.NodeType;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,6 +27,7 @@ public class DraggableNode extends Circle {
     private static final Color SELECTED_COLOR = Color.RED;
 
     private final Node node;
+    private NodeType nodeType;
     private final IntegerProperty previewXProperty = new SimpleIntegerProperty();
     private final IntegerProperty previewYProperty = new SimpleIntegerProperty();
     private final StringProperty previewRoomNameProperty = new SimpleStringProperty();
@@ -123,6 +125,14 @@ public class DraggableNode extends Circle {
         return previewRoomNameProperty.get();
     }
 
+    public NodeType getNodeType() {
+        return this.nodeType;
+    }
+
+    public void setNodeType(NodeType nodeType) {
+        this.nodeType = nodeType;
+    }
+
     private boolean getPreviewRestricted() {
         return previewRestrictedProperty.get();
     }
@@ -147,6 +157,8 @@ public class DraggableNode extends Circle {
         System.out.println("cancel");
         previewConnections(node.getConnections());
         setDefaultPreview();
+        manageMapController.getManageMapViewController().nodeTypeChanged(null, null, node.getNodeType());
+        manageMapController.getManageMapViewController().getSnackbar().getNodeType().getSelectionModel().select(node.getNodeType());
     }
 
     public void save() {
@@ -162,6 +174,7 @@ public class DraggableNode extends Circle {
         node.setX(getPreviewX());
         node.setY(getPreviewY());
         node.setRestricted(getPreviewRestricted());
+        node.setNodeType(this.nodeType);
         try {
             node.setConnections(previewConnections);
         }
@@ -195,6 +208,7 @@ public class DraggableNode extends Circle {
     }
 
     private void setDefaultPreview() {
+        nodeType = node.getNodeType();
         previewX(node.getX());
         previewY(node.getY());
         previewRoomName(node.getRoomName());
@@ -208,7 +222,8 @@ public class DraggableNode extends Circle {
                 || getPreviewY() != node.getY()
                 || !getPreviewRoomName().equals(node.getRoomName())
                 || !getPreviewConnections().equals(node.getConnections())
-                || getPreviewRestricted() != node.isRestricted();
+                || getPreviewRestricted() != node.isRestricted()
+                || !getNodeType().equals(node.getNodeType());
     }
 
     @Override

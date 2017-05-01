@@ -28,13 +28,13 @@ import java.util.Arrays;
 public class MapController extends AbstractController implements IClickableController {
 
     private static final String[] MAP_URLS = {
-            "resources/floor1.png",
-            "resources/floor2.png",
-            "resources/floor3.png",
-            "resources/floor4.png",
-            "resources/floor5.png",
-            "resources/floor6.png",
-            "resources/floor7.png"
+            "resources/professionalMaps/floor1.png",
+            "resources/professionalMaps/floor2.png",
+            "resources/professionalMaps/floor3.png",
+            "resources/professionalMaps/floor4.png",
+            "resources/professionalMaps/floor5.png",
+            "resources/professionalMaps/floor6.png",
+            "resources/professionalMaps/floor7.png"
     };
 
     private ArrayList<ImageProxy> maps;
