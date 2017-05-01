@@ -8,7 +8,8 @@ import controllers.AbstractController;
 import controllers.MapView.Map.ManageMapController;
 import controllers.MapView.Map.DraggableNode;
 import controllers.MapView.MapView.MapViewController;
-import controllers.NavigationDrawer.NavigationDrawerController;
+import controllers.NavigationDrawer.*;
+import controllers.NavigationDrawer.MenuItem;
 import core.KioskMain;
 import core.Utils;
 import javafx.beans.binding.Bindings;
@@ -132,7 +133,7 @@ public class ManageMapViewController extends AbstractController {
         unselectNode(false);
 
         // setup navigation drawer
-        NavigationDrawerController navigationDrawerController = new NavigationDrawerController(getRoot());
+        NavigationDrawerController navigationDrawerController = new NavigationDrawerController(getRoot(), MenuItem.EnumMenuItem.ManageMap);
         navigationDrawer.setSidePane(navigationDrawerController.getRoot());
         //optionsMenu.open();
         manageMapSnackbarController.getHamburgerButton().setOnMouseClicked(event -> navigationDrawer.open());

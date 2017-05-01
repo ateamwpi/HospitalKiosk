@@ -187,6 +187,10 @@ public class MenuItem extends AbstractController {
         this.item.onClick.accept(e, mainRoot);
     }
 
+    public void setHighlighted() {
+        this.menuLabel.getStyleClass().setAll("button-bold");
+    }
+
     public MenuHeader getHeader() {
         return this.item.head;
     }

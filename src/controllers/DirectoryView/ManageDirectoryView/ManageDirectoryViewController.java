@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import controllers.DirectoryView.AbstractDirectoryViewController;
 import controllers.MapView.MapView.MapViewController;
+import controllers.NavigationDrawer.MenuItem;
 import controllers.NavigationDrawer.NavigationDrawerController;
 import core.KioskMain;
 import core.Utils;
@@ -59,7 +60,7 @@ public class ManageDirectoryViewController extends AbstractDirectoryViewControll
         });
 
         // setup navigation drawer
-        NavigationDrawerController navigationDrawerController = new NavigationDrawerController(getRoot());
+        NavigationDrawerController navigationDrawerController = new NavigationDrawerController(getRoot(), MenuItem.EnumMenuItem.ManageDir);
         navigationDrawer.setSidePane(navigationDrawerController.getRoot());
         //optionsMenu.open();
         hamburger.setOnMouseClicked(event -> navigationDrawer.open());
