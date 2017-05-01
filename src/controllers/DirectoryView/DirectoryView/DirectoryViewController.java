@@ -60,7 +60,7 @@ public class DirectoryViewController extends AbstractDirectoryViewController imp
         initializeTable();
         initializeFilter();
         setFullDirectory();
-        addLocationBtns("alert-button", 150);
+        addLocationBtns("popup-content-button", 150);
         okButton.setDisable(true);
 
         backButton.setOnAction(this::clickBack);

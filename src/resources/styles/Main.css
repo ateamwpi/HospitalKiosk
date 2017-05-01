@@ -16,6 +16,13 @@
     -fx-text-fill: white;
 }
 
+.popup-content-button{
+    -fx-font-size: 12px;
+    -fx-background-color: #0277BD;
+    -fx-padding: 6, 8, 6, 8;
+    -fx-text-fill: white;
+}
+
 .floor-button{
     -fx-font-size: 14px;
     -fx-background-color: white;
@@ -95,6 +102,7 @@
     -fx-text-fill: white;
     -fx-alignment: center;
     -jfx-button-type: flat;
+    -fx-background-color: #0277BD;
 }
 
 

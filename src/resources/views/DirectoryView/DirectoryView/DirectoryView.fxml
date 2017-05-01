@@ -3,11 +3,14 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -19,8 +22,8 @@
               <ColumnConstraints hgrow="ALWAYS" maxWidth="1142.0000305175781" minWidth="10.0" prefWidth="479.0" />
           </columnConstraints>
           <rowConstraints>
-              <RowConstraints maxHeight="99.0" minHeight="10.0" vgrow="SOMETIMES" />
-              <RowConstraints maxHeight="687.6666717529297" minHeight="10.0" prefHeight="403.0" vgrow="SOMETIMES" />
+              <RowConstraints maxHeight="99.0" minHeight="10.0" prefHeight="54.0" vgrow="SOMETIMES" />
+              <RowConstraints maxHeight="687.6666717529297" minHeight="10.0" prefHeight="391.0" vgrow="SOMETIMES" />
          <RowConstraints maxHeight="687.6666717529297" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
           </rowConstraints>
           <VBox fx:id="locationTypes" prefHeight="439.0" prefWidth="141.0" spacing="10.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
@@ -39,7 +42,7 @@
             <Insets bottom="5.0" left="5.0" right="5.0" />
          </GridPane.margin>
           </TableView>
-      <JFXButton fx:id="backButton" styleClass="alert-button" stylesheets="@/resources/styles/Main.css" text="x" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
+      <JFXButton fx:id="okButton" styleClass="popup-content-button" stylesheets="@/resources/styles/Main.css" text="OK" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
          <font>
             <Font size="16.0" />
          </font>
@@ -50,16 +53,23 @@
             <Insets bottom="5.0" right="5.0" top="5.0" />
          </GridPane.margin>
       </JFXButton>
-      <JFXButton fx:id="okButton" styleClass="alert-button" stylesheets="@/resources/styles/Main.css" text="OK" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
-         <font>
-            <Font size="16.0" />
-         </font>
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-         <GridPane.margin>
-            <Insets bottom="5.0" right="5.0" top="5.0" />
-         </GridPane.margin>
-      </JFXButton>
+      <HBox prefHeight="54.0" prefWidth="649.0" styleClass="banner" stylesheets="@../../../styles/Main.css" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER">
+         <children>
+            <Region prefHeight="54.0" prefWidth="242.0" styleClass="banner" stylesheets="@../../../styles/Main.css" />
+            <Label prefHeight="54.0" prefWidth="179.0" styleClass="title-text" stylesheets="@../../../styles/Main.css" text="Directory" textFill="WHITE" />
+            <Region prefHeight="54.0" prefWidth="201.0" styleClass="banner" stylesheets="@../../../styles/Main.css" />
+            <JFXButton fx:id="backButton" styleClass="white-alert-button" stylesheets="@/resources/styles/Main.css" text="x" textAlignment="CENTER">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </HBox.margin>
+            </JFXButton>
+         </children>
+      </HBox>
       </GridPane>
 </AnchorPane>

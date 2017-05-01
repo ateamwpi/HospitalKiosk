@@ -212,6 +212,6 @@ public abstract class AbstractDirectoryViewController extends AbstractController
     }
 
     protected void addLocationBtns() {
-        addLocationBtns("content-button", 150);
+        addLocationBtns("popup-content-button", 125);
     }
 }
