@@ -61,7 +61,6 @@ public class ManageMapSnackbarController extends AbstractController{
     private VBox contentBox;
     private AbstractNodeOptions content;
 
-
     public ManageMapSnackbarController(Parent mainRoot, ManageMapController manageMapController) {
         super(mainRoot, manageMapController);
     }
@@ -74,7 +73,7 @@ public class ManageMapSnackbarController extends AbstractController{
 
     @Override
     public String getURL() {
-        return "resources/views/MapVIew/ManageMapView/ManageMapSnackbar.fxml";
+        return "resources/views/MapView/ManageMapView/ManageMapSnackbar.fxml";
     }
 
     public JFXComboBox getNodeType() {
