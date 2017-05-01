@@ -57,6 +57,8 @@ public class DirectionsDrawerController extends AbstractController {
     @FXML
     private TextFlow toFlow;
     @FXML
+    private Label timeLabel;
+    @FXML
     private JFXTextField end;
     @FXML
     private Label drawerClose;
@@ -293,6 +295,8 @@ public class DirectionsDrawerController extends AbstractController {
         toLocation.setFill(Color.web("#e7effe"));
         toFlow.getChildren().clear();
         toFlow.getChildren().addAll(to, toLocation);
+        timeLabel.setText(KioskMain.getPath().totalTimeTaken(path));
+
     }
 
     @FXML

@@ -145,8 +145,7 @@ public class PathfindingManager {
         return inFeet;
     }
 
-    public double totalDistance(Path path) throws PathNotFoundException, NearestNotFoundException, FloorNotReachableException {
-
+    public double totalDistance(Path path) {
         double distance = 0;
         int i = 0;
         while(true){
@@ -160,7 +159,7 @@ public class PathfindingManager {
         return distance;
     }
 
-    public int timeInSeconds(Path path) throws PathNotFoundException, NearestNotFoundException, FloorNotReachableException {
+    public int timeInSeconds(Path path) {
 
         int timeTaken = 0;
         double distance = totalDistance(path);
@@ -175,8 +174,8 @@ public class PathfindingManager {
             }
         }
 
-        for(int i = 0; i <= path.getPath().size(); i++){
-            if(path.getPath().get(i+1).getFloor() != path.getPath().get(i).getFloor()){
+        for(int i = 1; i < path.getPath().size(); i++){
+            if(path.getPath().get(i-1).getFloor() != path.getPath().get(i).getFloor()){
                 floorDifference += Math.abs(path.getPath().get(i+1).getFloor() - path.getPath().get(i).getFloor());
             }
         }
@@ -186,7 +185,7 @@ public class PathfindingManager {
         return timeTaken;
     }
 
-    public String totalTimeTaken(Path path) throws PathNotFoundException, NearestNotFoundException, FloorNotReachableException {
+    public String totalTimeTaken(Path path) {
 
         String stringTime;
         int timeSec;
@@ -201,7 +200,10 @@ public class PathfindingManager {
         stringMin = Integer.toString(timeMin);
         stringSec = Integer.toString(timeSec);
 
-        stringTime = "the time to your destination is " + stringMin + " minutes and " + stringSec + " seconds.";
+        String minutes = timeMin == 1 ? "minute" : "minutes";
+        String seconds = timeSec == 1 ? "second" : "seconds";
+
+        stringTime = "Walk Time: " + stringMin + " " + minutes + ", " + stringSec + " " + seconds;
         return stringTime;
     }
 
