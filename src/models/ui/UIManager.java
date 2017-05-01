@@ -4,6 +4,7 @@ import controllers.NavigationDrawer.NavigationDrawerController;
 import controllers.PopupView.IPopup;
 import controllers.IController;
 import core.KioskMain;
+import javafx.scene.image.Image;
 import models.timeout.TimeoutManager;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -30,6 +31,8 @@ public class UIManager {
 
     public UIManager(Stage stage) {
         this.stage = stage;
+        this.stage.setTitle("Brigham and Women's Hospital Kiosk");
+        this.stage.getIcons().add(new Image("/resources/icon.png"));
         this.stage.show();
     }
 
@@ -39,6 +42,7 @@ public class UIManager {
         } else {
             scene = new Scene(controller.getRoot(), scene.getWidth(), scene.getHeight());
         }
+
 
         scene.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
             @Override
