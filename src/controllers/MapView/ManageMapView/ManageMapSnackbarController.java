@@ -26,6 +26,7 @@ import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
 import javafx.util.converter.IntegerStringConverter;
 import models.path.Node;
+import models.path.NodeType;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -74,13 +75,13 @@ public class ManageMapSnackbarController extends AbstractController{
 
 
     public ManageMapSnackbarController(Parent mainRoot, ManageMapController manageMapController) {
-        super(mainRoot);
-        this.manageMapController = manageMapController;
+        super(mainRoot, manageMapController);
     }
 
     @Override
     public void initData(Object... data) {
-        mainRoot = (Parent)data[0];
+        this.mainRoot = (Parent)data[0];
+        this.manageMapController = (ManageMapController)data[1];
     }
 
     @Override
@@ -93,14 +94,22 @@ public class ManageMapSnackbarController extends AbstractController{
         nodeAction.setText("Add");
         saveNode.setDisable(true);
         cancel.setDisable(true);
-        bottomBox.prefHeightProperty().bind(root.heightProperty().subtract(390));
+        bottomBox.prefHeightProperty().bind(root.heightProperty().subtract(141));
+        this.updateContent(NodeType.Location);
     }
 
     public Label getHamburgerButton() {
         return hamburger;
     }
 
+    public void updateContent(NodeType nodeType) {
+        this.contentBox.getChildren().clear();
+        AbstractController c = nodeType.makeController(this);
+        System.out.println("c = " + c);
+        this.contentBox.getChildren().add(c.getRoot());
+    }
 
-
-
+    public ManageMapController getManageMapController() {
+        return this.manageMapController;
+    }
 }

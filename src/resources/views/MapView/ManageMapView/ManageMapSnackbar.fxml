@@ -22,19 +22,23 @@
             <Font size="15.0" />
          </font>
       </JFXCheckBox>
-      <JFXComboBox fx:id="nodeType" focusColor="#e7effe" labelFloat="true" layoutX="178.0" layoutY="92.0" promptText="Node Type" style="-fx-text-fill: white;" stylesheets="@../../../styles/MapView.css" unFocusColor="#e7effe" />
-      <VBox fx:id="contentBox" layoutY="141.0" prefHeight="250.0" prefWidth="310.0" styleClass="background" stylesheets="@../../../styles/Main.css" />
-      <HBox fx:id="bottomBox" alignment="TOP_CENTER" layoutY="390.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="76.0" prefWidth="310.0" styleClass="background" stylesheets="@../../../styles/Main.css">
+      <JFXComboBox fx:id="nodeType" focusColor="#e7effe" layoutX="178.0" layoutY="92.0" promptText="Staircase" style="-fx-text-fill: white;" stylesheets="@../../../styles/MapView.css" unFocusColor="#e7effe" />
+      <VBox layoutY="141.0">
          <children>
-            <JFXButton fx:id="nodeAction" buttonType="RAISED" mnemonicParsing="false" prefWidth="70.0" styleClass="content-button" stylesheets="@../../../styles/Main.css" text="Delete" />
-            <Region prefHeight="39.0" prefWidth="23.0" />
-            <JFXButton fx:id="cancel" buttonType="RAISED" prefWidth="70.0" styleClass="content-button" stylesheets="@../../../styles/Main.css" text="Cancel" wrapText="true" />
-            <Region prefHeight="39.0" prefWidth="23.0" />
-            <JFXButton fx:id="saveNode" buttonType="RAISED" prefWidth="70.0" styleClass="content-button" stylesheets="@../../../styles/Main.css" text="Save" />
+            <VBox fx:id="contentBox" prefWidth="310.0" styleClass="background" stylesheets="@../../../styles/Main.css" />
+            <HBox fx:id="bottomBox" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="76.0" prefWidth="310.0" styleClass="background" stylesheets="@../../../styles/Main.css">
+               <children>
+                  <JFXButton fx:id="nodeAction" buttonType="RAISED" mnemonicParsing="false" prefWidth="70.0" styleClass="content-button" stylesheets="@../../../styles/Main.css" text="Delete" />
+                  <Region prefHeight="39.0" prefWidth="23.0" />
+                  <JFXButton fx:id="cancel" buttonType="RAISED" prefWidth="70.0" styleClass="content-button" stylesheets="@../../../styles/Main.css" text="Cancel" wrapText="true" />
+                  <Region prefHeight="39.0" prefWidth="23.0" />
+                  <JFXButton fx:id="saveNode" buttonType="RAISED" prefWidth="70.0" styleClass="content-button" stylesheets="@../../../styles/Main.css" text="Save" />
+               </children>
+               <padding>
+                  <Insets top="16.0" />
+               </padding>
+            </HBox>
          </children>
-         <padding>
-            <Insets top="16.0" />
-         </padding>
-      </HBox>
+      </VBox>
    </children>
 </Pane>

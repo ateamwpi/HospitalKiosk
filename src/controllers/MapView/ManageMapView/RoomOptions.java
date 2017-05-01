@@ -9,7 +9,7 @@ import javafx.scene.control.TableView;
 /**
  * Created by Madeline on 4/26/2017.
  */
-public class RoomOptions extends AbstractController{
+public class RoomOptions extends AbstractController implements INodeOptions {
 
     @FXML
     private JFXTextField roomName;
@@ -18,9 +18,19 @@ public class RoomOptions extends AbstractController{
     @FXML
     private TableView currentEntries;
 
+    private ManageMapSnackbarController parent;
+
+    public RoomOptions(ManageMapSnackbarController parent) {
+        super(parent);
+    }
+
+    @Override
+    public void initData(Object... data) {
+        this.parent = (ManageMapSnackbarController)data[0];
+    }
 
     @Override
     public String getURL() {
-        return "resources/views/ManageMapView/RoomOptions";
+        return "resources/views/MapView/ManageMapView/RoomOptions.fxml";
     }
 }

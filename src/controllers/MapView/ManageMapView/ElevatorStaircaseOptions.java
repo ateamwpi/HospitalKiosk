@@ -25,7 +25,7 @@ import java.util.*;
  * Created by mattm on 4/26/2017.
  *
  */
-public class ElevatorStaircaseOptions extends AbstractController implements IPopup {
+public class ElevatorStaircaseOptions extends AbstractController implements INodeOptions {
 
     @FXML
     private JFXTextField nameField;
@@ -53,16 +53,14 @@ public class ElevatorStaircaseOptions extends AbstractController implements IPop
     ));
     private HashMap<Integer, Node> elevators = new HashMap<>();
     private boolean[] initial = new boolean[7];
-    private Parent parent;
-    private JFXPopup instance;
     private String elevatorName;
+    private ManageMapSnackbarController parent;
     private DraggableNode clicked;
 
-    public ElevatorStaircaseOptions(Parent parent, DraggableNode clicked) {
+    public ElevatorStaircaseOptions(ManageMapSnackbarController parent) {
         this.parent = parent;
-        this.instance = new JFXPopup(this.getRegion());
+        this.clicked = parent.getManageMapController().getSelectedNode();
         this.elevatorName = elevatorName(clicked.getNode());
-        this.clicked = clicked;
         this.nameField.setText(elevatorName);
         for(Node n : KioskMain.getPath().getGraph().values()) {
             if(n.getNodeType().equals(clicked.getNode().getNodeType()) && elevatorName(n).equals(elevatorName)) {
@@ -143,8 +141,6 @@ public class ElevatorStaircaseOptions extends AbstractController implements IPop
 
         clicked.resetPreviewConnections();
         clicked.save();
-
-        this.getInstance().hide();
     }
 
     @FXML
@@ -155,20 +151,5 @@ public class ElevatorStaircaseOptions extends AbstractController implements IPop
     @Override
     public String getURL() {
         return "resources/views/MapView/ManageMapView/ElevatorStaircaseOptions.fxml";
-    }
-
-    @Override
-    public JFXPopup getInstance() {
-        return this.instance;
-    }
-
-    @Override
-    public Region getRegion() {
-        return (Region) this.getRoot();
-    }
-
-    @Override
-    public Parent getParent() {
-        return this.parent;
     }
 }

@@ -74,6 +74,11 @@ public class ManageMapViewController extends AbstractController {
 
         snackbar.open();
 
+        // load the admin map controller
+        manageMapController = new ManageMapController(this);
+        // add the map to the container
+        mapContainer.getChildren().add(manageMapController.getRoot());
+
         // setup drawer
         manageMapSnackbarController = new ManageMapSnackbarController(getRoot(), manageMapController);
         snackbar.setSidePane(manageMapSnackbarController.getRoot());
@@ -82,19 +87,13 @@ public class ManageMapViewController extends AbstractController {
         manageMapSnackbarController.saveNode.setOnAction(this::clickSave);
         manageMapSnackbarController.nodeAction.setOnAction(this::clickNodeAction);
 
-
-        // load the admin map controller
-        manageMapController = new ManageMapController(this);
-        // add the map to the container
-        mapContainer.getChildren().add(manageMapController.getRoot());
-
         for(JFXButton b: manageMapController.getMapController().getFloorButtons()) {
             b.setOnAction(event -> setFloor(Utils.strForNum(Integer.parseInt(b.getText())) + " Floor"));
         }
 
+        manageMapSnackbarController.nodeType.valueProperty().addListener(this::nodeTypeChanged);
         manageMapSnackbarController.nodeType.getItems().setAll(NodeType.values());
         manageMapSnackbarController.nodeType.getSelectionModel().selectFirst();
-        manageMapSnackbarController.nodeType.valueProperty().addListener(this::nodeTypeChanged);
 
         // init input text properties
         //TODO: set employeeOnly and nodeType of selected node
@@ -142,9 +141,7 @@ public class ManageMapViewController extends AbstractController {
              * The options are location, elevator, staircase, hallway, and outside
              * elevator == staircase, hallway == outside
              */
-        }
-        else {
-
+            manageMapSnackbarController.updateContent((NodeType)newValue);
         }
     }
 
@@ -173,6 +170,7 @@ public class ManageMapViewController extends AbstractController {
         Bindings.bindBidirectional(yTextProperty, selectedNode.previewYProperty(), converter);
         Bindings.bindBidirectional(roomNameProperty, selectedNode.previewRoomNameProperty());
         Bindings.bindBidirectional(restrictedProperty, selectedNode.previewRestrictedProperty());
+        manageMapSnackbarController.nodeType.getSelectionModel().select(selectedNode.getNode().getNodeType());
 //        manageMapSnackbarController.employeeOnly.setVisible(true);
 //        manageMapSnackbarController.employeeOnly.setDisable(false);
         manageMapSnackbarController.nodeAction.setDisable(false);
@@ -180,13 +178,6 @@ public class ManageMapViewController extends AbstractController {
         // show delete button
         manageMapSnackbarController.nodeAction.setText("Delete");
         // manageMapSnackbarController.saveNode.setVisible(true);
-
-        System.out.println("clicked " + node.getNodeType());
-
-        if(node.getNodeType().equals(NodeType.Elevator) || node.getNodeType().equals(NodeType.Staircase)) {
-            ElevatorStaircaseOptions menu = new ElevatorStaircaseOptions(getRoot(), draggableNode);
-            menu.showCentered();
-        }
     }
 
     public void unselectNode(boolean reselect) {

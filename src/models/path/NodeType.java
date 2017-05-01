@@ -1,5 +1,7 @@
 package models.path;
 
+import controllers.AbstractController;
+import controllers.MapView.ManageMapView.*;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
@@ -43,6 +45,16 @@ public enum NodeType {
 
     public static NodeType getType(String s) {
         return names.getOrDefault(s.toUpperCase(), null);
+    }
+
+    public AbstractController makeController(ManageMapSnackbarController parent) {
+        System.out.println(this);
+        switch (this) {
+            case Location: return new RoomOptions(parent);
+            case Elevator: return new ElevatorStaircaseOptions(parent);
+            case Staircase: return new ElevatorStaircaseOptions(parent);
+            default: return new HallwayOutsideOptions();
+        }
     }
 
 //    /**

@@ -10,7 +10,7 @@ import javafx.scene.control.TableView;
 /**
  * Created by Madeline on 4/26/2017.
  */
-public class HallwayOutsideOptions extends AbstractController{
+public class HallwayOutsideOptions extends AbstractController implements INodeOptions {
 
     @FXML
     private Parent root;
@@ -18,6 +18,6 @@ public class HallwayOutsideOptions extends AbstractController{
 
     @Override
     public String getURL() {
-        return "resources/views/ManageMapView/HallwayOutsideOptions.fxml";
+        return "resources/views/MapView/ManageMapView/HallwayOutsideOptions.fxml";
     }
 }
