@@ -3,6 +3,7 @@
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
@@ -110,7 +111,11 @@
                 </font>
             </Label>
         </VBox>
-        <VBox fx:id="directions" />
+      <ScrollPane fx:id="scroll" hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="310.0" minHeight="-Infinity" minWidth="310.0" prefWidth="310.0" vbarPolicy="NEVER">
+         <content>
+              <VBox fx:id="directions" />
+         </content>
+      </ScrollPane>
       <VBox>
          <children>
                <Label fx:id="endLabel" text="End">

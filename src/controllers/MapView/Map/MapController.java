@@ -153,7 +153,7 @@ public class MapController extends AbstractController implements IClickableContr
     public void drawPath(Path p) {
         if(p.getStart().getFloor() == this.floor) {
             drawNode(p.getStart(), Color.BLUE);
-            sceneGestures.panToPos(p.getStart().getX(), p.getStart().getY());
+//            sceneGestures.panToPos(p.getStart().getX(), p.getStart().getY());
         }
         for (int i = 1; i < p.getPath().size(); i++) {
             if(p.getStep(i-1).getFloor() == this.floor && p.getStep(i).getFloor() == this.floor)
