@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import controllers.AbstractController;
 import controllers.IClickableController;
 import core.ImageProxy;
+import core.KioskMain;
 import core.Utils;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
@@ -18,6 +19,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import models.login.ILoginObserver;
 import javafx.scene.text.Text;
 import models.path.Node;
 import models.path.Path;
@@ -28,19 +30,40 @@ import java.util.Arrays;
 /**
  * Created by dylan on 4/2/17.
  */
-public class MapController extends AbstractController implements IClickableController {
+public class MapController extends AbstractController implements IClickableController, ILoginObserver {
 
-    private static final String[] MAP_URLS = {
+    private static final String[] USER_MAP_URLS = {
             "resources/floor1.png",
             "resources/floor2.png",
             "resources/floor3.png",
             "resources/floor4.png",
             "resources/floor5.png",
             "resources/floor6.png",
-            "resources/floor7.png"
+            "resources/floor7.png",
+//            "resources/highResBelkin/Belkin_1_hi_res.png",
+            "resources/highResBelkin/Belkin_2_hi_res.png",
+            "resources/highResBelkin/Belkin_3_hi_res.png",
+            "resources/highResBelkin/Belkin_4_hi_res.png"
     };
 
-    private ArrayList<ImageProxy> maps;
+    private static final String[] PROF_MAP_URLS = {
+            "resources/professionalMaps/floor1.png",
+            "resources/professionalMaps/floor2.png",
+            "resources/professionalMaps/floor3.png",
+            "resources/professionalMaps/floor4.png",
+            "resources/professionalMaps/floor5.png",
+            "resources/professionalMaps/floor6.png",
+            "resources/professionalMaps/floor7.png",
+//            "resources/highResBelkin/Belkin_1_hi_res.png",
+            "resources/highResBelkin/Belkin_2_hi_res.png",
+            "resources/highResBelkin/Belkin_3_hi_res.png",
+            "resources/highResBelkin/Belkin_4_hi_res.png"
+    };
+
+    private static ArrayList<String> allFloors;
+
+    private ArrayList<ImageProxy> userMaps;
+    private ArrayList<ImageProxy> profMaps;
 
     private ImageProxy map;
     private Group overlay;
@@ -106,13 +129,20 @@ public class MapController extends AbstractController implements IClickableContr
     }
 
     public void enableAllButtons() {
-        enableButtons(new ArrayList<>(Arrays.asList("1st Floor", "2nd Floor", "3rd Floor", "4th Floor", "5th Floor", "6th Floor", "7th Floor")));
+        enableButtons(getAllFloors());
+    }
+
+    public static ArrayList<String> getAllFloors() {
+        if(allFloors == null) {
+            allFloors = new ArrayList<>(Arrays.asList("1", "2", "3", "4", "5", "6", "7", "B2", "B3", "B4"));
+        }
+        return allFloors;
     }
 
     public void enableButtons(ArrayList<String> floors) {
         floorVBox.getChildren().clear();
         for(JFXButton b : this.floorButtons) {
-            if(floors.contains(Utils.strForNum(Integer.parseInt(b.getText())) + " Floor")) {
+            if(floors.contains(b.getText())) {
                 floorVBox.getChildren().add(b);
             }
         }
@@ -147,7 +177,10 @@ public class MapController extends AbstractController implements IClickableContr
 
     public void setFloor(int floor){
         this.floor = floor;
-        map = this.maps.get(this.floor-1);
+        if(KioskMain.getLogin().getState().hasAccess())
+            map = this.profMaps.get(this.floor-1);
+        else
+            map = this.userMaps.get(this.floor-1);
         mapView.setImage(map.getImage());
         mapView.setPreserveRatio(true);
     }
@@ -166,15 +199,23 @@ public class MapController extends AbstractController implements IClickableContr
         overlay.getChildren().add(canvas);
 
         floor = 1;
-        this.maps = new ArrayList<>();
+        this.userMaps = new ArrayList<>();
+        this.profMaps = new ArrayList<>();
 
         // create the Proxies for all of the map images
-        for(String url : MAP_URLS) {
-            this.maps.add(new ImageProxy(url));
+        for(String url : USER_MAP_URLS) {
+            this.userMaps.add(new ImageProxy(url));
+        }
+        for(String url : PROF_MAP_URLS) {
+            this.profMaps.add(new ImageProxy(url));
         }
 
         // load the map into the map view
-        map = this.maps.get(0);
+
+        if(KioskMain.getLogin().getState().hasAccess())
+            map = this.profMaps.get(0);
+        else
+            map = this.userMaps.get(0);
         mapView.setImage(map.getImage());
         mapView.setPreserveRatio(true);
         // add the map to the canvas
@@ -187,9 +228,11 @@ public class MapController extends AbstractController implements IClickableContr
         sceneGestures.zoomIn();
         // register handlers zooming and panning
         canvas.addEventHandler(MouseEvent.ANY, new ClickDragHandler(sceneGestures.getOnMouseClickedEventHandler(),
-                sceneGestures.getOnMouseDraggedEventHandler(), event -> {}));
+                sceneGestures.getOnMouseDraggedEventHandler(), sceneGestures.getOnMouseDraggedEventHandler()));
         canvas.addEventHandler(MouseEvent.MOUSE_PRESSED, sceneGestures.getOnMousePressedEventHandler());
         canvas.addEventHandler(ScrollEvent.ANY, sceneGestures.getOnScrollEventHandler());
+
+        KioskMain.getLogin().attachObserver(this);
     }
 
     private void drawConnection(Node nodeA, Node nodeB) {
@@ -220,13 +263,12 @@ public class MapController extends AbstractController implements IClickableContr
     }
 
     private void addFloorButtons() {
-        ArrayList<String> floorList = new ArrayList<>(Arrays.asList("1", "2", "3", "4", "5", "6", "7"));
-        int wid = 36;
+        int wid = 40;
 
-        for(String s : floorList) {
+        for(String s : getAllFloors()) {
             JFXButton floor = new JFXButton();
             floor.setText(s);
-            floor.setOnAction(event -> setFloor(floorList.indexOf(s) + 1));
+            floor.setOnAction(event -> setFloor(getAllFloors().indexOf(s) + 1));
             floor.setPrefWidth(wid);
             floor.getStylesheets().add(Utils.getResourceAsExternal("resources/styles/Main.css"));
             floor.getStyleClass().add("floor-button");
@@ -270,5 +312,10 @@ public class MapController extends AbstractController implements IClickableContr
 
     public SceneGestures getSceneGestures() {
         return this.sceneGestures;
+    }
+
+    @Override
+    public void onAccountChanged() {
+        this.setFloor(this.getFloor());
     }
 }

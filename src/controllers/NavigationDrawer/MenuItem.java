@@ -43,10 +43,10 @@ public class MenuItem extends AbstractController {
         Logout(TOP, "Log Out", "logout", EnumMenuItem::logoutPressed),
         ManageMap(ADMIN, "Manage Map", "map", EnumMenuItem::manageMapPressed),
         ManageDir(ADMIN, "Manage Directory", "dir", EnumMenuItem::manageDirPressed),
-        SelectAlgo(ADMIN, "Select Path Algorithm", "settings", EnumMenuItem::selectAlgoPressed),
-        SelectKiosk(ADMIN, "Select Kiosk Location", "settings", EnumMenuItem::selectKioskPressed),
+        SelectAlgo(ADMIN, "Select Path Algorithm", "algo", EnumMenuItem::selectAlgoPressed),
+        SelectKiosk(ADMIN, "Select Kiosk Location", "kiosk", EnumMenuItem::selectKioskPressed),
         UserDir(USER, "View Directory", "dir", EnumMenuItem::userDirPressed),
-        SelectTimeout(ADMIN, "Select Timeout Delay", "settings", EnumMenuItem::timeoutPressed),
+        SelectTimeout(ADMIN, "Select Timeout Delay", "timer", EnumMenuItem::timeoutPressed),
         HelpInfo(USER, "Info & Visiting Hours", "help", EnumMenuItem::infoPressed),
         GetDirections(USER, "Get Directions", "path", EnumMenuItem::directionsPressed);
 
@@ -74,7 +74,8 @@ public class MenuItem extends AbstractController {
 
         private static void logoutPressed(MouseEvent e, Parent mainRoot) {
             KioskMain.getLogin().logout();
-            KioskMain.getUI().setScene(new MapViewController());
+            if(!(KioskMain.getUI().getController() instanceof MapViewController))
+                KioskMain.getUI().setScene(new MapViewController());
         }
 
         private static void manageMapPressed(MouseEvent e, Parent mainRoot) {
@@ -185,6 +186,10 @@ public class MenuItem extends AbstractController {
     private void onPressed(MouseEvent e) {
 //        this.menuLabel.getStyleClass().setAll("button-bold");
         this.item.onClick.accept(e, mainRoot);
+    }
+
+    public void setHighlighted() {
+        this.menuLabel.getStyleClass().setAll("button-bold");
     }
 
     public MenuHeader getHeader() {

@@ -34,6 +34,10 @@ public abstract class AbstractDirectoryViewController extends AbstractController
     @FXML
     protected VBox locationTypes;
 
+    public AbstractDirectoryViewController(Object... data) {
+        super(data);
+    }
+
     private HashMap<LocationType, Directory> directories;
     private Collection<Location> selectedLocations; // all Locations of the current LocationType
     private Collection<Location> filteredLocations; // all Locations that match the searchBox
@@ -66,7 +70,7 @@ public abstract class AbstractDirectoryViewController extends AbstractController
      */
     protected void initializeTable() {
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-        roomCol.setCellValueFactory(new PropertyValueFactory<>("roomName"));
+        if(roomCol != null) roomCol.setCellValueFactory(new PropertyValueFactory<>("roomName"));
         typeCol.setCellValueFactory(new PropertyValueFactory<>("locType"));
         locationsTable.getSortOrder().add(nameCol); // Default to sort by name
     }
@@ -87,8 +91,8 @@ public abstract class AbstractDirectoryViewController extends AbstractController
      * Establishes all locations to search through, displays them on table
      * @param locations Locations
      */
-    private void selectLocations(Collection<Location> locations) {
-        searchBox.clear();
+    protected void selectLocations(Collection<Location> locations) {
+        if(searchBox != null) searchBox.clear();
         filteredLocations.clear();
         selectedLocations = locations;
         showLocations(locations);
@@ -166,16 +170,18 @@ public abstract class AbstractDirectoryViewController extends AbstractController
         });
 
         Collection<String> roomNames = KioskMain.getPath().getRoomNames();
-        roomCol.setCellFactory(ComboBoxTableCell.forTableColumn(roomNames.toArray(new String[roomNames.size()])));
-        roomCol.setOnEditCommit((TableColumn.CellEditEvent<Location, String> t) -> {
-            try {
-                Node roomNode = KioskMain.getPath().getRoom(t.getNewValue());
-                t.getRowValue().setNode(roomNode);
-            } catch (RoomNotFoundException e) {
-                invalidRoomAlert();
-                t.getTableView().getItems().set(t.getTablePosition().getRow(), t.getRowValue());
-            }
-        });
+        if(roomCol != null) {
+            roomCol.setCellFactory(ComboBoxTableCell.forTableColumn(roomNames.toArray(new String[roomNames.size()])));
+            roomCol.setOnEditCommit((TableColumn.CellEditEvent<Location, String> t) -> {
+                try {
+                    Node roomNode = KioskMain.getPath().getRoom(t.getNewValue());
+                    t.getRowValue().setNode(roomNode);
+                } catch (RoomNotFoundException e) {
+                    invalidRoomAlert();
+                    t.getTableView().getItems().set(t.getTablePosition().getRow(), t.getRowValue());
+                }
+            });
+        }
 
         typeCol.setCellFactory(ComboBoxTableCell.forTableColumn(LocationType.userValues()));
         typeCol.setOnEditCommit((TableColumn.CellEditEvent<Location, LocationType> t) -> t.getRowValue().setLocType(t.getNewValue()));

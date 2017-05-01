@@ -134,6 +134,10 @@ public class Node {
         }
     }
 
+    public void setNodeType(NodeType nodeType) {
+        this.nodeType = nodeType;
+    }
+
     public void setRoomName(String name) throws NameInUseException {
         if(name.equals(getRoomName())) return;
         if(KioskMain.getPath().hasRoomName(name)) {
@@ -170,11 +174,11 @@ public class Node {
     }
 
     boolean isBelkin() {
-        return isBelkin;
+        return (this.getFloor() == 1 && isBelkin) || (this.getFloor() > 7);
     }
 
     public boolean isMain() {
-        return isMain;
+        return (this.getFloor() == 1 && isMain) || (this.getFloor() < 8 && this.getFloor() > 1);
     }
 
     public final String getRoomName() {

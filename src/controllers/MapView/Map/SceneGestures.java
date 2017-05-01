@@ -83,7 +83,7 @@ public class SceneGestures {
     private final EventHandler<MouseEvent> onMouseDraggedEventHandler = new EventHandler<MouseEvent>() {
         public void handle(MouseEvent event) {
             // right mouse button => panning
-            System.out.println("mouse dragged");
+//            System.out.println("mouse dragged");
             //if(!event.isSecondaryButtonDown())
                 //return;
             // update the canvas
