@@ -2,11 +2,9 @@ package controllers.MapView.ManageMapView;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
-import com.jfoenix.controls.JFXPopup;
 import com.jfoenix.controls.JFXTextField;
 import controllers.AbstractController;
 import controllers.MapView.Map.DraggableNode;
-import controllers.PopupView.IPopup;
 import core.KioskMain;
 import core.Utils;
 import core.exception.NameInUseException;
@@ -14,9 +12,7 @@ import core.exception.NodeInUseException;
 import core.exception.WrongFloorException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Region;
 import models.path.Node;
 
 import java.util.*;
@@ -25,7 +21,7 @@ import java.util.*;
  * Created by mattm on 4/26/2017.
  *
  */
-public class ElevatorStaircaseOptions extends AbstractController implements INodeOptions {
+public class ElevatorStaircaseOptions extends AbstractNodeOptions {
 
     @FXML
     private JFXTextField nameField;
@@ -54,34 +50,38 @@ public class ElevatorStaircaseOptions extends AbstractController implements INod
     private HashMap<Integer, Node> elevators = new HashMap<>();
     private boolean[] initial = new boolean[7];
     private String elevatorName;
-    private ManageMapSnackbarController parent;
     private DraggableNode clicked;
 
     public ElevatorStaircaseOptions(ManageMapSnackbarController parent) {
-        this.parent = parent;
+        super(parent);
+        this.nodeChanged();
+    }
+
+    @Override
+    public void nodeChanged() {
         this.clicked = parent.getManageMapController().getSelectedNode();
-        this.elevatorName = elevatorName(clicked.getNode());
-        this.nameField.setText(elevatorName);
-        for(Node n : KioskMain.getPath().getGraph().values()) {
-            if(n.getNodeType().equals(clicked.getNode().getNodeType()) && elevatorName(n).equals(elevatorName)) {
-                floors.get(n.getFloor()-1).selectedProperty().set(true);
-                initial[n.getFloor()-1] = true;
-                elevators.put(n.getFloor()-1, n);
+
+        if(clicked != null) { // Selected a new node
+            this.elevatorName = elevatorName(clicked.getNode());
+            this.nameField.setText(elevatorName);
+            for (Node n : KioskMain.getPath().getGraph().values()) {
+                if (n.getNodeType().equals(clicked.getNode().getNodeType()) && elevatorName(n).equals(elevatorName)) {
+                    floors.get(n.getFloor() - 1).selectedProperty().set(true);
+                    initial[n.getFloor() - 1] = true;
+                    elevators.put(n.getFloor() - 1, n);
+                }
             }
         }
-
-        doneButton.setOnAction(this::doneClicked);
+        else { // Deselected
+            this.nameField.setText("");
+            for(JFXCheckBox c : floors) {
+                c.selectedProperty().set(false);
+            }
+        }
     }
 
-    private String elevatorName(Node n) {
-        return n.getRoomName().substring(n.getRoomName().indexOf("Floor ")+6);
-    }
-
-    private String toElevatorName(int floor) {
-        return Utils.strForNum(floor) + " Floor " + nameField.getText();
-    }
-
-    private void doneClicked(ActionEvent event) {
+    @Override
+    public void savePressed() {
         // Validate data
         if(KioskMain.getPath().hasRoomName(nameField.getText())) {
             // error
@@ -141,6 +141,19 @@ public class ElevatorStaircaseOptions extends AbstractController implements INod
 
         clicked.resetPreviewConnections();
         clicked.save();
+    }
+
+    @Override
+    public void cancelPressed() {
+
+    }
+
+    private String elevatorName(Node n) {
+        return n.getRoomName().substring(n.getRoomName().indexOf("Floor ")+6);
+    }
+
+    private String toElevatorName(int floor) {
+        return Utils.strForNum(floor) + " Floor " + nameField.getText();
     }
 
     @FXML

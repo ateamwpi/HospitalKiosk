@@ -98,7 +98,7 @@ public class DraggableNode extends Circle {
         previewConnections.remove(node);
         DraggableNode connection = manageMapController.getDraggableNode(node);
         manageMapController.removeDraggableConnection(this, connection);
-        connection.save();
+//        connection.save();
     }
 
     public Collection<Node> getPreviewConnections() {
@@ -137,7 +137,7 @@ public class DraggableNode extends Circle {
         return previewRestrictedProperty;
     }
 
-    private void cancelPreview() {
+    public void cancelPreview() {
         System.out.println("cancel");
         previewConnections(node.getConnections());
         setDefaultPreview();
@@ -201,5 +201,14 @@ public class DraggableNode extends Circle {
                 || !getPreviewRoomName().equals(node.getRoomName())
                 || !getPreviewConnections().equals(node.getConnections())
                 || getPreviewRestricted() != node.isRestricted();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o instanceof DraggableNode) {
+            DraggableNode n = (DraggableNode) o;
+            return n.getNode().equals(this.getNode());
+        }
+        else return false;
     }
 }

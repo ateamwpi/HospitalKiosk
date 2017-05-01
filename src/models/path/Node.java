@@ -254,10 +254,11 @@ public class Node {
         return str.toString();
     }
 
-//    public boolean equals(Object o) {
-//        Node n = (Node) o;
-//        return n.getID() == getID();
-//    }
+    public boolean equals(Object o) {
+        if(!(o instanceof Node)) return false;
+        Node n = (Node) o;
+        return n.getID() == this.getID();
+    }
 
     public boolean isNew() {
         return isNew;

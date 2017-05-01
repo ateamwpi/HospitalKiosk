@@ -47,13 +47,13 @@ public enum NodeType {
         return names.getOrDefault(s.toUpperCase(), null);
     }
 
-    public AbstractController makeController(ManageMapSnackbarController parent) {
+    public AbstractNodeOptions makeController(ManageMapSnackbarController parent) {
         System.out.println(this);
         switch (this) {
             case Location: return new RoomOptions(parent);
             case Elevator: return new ElevatorStaircaseOptions(parent);
             case Staircase: return new ElevatorStaircaseOptions(parent);
-            default: return new HallwayOutsideOptions();
+            default: return new HallwayOutsideOptions(parent);
         }
     }
 

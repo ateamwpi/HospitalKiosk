@@ -17,6 +17,7 @@ import javafx.util.Pair;
 import models.path.Node;
 import models.path.NodeType;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -84,9 +85,12 @@ public class ManageMapController extends AbstractController implements IClickabl
     }
 
     private void removeAllNodes() {
-        for(DraggableNode node : draggableNodes.values()) {
+        Collection<DraggableNode> vals = new ArrayList<>(draggableNodes.values());
+        System.out.println(draggableNodes.size());
+        for(DraggableNode node : vals) {
             removeDraggableNode(node);
         }
+        System.out.println("after " + draggableNodes.size());
     }
 
     private void removeDraggableNode(DraggableNode node) {
@@ -95,7 +99,9 @@ public class ManageMapController extends AbstractController implements IClickabl
             node.removePreviewConnection(connection);
         }
         // remove node from map
-        draggableNodes.remove(node);
+        System.out.println("before " + draggableNodes.size() + " trying " + node + " help " + draggableNodes.get(node.getNode()));
+        draggableNodes.remove(node.getNode());
+        System.out.println("after " + draggableNodes.size());
         // remove node from overlay
         mapController.removeOverlay(node);
     }

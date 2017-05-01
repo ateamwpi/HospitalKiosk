@@ -24,6 +24,7 @@ import javafx.util.converter.IntegerStringConverter;
 import javafx.util.converter.NumberStringConverter;
 import models.path.Node;
 import models.path.NodeType;
+import org.omg.CORBA.OBJ_ADAPTER;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -65,8 +66,6 @@ public class ManageMapViewController extends AbstractController {
         converter = new NumberStringConverter();
         floorList = new ArrayList<>(Arrays.asList("1st Floor", "2nd Floor", "3rd Floor", "4th Floor", "5th Floor", "6th Floor", "7th Floor"));
         nodeTypeList = new ArrayList<>(Arrays.asList("Room", "Elevator", "Stairwell", "Outside"));
-
-
     }
 
     @FXML
@@ -85,6 +84,7 @@ public class ManageMapViewController extends AbstractController {
 
         // bind event handlers
         manageMapSnackbarController.saveNode.setOnAction(this::clickSave);
+        manageMapSnackbarController.cancel.setOnAction(this::clickCancel);
         manageMapSnackbarController.nodeAction.setOnAction(this::clickNodeAction);
 
         for(JFXButton b: manageMapController.getMapController().getFloorButtons()) {
@@ -92,7 +92,7 @@ public class ManageMapViewController extends AbstractController {
         }
 
         manageMapSnackbarController.nodeType.valueProperty().addListener(this::nodeTypeChanged);
-        manageMapSnackbarController.nodeType.getItems().setAll(NodeType.values());
+        manageMapSnackbarController.nodeType.getItems().setAll((Object[])NodeType.values());
         manageMapSnackbarController.nodeType.getSelectionModel().selectFirst();
 
         // init input text properties
@@ -171,6 +171,7 @@ public class ManageMapViewController extends AbstractController {
         Bindings.bindBidirectional(roomNameProperty, selectedNode.previewRoomNameProperty());
         Bindings.bindBidirectional(restrictedProperty, selectedNode.previewRestrictedProperty());
         manageMapSnackbarController.nodeType.getSelectionModel().select(selectedNode.getNode().getNodeType());
+        manageMapSnackbarController.nodeChanged();
 //        manageMapSnackbarController.employeeOnly.setVisible(true);
 //        manageMapSnackbarController.employeeOnly.setDisable(false);
         manageMapSnackbarController.nodeAction.setDisable(false);
@@ -196,6 +197,7 @@ public class ManageMapViewController extends AbstractController {
             manageMapSnackbarController.y.setText("");
         }
         manageMapSnackbarController.nodeAction.setText("Add");
+        manageMapSnackbarController.nodeChanged();
         //manageMapSnackbarController.room.setText("");
 //        manageMapSnackbarController.employeeOnly.setVisible(false);
 //        manageMapSnackbarController.employeeOnly.setDisable(true);
@@ -227,12 +229,18 @@ public class ManageMapViewController extends AbstractController {
         }, false);
     }
 
+    @FXML
+    private void clickCancel(ActionEvent event) {
+        selectedNode.cancelPreview();
+        manageMapSnackbarController.cancelPressed();
+    }
 
     @FXML
     private void clickSave(ActionEvent event) {
         selectedNode.save();
         manageMapSnackbarController.saveNode.setDisable(true);
         manageMapSnackbarController.cancel.setDisable(true);
+        manageMapSnackbarController.savePressed();
         manageMapController.attemptUnselectNode(isUnselected -> {}, false);
     }
 

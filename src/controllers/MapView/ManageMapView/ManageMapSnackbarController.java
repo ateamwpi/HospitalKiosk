@@ -1,39 +1,28 @@
 package controllers.MapView.ManageMapView;
 
-import com.jfoenix.controls.*;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXCheckBox;
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextField;
 import controllers.AbstractController;
 import controllers.MapView.Map.DraggableNode;
 import controllers.MapView.Map.ManageMapController;
-import controllers.MapView.Map.MapController;
-import controllers.MapView.MapView.MapViewController;
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXCheckBox;
-import com.jfoenix.controls.JFXTextField;
-import controllers.NavigationDrawer.NavigationDrawerController;
-import core.KioskMain;
-import core.Utils;
-import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.StringProperty;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
-import javafx.util.converter.IntegerStringConverter;
-import models.path.Node;
 import models.path.NodeType;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.regex.Pattern;
 
 /**
  * Created by Madeline on 4/26/2017.
+ *
  */
 public class ManageMapSnackbarController extends AbstractController{
 
@@ -72,6 +61,7 @@ public class ManageMapSnackbarController extends AbstractController{
     private HBox bottomBox;
     @FXML
     private VBox contentBox;
+    private AbstractNodeOptions content;
 
 
     public ManageMapSnackbarController(Parent mainRoot, ManageMapController manageMapController) {
@@ -104,9 +94,20 @@ public class ManageMapSnackbarController extends AbstractController{
 
     public void updateContent(NodeType nodeType) {
         this.contentBox.getChildren().clear();
-        AbstractController c = nodeType.makeController(this);
-        System.out.println("c = " + c);
-        this.contentBox.getChildren().add(c.getRoot());
+        this.content = nodeType.makeController(this);
+        this.contentBox.getChildren().add(this.content.getRoot());
+    }
+
+    public void nodeChanged() {
+        this.content.nodeChanged();
+    }
+
+    public void savePressed() {
+        this.content.savePressed();
+    }
+
+    public void cancelPressed() {
+        this.content.cancelPressed();
     }
 
     public ManageMapController getManageMapController() {
