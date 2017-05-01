@@ -200,3 +200,7 @@
 
 
 
+
+.jfx-combo-box .list-cell {
+    -fx-text-fill: #8eb6f8;
+}
