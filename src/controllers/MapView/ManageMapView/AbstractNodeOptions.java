@@ -22,4 +22,5 @@ public abstract class AbstractNodeOptions extends AbstractController {
     public abstract void savePressed();
     public abstract void cancelPressed();
     public abstract boolean hasUnsavedChanges();
+    public abstract String getRoomName();
 }

@@ -40,8 +40,6 @@ public class ManageMapSnackbarController extends AbstractController{
     @FXML
     protected JFXTextField y;
     @FXML
-    protected Label room;
-    @FXML
     protected JFXButton saveNode;
     @FXML
     protected JFXButton cancel; //will discard changes
@@ -81,7 +79,7 @@ public class ManageMapSnackbarController extends AbstractController{
 
     @FXML
     public void initialize() {
-        nodeAction.setText("Add");
+        nodeAction.setText("Delete");
         saveNode.setDisable(true);
         cancel.setDisable(true);
         bottomBox.prefHeightProperty().bind(root.heightProperty().subtract(141));
@@ -112,6 +110,10 @@ public class ManageMapSnackbarController extends AbstractController{
 
     public boolean hasUnsavedChanges() {
         return this.content.hasUnsavedChanges();
+    }
+
+    public String getRoomName() {
+        return this.content.getRoomName();
     }
 
     public ManageMapController getManageMapController() {

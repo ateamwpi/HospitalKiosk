@@ -122,6 +122,7 @@ public class ManageMapViewController extends AbstractController {
 
         xTextProperty.addListener(this::valueChanged);
         yTextProperty.addListener(this::valueChanged);
+        roomNameProperty.addListener(this::valueChanged);
         restrictedProperty.addListener(this::valueChanged);
 
         // reset edit view
@@ -145,8 +146,8 @@ public class ManageMapViewController extends AbstractController {
              * The options are location, elevator, staircase, hallway, and outside
              * elevator == staircase, hallway == outside
              */
-            manageMapSnackbarController.updateContent((NodeType)newValue);
         }
+        manageMapSnackbarController.updateContent((NodeType)newValue);
     }
 
     public void valueChanged(ObservableValue observable, Object oldValue, Object newValue) {
@@ -200,7 +201,8 @@ public class ManageMapViewController extends AbstractController {
             manageMapSnackbarController.x.setText("");
             manageMapSnackbarController.y.setText("");
         }
-        manageMapSnackbarController.nodeAction.setText("Add");
+//        manageMapSnackbarController.nodeAction.setText("Add");
+        manageMapSnackbarController.nodeAction.setDisable(true);
         manageMapSnackbarController.nodeChanged();
         //manageMapSnackbarController.room.setText("");
 //        manageMapSnackbarController.employeeOnly.setVisible(false);
@@ -220,8 +222,7 @@ public class ManageMapViewController extends AbstractController {
     }
 
     private String getRoomName() {
-        String roomName = manageMapSnackbarController.room.getText();
-        return roomName.equals("") ? "NONE" : roomName;
+        return getSnackbar().getRoomName();
     }
 
     @FXML
@@ -251,7 +252,8 @@ public class ManageMapViewController extends AbstractController {
     @FXML
     private void clickNodeAction(ActionEvent event) {
         if (selectedNode == null) {
-            clickAdd();
+//            clickAdd();
+            return;
         } else {
             clickDelete();
         }
@@ -262,13 +264,13 @@ public class ManageMapViewController extends AbstractController {
         selectedNode.delete(isDeleted -> {});
     }
 
-    private void clickAdd() {
-        // verify the node properties
-        if (verifyNode()) {
-            // add the node
-            manageMapController.addNode(getX(), getY(), getRoomName());
-        }
-    }
+//    private void clickAdd() {
+//        // verify the node properties
+//        if (verifyNode()) {
+//            // add the node
+//            manageMapController.addNode(getX(), getY(), getRoomName());
+//        }
+//    }
 
     private Boolean verifyNode() {
         // TODO fix hard coded values

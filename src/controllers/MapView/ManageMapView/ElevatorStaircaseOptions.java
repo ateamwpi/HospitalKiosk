@@ -54,6 +54,7 @@ public class ElevatorStaircaseOptions extends AbstractNodeOptions {
 
     public ElevatorStaircaseOptions(ManageMapSnackbarController parent) {
         super(parent);
+
         this.nodeChanged();
 
         for(JFXCheckBox box : floors) {
@@ -183,6 +184,11 @@ public class ElevatorStaircaseOptions extends AbstractNodeOptions {
             if(before != after) return true;
         }
         return false;
+    }
+
+    @Override
+    public String getRoomName() {
+        return nameField.getText();
     }
 
     private String elevatorName(Node n) {

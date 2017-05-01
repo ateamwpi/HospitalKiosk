@@ -22,22 +22,21 @@ public class HallwayOutsideOptions extends AbstractNodeOptions {
     }
 
     @Override
-    public void nodeChanged() {
-
-    }
+    public void nodeChanged() {}
 
     @Override
-    public void savePressed() {
-
-    }
+    public void savePressed() {}
 
     @Override
-    public void cancelPressed() {
-
-    }
+    public void cancelPressed() {}
 
     @Override
     public boolean hasUnsavedChanges() {
         return false;
+    }
+
+    @Override
+    public String getRoomName() {
+        return "NONE";
     }
 }

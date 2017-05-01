@@ -10,12 +10,7 @@
 
 <Pane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="310.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label layoutX="22.0" layoutY="14.0" text="Name:">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font>
-      </Label>
-      <JFXTextField fx:id="roomName" layoutX="88.0" layoutY="12.0" prefHeight="25.0" prefWidth="188.0" />
+      <JFXTextField fx:id="roomName" labelFloat="true" layoutX="60.0" layoutY="20.0" prefHeight="25.0" prefWidth="188.0" promptText="Room Name" />
       <JFXButton fx:id="editEntries" buttonType="RAISED" layoutX="109.0" layoutY="69.0" styleClass="content-button" stylesheets="@../../../styles/Main.css" text="Edit Entries" />
       <TableView fx:id="currentEntries" layoutX="55.0" layoutY="166.0" prefHeight="200.0" prefWidth="200.0">
         <columns>
