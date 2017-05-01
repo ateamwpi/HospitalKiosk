@@ -110,6 +110,10 @@ public class ManageMapSnackbarController extends AbstractController{
         this.content.cancelPressed();
     }
 
+    public boolean hasUnsavedChanges() {
+        return this.content.hasUnsavedChanges();
+    }
+
     public ManageMapController getManageMapController() {
         return this.manageMapController;
     }

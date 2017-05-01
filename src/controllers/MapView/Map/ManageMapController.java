@@ -2,6 +2,7 @@ package controllers.MapView.Map;
 
 import controllers.AbstractController;
 import controllers.IClickableController;
+import controllers.MapView.ManageMapView.ManageMapSnackbarController;
 import controllers.MapView.ManageMapView.ManageMapViewController;
 import core.KioskMain;
 import core.Utils;
@@ -93,7 +94,7 @@ public class ManageMapController extends AbstractController implements IClickabl
         System.out.println("after " + draggableNodes.size());
     }
 
-    private void removeDraggableNode(DraggableNode node) {
+    public void removeDraggableNode(DraggableNode node) {
         // remove node connections
         for (Node connection : node.getPreviewConnections()) {
             node.removePreviewConnection(connection);
@@ -205,7 +206,7 @@ public class ManageMapController extends AbstractController implements IClickabl
         }, true);
     }
 
-    ManageMapViewController getManageMapViewController() {
+    public ManageMapViewController getManageMapViewController() {
         return manageMapViewController;
     }
 

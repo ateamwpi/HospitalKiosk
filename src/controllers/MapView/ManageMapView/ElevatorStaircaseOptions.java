@@ -55,6 +55,11 @@ public class ElevatorStaircaseOptions extends AbstractNodeOptions {
     public ElevatorStaircaseOptions(ManageMapSnackbarController parent) {
         super(parent);
         this.nodeChanged();
+
+        for(JFXCheckBox box : floors) {
+            box.selectedProperty().addListener(parent.getManageMapController().getManageMapViewController()::valueChanged);
+        }
+        nameField.textProperty().addListener(parent.getManageMapController().getManageMapViewController()::valueChanged);
     }
 
     @Override
@@ -89,7 +94,7 @@ public class ElevatorStaircaseOptions extends AbstractNodeOptions {
         }
 
         // Update all names of the elevators in this row
-        if(!elevators.equals(nameField.getText())) {
+        if(!elevatorName.equals(nameField.getText())) {
             for(Node n : elevators.values()) {
                 try {
                     n.setRoomName(toElevatorName(n.getFloor()));
@@ -97,9 +102,11 @@ public class ElevatorStaircaseOptions extends AbstractNodeOptions {
                 } catch (NameInUseException e) {}
             }
             clicked.previewRoomNameProperty().setValue(toElevatorName(clicked.getNode().getFloor()));
-            clicked.save();
+            elevatorName = nameField.getText();
         }
 
+        // Check whether any need to be added or removed
+        boolean removeThis = false;
         for (JFXCheckBox box : floors) {
             int index = floors.indexOf(box);
             int floor = index+1;
@@ -114,6 +121,7 @@ public class ElevatorStaircaseOptions extends AbstractNodeOptions {
             else if(!after && before) {
                 // remove
                 Node n = elevators.get(index);
+                if(n.equals(this.clicked.getNode())) removeThis = true;
                 try {
                     KioskMain.getPath().removeNode(n);
                 } catch (NodeInUseException e) {
@@ -123,14 +131,14 @@ public class ElevatorStaircaseOptions extends AbstractNodeOptions {
             }
         }
 
+        // Remove all old connections
         for (Node n : elevators.values()) {
             n.removeCrossFloorConnections();
         }
 
+        // Add new connections
         ArrayList<Node> els = new ArrayList<>(elevators.values());
-
         els.sort(Comparator.comparingInt(Node::getFloor));
-
         for(int i = 1; i < els.size(); i++) {
             try {
                 els.get(i-1).addConnection(els.get(i));
@@ -139,13 +147,42 @@ public class ElevatorStaircaseOptions extends AbstractNodeOptions {
             }
         }
 
+        // reset local variables so it knows there are no unsaved changes
+        for(JFXCheckBox box : floors) {
+            int index = floors.indexOf(box);
+            boolean after = box.selectedProperty().get();
+            initial[index] = after;
+        }
+
+        // update preview so it doesn't ask me to cancel
         clicked.resetPreviewConnections();
-        clicked.save();
+
+        if(removeThis)
+            this.parent.getManageMapController().removeDraggableNode(this.clicked);
     }
 
     @Override
     public void cancelPressed() {
+        nameField.setText(elevatorName);
+        for(JFXCheckBox box : this.floors) {
+            int index = floors.indexOf(box);
+            boolean before = initial[index];
+            box.selectedProperty().set(before);
+        }
+    }
 
+    @Override
+    public boolean hasUnsavedChanges() {
+        if(!elevatorName.equals(nameField.getText())) return true;
+
+        for(JFXCheckBox box : this.floors) {
+            int index = floors.indexOf(box);
+            int floor = index+1;
+            boolean before = initial[index];
+            boolean after = box.selectedProperty().get();
+            if(before != after) return true;
+        }
+        return false;
     }
 
     private String elevatorName(Node n) {

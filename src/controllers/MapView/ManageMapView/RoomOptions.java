@@ -43,6 +43,11 @@ public class RoomOptions extends AbstractNodeOptions {
     }
 
     @Override
+    public boolean hasUnsavedChanges() {
+        return false;
+    }
+
+    @Override
     public String getURL() {
         return "resources/views/MapView/ManageMapView/RoomOptions.fxml";
     }

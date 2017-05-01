@@ -35,4 +35,9 @@ public class HallwayOutsideOptions extends AbstractNodeOptions {
     public void cancelPressed() {
 
     }
+
+    @Override
+    public boolean hasUnsavedChanges() {
+        return false;
+    }
 }

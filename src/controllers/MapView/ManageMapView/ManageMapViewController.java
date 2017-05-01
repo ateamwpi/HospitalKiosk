@@ -68,6 +68,10 @@ public class ManageMapViewController extends AbstractController {
         nodeTypeList = new ArrayList<>(Arrays.asList("Room", "Elevator", "Stairwell", "Outside"));
     }
 
+    public ManageMapSnackbarController getSnackbar() {
+        return this.manageMapSnackbarController;
+    }
+
     @FXML
     private void initialize() {
 
@@ -145,7 +149,7 @@ public class ManageMapViewController extends AbstractController {
         }
     }
 
-    private void valueChanged(ObservableValue observable, Object oldValue, Object newValue) {
+    public void valueChanged(ObservableValue observable, Object oldValue, Object newValue) {
         if(selectedNode != null && selectedNode.hasUnsavedChanges()) {
             manageMapSnackbarController.saveNode.setDisable(false);
             manageMapSnackbarController.cancel.setDisable(false);
@@ -237,10 +241,10 @@ public class ManageMapViewController extends AbstractController {
 
     @FXML
     private void clickSave(ActionEvent event) {
+        manageMapSnackbarController.savePressed();
         selectedNode.save();
         manageMapSnackbarController.saveNode.setDisable(true);
         manageMapSnackbarController.cancel.setDisable(true);
-        manageMapSnackbarController.savePressed();
         manageMapController.attemptUnselectNode(isUnselected -> {}, false);
     }
 

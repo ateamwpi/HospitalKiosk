@@ -21,4 +21,5 @@ public abstract class AbstractNodeOptions extends AbstractController {
     public abstract void nodeChanged();
     public abstract void savePressed();
     public abstract void cancelPressed();
+    public abstract boolean hasUnsavedChanges();
 }
