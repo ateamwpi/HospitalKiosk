@@ -1,6 +1,7 @@
 package models.path;
 
 
+import controllers.MapView.Map.MapController;
 import controllers.MapView.MapView.DirectionsDrawer.DirectionStep;
 import core.Utils;
 
@@ -179,7 +180,7 @@ public class Path {
         ArrayList<String> results = new ArrayList<>();
 
         for (Node n : path) {
-            String floor = n.getFloor() + "";
+            String floor = MapController.getAllFloors().get(n.getFloor()-1);
             if(!n.getNodeType().equals(NodeType.Elevator) && !results.contains(floor)) results.add(floor);
         }
 

@@ -57,7 +57,7 @@ public class MapController extends AbstractController implements IClickableContr
             "resources/highResBelkin/Belkin_4_hi_res.png"
     };
 
-    private ArrayList<String> allFloors;
+    private static ArrayList<String> allFloors;
 
     private ArrayList<ImageProxy> userMaps;
     private ArrayList<ImageProxy> profMaps;
@@ -129,11 +129,11 @@ public class MapController extends AbstractController implements IClickableContr
         enableButtons(getAllFloors());
     }
 
-    public ArrayList<String> getAllFloors() {
-        if(this.allFloors == null) {
-            this.allFloors = new ArrayList<>(Arrays.asList("1", "2", "3", "4", "5", "6", "7", "B2", "B3", "B4"));
+    public static ArrayList<String> getAllFloors() {
+        if(allFloors == null) {
+            allFloors = new ArrayList<>(Arrays.asList("1", "2", "3", "4", "5", "6", "7", "B2", "B3", "B4"));
         }
-        return this.allFloors;
+        return allFloors;
     }
 
     public void enableButtons(ArrayList<String> floors) {
