@@ -1,6 +1,5 @@
 package controllers.MapView.ManageMapView;
 
-import controllers.AbstractController;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 
@@ -12,7 +11,7 @@ public class HallwayOutsideOptions extends AbstractNodeOptions {
     @FXML
     private Parent root;
 
-    public HallwayOutsideOptions(ManageMapSnackbarController parent) {
+    public HallwayOutsideOptions(ManageMapDrawerController parent) {
         super(parent);
     }
 

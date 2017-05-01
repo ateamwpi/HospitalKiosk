@@ -2,7 +2,6 @@ package controllers.MapView.ManageMapView;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
-import controllers.AbstractController;
 import controllers.DirectoryView.ManageDirectoryView.ManageDirectoryViewController;
 import controllers.MapView.Map.DraggableNode;
 import core.KioskMain;
@@ -12,8 +11,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import models.dir.Location;
-
-import javax.swing.*;
 
 /**
  * Created by Madeline on 4/26/2017.
@@ -34,7 +31,7 @@ public class RoomOptions extends AbstractNodeOptions {
 
     private DraggableNode clicked;
 
-    public RoomOptions(ManageMapSnackbarController parent) {
+    public RoomOptions(ManageMapDrawerController parent) {
         super(parent);
 
         this.nodeChanged();
@@ -52,7 +49,7 @@ public class RoomOptions extends AbstractNodeOptions {
 
     @Override
     public void initData(Object... data) {
-        this.parent = (ManageMapSnackbarController)data[0];
+        this.parent = (ManageMapDrawerController)data[0];
     }
 
     @Override

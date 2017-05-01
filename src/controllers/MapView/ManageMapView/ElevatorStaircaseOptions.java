@@ -3,14 +3,12 @@ package controllers.MapView.ManageMapView;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXTextField;
-import controllers.AbstractController;
 import controllers.MapView.Map.DraggableNode;
 import core.KioskMain;
 import core.Utils;
 import core.exception.NameInUseException;
 import core.exception.NodeInUseException;
 import core.exception.WrongFloorException;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
 import models.path.Node;
@@ -52,7 +50,7 @@ public class ElevatorStaircaseOptions extends AbstractNodeOptions {
     private String elevatorName;
     private DraggableNode clicked;
 
-    public ElevatorStaircaseOptions(ManageMapSnackbarController parent) {
+    public ElevatorStaircaseOptions(ManageMapDrawerController parent) {
         super(parent);
 
         this.nodeChanged();
