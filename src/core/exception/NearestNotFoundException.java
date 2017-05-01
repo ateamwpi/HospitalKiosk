@@ -6,8 +6,8 @@ import models.dir.LocationType;
  * Created by mattm on 4/13/2017.
  */
 public class NearestNotFoundException extends Exception {
-    private LocationType loc;
-    private int floor;
+    private final LocationType loc;
+    private final int floor;
 
     public NearestNotFoundException(LocationType type, int floor) {
         this.loc = type;

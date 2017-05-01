@@ -5,14 +5,14 @@ package core.exception;
  */
 public class NameInUseException extends Exception {
 
-    String name;
+    private final String name;
 
     public NameInUseException(String name) {
         this.name = name;
     }
 
     public void printStackTrace() {
-        System.out.println("The name " + this.name + " is already in use!");
+        System.out.println("The name " + name + " is already in use!");
         super.printStackTrace();
     }
 }

@@ -29,9 +29,9 @@ public class Location {
         this.isNew = false;
     }
 
-    public Location(String name, LocationType locType, Node node) {
+    public Location(LocationType locType, Node node) {
         this.id = getNextLocID();
-        this.name = name;
+        this.name = "";
         this.locType = locType;
         this.node = node;
         this.node.addLocation(this);
@@ -39,11 +39,15 @@ public class Location {
     }
 
     public int getID() {
-        return this.id;
+        return id;
+    }
+
+    public boolean isRestricted() {
+        return this.getNode().isRestricted();
     }
 
     public boolean isNew() {
-        return this.isNew;
+        return isNew;
     }
 
     public void setName(String name) {
@@ -57,26 +61,25 @@ public class Location {
         KioskMain.getDB().updateLocation(this);
     }
 
-    public void setNode(Node n) {
-        this.node = n;
+    public void setNode(Node node) {
+        this.node = node;
         KioskMain.getDB().updateLocation(this);
     }
 
     public String getName() {
-        return this.name;
+        return name;
     }
 
     public LocationType getLocType() {
-        return this.locType;
+        return locType;
     }
 
     public Node getNode() {
-        return this.node;
+        return node;
     }
 
     public String toString() {
-        String str = "Location " + name + ", ID=" + id + ", locType=" + locType + ", nodeID=" + node.getID();
-        return str;
+        return "Location " + name + ", ID=" + id + ", locType=" + locType + ", nodeID=" + node.getID();
     }
 
 
@@ -86,7 +89,7 @@ public class Location {
         nextLocID = i;
     }
 
-    public static int getNextLocID() {
+    private static int getNextLocID() {
         int val = nextLocID;
         nextLocID ++;
         return val;

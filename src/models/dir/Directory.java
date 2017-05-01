@@ -3,21 +3,28 @@ package models.dir;
 import core.KioskMain;
 
 import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by mattm on 3/29/2017.
  */
 public class Directory {
-    private String name;
-    private HashMap<Integer, Location> entries;
+    private final String name;
+    private final HashMap<Integer, Location> entries;
 
     public Directory(String name) {
         this.name = name;
-        this.entries = new HashMap<Integer, Location>();
+        this.entries = new HashMap<>();
     }
 
-    public HashMap<Integer, Location> getLocations() {
-        return entries;
+    public Map<Integer, Location> getLocations() {
+        Map<Integer, Location> clone = (HashMap<Integer, Location>) entries.clone();
+
+        if(KioskMain.getLogin().getState().hasAccess())
+            return clone;
+        else
+            return clone.entrySet().stream().filter(e -> !e.getValue().isRestricted()).collect(Collectors.toMap(e->e.getKey(), e->e.getValue()));
     }
 
     public void addLocation(Location l) {
@@ -27,16 +34,16 @@ public class Directory {
         entries.put(l.getID(), l);
     }
 
-    public LocationType getType() {
-        return LocationType.getType(this.name);
+    private LocationType getType() {
+        return LocationType.getType(name);
     }
 
     void moveLocation(Location l, LocationType newType) {
-        if(newType.equals(this.getType())) {
-            this.entries.put(l.getID(), l);
+        if(newType.equals(getType())) {
+            entries.put(l.getID(), l);
         }
         else {
-            this.entries.remove(l.getID());
+            entries.remove(l.getID());
         }
     }
 
@@ -52,10 +59,10 @@ public class Directory {
     }
 
     public String toString() {
-        String str = name + " Directory\n";
+        StringBuilder str = new StringBuilder(name + " Directory\n");
         for (Location l : entries.values()) {
-            str += l.toString() + "\n";
+            str.append(l.toString()).append("\n");
         }
-        return str;
+        return str.toString();
     }
 }

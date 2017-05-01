@@ -4,16 +4,17 @@ import core.KioskMain;
 import core.exception.NearestNotFoundException;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by mattm on 3/29/2017.
  */
 public class DirectoryManager {
 
-    private HashMap<LocationType, Directory> directories;
-    private Location theKiosk;
-    private Location mainEntr;
-    private Location belkinEntr;
+    private final HashMap<LocationType, Directory> directories;
+    private final Location theKiosk;
+    private final Location mainEntr;
+    private final Location belkinEntr;
 
     public DirectoryManager(HashMap<LocationType, Directory> allLocations, Location theKiosk, Location mainEntr, Location belkinEntr) {
         this.directories = allLocations;
@@ -27,15 +28,15 @@ public class DirectoryManager {
     }
 
     public Location getTheKiosk() {
-        return this.theKiosk;
+        return theKiosk;
     }
 
     public Location getMainEntr() {
-        return this.mainEntr;
+        return mainEntr;
     }
 
     public Location getBelkinEntr() {
-        return this.belkinEntr;
+        return belkinEntr;
     }
 
     public void removeLocation(Location l) {
@@ -50,26 +51,19 @@ public class DirectoryManager {
         return directories.get(locType);
     }
 
-    public void updateLocationType(Location location, LocationType newLocType) {
-        this.getDirectory(location.getLocType()).moveLocation(location, newLocType);
-        this.getDirectory(newLocType).moveLocation(location, newLocType);
-    }
-
-    public List<Location> search(String query, Integer maxResults) {
-        List<Location> locations = search(query);
-        int length = locations.size();
-        return locations.subList(0, maxResults > length ? length : maxResults);
+    void updateLocationType(Location location, LocationType newLocType) {
+        getDirectory(location.getLocType()).moveLocation(location, newLocType);
+        getDirectory(newLocType).moveLocation(location, newLocType);
     }
 
     public List<Location> search(String query) {
-        query = query.toLowerCase();
-        List<Location> locations = new ArrayList<>();
-        for (Location loc : getAllLocations()) {
-            if (loc.getName().toLowerCase().contains(query) || loc.getNode().getRoomName().toLowerCase().contains(query)) {
-                locations.add(loc);
-            }
-        }
-        return locations;
+        return search(query, getAllLocations());
+    }
+
+    public List<Location> search(String query, Collection<Location> locations) {
+        final String queryLower = query.toLowerCase();
+        return locations.stream().filter(location -> location.getName().toLowerCase().contains(queryLower)
+                || location.getNode().getRoomName().toLowerCase().contains(queryLower)).collect(Collectors.toList());
     }
 
     private Collection<Location> getAllLocations() {
@@ -79,13 +73,14 @@ public class DirectoryManager {
                 locations.addAll(getLocationsOfType(locType));
             }
         }
+        locations.add(KioskMain.getDir().getTheKiosk());
         return locations;
     }
 
     private Collection<Location> getLocationsOfType(LocationType locType) {
         if (directories.containsKey(locType)) {
             Directory dir = directories.get(locType);
-            HashMap<Integer, Location> locations = dir.getLocations();
+            Map<Integer, Location> locations = dir.getLocations();
             return locations.values();
         } else {
             throw new RuntimeException("Could not find location type: " + locType.toString());
@@ -99,15 +94,18 @@ public class DirectoryManager {
             nearPOI = KioskMain.getPath().getNearest(LocationType.PointOfInterest, theKiosk.getNode());
 
         } catch (NearestNotFoundException e) {
+            // TODO
         }
         try {
             nearRest = KioskMain.getPath().getNearest(LocationType.Restroom, theKiosk.getNode());
         } catch (NearestNotFoundException e) {
+            // TODO
         }
 
         if(nearPOI == null && nearRest == null) return new ArrayList<>();
-        List<Location> ret = new ArrayList();
-
+        List<Location> ret = new ArrayList<>();
+        // add the kiosk
+        ret.add(KioskMain.getDir().getTheKiosk());
         while (nearPOI != null && !nearPOI.isEmpty()) {
             Location l = Collections.min(nearPOI.entrySet(), Comparator.comparingInt(entry -> (int) entry.getValue().doubleValue())).getKey();
             nearPOI.remove(l);
