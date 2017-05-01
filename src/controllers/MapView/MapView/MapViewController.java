@@ -6,19 +6,17 @@ import controllers.MapView.Map.MapController;
 import controllers.MapView.MapView.DirectionsDrawer.DirectionsDrawerController;
 import controllers.NavigationDrawer.NavigationDrawerController;
 import core.KioskMain;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
 public class MapViewController extends AbstractController {
 
     @FXML
-    private JFXDrawer drawer;
+    private JFXDrawer directionsDrawer;
 
     @FXML
-    private JFXDrawer optionsMenu;
+    private JFXDrawer navigationDrawer;
 
     @FXML
     private Pane drawerOpen;
@@ -35,9 +33,10 @@ public class MapViewController extends AbstractController {
         // bind event handlers
         drawerOpen.setOnMouseClicked(event -> {
             drawerOpen.setVisible(false);
-            drawer.open();
+            directionsDrawer.open();
         });
-        drawer.setOnDrawerOpened(event -> drawerOpen.setVisible(false));
+        directionsDrawer.setOnDrawerOpened(event -> drawerOpen.setVisible(false));
+        directionsDrawer.setOnDrawerClosed(event -> drawerOpen.setVisible(true));
         // load the map controller
         MapController mapController = new MapController();
         // add the map to the container
@@ -45,28 +44,27 @@ public class MapViewController extends AbstractController {
         mapContainer.getChildren().add(mapController.getRoot());
         // setup directions drawer
         DirectionsDrawerController directionsDrawerController = new DirectionsDrawerController(mapController, getRoot());
-        drawer.setSidePane(directionsDrawerController.getRoot());
+        directionsDrawer.setSidePane(directionsDrawerController.getRoot());
         drawerOpen.setVisible(false);
-        drawer.open();
-        directionsDrawerController.getDrawerClose().setOnMouseClicked(event -> drawer.close());
-        drawer.setOnDrawerClosed(event -> drawerOpen.setVisible(true));
+        directionsDrawer.open();
+        directionsDrawerController.getDrawerClose().setOnMouseClicked(event -> directionsDrawer.close());
         // setup navigation drawer
         NavigationDrawerController navigationDrawerController = new NavigationDrawerController(getRoot());
-        optionsMenu.setSidePane(navigationDrawerController.getRoot());
-        //optionsMenu.open();
-        directionsDrawerController.getOptionsMenuButton().setOnMouseClicked(event -> optionsMenu.open());
-        navigationDrawerController.getDrawerClose().setOnMouseClicked(event -> optionsMenu.close());
-        navigationDrawerController.getScrim().setOnMouseClicked(event -> optionsMenu.close());
+        navigationDrawer.setSidePane(navigationDrawerController.getRoot());
+        //navigationDrawer.open();
+        directionsDrawerController.getOptionsMenuButton().setOnMouseClicked(event -> navigationDrawer.open());
+        navigationDrawerController.getDrawerClose().setOnMouseClicked(event -> navigationDrawer.close());
+        navigationDrawerController.getScrim().setOnMouseClicked(event -> navigationDrawer.close());
 //        navigationDrawerController.getMenuItems().setOnMouseClicked(event -> {
-//            optionsMenu.close();
+//            navigationDrawer.close();
 //        });
 
         navigationDrawerController.getScrim().prefWidthProperty().bind(KioskMain.getUI().getStage().widthProperty().add(100));
         navigationDrawerController.getScrim().prefHeightProperty().bind(KioskMain.getUI().getStage().heightProperty());
     }
 
-    public JFXDrawer getOptionsMenu() {
-        return optionsMenu;
+    public JFXDrawer getNavigationDrawer() {
+        return navigationDrawer;
     }
 
 }

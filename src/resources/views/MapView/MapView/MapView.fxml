@@ -18,7 +18,7 @@
             <Label prefHeight="48.0" prefWidth="23.0" styleClass="chevron-right" stylesheets="@/resources/styles/MapView.css" />
         </Pane>
     </VBox>
-    <JFXDrawer fx:id="drawer" defaultDrawerSize="310.0" layoutX="-6.0" styleClass="shadow" stylesheets="@/resources/styles/MapView.css" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" />
+    <JFXDrawer fx:id="directionsDrawer" defaultDrawerSize="310.0" layoutX="-6.0" styleClass="shadow" stylesheets="@/resources/styles/MapView.css" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" />
     <VBox>
         <padding>
             <Insets top="10" />
@@ -27,5 +27,5 @@
             <Label prefHeight="48.0" prefWidth="23.0" styleClass="chevron-right" stylesheets="@/resources/styles/MapView.css" />
         </Pane>
     </VBox>
-   <JFXDrawer fx:id="optionsMenu" defaultDrawerSize="250.0" layoutX="-6.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" />
+   <JFXDrawer fx:id="navigationDrawer" defaultDrawerSize="250.0" layoutX="-6.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" />
 </AnchorPane>

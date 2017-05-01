@@ -203,7 +203,7 @@ public class DraggableNode extends Circle {
     }
 
     public Boolean hasUnsavedChanges() {
-        return manageMapController.getManageMapViewController().getSnackbar().hasUnsavedChanges()
+        return manageMapController.getManageMapViewController().getManageMapDrawer().hasUnsavedChanges()
                 || getPreviewX() != node.getX()
                 || getPreviewY() != node.getY()
                 || !getPreviewRoomName().equals(node.getRoomName())

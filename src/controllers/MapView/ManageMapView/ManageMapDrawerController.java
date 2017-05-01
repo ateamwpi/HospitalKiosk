@@ -24,7 +24,7 @@ import java.util.ArrayList;
  * Created by Madeline on 4/26/2017.
  *
  */
-public class ManageMapSnackbarController extends AbstractController{
+public class ManageMapDrawerController extends AbstractController{
 
     private ManageMapController manageMapController;
     private DraggableNode selectedNode;
@@ -40,41 +40,44 @@ public class ManageMapSnackbarController extends AbstractController{
     @FXML
     protected JFXTextField y;
     @FXML
-    protected JFXButton saveNode;
+    JFXButton saveNode;
     @FXML
     protected JFXButton cancel; //will discard changes
     @FXML
-    protected JFXComboBox nodeType;
+    JFXComboBox nodeType;
     @FXML
-    protected JFXCheckBox employeeOnly;
+    JFXCheckBox employeeOnly;
     @FXML
-    protected Parent mainRoot;
+    private Parent mainRoot;
     @FXML
-    protected JFXButton nodeAction;
+    JFXButton nodeAction;
     @FXML
-    protected Label hamburger;
+    private Label hamburger;
     @FXML
     private Pane root;
     @FXML
     private HBox bottomBox;
     @FXML
     private VBox contentBox;
+    @FXML
+    private Label drawerClose;
+
     private AbstractNodeOptions content;
 
 
-    public ManageMapSnackbarController(Parent mainRoot, ManageMapController manageMapController) {
+    ManageMapDrawerController(Parent mainRoot, ManageMapController manageMapController) {
         super(mainRoot, manageMapController);
     }
 
     @Override
     public void initData(Object... data) {
-        this.mainRoot = (Parent)data[0];
-        this.manageMapController = (ManageMapController)data[1];
+        this.mainRoot = (Parent) data[0];
+        this.manageMapController = (ManageMapController) data[1];
     }
 
     @Override
     public String getURL() {
-        return "resources/views/MapVIew/ManageMapView/ManageMapSnackbar.fxml";
+        return "resources/views/MapView/ManageMapView/ManageMapDrawer.fxml";
     }
 
     @FXML
@@ -83,40 +86,44 @@ public class ManageMapSnackbarController extends AbstractController{
         saveNode.setDisable(true);
         cancel.setDisable(true);
         bottomBox.prefHeightProperty().bind(root.heightProperty().subtract(141));
-        this.updateContent(NodeType.Location);
+        updateContent(NodeType.Location);
     }
 
-    public Label getHamburgerButton() {
+    Label getHamburgerButton() {
         return hamburger;
     }
 
-    public void updateContent(NodeType nodeType) {
-        this.contentBox.getChildren().clear();
-        this.content = nodeType.makeController(this);
-        this.contentBox.getChildren().add(this.content.getRoot());
+    void updateContent(NodeType nodeType) {
+        contentBox.getChildren().clear();
+        content = nodeType.makeController(this);
+        contentBox.getChildren().add(content.getRoot());
     }
 
-    public void nodeChanged() {
-        this.content.nodeChanged();
+    void nodeChanged() {
+        content.nodeChanged();
     }
 
-    public void savePressed() {
-        this.content.savePressed();
+    void savePressed() {
+        content.savePressed();
     }
 
-    public void cancelPressed() {
-        this.content.cancelPressed();
+    void cancelPressed() {
+        content.cancelPressed();
     }
 
     public boolean hasUnsavedChanges() {
-        return this.content.hasUnsavedChanges();
+        return content.hasUnsavedChanges();
     }
 
     public String getRoomName() {
-        return this.content.getRoomName();
+        return content.getRoomName();
     }
 
-    public ManageMapController getManageMapController() {
-        return this.manageMapController;
+    public Label getDrawerClose() {
+        return drawerClose;
+    }
+
+    ManageMapController getManageMapController() {
+        return manageMapController;
     }
 }

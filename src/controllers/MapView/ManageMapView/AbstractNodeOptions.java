@@ -7,15 +7,15 @@ import controllers.AbstractController;
  *
  */
 public abstract class AbstractNodeOptions extends AbstractController {
-    protected ManageMapSnackbarController parent;
+    protected ManageMapDrawerController parent;
 
-    public AbstractNodeOptions(ManageMapSnackbarController parent) {
+    public AbstractNodeOptions(ManageMapDrawerController parent) {
         super(parent);
     }
 
     @Override
     public void initData(Object[] data) {
-        this.parent = (ManageMapSnackbarController) data[0];
+        this.parent = (ManageMapDrawerController) data[0];
     }
 
     public abstract void nodeChanged();

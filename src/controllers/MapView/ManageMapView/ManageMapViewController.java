@@ -2,8 +2,6 @@ package controllers.MapView.ManageMapView;
 
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXCheckBox;
-import com.jfoenix.controls.JFXTextField;
 import controllers.AbstractController;
 import controllers.MapView.Map.ManageMapController;
 import controllers.MapView.Map.DraggableNode;
@@ -20,13 +18,13 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.util.StringConverter;
 import javafx.util.converter.IntegerStringConverter;
 import javafx.util.converter.NumberStringConverter;
 import models.path.Node;
 import models.path.NodeType;
-import org.omg.CORBA.OBJ_ADAPTER;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,11 +46,13 @@ public class ManageMapViewController extends AbstractController {
     @FXML
     private StackPane mapContainer;
     @FXML
-    private JFXDrawer snackbar;
+    private JFXDrawer manageMapDrawer;
     @FXML
     private JFXDrawer navigationDrawer;
+    @FXML
+    private Pane drawerOpen;
 
-    ManageMapSnackbarController manageMapSnackbarController;
+    ManageMapDrawerController manageMapDrawerController;
 
     @Override
     public String getURL() {
@@ -70,14 +70,20 @@ public class ManageMapViewController extends AbstractController {
         nodeTypeList = new ArrayList<>(Arrays.asList("Room", "Elevator", "Stairwell", "Outside"));
     }
 
-    public ManageMapSnackbarController getSnackbar() {
-        return this.manageMapSnackbarController;
+    public ManageMapDrawerController getManageMapDrawer() {
+        return manageMapDrawerController;
     }
 
     @FXML
     private void initialize() {
+        // bind event handlers
+        drawerOpen.setOnMouseClicked(event -> {
+            drawerOpen.setVisible(false);
+            manageMapDrawer.open();
+        });
+        manageMapDrawer.setOnDrawerOpened(event -> drawerOpen.setVisible(false));
+        manageMapDrawer.setOnDrawerClosed(event -> drawerOpen.setVisible(true));
 
-        snackbar.open();
 
         // load the admin map controller
         manageMapController = new ManageMapController(this);
@@ -85,27 +91,29 @@ public class ManageMapViewController extends AbstractController {
         mapContainer.getChildren().add(manageMapController.getRoot());
 
         // setup drawer
-        manageMapSnackbarController = new ManageMapSnackbarController(getRoot(), manageMapController);
-        snackbar.setSidePane(manageMapSnackbarController.getRoot());
+        manageMapDrawerController = new ManageMapDrawerController(getRoot(), manageMapController);
+        manageMapDrawerController.saveNode.setOnAction(this::clickSave);
+        manageMapDrawerController.cancel.setOnAction(this::clickCancel);
+        manageMapDrawerController.nodeAction.setOnAction(this::clickNodeAction);
+        manageMapDrawer.setSidePane(manageMapDrawerController.getRoot());
+        drawerOpen.setVisible(false);
+        manageMapDrawer.open();
+        manageMapDrawerController.getDrawerClose().setOnMouseClicked(event -> manageMapDrawer.close());
 
-        // bind event handlers
-        manageMapSnackbarController.saveNode.setOnAction(this::clickSave);
-        manageMapSnackbarController.cancel.setOnAction(this::clickCancel);
-        manageMapSnackbarController.nodeAction.setOnAction(this::clickNodeAction);
 
         for(JFXButton b: manageMapController.getMapController().getFloorButtons()) {
             b.setOnAction(event -> setFloor(Utils.strForNum(Integer.parseInt(b.getText())) + " Floor"));
         }
 
-        manageMapSnackbarController.nodeType.valueProperty().addListener(this::nodeTypeChanged);
-        manageMapSnackbarController.nodeType.getItems().setAll((Object[])NodeType.values());
-        manageMapSnackbarController.nodeType.getSelectionModel().selectFirst();
+        manageMapDrawerController.nodeType.valueProperty().addListener(this::nodeTypeChanged);
+        manageMapDrawerController.nodeType.getItems().setAll((Object[])NodeType.values());
+        manageMapDrawerController.nodeType.getSelectionModel().selectFirst();
 
         // init input text properties
         //TODO: set employeeOnly and nodeType of selected node
-        xTextProperty = manageMapSnackbarController.x.textProperty();
-        yTextProperty = manageMapSnackbarController.y.textProperty();
-        restrictedProperty = manageMapSnackbarController.employeeOnly.selectedProperty();
+        xTextProperty = manageMapDrawerController.x.textProperty();
+        yTextProperty = manageMapDrawerController.y.textProperty();
+        restrictedProperty = manageMapDrawerController.employeeOnly.selectedProperty();
         // format numeric text fields
         TextFormatter<Integer> numericX = new TextFormatter<>(
                 new IntegerStringConverter(),
@@ -119,8 +127,8 @@ public class ManageMapViewController extends AbstractController {
                 new IntegerStringConverter(),
                 0,
                 c -> Pattern.matches("\\d*", c.getText()) ? c : null);
-        manageMapSnackbarController.x.setTextFormatter(numericX);
-        manageMapSnackbarController.y.setTextFormatter(numericY);
+        manageMapDrawerController.x.setTextFormatter(numericX);
+        manageMapDrawerController.y.setTextFormatter(numericY);
 
         xTextProperty.addListener(this::valueChanged);
         yTextProperty.addListener(this::valueChanged);
@@ -135,7 +143,7 @@ public class ManageMapViewController extends AbstractController {
         NavigationDrawerController navigationDrawerController = new NavigationDrawerController(getRoot());
         navigationDrawer.setSidePane(navigationDrawerController.getRoot());
         //optionsMenu.open();
-        manageMapSnackbarController.getHamburgerButton().setOnMouseClicked(event -> navigationDrawer.open());
+        manageMapDrawerController.getHamburgerButton().setOnMouseClicked(event -> navigationDrawer.open());
         navigationDrawerController.getDrawerClose().setOnMouseClicked(event -> navigationDrawer.close());
         navigationDrawerController.getScrim().setOnMouseClicked(event -> navigationDrawer.close());
         navigationDrawerController.getScrim().prefWidthProperty().bind(KioskMain.getUI().getStage().widthProperty().add(100));
@@ -150,7 +158,7 @@ public class ManageMapViewController extends AbstractController {
              * elevator == staircase, hallway == outside
              */
         }
-        manageMapSnackbarController.updateContent((NodeType)newValue);
+        manageMapDrawerController.updateContent((NodeType)newValue);
     }
 
     public void valueChanged() {
@@ -159,11 +167,11 @@ public class ManageMapViewController extends AbstractController {
 
     public void valueChanged(ObservableValue observableValue, Object oldValue, Object newValue) {
         if(selectedNode != null && selectedNode.hasUnsavedChanges()) {
-            manageMapSnackbarController.saveNode.setDisable(false);
-            manageMapSnackbarController.cancel.setDisable(false);
+            manageMapDrawerController.saveNode.setDisable(false);
+            manageMapDrawerController.cancel.setDisable(false);
         } else {
-            manageMapSnackbarController.saveNode.setDisable(true);
-            manageMapSnackbarController.cancel.setDisable(true);
+            manageMapDrawerController.saveNode.setDisable(true);
+            manageMapDrawerController.cancel.setDisable(true);
         }
     }
 
@@ -182,15 +190,15 @@ public class ManageMapViewController extends AbstractController {
         Bindings.bindBidirectional(yTextProperty, selectedNode.previewYProperty(), converter);
         Bindings.bindBidirectional(roomNameProperty, selectedNode.previewRoomNameProperty());
         Bindings.bindBidirectional(restrictedProperty, selectedNode.previewRestrictedProperty());
-        manageMapSnackbarController.nodeType.getSelectionModel().select(selectedNode.getNode().getNodeType());
-        manageMapSnackbarController.nodeChanged();
-//        manageMapSnackbarController.employeeOnly.setVisible(true);
-//        manageMapSnackbarController.employeeOnly.setDisable(false);
-        manageMapSnackbarController.nodeAction.setDisable(false);
+        manageMapDrawerController.nodeType.getSelectionModel().select(selectedNode.getNode().getNodeType());
+        manageMapDrawerController.nodeChanged();
+//        manageMapDrawerController.employeeOnly.setVisible(true);
+//        manageMapDrawerController.employeeOnly.setDisable(false);
+        manageMapDrawerController.nodeAction.setDisable(false);
         // show save button
         // show delete button
-        manageMapSnackbarController.nodeAction.setText("Delete");
-        // manageMapSnackbarController.saveNode.setVisible(true);
+        manageMapDrawerController.nodeAction.setText("Delete");
+        // manageMapDrawerController.saveNode.setVisible(true);
     }
 
     public void unselectNode(boolean reselect) {
@@ -205,31 +213,31 @@ public class ManageMapViewController extends AbstractController {
         selectedNode = null;
         // update edit view
         if(!reselect) {
-            manageMapSnackbarController.x.setText("");
-            manageMapSnackbarController.y.setText("");
+            manageMapDrawerController.x.setText("");
+            manageMapDrawerController.y.setText("");
         }
-//        manageMapSnackbarController.nodeAction.setText("Add");
-        manageMapSnackbarController.nodeAction.setDisable(true);
-        manageMapSnackbarController.nodeChanged();
-        //manageMapSnackbarController.room.setText("");
-//        manageMapSnackbarController.employeeOnly.setVisible(false);
-//        manageMapSnackbarController.employeeOnly.setDisable(true);
+//        manageMapDrawerController.nodeAction.setText("Add");
+        manageMapDrawerController.nodeAction.setDisable(true);
+        manageMapDrawerController.nodeChanged();
+        //manageMapDrawerController.room.setText("");
+//        manageMapDrawerController.employeeOnly.setVisible(false);
+//        manageMapDrawerController.employeeOnly.setDisable(true);
         getRoot().requestFocus();
         // remove save button
-        // manageMapSnackbarController.saveNode.setVisible(false);
+        // manageMapDrawerController.saveNode.setVisible(false);
 
     }
 
     private int getX() {
-        return Integer.parseInt(manageMapSnackbarController.x.getText());
+        return Integer.parseInt(manageMapDrawerController.x.getText());
     }
 
     private int getY() {
-        return Integer.parseInt(manageMapSnackbarController.y.getText());
+        return Integer.parseInt(manageMapDrawerController.y.getText());
     }
 
     private String getRoomName() {
-        return getSnackbar().getRoomName();
+        return getManageMapDrawer().getRoomName();
     }
 
     @FXML
@@ -244,15 +252,15 @@ public class ManageMapViewController extends AbstractController {
     @FXML
     private void clickCancel(ActionEvent event) {
         selectedNode.cancelPreview();
-        manageMapSnackbarController.cancelPressed();
+        manageMapDrawerController.cancelPressed();
     }
 
     @FXML
     private void clickSave(ActionEvent event) {
-        manageMapSnackbarController.savePressed();
+        manageMapDrawerController.savePressed();
         selectedNode.save();
-        manageMapSnackbarController.saveNode.setDisable(true);
-        manageMapSnackbarController.cancel.setDisable(true);
+        manageMapDrawerController.saveNode.setDisable(true);
+        manageMapDrawerController.cancel.setDisable(true);
         manageMapController.attemptUnselectNode(isUnselected -> {}, ()->{}, false);
     }
 
@@ -282,7 +290,7 @@ public class ManageMapViewController extends AbstractController {
     private Boolean verifyNode() {
         // TODO fix hard coded values
         // check x and y exist
-        if (manageMapSnackbarController.x.getText().equals("") || manageMapSnackbarController.y.getText().equals("")) {
+        if (manageMapDrawerController.x.getText().equals("") || manageMapDrawerController.y.getText().equals("")) {
             return false;
         }
         // check x and y within bounds
